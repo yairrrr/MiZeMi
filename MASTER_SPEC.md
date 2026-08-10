@@ -1,6 +1,6 @@
 # MiZeMi — MASTER SPECIFICATION
 
-**Status:** Proposed baseline — awaiting team review (v1.2, 2026-08-09). Only items explicitly marked as approved (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10) reflect confirmed team decisions; the rest is the proposed technical baseline.
+**Status:** Proposed baseline — awaiting team review (v1.4, 2026-08-10). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.4 across §8, §9.2, §9.3, §11, §13, §14) reflect confirmed team decisions; the rest is the proposed technical baseline.
 **Audience:** All contributors, human and AI coding agents.
 **Rule zero:** Read this document before writing any code. Changes to this document follow the process in [§21 Rules for Modifying Shared Contracts](#21-rules-for-modifying-shared-contracts).
 
@@ -62,6 +62,10 @@ Every statement in this document belongs to one of three categories:
 | Python formatter/linter toolchain | Dev-tooling setup | §18.1 |
 | Frontend unit-test framework and component/E2E strategy | Before frontend implementation | §19 |
 | CI system and configuration | Dev-tooling setup | §19 |
+| Room capacity limit (the rule that triggers `ROOM_FULL`) | Room design stage | §17 |
+| Internal host representation (whether the host is modeled as a Player) | Room/Game design stage | §8, §9.1 |
+| Canonical transport for profile submission (REST vs. the `player.profile_submit` WS event) | Room/gameplay design stage | §13, §14.2 |
+| Leaderboard tie-breaking rules | Scoring design stage | §9.7 |
 | React major version | Frontend scaffolding (when the repo actually installs it) | §4 |
 
 ---
@@ -286,6 +290,8 @@ New top-level folders in `backend/app/` or `frontend/src/` require a spec update
 
 Until the team grows, one person may hold several ownership roles; the boundaries still apply — a change crossing an ownership boundary gets a review from that area's owner (or explicit self-review noted in the PR).
 
+Ownership also sets the **implementation boundary**: the shared game/player domain contracts are implemented as shared contracts, the Question Generation Engine classes (§12.1) are implemented only within the Question Engine workstream, and the scoring policy class (§9.5) only within the scoring workstream. The proposed design is **not** a single implement-everything-together unit — no workstream implements classes owned by another workstream preemptively.
+
 ---
 
 ## 8. Shared Domain Concepts
@@ -305,6 +311,8 @@ Ubiquitous language — use these names in code, APIs, events, and conversation:
 - **Statistics** — aggregate answer/group data shown between questions.
 
 Identifiers: all public ids (`game_id`, `player_id`, `question_id`) are server-generated, unique, opaque strings — created by the backend, never by clients. **Deferred:** the concrete id format (e.g., which UUID variant, if any) is an implementation choice made during backend design. `room_code` is the only human-facing identifier.
+
+**Deliberately absent — Round (approved):** the MVP defines no Round domain concept. `Question.index` plus the game state machine (§11) cover per-question progression. A Round abstraction may be reconsidered only if a later concrete requirement justifies it.
 
 ---
 
@@ -356,7 +364,7 @@ A profile is a set of **fields**. Every field carries a per-field privacy flag. 
 - favorite music
 - favorite movie
 
-**Deferred — PlayerProfile design stage:** the exact final field schema — field keys, value types, validation rules, enum vs. free-text decisions, and which fields are required vs. optional — will be finalized during the dedicated PlayerProfile design stage. Once finalized, the field list becomes part of this shared contract and subsequent changes follow §21.
+**Deferred — PlayerProfile design stage:** the exact final field schema — field keys, value types, validation rules, enum vs. free-text decisions, and which fields are required vs. optional — will be finalized during the dedicated PlayerProfile design stage. Once finalized, the field list becomes part of this shared contract and subsequent changes follow §21. **Approved interim typing:** until that stage, domain code may type a field's `value` as `str | int`; this is intentionally temporary and not part of the final schema.
 
 Approved privacy behavior, regardless of the final schema:
 
@@ -384,7 +392,7 @@ Approved privacy behavior, regardless of the final schema:
 }
 ```
 
-The *fields* above are the contract; the example values are illustrative. **Deferred — gameplay/question design stage:** answer-option count bounds, default/allowed time limits, and questions per game.
+The *fields* above are the contract; the example values are illustrative. **Approved:** `option_id` is an opaque string — values such as `"a"`–`"d"` may appear in examples but are not a required identifier format. **Deferred — gameplay/question design stage:** answer-option count bounds, default/allowed time limits, and questions per game.
 
 The correct `option_id` is **never** sent to clients while the question is active. It is revealed only in the `question.ended` event.
 
@@ -410,7 +418,7 @@ Server behavior: the server records each submission with its own clock (`answere
 }
 ```
 
-Scoring is owned by `domain/scoring/` and must be **deterministic and server-authoritative** — client clocks and client-side math never decide points. **Deferred — scoring design stage:** the exact scoring formula, point values, and whether/how answer speed affects points have not been approved; speed-based scoring may be considered at that stage. The formula will live in one policy class; tuning it will not change this contract, but changing the *fields* above does. Auxiliary score fields (e.g., points earned on the last question, per-player correct/answered counts) are likewise deferred to that stage and would be added via §21.
+Scoring is owned by `domain/scoring/` and must be **deterministic and server-authoritative** — client clocks and client-side math never decide points. **Deferred — scoring design stage:** the exact scoring formula, point values, and whether/how answer speed affects points have not been approved; speed-based scoring may be considered at that stage. The formula will live in one policy class; tuning it will not change this contract, but changing the *fields* above does. Auxiliary score fields (e.g., points earned on the last question, per-player correct/answered counts) are likewise deferred to that stage and would be added via §21. Implementing the policy class belongs to the scoring workstream (§7) and happens in that workstream's dedicated tasks.
 
 ### 9.6 Statistics format
 
@@ -441,6 +449,8 @@ Statistics are aggregate-only: they never expose which specific player gave whic
 }
 ```
 
+**Deferred — scoring design stage:** tie-breaking rules for equal scores.
+
 ---
 
 ## 10. Privacy Rules and Data Minimization
@@ -461,11 +471,11 @@ Owned by `domain/game/`. The backend enforces transitions; clients merely render
 
 ```
 LOBBY
-  └─ game.start (host) ──────────► PROFILE_COLLECTION
+  └─ first valid profile accepted (automatic) ─► PROFILE_COLLECTION
 PROFILE_COLLECTION
   └─ all players ready ──────────► READY
 READY
-  └─ game.next (host) ───────────► QUESTION_ACTIVE
+  └─ game.start (host) — question set generated ─► QUESTION_ACTIVE
 QUESTION_ACTIVE
   └─ all answered OR timeout ────► QUESTION_RESULTS
 QUESTION_RESULTS
@@ -483,7 +493,9 @@ Rules:
 - State names are part of the shared contract and appear verbatim (UPPER_SNAKE) in payloads.
 - Players join during the pre-game phases, and a disconnected player must be able to reconnect with the same `player_id`. **Deferred — Room/gameplay design stage:** exactly which states permit late joining and the precise reconnection rules.
 - Illegal transition attempts return/emit `error` with code `INVALID_STATE_TRANSITION`; the state does not change.
-- Question generation runs during the `READY` transition, when all consented profile data is available.
+- **Approved — question-generation timing:** the game's question set is generated when the host starts the game via `game.start` (the `READY → QUESTION_ACTIVE` transition) — never merely because the game entered `READY`. All consented profile data is available by that point.
+- **Approved — start vs. next:** `game.start` is used only to start the game from `READY`. `game.next` advances the post-round flow (`QUESTION_RESULTS → LEADERBOARD`, then `LEADERBOARD → QUESTION_ACTIVE` or `FINISHED`). No new event name is introduced.
+- **Approved — entering profile collection:** a newly created Room begins in `LOBBY`, and players may join while it is in `LOBBY`. Profile submission is valid in both `LOBBY` and `PROFILE_COLLECTION`. When the server accepts the **first** valid profile submission, it automatically transitions `LOBBY → PROFILE_COLLECTION` — no host command is required and no new realtime event exists for it; the transition is announced through the existing `room.updated` snapshot and may also be reflected in the submitter's `player.updated`. `PROFILE_COLLECTION → READY` remains governed by the existing readiness contract; no additional readiness rules are defined here.
 - Every transition is broadcast via `room.updated` carrying the new state (plus the specific event, e.g. `question.started`).
 
 ---
@@ -494,7 +506,7 @@ Lives in `backend/app/domain/questions/`. **Purely algorithmic — no AI, no ext
 
 ### 12.1 Pipeline architecture
 
-Six separated responsibilities. **This section is a design specification — these classes are not implemented yet and must not be implemented as part of documentation tasks.**
+Six separated responsibilities. **This section is a design specification — these classes are not implemented yet and must not be implemented as part of documentation tasks.** They belong to the Question Generation Engine workstream (§7): they are implemented in that workstream's dedicated tasks, and other workstreams must not implement them preemptively.
 
 ```
 ProfileDataset (consented fields only)
@@ -601,7 +613,7 @@ Selection is deterministic given (candidates, seed).
 - Success codes: `200` read/update, `201` create, `204` delete/no-content.
 - Every response body is an object (never a bare array).
 - Errors follow §17.
-- REST is used for: room creation, room lookup, join, profile submission. Gameplay flow (start, next, answers) is WebSocket-only — one authoritative channel for realtime mutation, no dual paths.
+- REST is used for: room creation, room lookup, join, profile submission. Gameplay flow (start, next, answers) is WebSocket-only — one authoritative channel for realtime mutation, no dual paths. **Deferred — Room/gameplay design stage:** the single canonical transport for profile submission (this REST path vs. the `player.profile_submit` event, §14.2); until decided, the spec lists both.
 - Request/response schemas are Pydantic models in `backend/app/api/`; mirrored TypeScript types live in `frontend/src/types/`.
 
 ---
@@ -623,9 +635,11 @@ Event names are `snake_case` segments joined by a dot: `<domain>.<action>`, past
 | `player.join` | player | Announce/bind connection to a joined player |
 | `player.profile_submit` | player | Submit profile fields |
 | `player.ready` | player | Mark ready during profile collection |
-| `game.start` | host | Begin profile collection |
+| `game.start` | host | Start the game from `READY`: the backend generates the question set, then opens the first question |
 | `answer.submit` | player | Submit an answer (payload: §9.4) |
-| `game.next` | host | Advance the state machine |
+| `game.next` | host | Advance the post-round flow (results → leaderboard → next question or finish) |
+
+`LOBBY → PROFILE_COLLECTION` has no client trigger event: it happens automatically when the server accepts the first valid profile submission (§11), announced via `room.updated` (and the submitter's `player.updated`).
 
 **Server → Client (facts):**
 
@@ -634,7 +648,7 @@ Event names are `snake_case` segments joined by a dot: `<domain>.<action>`, past
 | `room.updated` | Room/game state snapshot changed (carries current state + players) |
 | `player.joined` | A player joined |
 | `player.updated` | A player changed (ready, connected, profile status) |
-| `game.started` | Profile collection began |
+| `game.started` | The game started from `READY` (question set generated; first `question.started` follows) |
 | `question.started` | A question opened (payload: §9.3, without correct answer) |
 | `answer.accepted` | This client's answer was recorded (ack, sent only to the answerer) |
 | `question.ended` | Question closed; payload includes correct option + statistics (§9.6) |
@@ -715,7 +729,7 @@ One error shape everywhere — REST bodies and the WS `error` event payload:
 
 - REST: this body plus the appropriate HTTP status (`400` validation, `404` not found, `409` conflict/illegal state, `422` schema violation).
 - WebSocket: the same object as the `payload` of an `error` envelope.
-- Error codes are part of the shared contract. Initial registry: `ROOM_NOT_FOUND`, `ROOM_FULL`, `NAME_TAKEN`, `INVALID_STATE_TRANSITION`, `QUESTION_CLOSED`, `ALREADY_ANSWERED`, `NOT_HOST`, `VALIDATION_ERROR`, `UNKNOWN_EVENT`, `INTERNAL_ERROR`. Additions append to this list via a spec PR.
+- Error codes are part of the shared contract. Initial registry: `ROOM_NOT_FOUND`, `ROOM_FULL`, `NAME_TAKEN`, `INVALID_STATE_TRANSITION`, `QUESTION_CLOSED`, `ALREADY_ANSWERED`, `NOT_HOST`, `VALIDATION_ERROR`, `UNKNOWN_EVENT`, `INTERNAL_ERROR`. Additions append to this list via a spec PR. `ROOM_FULL` and `ALREADY_ANSWERED` are **reserved** codes: the rules that trigger them (room capacity; answer finality) are deferred to the Room and gameplay design stages respectively.
 - `message` must never contain another player's profile data or internal stack traces.
 
 ---
