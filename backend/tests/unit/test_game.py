@@ -7,7 +7,21 @@ aggregate deliberately does not enforce them.
 
 import pytest
 
-from app.domain.game import Game, GameState, InvalidStateTransitionError, Player
+from app.domain.game import (
+    Game,
+    GameState,
+    InvalidStateTransitionError,
+    Player,
+    PlayerProfile,
+    ProfileField,
+)
+
+
+def _profile_for(player_id: str) -> PlayerProfile:
+    return PlayerProfile(
+        player_id=player_id,
+        fields=(ProfileField(field_key="favorite_food", value="pizza", allow_question_usage=True),),
+    )
 
 
 class TestNewGame:
@@ -113,3 +127,88 @@ class TestStateTransitions:
             game.transition_to(GameState.LEADERBOARD)
 
         assert game.state is GameState.PROFILE_COLLECTION
+
+
+class TestSubmitInitialProfile:
+    def _game_with_players(self) -> Game:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.add_player(Player(player_id="p2", display_name="Omer"))
+        return game
+
+    def test_submission_in_lobby_assigns_profile_and_transitions(self) -> None:
+        game = self._game_with_players()
+        profile = _profile_for("p1")
+
+        game.submit_initial_profile("p1", profile)
+
+        assert game.get_player("p1").profile is profile
+        assert game.state is GameState.PROFILE_COLLECTION
+
+    def test_second_players_first_submission_keeps_profile_collection(self) -> None:
+        game = self._game_with_players()
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        profile = _profile_for("p2")
+
+        game.submit_initial_profile("p2", profile)
+
+        assert game.get_player("p2").profile is profile
+        assert game.state is GameState.PROFILE_COLLECTION
+
+    def test_unknown_player_id_rejected_without_mutation(self) -> None:
+        game = self._game_with_players()
+
+        with pytest.raises(ValueError):
+            game.submit_initial_profile("missing", _profile_for("missing"))
+
+        assert game.state is GameState.LOBBY
+        assert all(player.profile is None for player in game.players)
+
+    def test_ownership_mismatch_rejected_without_mutation(self) -> None:
+        game = self._game_with_players()
+
+        with pytest.raises(ValueError):
+            game.submit_initial_profile("p1", _profile_for("p2"))
+
+        assert game.state is GameState.LOBBY
+        assert game.get_player("p1").profile is None
+
+    def test_second_initial_submission_for_same_player_rejected(self) -> None:
+        game = self._game_with_players()
+        original = _profile_for("p1")
+        game.submit_initial_profile("p1", original)
+
+        with pytest.raises(ValueError):
+            game.submit_initial_profile("p1", _profile_for("p1"))
+
+        assert game.get_player("p1").profile is original
+        assert game.state is GameState.PROFILE_COLLECTION
+
+    def test_submission_in_ready_rejected(self) -> None:
+        game = self._game_with_players()
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        game.transition_to(GameState.READY)
+
+        with pytest.raises(ValueError):
+            game.submit_initial_profile("p2", _profile_for("p2"))
+
+        assert game.state is GameState.READY
+        assert game.get_player("p2").profile is None
+
+    def test_submission_in_finished_rejected(self) -> None:
+        game = self._game_with_players()
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        for target in (
+            GameState.READY,
+            GameState.QUESTION_ACTIVE,
+            GameState.QUESTION_RESULTS,
+            GameState.LEADERBOARD,
+            GameState.FINISHED,
+        ):
+            game.transition_to(target)
+
+        with pytest.raises(ValueError):
+            game.submit_initial_profile("p2", _profile_for("p2"))
+
+        assert game.state is GameState.FINISHED
+        assert game.get_player("p2").profile is None

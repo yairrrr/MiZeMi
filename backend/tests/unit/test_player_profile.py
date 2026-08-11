@@ -5,6 +5,8 @@ Pure domain tests: no IO, no network, no database.
 
 from dataclasses import fields
 
+import pytest
+
 from app.domain.game import Player, PlayerProfile, ProfileField
 
 
@@ -91,3 +93,51 @@ class TestPlayer:
 
         assert "is_host" not in field_names
         assert "score" not in field_names
+
+
+class TestAssignInitialProfile:
+    def test_assign_initial_profile_accepts_matching_player_id(self) -> None:
+        player = Player(player_id="p1", display_name="Dana")
+        profile = _profile_with_mixed_consent()
+
+        player.assign_initial_profile(profile)
+
+        assert player.profile is profile
+        assert player.has_profile is True
+
+    def test_assign_initial_profile_rejects_ownership_mismatch(self) -> None:
+        player = Player(player_id="p2", display_name="Omer")
+
+        with pytest.raises(ValueError):
+            player.assign_initial_profile(_profile_with_mixed_consent())  # belongs to p1
+
+    def test_ownership_mismatch_leaves_profile_state_unchanged(self) -> None:
+        player = Player(player_id="p2", display_name="Omer")
+
+        with pytest.raises(ValueError):
+            player.assign_initial_profile(_profile_with_mixed_consent())
+
+        assert player.profile is None
+        assert player.has_profile is False
+
+    def test_assign_initial_profile_rejects_second_assignment(self) -> None:
+        player = Player(player_id="p1", display_name="Dana")
+        player.assign_initial_profile(_profile_with_mixed_consent())
+
+        with pytest.raises(ValueError):
+            player.assign_initial_profile(_profile_with_mixed_consent())
+
+    def test_rejected_second_assignment_keeps_original_profile(self) -> None:
+        player = Player(player_id="p1", display_name="Dana")
+        original = _profile_with_mixed_consent()
+        player.assign_initial_profile(original)
+
+        with pytest.raises(ValueError):
+            player.assign_initial_profile(
+                PlayerProfile(
+                    player_id="p1",
+                    fields=(ProfileField(field_key="city", value="Haifa", allow_question_usage=True),),
+                )
+            )
+
+        assert player.profile is original
