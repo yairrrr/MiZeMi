@@ -8,6 +8,7 @@ deliver those types.
 """
 
 from app.domain.game.player import Player
+from app.domain.game.profile import PlayerProfile
 from app.domain.game.state import GameState, GameStateMachine
 
 
@@ -63,3 +64,23 @@ class Game:
         if not self._state_machine.is_transition_allowed(self._state, target):
             raise InvalidStateTransitionError(self._state, target)
         self._state = target
+
+    def submit_initial_profile(self, player_id: str, profile: PlayerProfile) -> None:
+        """Accept a player's first profile submission (MASTER_SPEC.md §11).
+
+        Structurally accepted only in LOBBY or PROFILE_COLLECTION; the first
+        accepted profile auto-transitions LOBBY -> PROFILE_COLLECTION.
+        Field validation against the final profile schema is deferred and
+        happens upstream once defined. Every rejection leaves the game and
+        its players unchanged.
+        """
+        if self._state not in (GameState.LOBBY, GameState.PROFILE_COLLECTION):
+            raise ValueError(
+                f"profile submission not accepted in state {self._state.value}"
+            )
+        player = self._players.get(player_id)
+        if player is None:
+            raise ValueError(f"unknown player_id: {player_id}")
+        player.assign_initial_profile(profile)
+        if self._state is GameState.LOBBY:
+            self.transition_to(GameState.PROFILE_COLLECTION)

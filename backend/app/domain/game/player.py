@@ -28,3 +28,18 @@ class Player:
     @property
     def has_profile(self) -> bool:
         return self.profile is not None
+
+    def assign_initial_profile(self, profile: PlayerProfile) -> None:
+        """Assign this player's first profile.
+
+        Scoped to initial assignment only: rejecting a second assignment here
+        does not decide the deferred resubmission/finality product policy —
+        editing/replacing, if ever approved, gets its own method.
+        """
+        if profile.player_id != self.player_id:
+            raise ValueError(
+                f"profile belongs to {profile.player_id!r}, not {self.player_id!r}"
+            )
+        if self.profile is not None:
+            raise ValueError(f"player {self.player_id!r} already has a profile")
+        self.profile = profile
