@@ -3,6 +3,7 @@
 from app.domain.game.game import Game, InvalidStateTransitionError
 from app.domain.game.player import Player
 from app.domain.game.profile import PlayerProfile, ProfileField
+from app.domain.game.room import Room
 from app.domain.game.state import GameState, GameStateMachine
 
 __all__ = [
@@ -13,4 +14,5 @@ __all__ = [
     "Player",
     "PlayerProfile",
     "ProfileField",
+    "Room",
 ]
