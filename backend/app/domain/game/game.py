@@ -84,3 +84,23 @@ class Game:
         player.assign_initial_profile(profile)
         if self._state is GameState.LOBBY:
             self.transition_to(GameState.PROFILE_COLLECTION)
+
+    def mark_player_ready(self, player_id: str) -> None:
+        """Mark a player ready; transition to READY once everyone is (§11).
+
+        Approved MVP readiness contract: allowed only in PROFILE_COLLECTION,
+        requires a submitted profile, idempotent, and no unready operation
+        exists. The denominator is every player in the game — ``connected``
+        does not affect the calculation. Late-join behavior after READY
+        remains deferred.
+        """
+        if self._state is not GameState.PROFILE_COLLECTION:
+            raise ValueError(f"readiness not accepted in state {self._state.value}")
+        player = self._players.get(player_id)
+        if player is None:
+            raise ValueError(f"unknown player_id: {player_id}")
+        if not player.has_profile:
+            raise ValueError(f"player {player_id!r} has no profile")
+        player.is_ready = True
+        if all(p.is_ready for p in self._players.values()):
+            self.transition_to(GameState.READY)
