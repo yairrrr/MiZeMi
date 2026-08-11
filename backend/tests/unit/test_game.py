@@ -212,3 +212,110 @@ class TestSubmitInitialProfile:
 
         assert game.state is GameState.FINISHED
         assert game.get_player("p2").profile is None
+
+
+class TestMarkPlayerReady:
+    def _collecting_game(self) -> Game:
+        """Two players, both with profiles, game in PROFILE_COLLECTION."""
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.add_player(Player(player_id="p2", display_name="Omer"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        game.submit_initial_profile("p2", _profile_for("p2"))
+        return game
+
+    def test_player_with_profile_can_be_marked_ready(self) -> None:
+        game = self._collecting_game()
+
+        game.mark_player_ready("p1")
+
+        assert game.get_player("p1").is_ready is True
+
+    def test_player_without_profile_cannot_be_marked_ready(self) -> None:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.add_player(Player(player_id="p2", display_name="Omer"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+
+        with pytest.raises(ValueError):
+            game.mark_player_ready("p2")
+
+        assert game.get_player("p2").is_ready is False
+        assert game.state is GameState.PROFILE_COLLECTION
+
+    def test_unknown_player_id_rejected(self) -> None:
+        game = self._collecting_game()
+
+        with pytest.raises(ValueError):
+            game.mark_player_ready("missing")
+
+        assert game.state is GameState.PROFILE_COLLECTION
+        assert all(player.is_ready is False for player in game.players)
+
+    def test_marking_ready_in_lobby_rejected(self) -> None:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+
+        with pytest.raises(ValueError):
+            game.mark_player_ready("p1")
+
+        assert game.state is GameState.LOBBY
+        assert game.get_player("p1").is_ready is False
+
+    def test_marking_ready_in_ready_state_rejected(self) -> None:
+        game = self._collecting_game()
+        game.mark_player_ready("p1")
+        game.mark_player_ready("p2")
+        assert game.state is GameState.READY
+
+        with pytest.raises(ValueError):
+            game.mark_player_ready("p1")
+
+        assert game.state is GameState.READY
+
+    def test_marking_same_player_twice_is_idempotent(self) -> None:
+        game = self._collecting_game()
+        game.mark_player_ready("p1")
+
+        game.mark_player_ready("p1")
+
+        assert game.get_player("p1").is_ready is True
+        assert game.state is GameState.PROFILE_COLLECTION
+
+    def test_partial_readiness_keeps_profile_collection(self) -> None:
+        game = self._collecting_game()
+
+        game.mark_player_ready("p1")
+
+        assert game.state is GameState.PROFILE_COLLECTION
+
+    def test_final_player_ready_transitions_to_ready(self) -> None:
+        game = self._collecting_game()
+        game.mark_player_ready("p1")
+
+        game.mark_player_ready("p2")
+
+        assert game.state is GameState.READY
+
+    def test_single_player_game_transitions_when_ready(self) -> None:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+
+        game.mark_player_ready("p1")
+
+        assert game.state is GameState.READY
+
+    def test_connected_flag_does_not_affect_all_ready(self) -> None:
+        game = self._collecting_game()
+        game.get_player("p2").connected = False
+
+        game.mark_player_ready("p1")
+        assert game.state is GameState.PROFILE_COLLECTION  # disconnected p2 still counts
+
+        game.mark_player_ready("p2")
+        assert game.state is GameState.READY  # and may still be marked ready
+
+    def test_no_unready_behavior_exists(self) -> None:
+        assert not any("unready" in name.lower() for name in dir(Game))
+        assert not any("unready" in name.lower() for name in dir(Player))
