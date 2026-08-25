@@ -60,7 +60,7 @@ Every statement in this document belongs to one of three categories:
 | Database migration tooling and strategy | When the schema stabilizes | §15 |
 | Exact persistence points and restart/recovery guarantees | Backend implementation design | §15 |
 | Python formatter/linter toolchain | Dev-tooling setup | §18.1 |
-| Frontend unit-test framework and component/E2E strategy | Before frontend implementation | §19 |
+| Frontend E2E testing with Playwright | First stable backend-connected vertical slice | §19 |
 | CI system and configuration | Dev-tooling setup | §19 |
 | Room capacity limit (the rule that triggers `ROOM_FULL`) | Room design stage | §17 |
 | Internal host representation (whether the host is modeled as a Player) | Room/Game design stage | §8, §9.1 |
@@ -172,6 +172,10 @@ This list is deliberately conservative: it contains only directions that origina
 | Language | TypeScript (strict mode) |
 | Framework | React (major version chosen when the frontend is scaffolded; not locked by this document) |
 | Build tool | Vite |
+| Unit testing | Vitest |
+| Component testing | React Testing Library with `jsdom` |
+| Test interactions / DOM assertions | `@testing-library/user-event` / `@testing-library/jest-dom` |
+| E2E testing | Playwright (**deferred** until the first stable backend-connected vertical slice) |
 | Realtime | Native browser WebSocket |
 
 ### Communication
@@ -761,7 +765,9 @@ One error shape everywhere — REST bodies and the WS `error` event payload:
 - Domain logic — especially the Question Generation Engine and the state machine — must be testable **without any IO**; engine tests pass a fixed seed and assert deterministic output.
 - Every `QuestionRule` gets unit tests covering: produces expected candidates on a supporting dataset, produces **zero** candidates on a non-supporting dataset, and never uses non-consented fields.
 - Every bug fix adds a regression test.
-- Frontend: **Deferred** — the unit-test framework and the component/E2E strategy will be specified before frontend implementation begins.
+- Frontend unit tests use **Vitest**. React component tests use **React Testing Library** with **`jsdom`** as the DOM environment, **`@testing-library/user-event`** for user interactions, and **`@testing-library/jest-dom`** for DOM assertions.
+- Frontend tests assert user-observable behavior rather than component implementation details. Pure TypeScript utilities are unit-tested without DOM or network IO; component tests cover rendering and user interaction at the smallest useful boundary.
+- Frontend E2E testing uses **Playwright** and is **deferred** until the first stable backend-connected vertical slice exists. E2E tooling must not be added before that trigger is reached.
 - Tests are contracts: **deleting or weakening a test to make a change pass is prohibited** (see §22). If a test is genuinely wrong, the PR must say so explicitly and explain why.
 - Principle: automated tests must pass before a merge. **Deferred:** the CI system and its exact configuration.
 
