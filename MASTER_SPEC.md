@@ -400,6 +400,35 @@ The *fields* above are the contract; the example values are illustrative. **Appr
 
 The correct `option_id` is **never** sent to clients while the question is active. It is revealed only in the `question.ended` event.
 
+#### 9.3.1 Server-domain Question lifecycle
+
+The shared server-domain types separate generated question content from the
+runtime data added when a question opens:
+
+- `QuestionType` has the single MVP value `multiple_choice`.
+- `QuestionOption` contains `option_id` and `text`; `option_id` remains an
+  opaque string.
+- `Question` contains `question_id`, `index`, `total_questions`,
+  `question_type`, `text`, `options`, `correct_option_id`, and
+  `time_limit_seconds`.
+
+`Question.correct_option_id` is server-private domain data. It must identify
+exactly one option and is omitted from the active-question payload above. The
+application/presentation flow reveals it only through `question.ended`.
+
+`started_at` is not stored on a generated domain `Question`. The authoritative
+server clock supplies it when that question becomes active, and the
+application/presentation layer combines it with the domain question to build
+the §9.3 active-question payload. This permits the Question Engine to generate
+the complete deterministic question sequence before future questions have an
+opening time.
+
+**Migration impact:** this clarification does not change the §9.3 or §9.6 wire
+shapes and therefore requires no frontend field migration. Backend Game and
+Question Engine code consume the shared domain `Question`; presentation code
+must continue to omit `correct_option_id` while a question is active and add
+the server-owned `started_at` value at serialization time.
+
 ### 9.4 Answer submission format
 
 Sent over WebSocket as the payload of `answer.submit`:
