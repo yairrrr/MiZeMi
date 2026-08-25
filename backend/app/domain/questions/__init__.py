@@ -4,6 +4,7 @@ from app.domain.questions.candidate import QuestionCandidate
 from app.domain.questions.dataset import ProfileDataset
 from app.domain.questions.question import Question, QuestionOption, QuestionType
 from app.domain.questions.rule import QuestionRule
+from app.domain.questions.scorer import QuestionQualityScorer
 from app.domain.questions.validator import QuestionValidator
 
 __all__ = [
@@ -11,6 +12,7 @@ __all__ = [
     "Question",
     "QuestionCandidate",
     "QuestionOption",
+    "QuestionQualityScorer",
     "QuestionRule",
     "QuestionType",
     "QuestionValidator",
