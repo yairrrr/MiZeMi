@@ -15,12 +15,29 @@ from app.domain.game import (
     PlayerProfile,
     ProfileField,
 )
+from app.domain.questions.question import Question, QuestionOption, QuestionType
 
 
 def _profile_for(player_id: str) -> PlayerProfile:
     return PlayerProfile(
         player_id=player_id,
         fields=(ProfileField(field_key="favorite_food", value="pizza", allow_question_usage=True),),
+    )
+
+
+def _question(index: int, total: int) -> Question:
+    return Question(
+        question_id=f"q{index}",
+        index=index,
+        total_questions=total,
+        question_type=QuestionType.MULTIPLE_CHOICE,
+        text=f"Question {index}?",
+        options=(
+            QuestionOption(option_id="a", text="Option A"),
+            QuestionOption(option_id="b", text="Option B"),
+        ),
+        correct_option_id="a",
+        time_limit_seconds=20,
     )
 
 
@@ -319,3 +336,91 @@ class TestMarkPlayerReady:
     def test_no_unready_behavior_exists(self) -> None:
         assert not any("unready" in name.lower() for name in dir(Game))
         assert not any("unready" in name.lower() for name in dir(Player))
+
+
+class TestGameStart:
+    def _ready_game(self) -> Game:
+        """Single-player game brought to READY through the real pre-game flow."""
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        game.mark_player_ready("p1")
+        assert game.state is GameState.READY
+        return game
+
+    def test_questions_and_current_question_empty_before_start(self) -> None:
+        game = Game(game_id="g1")
+
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_successful_start_from_ready(self) -> None:
+        game = self._ready_game()
+        supplied = [_question(0, 2), _question(1, 2)]  # a list: start normalizes
+
+        game.start(supplied)
+
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.questions == tuple(supplied)
+        assert game.current_question is game.questions[0]
+
+    def test_empty_sequence_rejected_without_mutation(self) -> None:
+        game = self._ready_game()
+
+        with pytest.raises(ValueError):
+            game.start([])
+
+        assert game.state is GameState.READY
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_start_from_lobby_rejected_without_mutation(self) -> None:
+        game = Game(game_id="g1")
+
+        with pytest.raises(InvalidStateTransitionError):
+            game.start([_question(0, 1)])
+
+        assert game.state is GameState.LOBBY
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_start_from_profile_collection_rejected_without_mutation(self) -> None:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+
+        with pytest.raises(InvalidStateTransitionError):
+            game.start([_question(0, 1)])
+
+        assert game.state is GameState.PROFILE_COLLECTION
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_double_start_rejected_and_original_questions_kept(self) -> None:
+        game = self._ready_game()
+        original = [_question(0, 1)]
+        game.start(original)
+
+        with pytest.raises(InvalidStateTransitionError):
+            game.start([_question(0, 2), _question(1, 2)])
+
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.questions == tuple(original)
+        assert game.current_question is game.questions[0]
+
+    def test_start_from_finished_rejected_without_mutation(self) -> None:
+        game = self._ready_game()
+        for target in (
+            GameState.QUESTION_ACTIVE,
+            GameState.QUESTION_RESULTS,
+            GameState.LEADERBOARD,
+            GameState.FINISHED,
+        ):
+            game.transition_to(target)
+
+        with pytest.raises(InvalidStateTransitionError):
+            game.start([_question(0, 1)])
+
+        assert game.state is GameState.FINISHED
+        assert game.questions == ()
+        assert game.current_question is None
