@@ -7,9 +7,15 @@ sequence, answers, and scores are added once their owning workstreams (§7)
 deliver those types.
 """
 
+from collections.abc import Sequence
+
 from app.domain.game.player import Player
 from app.domain.game.profile import PlayerProfile
 from app.domain.game.state import GameState, GameStateMachine
+
+# Imported from the module, not the questions package: the package __init__
+# pulls in dataset.py, which imports app.domain.game — a circular import.
+from app.domain.questions.question import Question
 
 
 class InvalidStateTransitionError(Exception):
@@ -39,6 +45,8 @@ class Game:
         self._state = GameState.LOBBY
         self._players: dict[str, Player] = {}
         self._state_machine = GameStateMachine()
+        self._questions: tuple[Question, ...] = ()
+        self._current_question_index: int | None = None
 
     @property
     def game_id(self) -> str:
@@ -51,6 +59,16 @@ class Game:
     @property
     def players(self) -> tuple[Player, ...]:
         return tuple(self._players.values())
+
+    @property
+    def questions(self) -> tuple[Question, ...]:
+        return self._questions
+
+    @property
+    def current_question(self) -> Question | None:
+        if self._current_question_index is None:
+            return None
+        return self._questions[self._current_question_index]
 
     def add_player(self, player: Player) -> None:
         if player.player_id in self._players:
@@ -104,3 +122,19 @@ class Game:
         player.is_ready = True
         if all(p.is_ready for p in self._players.values()):
             self.transition_to(GameState.READY)
+
+    def start(self, questions: Sequence[Question]) -> None:
+        """Start the game with an already-generated question set (§11).
+
+        The application layer generates the questions on the host-triggered
+        ``game.start`` command and passes them in — Game never generates.
+        Validation precedes the transition, and assignment (which cannot
+        fail) follows it, so a failed start leaves the aggregate untouched
+        and QUESTION_ACTIVE is unreachable without a real active question.
+        """
+        question_tuple = tuple(questions)
+        if not question_tuple:
+            raise ValueError("cannot start a game with no questions")
+        self.transition_to(GameState.QUESTION_ACTIVE)
+        self._questions = question_tuple
+        self._current_question_index = 0
