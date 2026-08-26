@@ -1,6 +1,6 @@
 # MiZeMi
 
-MiZeMi ("מי זה מי" — "Who's Who") is a real-time multiplayer group icebreaker game, similar in interaction style to Kahoot. Players join a room from their phones, submit a short profile, and the app **algorithmically** generates quiz questions from the group's own answers — who's the only one from Haifa, how many picked pizza as their favorite food, whose hobby is rock climbing.
+MiZeMi ("מי זה מי" — "Who's Who") is a real-time multiplayer group icebreaker game. Players join a room from their phones, submit a short profile, and the app **algorithmically** generates quiz questions from the group's own answers — who's the only one from Haifa, how many picked pizza as their favorite food, whose hobby is rock climbing.
 
 **No AI at runtime.** Question generation is purely rule-based and deterministic. The application uses no LLMs, ML APIs, or generative-AI services during gameplay.
 
