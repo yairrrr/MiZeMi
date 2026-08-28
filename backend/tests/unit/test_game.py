@@ -424,3 +424,154 @@ class TestGameStart:
         assert game.state is GameState.FINISHED
         assert game.questions == ()
         assert game.current_question is None
+
+
+class TestAdvanceToNextQuestion:
+    def _started_game(self, question_count: int) -> Game:
+        """Game started from READY with ``question_count`` questions."""
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        game.mark_player_ready("p1")
+        game.start([_question(i, question_count) for i in range(question_count)])
+        return game
+
+    def _at_leaderboard(self, question_count: int) -> Game:
+        """Started game driven to LEADERBOARD after its first question.
+
+        Uses transition_to for QUESTION_ACTIVE -> QUESTION_RESULTS ->
+        LEADERBOARD deliberately: those transitions are not owned by any
+        production method yet.
+        """
+        game = self._started_game(question_count)
+        game.transition_to(GameState.QUESTION_RESULTS)
+        game.transition_to(GameState.LEADERBOARD)
+        return game
+
+    def test_advance_with_remaining_question_activates_next_question(self) -> None:
+        game = self._at_leaderboard(question_count=2)
+        original_questions = game.questions
+
+        game.advance_to_next_question()
+
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.current_question is original_questions[1]
+        assert game.questions == original_questions
+
+    def test_advance_on_final_question_finishes_game(self) -> None:
+        game = self._at_leaderboard(question_count=1)
+        original_questions = game.questions
+
+        game.advance_to_next_question()
+
+        assert game.state is GameState.FINISHED
+        assert game.current_question is None
+        assert game.questions == original_questions
+
+    def test_advance_from_lobby_rejected(self) -> None:
+        game = Game(game_id="g1")
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.LOBBY
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_advance_from_profile_collection_rejected(self) -> None:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.PROFILE_COLLECTION
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_advance_from_ready_rejected(self) -> None:
+        game = Game(game_id="g1")
+        game.add_player(Player(player_id="p1", display_name="Dana"))
+        game.submit_initial_profile("p1", _profile_for("p1"))
+        game.mark_player_ready("p1")
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.READY
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_advance_from_question_active_rejected(self) -> None:
+        game = self._started_game(question_count=2)
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.current_question is game.questions[0]
+
+    def test_advance_from_question_results_rejected(self) -> None:
+        game = self._started_game(question_count=2)
+        game.transition_to(GameState.QUESTION_RESULTS)
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.QUESTION_RESULTS
+        assert game.current_question is game.questions[0]
+
+    def test_advance_from_finished_rejected(self) -> None:
+        game = self._at_leaderboard(question_count=1)
+        game.advance_to_next_question()
+        original_questions = game.questions
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.FINISHED
+        assert game.current_question is None
+        assert game.questions == original_questions
+
+    def test_advance_without_started_sequence_rejected(self) -> None:
+        """LEADERBOARD reached by raw transitions (no start): guard must reject."""
+        game = Game(game_id="g1")
+        for target in (
+            GameState.PROFILE_COLLECTION,
+            GameState.READY,
+            GameState.QUESTION_ACTIVE,
+            GameState.QUESTION_RESULTS,
+            GameState.LEADERBOARD,
+        ):
+            game.transition_to(target)
+        assert game.questions == ()
+        assert game.current_question is None
+
+        with pytest.raises(ValueError):
+            game.advance_to_next_question()
+
+        assert game.state is GameState.LEADERBOARD
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_full_two_question_progression(self) -> None:
+        game = self._started_game(question_count=2)
+        first, second = game.questions
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.current_question is first
+
+        game.transition_to(GameState.QUESTION_RESULTS)
+        game.transition_to(GameState.LEADERBOARD)
+        game.advance_to_next_question()
+
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.current_question is second
+
+        game.transition_to(GameState.QUESTION_RESULTS)
+        game.transition_to(GameState.LEADERBOARD)
+        game.advance_to_next_question()
+
+        assert game.state is GameState.FINISHED
+        assert game.current_question is None
+        assert game.questions == (first, second)

@@ -138,3 +138,23 @@ class Game:
         self.transition_to(GameState.QUESTION_ACTIVE)
         self._questions = question_tuple
         self._current_question_index = 0
+
+    def advance_to_next_question(self) -> None:
+        """Advance past the leaderboard: next question, or game over (§11).
+
+        Owns only the two LEADERBOARD exits — QUESTION_ACTIVE when another
+        question exists, FINISHED when the final question was played.
+        Closing a question and reaching the leaderboard belong to later
+        tasks. Every rejection leaves the aggregate untouched.
+        """
+        if self._state is not GameState.LEADERBOARD:
+            raise ValueError(f"cannot advance from state {self._state.value}")
+        if self._current_question_index is None:
+            raise ValueError("no question sequence is in progress")
+        next_index = self._current_question_index + 1
+        if next_index < len(self._questions):
+            self.transition_to(GameState.QUESTION_ACTIVE)
+            self._current_question_index = next_index
+        else:
+            self.transition_to(GameState.FINISHED)
+            self._current_question_index = None
