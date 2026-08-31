@@ -75,6 +75,28 @@ class TestQuestionSelector:
 
         assert {c.text for c in selected} == {"A1", "B1"}
 
+    def test_field_diversity_beats_raw_score_when_rule_counts_tie(self) -> None:
+        scored = [
+            (_candidate("First", rule="rule_a", fields=("city",)), 0.9),
+            (_candidate("Repeated field", rule="rule_b", fields=("city",)), 0.8),
+            (_candidate("Fresh field", rule="rule_c", fields=("hobby",)), 0.5),
+        ]
+
+        selected = QuestionSelector().select(scored, question_count=2)
+
+        assert [candidate.text for candidate in selected] == ["First", "Fresh field"]
+
+    def test_duplicate_source_field_metadata_counts_once_per_candidate(self) -> None:
+        scored = [
+            (_candidate("First", rule="rule_a", fields=("city", "city")), 0.9),
+            (_candidate("Repeated field", rule="rule_b", fields=("city",)), 0.8),
+            (_candidate("Fresh field", rule="rule_c", fields=("hobby",)), 0.5),
+        ]
+
+        selected = QuestionSelector().select(scored, question_count=2)
+
+        assert [candidate.text for candidate in selected] == ["First", "Fresh field"]
+
     def test_fewer_selectable_than_requested_returns_all(self) -> None:
         scored = [
             (_candidate("Q1", fields=("f1",)), 0.5),
