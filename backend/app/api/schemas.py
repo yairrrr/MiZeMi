@@ -80,6 +80,15 @@ class PlayerProfileSchema(BaseModel):
         )
 
 
+class CreateRoomResponse(BaseModel):
+    """The §13 create-room response — exactly room_code and game_id."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    room_code: str
+    game_id: str
+
+
 class QuestionOptionSchema(BaseModel):
     """One selectable answer on the wire (MASTER_SPEC.md §9.3)."""
 
