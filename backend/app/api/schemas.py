@@ -97,6 +97,16 @@ class JoinRoomRequest(BaseModel):
     display_name: str
 
 
+class PlayerReadyPayloadSchema(BaseModel):
+    """The player.ready payload — exactly {} (MASTER_SPEC.md §14.2, v1.7).
+
+    The connected player is authoritative; any key in the payload is a
+    validation failure.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+
 class QuestionOptionSchema(BaseModel):
     """One selectable answer on the wire (MASTER_SPEC.md §9.3)."""
 
