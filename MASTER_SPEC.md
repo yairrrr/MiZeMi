@@ -1,6 +1,6 @@
 # MiZeMi — MASTER SPECIFICATION
 
-**Status:** Proposed baseline — awaiting team review (v1.4, 2026-08-10). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.4 across §8, §9.2, §9.3, §11, §13, §14) reflect confirmed team decisions; the rest is the proposed technical baseline.
+**Status:** Proposed baseline — awaiting team review (v1.5, 2026-08-31). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.5 across §8, §9.1, §9.2, §9.3, §11, §13, §14, §15, §17) reflect confirmed team decisions; the rest is the proposed technical baseline.
 **Audience:** All contributors, human and AI coding agents.
 **Rule zero:** Read this document before writing any code. Changes to this document follow the process in [§21 Rules for Modifying Shared Contracts](#21-rules-for-modifying-shared-contracts).
 
@@ -50,13 +50,10 @@ Every statement in this document belongs to one of three categories:
 | Exact scoring formula, including whether/how answer speed affects points | Scoring design stage | §9.5 |
 | Auxiliary score/statistics fields beyond the core shapes | Scoring/statistics design stage | §9.5, §9.6 |
 | Data retention / cleanup duration | Persistence & privacy design stage | §10, §15 |
-| Room code exact format and generation rules | Room design stage | §8 |
 | Host authorization mechanism (distinguishing Host actions from Player actions) | Backend/Room design stage | §8, §14.1 |
-| Public id format (e.g., which UUID variant, if any) | Backend implementation design | §8, §13, §15 |
-| Display-name validation rules (length limits, uniqueness handling) | Player/Room design stage | §9.1 |
 | Answer-option count bounds, question time limits, questions per game | Gameplay/question design stage | §9.3, §12.3 |
 | Answer resubmission policy and deadline/late-submission handling | Gameplay design stage | §9.4 |
-| Late-join and reconnection rules | Room/gameplay design stage | §11 |
+| Late-join beyond the pre-game states (join is pinned to `LOBBY`/`PROFILE_COLLECTION`, §13), reconnection rules, and simultaneous-connection policy for one `player_id` | Room/gameplay design stage | §11, §13, §14.1 |
 | Database migration tooling and strategy | When the schema stabilizes | §15 |
 | Exact persistence points and restart/recovery guarantees | Backend implementation design | §15 |
 | Python formatter/linter toolchain | Dev-tooling setup | §18.1 |
@@ -302,7 +299,7 @@ Ownership also sets the **implementation boundary**: the shared game/player doma
 
 Ubiquitous language — use these names in code, APIs, events, and conversation:
 
-- **Room** — a joinable session identified by a unique, short, human-friendly `room_code`. **Deferred:** the exact code format and generation rules will be determined during the Room design stage. A room hosts exactly one **Game** in MVP.
+- **Room** — a joinable session identified by a unique, short, human-friendly `room_code`. **Approved (Room design):** the backend generates the code at room creation — exactly 6 characters from the unambiguous uppercase alphabet `ABCDEFGHJKMNPQRSTUVWXYZ23456789`. The canonical stored form is uppercase; lookups normalize client input to uppercase, so matching is case-insensitive. Codes must be unique among active registered rooms; a collision triggers generating another code. Long-term code retention/reuse beyond active-room uniqueness is not defined. A room hosts exactly one **Game** in MVP.
 - **Host** — the client that created the room and controls game flow; not a user account. The backend must be able to distinguish authorized Host actions from Player actions. **Deferred:** the concrete mechanism (the simplest workable option for the MVP) will be chosen during backend/Room design; no host-credential shape is a shared contract yet.
 - **Player** — a participant in a room. Ephemeral; exists only within one game.
 - **PlayerProfile** — the structured facts a player submits about themselves.
@@ -314,7 +311,7 @@ Ubiquitous language — use these names in code, APIs, events, and conversation:
 - **Leaderboard** — ranked players by score at a point in time.
 - **Statistics** — aggregate answer/group data shown between questions.
 
-Identifiers: all public ids (`game_id`, `player_id`, `question_id`) are server-generated, unique, opaque strings — created by the backend, never by clients. **Deferred:** the concrete id format (e.g., which UUID variant, if any) is an implementation choice made during backend design. `room_code` is the only human-facing identifier.
+Identifiers: all public ids (`game_id`, `player_id`, `question_id`) are server-generated, unique, opaque strings — created by the backend, never by clients. **Approved (backend implementation):** the backend may generate ids as UUID4 strings; this is an implementation choice, not a wire requirement — clients must continue treating ids as opaque strings. `room_code` is the only human-facing identifier.
 
 **Deliberately absent — Round (approved):** the MVP defines no Round domain concept. `Question.index` plus the game state machine (§11) cover per-question progression. A Round abstraction may be reconsidered only if a later concrete requirement justifies it.
 
@@ -331,7 +328,7 @@ Field shapes are shown as JSON wire format (snake_case keys — see §13).
 ```jsonc
 {
   "player_id": "uuid",           // server-generated, stable for the game
-  "display_name": "string",      // validation rules (length, uniqueness handling) deferred — see §0
+  "display_name": "string",      // trimmed; 1–20 chars after trim; unique in room (case-insensitive)
   "is_host": false,              // host is not a player in MVP; reserved
   "connected": true,             // realtime connection status
   "has_profile": true,           // profile submitted
@@ -339,6 +336,8 @@ Field shapes are shown as JSON wire format (snake_case keys — see §13).
   "score": 0                     // current total score
 }
 ```
+
+**Approved display-name rules (MVP):** surrounding whitespace is trimmed; a name that is empty after trimming is rejected; length after trimming is 1–20 characters; a display name must be unique within its room, compared case-insensitively on the trimmed name — a duplicate is rejected with `NAME_TAKEN` (§17). No content/moderation rules are defined.
 
 ### 9.2 PlayerProfile contract
 
@@ -524,7 +523,7 @@ Linear flow: `LOBBY → PROFILE_COLLECTION → READY → (QUESTION_ACTIVE → QU
 Rules:
 
 - State names are part of the shared contract and appear verbatim (UPPER_SNAKE) in payloads.
-- Players join during the pre-game phases, and a disconnected player must be able to reconnect with the same `player_id`. **Deferred — Room/gameplay design stage:** exactly which states permit late joining and the precise reconnection rules.
+- Players join while the game is in `LOBBY` or `PROFILE_COLLECTION` (§13), and a disconnected player must be able to reconnect with the same `player_id`. **Deferred — Room/gameplay design stage:** late joining beyond those states and the precise reconnection rules.
 - Illegal transition attempts return/emit `error` with code `INVALID_STATE_TRANSITION`; the state does not change.
 - **Approved — question-generation timing:** the game's question set is generated when the host starts the game via `game.start` (the `READY → QUESTION_ACTIVE` transition) — never merely because the game entered `READY`. All consented profile data is available by that point.
 - **Approved — start vs. next:** `game.start` is used only to start the game from `READY`. `game.next` advances the post-round flow (`QUESTION_RESULTS → LEADERBOARD`, then `LEADERBOARD → QUESTION_ACTIVE` or `FINISHED`). No new event name is introduced.
@@ -647,6 +646,9 @@ Selection is deterministic given (candidates, seed).
 - Every response body is an object (never a bare array).
 - Errors follow §17.
 - REST is used for: room creation, room lookup, join, profile submission. Gameplay flow (start, next, answers) is WebSocket-only — one authoritative channel for realtime mutation, no dual paths. **Deferred — Room/gameplay design stage:** the single canonical transport for profile submission (this REST path vs. the `player.profile_submit` event, §14.2); until decided, the spec lists both.
+- **Approved MVP routes (first vertical):**
+  - `POST /api/v1/rooms` — create a room. Success: `201` with `{"room_code": string, "game_id": string}`. No host authentication is required or implied; host identity remains deferred (§0).
+  - `POST /api/v1/rooms/{room_code}/players` — join a room. Request body: `{"display_name": string}` — the only join information currently required. Success: `201` with the joined Player object (§9.1). Join is accepted only while the game is in `LOBBY` or `PROFILE_COLLECTION`. Errors (standard §17 envelope): unknown room → `404` `ROOM_NOT_FOUND`; duplicate normalized display name → `409` `NAME_TAKEN`; game not in a joinable state → `409` `ROOM_NOT_JOINABLE`.
 - Request/response schemas are Pydantic models in `backend/app/api/`; mirrored TypeScript types live in `frontend/src/types/`.
 
 ---
@@ -656,6 +658,8 @@ Selection is deterministic given (candidates, seed).
 ### 14.1 Endpoint
 
 `/ws/rooms/{room_code}?player_id=...`. The host's connection must be identifiable as the authorized host; **deferred:** the concrete host-authorization mechanism is chosen during backend/Room design (see §8) and is not yet a shared contract. One WebSocket per client.
+
+**Approved MVP player-connection behavior:** the server resolves the room by the normalized (uppercased) `room_code`, then resolves `player_id` within that room's game. If either cannot be resolved, the connection is closed **without sending any realtime envelope** — envelopes (including `error`) apply only after successful room/game resolution, which is why every envelope can carry `game_id`. A successful connection sets the player's `connected` to `true`; a disconnect sets it to `false`. **Deferred:** behavior for a second simultaneous connection with the same `player_id`, and any reconnect/session-replacement policy.
 
 ### 14.2 Event naming
 
@@ -719,6 +723,7 @@ Every message in both directions is wrapped in the same envelope:
 - Every table has `created_at`/`updated_at` (UTC).
 - **Deferred:** migration tooling and strategy will be decided once the schema begins to stabilize; until then, schema changes must be called out in the PR description.
 - Hot game state (the active question, in-flight answers) may be held in process memory for latency, but the database remains the durable record — process memory is a cache, never the long-term source of truth. **Deferred — backend implementation design:** exact persistence points and restart/recovery guarantees.
+- **Approved (first vertical):** active rooms are resolved through an in-memory registry with three conceptual operations — register (rejecting a duplicate active `room_code`), get (by canonical code), and remove. Persistence, recovery, and retention of rooms remain deferred.
 - Retention: see §10.5 — a cleanup routine purges profile data after the retention window (exact duration **deferred**; see §10.5).
 
 ---
@@ -762,7 +767,7 @@ One error shape everywhere — REST bodies and the WS `error` event payload:
 
 - REST: this body plus the appropriate HTTP status (`400` validation, `404` not found, `409` conflict/illegal state, `422` schema violation).
 - WebSocket: the same object as the `payload` of an `error` envelope.
-- Error codes are part of the shared contract. Initial registry: `ROOM_NOT_FOUND`, `ROOM_FULL`, `NAME_TAKEN`, `INVALID_STATE_TRANSITION`, `QUESTION_CLOSED`, `ALREADY_ANSWERED`, `NOT_HOST`, `VALIDATION_ERROR`, `UNKNOWN_EVENT`, `INTERNAL_ERROR`. Additions append to this list via a spec PR. `ROOM_FULL` and `ALREADY_ANSWERED` are **reserved** codes: the rules that trigger them (room capacity; answer finality) are deferred to the Room and gameplay design stages respectively.
+- Error codes are part of the shared contract. Initial registry: `ROOM_NOT_FOUND`, `ROOM_FULL`, `NAME_TAKEN`, `INVALID_STATE_TRANSITION`, `QUESTION_CLOSED`, `ALREADY_ANSWERED`, `NOT_HOST`, `VALIDATION_ERROR`, `UNKNOWN_EVENT`, `INTERNAL_ERROR`. Additions append to this list via a spec PR. Appended (v1.5): `ROOM_NOT_JOINABLE` — a join was attempted while the game is not in `LOBBY`/`PROFILE_COLLECTION` (§13). `ROOM_FULL` and `ALREADY_ANSWERED` are **reserved** codes: the rules that trigger them (room capacity; answer finality) are deferred to the Room and gameplay design stages respectively.
 - `message` must never contain another player's profile data or internal stack traces.
 
 ---

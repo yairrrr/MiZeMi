@@ -81,6 +81,15 @@ export type Leaderboard = {
   entries: LeaderboardEntry[]
 }
 
+export type CreateRoomResponse = {
+  room_code: string
+  game_id: string
+}
+
+export type JoinRoomRequest = {
+  display_name: string
+}
+
 export const ERROR_CODES = [
   'ROOM_NOT_FOUND',
   'ROOM_FULL',
@@ -92,6 +101,7 @@ export const ERROR_CODES = [
   'VALIDATION_ERROR',
   'UNKNOWN_EVENT',
   'INTERNAL_ERROR',
+  'ROOM_NOT_JOINABLE',
 ] as const
 
 export type ErrorCode = (typeof ERROR_CODES)[number]

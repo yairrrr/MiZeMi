@@ -32,6 +32,7 @@ describe('shared contract closed values', () => {
       'VALIDATION_ERROR',
       'UNKNOWN_EVENT',
       'INTERNAL_ERROR',
+      'ROOM_NOT_JOINABLE',
     ])
   })
 
