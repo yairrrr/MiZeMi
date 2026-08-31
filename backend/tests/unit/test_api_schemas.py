@@ -1,10 +1,19 @@
-"""Contract-pinning tests for the Player/Profile wire schemas (MASTER_SPEC.md §9.1, §9.2)."""
+"""Contract-pinning tests for the API wire schemas (MASTER_SPEC.md §9.1–§9.3)."""
+
+from datetime import UTC, datetime, timedelta, timezone
 
 import pytest
 from pydantic import ValidationError
 
-from app.api.schemas import PlayerProfileSchema, PlayerSchema, ProfileFieldSchema
+from app.api.schemas import (
+    PlayerProfileSchema,
+    PlayerSchema,
+    ProfileFieldSchema,
+    PublicQuestionSchema,
+    QuestionOptionSchema,
+)
 from app.domain.game import Player, PlayerProfile, ProfileField
+from app.domain.questions.question import Question, QuestionOption, QuestionType
 
 PLAYER_WIRE_KEYS = {
     "player_id",
@@ -178,3 +187,134 @@ class TestProfileSchemas:
 
         assert profile.fields == original_fields
         assert profile.fields[1].value == 27
+
+
+PUBLIC_QUESTION_WIRE_KEYS = {
+    "question_id",
+    "index",
+    "total_questions",
+    "question_type",
+    "text",
+    "options",
+    "time_limit_seconds",
+    "started_at",
+}
+
+STARTED_AT = datetime(2026, 8, 31, 10, 15, 30, tzinfo=UTC)
+
+
+def _domain_question() -> Question:
+    return Question(
+        question_id="q1",
+        index=0,
+        total_questions=5,
+        question_type=QuestionType.MULTIPLE_CHOICE,
+        text="Who is the only player from Haifa?",
+        options=(
+            QuestionOption(option_id="a", text="Dana"),
+            QuestionOption(option_id="b", text="Omer"),
+            QuestionOption(option_id="c", text="Noa"),
+        ),
+        correct_option_id="b",
+        time_limit_seconds=20,
+    )
+
+
+class TestPublicQuestionSchema:
+    def test_question_maps_public_fields(self) -> None:
+        schema = PublicQuestionSchema.from_domain(_domain_question(), started_at=STARTED_AT)
+
+        assert schema.question_id == "q1"
+        assert schema.index == 0
+        assert schema.total_questions == 5
+        assert schema.question_type == "multiple_choice"
+        assert schema.text == "Who is the only player from Haifa?"
+        assert schema.time_limit_seconds == 20
+        assert schema.started_at == STARTED_AT
+
+    def test_serialized_question_has_exact_wire_keys(self) -> None:
+        dumped = PublicQuestionSchema.from_domain(
+            _domain_question(), started_at=STARTED_AT
+        ).model_dump(mode="json")
+
+        assert set(dumped.keys()) == PUBLIC_QUESTION_WIRE_KEYS
+
+    def test_correct_option_id_is_never_serialized(self) -> None:
+        """Security pin: the §9.3 never-leak rule is structural, not procedural."""
+        schema = PublicQuestionSchema.from_domain(_domain_question(), started_at=STARTED_AT)
+
+        dumped = schema.model_dump(mode="json")
+
+        assert "correct_option_id" not in dumped
+        assert not hasattr(schema, "correct_option_id")
+        assert "correct_option_id" not in PublicQuestionSchema.model_fields
+
+    def test_correct_option_id_cannot_be_injected_as_extra_field(self) -> None:
+        payload = PublicQuestionSchema.from_domain(
+            _domain_question(), started_at=STARTED_AT
+        ).model_dump(mode="json")
+        payload["correct_option_id"] = "b"
+
+        with pytest.raises(ValidationError):
+            PublicQuestionSchema.model_validate(payload)
+
+    def test_option_schema_has_exactly_option_id_and_text(self) -> None:
+        dumped = PublicQuestionSchema.from_domain(
+            _domain_question(), started_at=STARTED_AT
+        ).model_dump(mode="json")
+
+        assert all(set(option.keys()) == {"option_id", "text"} for option in dumped["options"])
+
+    def test_option_order_is_preserved(self) -> None:
+        schema = PublicQuestionSchema.from_domain(_domain_question(), started_at=STARTED_AT)
+
+        assert [option.option_id for option in schema.options] == ["a", "b", "c"]
+
+    def test_question_type_serializes_to_approved_wire_string(self) -> None:
+        dumped = PublicQuestionSchema.from_domain(
+            _domain_question(), started_at=STARTED_AT
+        ).model_dump(mode="json")
+
+        assert dumped["question_type"] == "multiple_choice"
+
+    def test_started_at_is_required(self) -> None:
+        with pytest.raises(TypeError):
+            PublicQuestionSchema.from_domain(_domain_question())  # type: ignore[call-arg]
+
+    def test_naive_started_at_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            PublicQuestionSchema.from_domain(
+                _domain_question(),
+                started_at=datetime(2026, 8, 31, 10, 15, 30),  # naive
+            )
+
+    def test_utc_started_at_serializes_with_trailing_z(self) -> None:
+        dumped = PublicQuestionSchema.from_domain(
+            _domain_question(), started_at=STARTED_AT
+        ).model_dump(mode="json")
+
+        assert dumped["started_at"] == "2026-08-31T10:15:30.000Z"
+
+    def test_non_utc_aware_started_at_normalizes_to_utc_z(self) -> None:
+        israel = timezone(timedelta(hours=3))
+
+        dumped = PublicQuestionSchema.from_domain(
+            _domain_question(),
+            started_at=datetime(2026, 8, 31, 13, 15, 30, tzinfo=israel),
+        ).model_dump(mode="json")
+
+        assert dumped["started_at"] == "2026-08-31T10:15:30.000Z"
+
+    def test_extra_fields_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            QuestionOptionSchema.model_validate(
+                {"option_id": "a", "text": "Dana", "is_correct": True}
+            )
+
+    def test_mapping_does_not_mutate_domain_question(self) -> None:
+        question = _domain_question()
+
+        PublicQuestionSchema.from_domain(question, started_at=STARTED_AT)
+
+        assert question == _domain_question()
+        assert question.correct_option_id == "b"

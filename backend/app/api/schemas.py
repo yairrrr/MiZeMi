@@ -5,9 +5,13 @@ objects. The frontend counterparts live in frontend/src/types/contracts.ts —
 changes here are shared-contract changes (§21).
 """
 
-from pydantic import BaseModel, ConfigDict
+from datetime import UTC, datetime
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, field_serializer, field_validator
 
 from app.domain.game import Player, PlayerProfile
+from app.domain.questions.question import Question
 
 
 class PlayerSchema(BaseModel):
@@ -73,4 +77,71 @@ class PlayerProfileSchema(BaseModel):
                 )
                 for field in profile.fields
             ],
+        )
+
+
+class QuestionOptionSchema(BaseModel):
+    """One selectable answer on the wire (MASTER_SPEC.md §9.3)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    option_id: str
+    text: str
+
+
+class PublicQuestionSchema(BaseModel):
+    """The §9.3 active-question wire shape.
+
+    Deliberately has no ``correct_option_id`` field: the correct answer is
+    never sent to clients while a question is active, and ``extra="forbid"``
+    keeps it structurally unserializable through this schema.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str
+    index: int
+    total_questions: int
+    question_type: Literal["multiple_choice"]
+    text: str
+    options: list[QuestionOptionSchema]
+    time_limit_seconds: int
+    started_at: datetime
+
+    @field_validator("started_at")
+    @classmethod
+    def _require_timezone_aware(cls, value: datetime) -> datetime:
+        # A naive datetime cannot be labeled Z without guessing its zone.
+        if value.tzinfo is None:
+            raise ValueError("started_at must be timezone-aware")
+        return value
+
+    @field_serializer("started_at")
+    def _serialize_started_at(self, value: datetime) -> str:
+        normalized = value.astimezone(UTC).replace(tzinfo=None)
+        return normalized.isoformat(timespec="milliseconds") + "Z"
+
+    @classmethod
+    def from_domain(
+        cls, question: Question, *, started_at: datetime
+    ) -> "PublicQuestionSchema":
+        """Map a domain Question to its public wire shape.
+
+        ``started_at`` is a required caller-supplied value: the application
+        layer stamps the authoritative server time when the question opens;
+        this mapper never reads a clock. ``correct_option_id`` is never
+        mapped.
+        """
+        return cls(
+            question_id=question.question_id,
+            index=question.index,
+            total_questions=question.total_questions,
+            question_type=question.question_type.value,
+            text=question.text,
+            options=[
+                QuestionOptionSchema(option_id=option.option_id, text=option.text)
+                for option in question.options
+            ],
+            time_limit_seconds=question.time_limit_seconds,
+            started_at=started_at,
         )
