@@ -1,6 +1,6 @@
 # MiZeMi — MASTER SPECIFICATION
 
-**Status:** Proposed baseline — awaiting team review (v1.6, 2026-08-31). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.6 across §8, §9.1, §9.2, §9.3, §11, §13, §14, §15, §17) reflect confirmed team decisions; the rest is the proposed technical baseline.
+**Status:** Proposed baseline — awaiting team review (v1.7, 2026-08-31). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.7 across §8, §9.1, §9.2, §9.3, §11, §13, §14, §15, §17) reflect confirmed team decisions; the rest is the proposed technical baseline.
 **Audience:** All contributors, human and AI coding agents.
 **Rule zero:** Read this document before writing any code. Changes to this document follow the process in [§21 Rules for Modifying Shared Contracts](#21-rules-for-modifying-shared-contracts).
 
@@ -673,7 +673,7 @@ Event names are `snake_case` segments joined by a dot: `<domain>.<action>`, past
 |---|---|---|
 | `player.join` | player | Announce/bind connection to a joined player |
 | `player.profile_submit` | player | Submit profile fields |
-| `player.ready` | player | Mark ready during profile collection |
+| `player.ready` | player | Mark ready during profile collection. **Approved (v1.7):** the payload is exactly `{}` — the connected player is authoritative; a payload containing any key is rejected with `VALIDATION_ERROR` and no readiness change |
 | `game.start` | host | Start the game from `READY`: the backend generates the question set, then opens the first question |
 | `answer.submit` | player | Submit an answer (payload: §9.4) |
 | `game.next` | host | Advance the post-round flow (results → leaderboard → next question or finish) |
@@ -713,6 +713,8 @@ Every message in both directions is wrapped in the same envelope:
 
 - Unknown `event` values must be ignored by clients (forward compatibility) and answered with `error` (`UNKNOWN_EVENT`) by the server.
 - The server may batch state into `room.updated` snapshots; clients must treat snapshots as authoritative over any locally-derived state.
+- **Approved (v1.7) — game_id mismatch:** after a connection is resolved, an envelope whose `game_id` does not match the resolved game is answered with `error` (`VALIDATION_ERROR`); the command is not executed, no state changes, the connection stays open, and the error envelope carries the authoritative `game_id`.
+- **Approved (v1.7) — pre-game command rejections:** domain rejections of `player.profile_submit` and `player.ready` (wrong state, second initial profile, missing profile — currently surfaced as domain `ValueError`s) map to `error` (`VALIDATION_ERROR`) at the MVP transport boundary, with stable public messages; internal exception text is never sent.
 
 ---
 
