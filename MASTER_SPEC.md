@@ -1,6 +1,6 @@
 # MiZeMi — MASTER SPECIFICATION
 
-**Status:** Proposed baseline — awaiting team review (v1.5, 2026-08-31). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.5 across §8, §9.1, §9.2, §9.3, §11, §13, §14, §15, §17) reflect confirmed team decisions; the rest is the proposed technical baseline.
+**Status:** Proposed baseline — awaiting team review (v1.6, 2026-08-31). Only items explicitly marked as **Approved** (the product constraints in §1, the profile categories in §9.2, the privacy principles in §10, and the contract decisions recorded in v1.3–v1.6 across §8, §9.1, §9.2, §9.3, §11, §13, §14, §15, §17) reflect confirmed team decisions; the rest is the proposed technical baseline.
 **Audience:** All contributors, human and AI coding agents.
 **Rule zero:** Read this document before writing any code. Changes to this document follow the process in [§21 Rules for Modifying Shared Contracts](#21-rules-for-modifying-shared-contracts).
 
@@ -338,6 +338,8 @@ Field shapes are shown as JSON wire format (snake_case keys — see §13).
 ```
 
 **Approved display-name rules (MVP):** surrounding whitespace is trimmed; a name that is empty after trimming is rejected; length after trimming is 1–20 characters; a display name must be unique within its room, compared case-insensitively on the trimmed name — a duplicate is rejected with `NAME_TAKEN` (§17). No content/moderation rules are defined.
+
+**Approved initial score (MVP):** a newly joined player starts with a total score of 0. Score remains server-authoritative (§9.5); this defines only the initial value — the scoring formula, scoring policy, and all other scoring behavior remain deferred to the scoring design stage.
 
 ### 9.2 PlayerProfile contract
 
