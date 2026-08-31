@@ -89,6 +89,14 @@ class CreateRoomResponse(BaseModel):
     game_id: str
 
 
+class JoinRoomRequest(BaseModel):
+    """The §13 join request — exactly display_name; rules enforced in application."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    display_name: str
+
+
 class QuestionOptionSchema(BaseModel):
     """One selectable answer on the wire (MASTER_SPEC.md §9.3)."""
 
