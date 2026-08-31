@@ -72,7 +72,9 @@ class TestPlayer:
     def test_player_defaults_match_contract(self) -> None:
         player = Player(player_id="p1", display_name="Dana")
 
-        assert player.connected is True
+        # connected is "realtime connection status" (§9.1): false until an
+        # accepted WebSocket connection sets it (§14.1).
+        assert player.connected is False
         assert player.is_ready is False
         assert player.profile is None
 

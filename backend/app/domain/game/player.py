@@ -21,7 +21,9 @@ class Player:
 
     player_id: str
     display_name: str
-    connected: bool = True
+    # "Realtime connection status" (§9.1): set true only by an accepted
+    # WebSocket connection (§14.1) — a newly joined player is not connected.
+    connected: bool = False
     is_ready: bool = False
     profile: PlayerProfile | None = None
 

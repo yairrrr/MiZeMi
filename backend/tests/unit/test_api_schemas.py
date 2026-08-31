@@ -46,7 +46,7 @@ class TestPlayerSchema:
         assert schema.player_id == "p1"
         assert schema.display_name == "Dana"
         assert schema.is_host is False
-        assert schema.connected is True
+        assert schema.connected is False
         assert schema.has_profile is False
         assert schema.is_ready is False
         assert schema.score == 0
@@ -60,11 +60,11 @@ class TestPlayerSchema:
         assert schema.has_profile is True
 
     def test_connected_state_is_mapped_from_domain(self) -> None:
-        player = Player(player_id="p1", display_name="Dana", connected=False)
+        player = Player(player_id="p1", display_name="Dana", connected=True)
 
         schema = PlayerSchema.from_domain(player, score=0)
 
-        assert schema.connected is False
+        assert schema.connected is True
 
     def test_ready_state_is_mapped_from_domain(self) -> None:
         player = Player(player_id="p1", display_name="Dana", is_ready=True)
@@ -115,7 +115,7 @@ class TestPlayerSchema:
 
         assert player.player_id == "p1"
         assert player.display_name == "Dana"
-        assert player.connected is True
+        assert player.connected is False
         assert player.is_ready is False
         assert player.profile is None
 
