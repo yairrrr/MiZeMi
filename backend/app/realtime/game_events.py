@@ -25,7 +25,13 @@ from app.realtime.events import ServerToClientEvent
 def build_envelope(
     event: ServerToClientEvent, payload: dict[str, Any], game_id: str
 ) -> dict[str, Any]:
-    """Wrap a server payload in the §14.3 envelope with a server timestamp."""
+    """Wrap a server payload in the §14.3 envelope with a server timestamp.
+
+    The single construction path for every outbound realtime message. It
+    delegates shape, timestamp normalization and serialization to the
+    canonical ``RealtimeEnvelope`` model — this module never reimplements
+    the envelope contract.
+    """
     return RealtimeEnvelope(
         event=event.value,
         payload=payload,

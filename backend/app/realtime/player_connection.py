@@ -11,10 +11,17 @@ Accepted connections register with the room connection registry so server
 events can be delivered to them, and deregister on disconnect. Registration
 is by connection identity only — it introduces no reconnect or
 simultaneous-connection policy (both deferred, §0).
+
+Known deferred edge case (unchanged by the registry, pre-existing since the
+connection endpoint was introduced): ``Player.connected`` is a single
+boolean, so if one player holds two live sockets and one closes, the flag
+becomes false while the other socket is still connected and still receives
+broadcasts. Resolving this requires the deferred simultaneous-connection /
+session-replacement policy, so the current semantics are left untouched
+rather than fixed by inventing a rule.
 """
 
 import json
-from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, WebSocket
@@ -26,10 +33,10 @@ from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
 from app.realtime.connections import RoomConnectionRegistry
 from app.realtime.envelope import (
     MalformedEnvelopeError,
-    RealtimeEnvelope,
     UnknownEventError,
     parse_client_envelope,
 )
+from app.realtime.game_events import build_envelope
 from app.realtime.errors import ErrorCode, ErrorDetail, ErrorPayload
 from app.realtime.events import ClientToServerEvent, ServerToClientEvent
 
@@ -43,15 +50,11 @@ router = APIRouter()
 
 
 def _error_envelope(game_id: str, code: ErrorCode, message: str) -> dict[str, Any]:
-    envelope = RealtimeEnvelope(
-        event=ServerToClientEvent.ERROR.value,
-        payload=ErrorPayload(
-            error=ErrorDetail(code=code, message=message)
-        ).model_dump(mode="json"),
-        timestamp=datetime.now(UTC),
-        game_id=game_id,
+    """Build an §17 error payload inside the canonical §14.3 envelope."""
+    payload = ErrorPayload(error=ErrorDetail(code=code, message=message)).model_dump(
+        mode="json"
     )
-    return envelope.model_dump(mode="json")
+    return build_envelope(ServerToClientEvent.ERROR, payload, game_id)
 
 
 async def _send_error(

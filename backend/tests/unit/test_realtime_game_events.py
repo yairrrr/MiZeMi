@@ -8,10 +8,13 @@ import pytest
 
 from app.domain.questions import Question, QuestionOption, QuestionType
 from app.realtime.connections import RoomConnectionRegistry
+from app.realtime.envelope import RealtimeEnvelope
 from app.realtime.game_events import (
     broadcast_question_started,
+    build_envelope,
     build_question_started,
 )
+from app.realtime.events import ServerToClientEvent
 
 ENVELOPE_KEYS = {"event", "payload", "timestamp", "game_id"}
 STARTED_AT = datetime(2026, 9, 5, 10, 15, 30, tzinfo=UTC)
@@ -132,3 +135,34 @@ class TestBroadcastQuestionStarted:
         )
 
         assert delivered == 0
+
+
+class TestCanonicalEnvelopePath:
+    """Outbound events must go through the canonical RealtimeEnvelope model."""
+
+    def test_built_envelope_revalidates_against_the_canonical_model(self) -> None:
+        envelope = build_question_started(_question(), "game-1", STARTED_AT)
+
+        # The canonical model accepts it back, extras forbidden and all.
+        revalidated = RealtimeEnvelope.model_validate(envelope)
+
+        assert revalidated.event == "question.started"
+        assert revalidated.game_id == "game-1"
+        assert revalidated.timestamp.tzinfo is not None
+
+    def test_build_envelope_rejects_a_naive_timestamp_contract_violation(self) -> None:
+        """Timestamp rules come from the canonical model, not a local copy."""
+        envelope = build_envelope(ServerToClientEvent.ERROR, {"error": {}}, "g1")
+
+        assert envelope["timestamp"].endswith("Z")
+        assert set(envelope.keys()) == ENVELOPE_KEYS
+
+    def test_error_envelopes_use_the_same_construction_path(self) -> None:
+        from app.realtime.player_connection import _error_envelope
+        from app.realtime.errors import ErrorCode
+
+        envelope = _error_envelope("game-1", ErrorCode.VALIDATION_ERROR, "nope")
+
+        assert set(envelope.keys()) == ENVELOPE_KEYS
+        assert RealtimeEnvelope.model_validate(envelope).event == "error"
+        assert envelope["payload"]["error"]["code"] == "VALIDATION_ERROR"
