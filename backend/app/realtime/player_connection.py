@@ -3,13 +3,25 @@
 Approved behavior only: resolve room/player (close without envelope when
 unknown), maintain the ``connected`` flag, and expose the two approved
 pre-game client intents — ``player.profile_submit`` and ``player.ready`` —
-by delegating to the existing Game domain methods. No broadcasts or success
-acknowledgements exist yet (``room.updated`` is deferred); errors reuse the
+by delegating to the existing Game domain methods. No success
+acknowledgements exist (``room.updated`` is deferred); errors reuse the
 approved §17 payload inside the approved §14.3 envelope.
+
+Accepted connections register with the room connection registry so server
+events can be delivered to them, and deregister on disconnect. Registration
+is by connection identity only — it introduces no reconnect or
+simultaneous-connection policy (both deferred, §0).
+
+Known deferred edge case (unchanged by the registry, pre-existing since the
+connection endpoint was introduced): ``Player.connected`` is a single
+boolean, so if one player holds two live sockets and one closes, the flag
+becomes false while the other socket is still connected and still receives
+broadcasts. Resolving this requires the deferred simultaneous-connection /
+session-replacement policy, so the current semantics are left untouched
+rather than fixed by inventing a rule.
 """
 
 import json
-from datetime import UTC, datetime
 from typing import Any
 
 from fastapi import APIRouter, WebSocket
@@ -18,12 +30,13 @@ from pydantic import ValidationError
 from app.api.schemas import PlayerProfileSchema, PlayerReadyPayloadSchema
 from app.domain.game import Game, PlayerProfile, ProfileField
 from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
+from app.realtime.connections import RoomConnectionRegistry
 from app.realtime.envelope import (
     MalformedEnvelopeError,
-    RealtimeEnvelope,
     UnknownEventError,
     parse_client_envelope,
 )
+from app.realtime.game_events import build_envelope
 from app.realtime.errors import ErrorCode, ErrorDetail, ErrorPayload
 from app.realtime.events import ClientToServerEvent, ServerToClientEvent
 
@@ -37,15 +50,11 @@ router = APIRouter()
 
 
 def _error_envelope(game_id: str, code: ErrorCode, message: str) -> dict[str, Any]:
-    envelope = RealtimeEnvelope(
-        event=ServerToClientEvent.ERROR.value,
-        payload=ErrorPayload(
-            error=ErrorDetail(code=code, message=message)
-        ).model_dump(mode="json"),
-        timestamp=datetime.now(UTC),
-        game_id=game_id,
+    """Build an §17 error payload inside the canonical §14.3 envelope."""
+    payload = ErrorPayload(error=ErrorDetail(code=code, message=message)).model_dump(
+        mode="json"
     )
-    return envelope.model_dump(mode="json")
+    return build_envelope(ServerToClientEvent.ERROR, payload, game_id)
 
 
 async def _send_error(
@@ -177,6 +186,8 @@ async def player_websocket(websocket: WebSocket, room_code: str, player_id: str)
 
     await websocket.accept()
     player.connected = True
+    connections: RoomConnectionRegistry = websocket.app.state.room_connections
+    connections.add(room_code, websocket)
     try:
         while True:
             message = await websocket.receive()
@@ -193,4 +204,5 @@ async def player_websocket(websocket: WebSocket, room_code: str, player_id: str)
                 continue
             await _handle_text_frame(websocket, room.game, player_id, raw_text)
     finally:
+        connections.remove(room_code, websocket)
         player.connected = False

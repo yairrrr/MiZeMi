@@ -107,6 +107,20 @@ class PlayerReadyPayloadSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
+class AnswerSubmissionSchema(BaseModel):
+    """The answer.submit payload — exactly question_id + option_id (§9.4).
+
+    Wire shape only. Recording an answer additionally requires the answer
+    domain/scoring components and the deferred resubmission and deadline
+    policies, so no handler consumes this schema yet.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str
+    option_id: str
+
+
 class QuestionOptionSchema(BaseModel):
     """One selectable answer on the wire (MASTER_SPEC.md §9.3)."""
 

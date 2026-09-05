@@ -6,6 +6,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.api.schemas import (
+    AnswerSubmissionSchema,
     PlayerProfileSchema,
     PlayerSchema,
     ProfileFieldSchema,
@@ -318,3 +319,38 @@ class TestPublicQuestionSchema:
 
         assert question == _domain_question()
         assert question.correct_option_id == "b"
+
+
+class TestAnswerSubmissionSchema:
+    """The §9.4 answer.submit payload contract (wire shape only)."""
+
+    def test_valid_submission_parses(self) -> None:
+        schema = AnswerSubmissionSchema.model_validate(
+            {"question_id": "q1", "option_id": "b"}
+        )
+
+        assert schema.question_id == "q1"
+        assert schema.option_id == "b"
+
+    def test_serialized_keys_match_the_contract(self) -> None:
+        dumped = AnswerSubmissionSchema(
+            question_id="q1", option_id="b"
+        ).model_dump(mode="json")
+
+        assert set(dumped.keys()) == {"question_id", "option_id"}
+
+    def test_extra_fields_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            AnswerSubmissionSchema.model_validate(
+                {"question_id": "q1", "option_id": "b", "answered_at": "2026-09-05T10:00:00Z"}
+            )
+
+    def test_missing_fields_rejected(self) -> None:
+        with pytest.raises(ValidationError):
+            AnswerSubmissionSchema.model_validate({"question_id": "q1"})
+        with pytest.raises(ValidationError):
+            AnswerSubmissionSchema.model_validate({"option_id": "b"})
+
+    def test_client_supplied_timestamp_is_not_part_of_the_contract(self) -> None:
+        """Client timestamps carry no authority (§9.4) and are not accepted."""
+        assert "answered_at" not in AnswerSubmissionSchema.model_fields
