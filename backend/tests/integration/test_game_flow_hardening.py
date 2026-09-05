@@ -332,3 +332,64 @@ class TestConnectionHardening:
         assert game.state is state_before
         assert game.questions == questions_before
         assert game.get_player(ids["Dana"]).is_ready is True  # unchanged from pre-game
+
+
+class TestHostOnlyActionsAreNotPlayerTriggerable:
+    """Host authorization is deferred, so no player may start or advance."""
+
+    def test_player_sending_game_start_does_not_start_the_game(self) -> None:
+        app = create_app()
+        client = TestClient(app)
+        room_code, game_id, ids = _ready_room(client)
+        game = app.state.room_registry.get(room_code).game
+        assert game.state is GameState.READY
+
+        with client.websocket_connect(_ws(room_code, ids["Dana"])) as ws:
+            ws.send_json(_envelope("game.start", {}, game_id))
+            # Prove the frame was processed by forcing a reply after it.
+            ws.send_json({"not": "an envelope"})
+            assert ws.receive_json()["payload"]["error"]["code"] == "VALIDATION_ERROR"
+
+        assert game.state is GameState.READY
+        assert game.questions == ()
+        assert game.current_question is None
+
+    def test_player_sending_game_next_does_not_advance_the_game(self) -> None:
+        app = create_app()
+        client = TestClient(app)
+        room_code, game_id, ids = _ready_room(client)
+        game = app.state.room_registry.get(room_code).game
+        StartGameService().start(game, CONFIG)
+        game.transition_to(GameState.QUESTION_RESULTS)
+        game.transition_to(GameState.LEADERBOARD)
+        current_index_question = game.current_question
+
+        with client.websocket_connect(_ws(room_code, ids["Dana"])) as ws:
+            ws.send_json(_envelope("game.next", {}, game_id))
+            ws.send_json({"not": "an envelope"})
+            assert ws.receive_json()["payload"]["error"]["code"] == "VALIDATION_ERROR"
+
+        assert game.state is GameState.LEADERBOARD
+        assert game.current_question is current_index_question
+
+    def test_player_sending_answer_submit_is_not_recorded(self) -> None:
+        """No answer handler exists yet; the frame must change nothing."""
+        app = create_app()
+        client = TestClient(app)
+        room_code, game_id, ids = _ready_room(client)
+        game = app.state.room_registry.get(room_code).game
+        questions = StartGameService().start(game, CONFIG)
+
+        with client.websocket_connect(_ws(room_code, ids["Dana"])) as ws:
+            ws.send_json(
+                _envelope(
+                    "answer.submit",
+                    {"question_id": questions[0].question_id, "option_id": "a"},
+                    game_id,
+                )
+            )
+            ws.send_json({"not": "an envelope"})
+            assert ws.receive_json()["payload"]["error"]["code"] == "VALIDATION_ERROR"
+
+        assert game.state is GameState.QUESTION_ACTIVE
+        assert game.current_question is questions[0]
