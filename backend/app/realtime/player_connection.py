@@ -3,9 +3,14 @@
 Approved behavior only: resolve room/player (close without envelope when
 unknown), maintain the ``connected`` flag, and expose the two approved
 pre-game client intents — ``player.profile_submit`` and ``player.ready`` —
-by delegating to the existing Game domain methods. No broadcasts or success
-acknowledgements exist yet (``room.updated`` is deferred); errors reuse the
+by delegating to the existing Game domain methods. No success
+acknowledgements exist (``room.updated`` is deferred); errors reuse the
 approved §17 payload inside the approved §14.3 envelope.
+
+Accepted connections register with the room connection registry so server
+events can be delivered to them, and deregister on disconnect. Registration
+is by connection identity only — it introduces no reconnect or
+simultaneous-connection policy (both deferred, §0).
 """
 
 import json
@@ -18,6 +23,7 @@ from pydantic import ValidationError
 from app.api.schemas import PlayerProfileSchema, PlayerReadyPayloadSchema
 from app.domain.game import Game, PlayerProfile, ProfileField
 from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
+from app.realtime.connections import RoomConnectionRegistry
 from app.realtime.envelope import (
     MalformedEnvelopeError,
     RealtimeEnvelope,
@@ -177,6 +183,8 @@ async def player_websocket(websocket: WebSocket, room_code: str, player_id: str)
 
     await websocket.accept()
     player.connected = True
+    connections: RoomConnectionRegistry = websocket.app.state.room_connections
+    connections.add(room_code, websocket)
     try:
         while True:
             message = await websocket.receive()
@@ -193,4 +201,5 @@ async def player_websocket(websocket: WebSocket, room_code: str, player_id: str)
                 continue
             await _handle_text_frame(websocket, room.game, player_id, raw_text)
     finally:
+        connections.remove(room_code, websocket)
         player.connected = False
