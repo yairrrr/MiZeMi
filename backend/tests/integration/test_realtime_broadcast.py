@@ -37,7 +37,7 @@ def _room_with_player(client: TestClient, name: str = "Dana") -> tuple[str, str]
     room_code = client.post("/api/v1/rooms").json()["room_code"]
     player_id = client.post(
         f"/api/v1/rooms/{room_code}/players", json={"display_name": name}
-    ).json()["player_id"]
+    ).json()["player"]["player_id"]
     return room_code, player_id
 
 
@@ -99,7 +99,7 @@ class TestConnectionRegistration:
         room_code, dana = _room_with_player(client, "Dana")
         omer = client.post(
             f"/api/v1/rooms/{room_code}/players", json={"display_name": "Omer"}
-        ).json()["player_id"]
+        ).json()["player"]["player_id"]
         game = app.state.room_registry.get(room_code).game
 
         with client.websocket_connect(_ws(room_code, dana)) as ws_one:

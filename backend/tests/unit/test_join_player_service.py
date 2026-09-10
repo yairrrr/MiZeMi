@@ -30,32 +30,33 @@ class TestJoinPlayerService:
     def test_joins_player_to_lobby_room(self) -> None:
         registry, room = _registry_with_room()
 
-        player = JoinPlayerService(registry).join("ABC234", "Dana")
+        result = JoinPlayerService(registry).join("ABC234", "Dana")
 
         assert room.game.state is GameState.LOBBY
-        assert room.game.get_player(player.player_id) is player
+        assert room.game.get_player(result.player.player_id) is result.player
+        assert result.game_id == room.game.game_id
 
     def test_joins_player_during_profile_collection(self) -> None:
         registry, room = _registry_with_room()
-        first = JoinPlayerService(registry).join("ABC234", "Dana")
+        first = JoinPlayerService(registry).join("ABC234", "Dana").player
         room.game.submit_initial_profile(first.player_id, _profile_for(first.player_id))
         assert room.game.state is GameState.PROFILE_COLLECTION
 
-        second = JoinPlayerService(registry).join("ABC234", "Omer")
+        second = JoinPlayerService(registry).join("ABC234", "Omer").player
 
         assert room.game.get_player(second.player_id) is second
 
     def test_returned_player_is_the_stored_player(self) -> None:
         registry, room = _registry_with_room()
 
-        player = JoinPlayerService(registry).join("ABC234", "Dana")
+        player = JoinPlayerService(registry).join("ABC234", "Dana").player
 
         assert room.game.players == (player,)
 
     def test_player_id_is_non_empty_opaque_string(self) -> None:
         registry, _ = _registry_with_room()
 
-        player = JoinPlayerService(registry).join("ABC234", "Dana")
+        player = JoinPlayerService(registry).join("ABC234", "Dana").player
 
         assert isinstance(player.player_id, str) and player.player_id
 
@@ -63,14 +64,14 @@ class TestJoinPlayerService:
         registry, _ = _registry_with_room()
         service = JoinPlayerService(registry, player_id_generator=lambda: "player-fixed")
 
-        player = service.join("ABC234", "Dana")
+        player = service.join("ABC234", "Dana").player
 
         assert player.player_id == "player-fixed"
 
     def test_display_name_is_stored_trimmed(self) -> None:
         registry, _ = _registry_with_room()
 
-        player = JoinPlayerService(registry).join("ABC234", "  Dana  ")
+        player = JoinPlayerService(registry).join("ABC234", "  Dana  ").player
 
         assert player.display_name == "Dana"
 
@@ -93,7 +94,7 @@ class TestJoinPlayerService:
     def test_twenty_character_name_accepted(self) -> None:
         registry, _ = _registry_with_room()
 
-        player = JoinPlayerService(registry).join("ABC234", "A" * 20)
+        player = JoinPlayerService(registry).join("ABC234", "A" * 20).player
 
         assert player.display_name == "A" * 20
 
@@ -120,7 +121,7 @@ class TestJoinPlayerService:
 
     def test_duplicate_rejection_leaves_existing_players_unchanged(self) -> None:
         registry, room = _registry_with_room()
-        original = JoinPlayerService(registry).join("ABC234", "Dana")
+        original = JoinPlayerService(registry).join("ABC234", "Dana").player
 
         with pytest.raises(NameTakenError):
             JoinPlayerService(registry).join("ABC234", "dana")
@@ -135,7 +136,7 @@ class TestJoinPlayerService:
 
     def test_join_rejected_in_ready_state(self) -> None:
         registry, room = _registry_with_room()
-        player = JoinPlayerService(registry).join("ABC234", "Dana")
+        player = JoinPlayerService(registry).join("ABC234", "Dana").player
         room.game.submit_initial_profile(player.player_id, _profile_for(player.player_id))
         room.game.mark_player_ready(player.player_id)
         assert room.game.state is GameState.READY
@@ -147,7 +148,7 @@ class TestJoinPlayerService:
 
     def test_join_rejected_in_question_active_state(self) -> None:
         registry, room = _registry_with_room()
-        player = JoinPlayerService(registry).join("ABC234", "Dana")
+        player = JoinPlayerService(registry).join("ABC234", "Dana").player
         room.game.submit_initial_profile(player.player_id, _profile_for(player.player_id))
         room.game.mark_player_ready(player.player_id)
         room.game.transition_to(GameState.QUESTION_ACTIVE)

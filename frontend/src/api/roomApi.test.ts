@@ -4,6 +4,7 @@ import type {
   CreateRoomResponse,
   ErrorResponse,
   JoinRoomRequest,
+  JoinRoomResponse,
   Player,
 } from '../types'
 import { createRoom, joinRoom, RestApiError } from './roomApi'
@@ -21,6 +22,11 @@ const playerResponse: Player = {
   has_profile: false,
   is_ready: false,
   score: 0,
+}
+
+const joinRoomResponse: JoinRoomResponse = {
+  game_id: 'game-123',
+  player: playerResponse,
 }
 
 function jsonResponse(body: unknown, status: number): Response {
@@ -74,7 +80,7 @@ describe('room REST API', () => {
 
   test('joinRoom encodes the room code and sends exactly the join request', async () => {
     const request: JoinRoomRequest = { display_name: 'Dana' }
-    fetchMock.mockResolvedValue(jsonResponse(playerResponse, 201))
+    fetchMock.mockResolvedValue(jsonResponse(joinRoomResponse, 201))
 
     await joinRoom('room /?', request)
 
@@ -89,12 +95,12 @@ describe('room REST API', () => {
     )
   })
 
-  test('joinRoom returns the approved Player response', async () => {
-    fetchMock.mockResolvedValue(jsonResponse(playerResponse, 201))
+  test('joinRoom returns the approved response with game_id and Player', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(joinRoomResponse, 201))
 
     await expect(
       joinRoom('K7PW3N', { display_name: 'Dana' }),
-    ).resolves.toEqual(playerResponse)
+    ).resolves.toEqual(joinRoomResponse)
   })
 
   test('preserves the approved error response for non-success responses', async () => {

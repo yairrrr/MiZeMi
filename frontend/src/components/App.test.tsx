@@ -3,7 +3,12 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { RestApiError } from '../api/roomApi'
-import type { CreateRoomResponse, ErrorResponse, Player } from '../types'
+import type {
+  CreateRoomResponse,
+  ErrorResponse,
+  JoinRoomResponse,
+  Player,
+} from '../types'
 import { App } from './App'
 
 vi.mock('../api/roomApi', async (importOriginal) => {
@@ -19,6 +24,10 @@ const createdRoom: CreateRoomResponse = { room_code: 'K7PW3N', game_id: 'game-12
 const joinedPlayer: Player = {
   player_id: 'player-123', display_name: 'Dana', is_host: false, connected: false,
   has_profile: false, is_ready: false, score: 0,
+}
+const joinResponse: JoinRoomResponse = {
+  game_id: 'game-123',
+  player: joinedPlayer,
 }
 
 afterEach(cleanup)
@@ -74,7 +83,7 @@ describe('room entry screen', () => {
   })
 
   test('joins with the entered room code and exact display_name shape', async () => {
-    joinRoomMock.mockResolvedValue(joinedPlayer)
+    joinRoomMock.mockResolvedValue(joinResponse)
     render(<App />)
     const user = await fillJoinForm('room-7', 'Dana')
     await user.click(screen.getByRole('button', { name: 'Join Room' }))
@@ -82,7 +91,7 @@ describe('room entry screen', () => {
   })
 
   test('disables Join and prevents duplicate submissions while pending', async () => {
-    const result = deferred<Player>()
+    const result = deferred<JoinRoomResponse>()
     joinRoomMock.mockReturnValue(result.promise)
     render(<App />)
     const user = await fillJoinForm()
@@ -91,12 +100,15 @@ describe('room entry screen', () => {
     expect(loadingButton).toBeDisabled()
     await user.click(loadingButton)
     expect(joinRoomMock).toHaveBeenCalledOnce()
-    result.resolve(joinedPlayer)
+    result.resolve(joinResponse)
     expect(await screen.findByText(/you’re in, Dana!/i)).toBeVisible()
   })
 
   test('renders the authoritative joined Player display name', async () => {
-    joinRoomMock.mockResolvedValue({ ...joinedPlayer, display_name: 'Dana from server' })
+    joinRoomMock.mockResolvedValue({
+      ...joinResponse,
+      player: { ...joinedPlayer, display_name: 'Dana from server' },
+    })
     render(<App />)
     const user = await fillJoinForm()
     await user.click(screen.getByRole('button', { name: 'Join Room' }))

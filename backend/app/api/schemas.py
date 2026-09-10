@@ -97,6 +97,15 @@ class JoinRoomRequest(BaseModel):
     display_name: str
 
 
+class JoinRoomResponse(BaseModel):
+    """The §13 join response: authoritative game id plus joined Player."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    game_id: str
+    player: PlayerSchema
+
+
 class PlayerReadyPayloadSchema(BaseModel):
     """The player.ready payload — exactly {} (MASTER_SPEC.md §14.2, v1.7).
 

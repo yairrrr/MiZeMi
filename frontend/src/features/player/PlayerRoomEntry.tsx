@@ -1,14 +1,14 @@
 import { type FormEvent, useRef, useState } from 'react'
 
 import { joinRoom, RestApiError } from '../../api/roomApi'
-import type { Player } from '../../types'
+import type { JoinRoomResponse } from '../../types'
 
 const GENERIC_JOIN_ERROR = 'We could not join the room. Please try again.'
 
 export function PlayerRoomEntry() {
   const [roomCode, setRoomCode] = useState('')
   const [displayName, setDisplayName] = useState('')
-  const [joinedPlayer, setJoinedPlayer] = useState<Player | null>(null)
+  const [joinResponse, setJoinResponse] = useState<JoinRoomResponse | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const isPending = useRef(false)
@@ -39,7 +39,7 @@ export function PlayerRoomEntry() {
     setErrorMessage(null)
 
     try {
-      setJoinedPlayer(await joinRoom(roomCode, { display_name: displayName }))
+      setJoinResponse(await joinRoom(roomCode, { display_name: displayName }))
     } catch (error) {
       setErrorMessage(
         error instanceof RestApiError
@@ -101,11 +101,11 @@ export function PlayerRoomEntry() {
         </p>
       )}
 
-      {joinedPlayer !== null && (
+      {joinResponse !== null && (
         <div className="join-success" role="status" aria-live="polite">
           <span aria-hidden="true">✓</span>
           <div>
-            <strong>You’re in, {joinedPlayer.display_name}!</strong>
+            <strong>You’re in, {joinResponse.player.display_name}!</strong>
             <p>Next, complete your profile and get ready to play.</p>
           </div>
         </div>

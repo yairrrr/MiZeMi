@@ -17,7 +17,7 @@ def _room_with_player(client: TestClient, display_name: str = "Dana") -> tuple[s
     room_code = client.post("/api/v1/rooms").json()["room_code"]
     player_id = client.post(
         f"/api/v1/rooms/{room_code}/players", json={"display_name": display_name}
-    ).json()["player_id"]
+    ).json()["player"]["player_id"]
     return room_code, player_id
 
 
@@ -77,7 +77,7 @@ class TestPlayerWebSocketLifecycle:
         room_code, dana_id = _room_with_player(client, "Dana")
         omer_id = client.post(
             f"/api/v1/rooms/{room_code}/players", json={"display_name": "Omer"}
-        ).json()["player_id"]
+        ).json()["player"]["player_id"]
         game = app.state.room_registry.get(room_code).game
 
         with client.websocket_connect(_ws_url(room_code, dana_id)):
