@@ -19,6 +19,7 @@ from app.infrastructure.database import (
     create_database_engine,
     create_session_factory,
 )
+from app.infrastructure.database import models  # noqa: F401 - registers ORM tables on Base
 
 
 @pytest.fixture

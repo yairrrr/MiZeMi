@@ -152,6 +152,48 @@ def make_ready_game(
     return game
 
 
+def start_game(
+    game: Game,
+    *,
+    questions: Sequence[Question] | None = None,
+    question_count: int = 3,
+) -> Game:
+    """Start a ``READY`` game (§11). Builds a placeholder question set if none
+    is given. Returns the game in ``QUESTION_ACTIVE``.
+    """
+    if questions is None:
+        questions = tuple(
+            make_question(
+                f"q{i + 1}",
+                index=i,
+                total_questions=question_count,
+                text=f"Placeholder question {i + 1}?",
+            )
+            for i in range(question_count)
+        )
+    game.start(questions)
+    return game
+
+
+def play_to_finished(game: Game) -> Game:
+    """Drive a started game to ``FINISHED`` through the public state machine.
+
+    A test convenience for persistence/lifecycle tests — it walks
+    QUESTION_ACTIVE -> QUESTION_RESULTS -> LEADERBOARD -> next|FINISHED using
+    only public ``Game`` methods; it makes no gameplay decisions.
+    """
+    while game.state is not GameState.FINISHED:
+        if game.state is GameState.QUESTION_ACTIVE:
+            game.transition_to(GameState.QUESTION_RESULTS)
+        elif game.state is GameState.QUESTION_RESULTS:
+            game.transition_to(GameState.LEADERBOARD)
+        elif game.state is GameState.LEADERBOARD:
+            game.advance_to_next_question()
+        else:  # pragma: no cover - unreachable for a started game
+            raise AssertionError(f"cannot drive to FINISHED from {game.state}")
+    return game
+
+
 # --- questions ------------------------------------------------------------
 
 def make_question(
