@@ -46,3 +46,17 @@ def db_session(db_engine: Engine) -> Iterator[Session]:
         yield session
     finally:
         session.close()
+
+
+@pytest.fixture
+def sqlite_file_engine(tmp_path) -> Iterator[Engine]:
+    """An engine on a real SQLite file, for tests that must exercise on-disk
+    behaviour (persistence across engines, file creation). Schema created;
+    engine disposed afterwards. The temp file is removed with ``tmp_path``.
+    """
+    engine = create_database_engine(f"sqlite:///{tmp_path / 'mizemi_test.db'}")
+    Base.metadata.create_all(engine)
+    try:
+        yield engine
+    finally:
+        engine.dispose()
