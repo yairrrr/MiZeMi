@@ -38,9 +38,16 @@ class TestBase:
     def test_base_is_a_declarative_base(self) -> None:
         assert issubclass(Base, DeclarativeBase)
 
-    def test_base_metadata_has_no_tables_yet(self) -> None:
-        # No ORM models exist yet; the DB task adds only the plumbing (§15).
-        assert Base.metadata.tables == {}
+    def test_orm_models_register_their_tables_on_base(self) -> None:
+        from app.infrastructure.database import models  # noqa: F401
+
+        assert {
+            "games",
+            "players",
+            "profile_fields",
+            "game_questions",
+            "question_options",
+        } <= set(Base.metadata.tables)
 
 
 class TestTimestampMixin:
