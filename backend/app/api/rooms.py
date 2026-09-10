@@ -5,7 +5,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Request
 
 from app.api.errors import error_response
-from app.api.schemas import CreateRoomResponse, JoinRoomRequest, PlayerSchema
+from app.api.schemas import (
+    CreateRoomResponse,
+    JoinRoomRequest,
+    JoinRoomResponse,
+    PlayerSchema,
+)
 from app.application.create_room import CreateRoomService
 from app.application.join_player import (
     InvalidDisplayNameError,
@@ -31,14 +36,14 @@ def create_room(
     return CreateRoomResponse(room_code=room.room_code, game_id=room.game.game_id)
 
 
-@router.post("/rooms/{room_code}/players", status_code=201, response_model=PlayerSchema)
+@router.post("/rooms/{room_code}/players", status_code=201, response_model=JoinRoomResponse)
 def join_room(
     room_code: str,
     body: JoinRoomRequest,
     registry: Annotated[RoomRegistry, Depends(get_room_registry)],
 ):
     try:
-        player = JoinPlayerService(registry).join(room_code, body.display_name)
+        result = JoinPlayerService(registry).join(room_code, body.display_name)
     except RoomNotFoundError as exc:
         return error_response(
             404, ErrorCode.ROOM_NOT_FOUND, f"No room exists with code {exc.room_code}."
@@ -58,4 +63,7 @@ def join_room(
             "display_name must be 1-20 characters after trimming.",
         )
     # score=0: the approved initial score for a newly joined player (§9.1).
-    return PlayerSchema.from_domain(player, score=0)
+    return JoinRoomResponse(
+        game_id=result.game_id,
+        player=PlayerSchema.from_domain(result.player, score=0),
+    )

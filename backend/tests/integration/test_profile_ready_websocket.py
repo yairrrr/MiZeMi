@@ -22,7 +22,7 @@ def _setup(client: TestClient, names: list[str]) -> tuple[str, str, dict[str, st
     ids = {
         name: client.post(
             f"/api/v1/rooms/{created['room_code']}/players", json={"display_name": name}
-        ).json()["player_id"]
+        ).json()["player"]["player_id"]
         for name in names
     }
     return created["room_code"], created["game_id"], ids

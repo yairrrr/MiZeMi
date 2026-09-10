@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from app.api.schemas import (
     AnswerSubmissionSchema,
+    JoinRoomResponse,
     PlayerProfileSchema,
     PlayerSchema,
     ProfileFieldSchema,
@@ -119,6 +120,28 @@ class TestPlayerSchema:
         assert player.connected is False
         assert player.is_ready is False
         assert player.profile is None
+
+
+class TestJoinRoomResponse:
+    def test_serialized_response_has_exact_contract_keys(self) -> None:
+        player = PlayerSchema.from_domain(
+            Player(player_id="p1", display_name="Dana"), score=0
+        )
+
+        dumped = JoinRoomResponse(game_id="g1", player=player).model_dump(mode="json")
+
+        assert set(dumped.keys()) == {"game_id", "player"}
+        assert set(dumped["player"].keys()) == PLAYER_WIRE_KEYS
+
+    def test_extra_response_fields_rejected(self) -> None:
+        player = PlayerSchema.from_domain(
+            Player(player_id="p1", display_name="Dana"), score=0
+        )
+
+        with pytest.raises(ValidationError):
+            JoinRoomResponse.model_validate(
+                {"game_id": "g1", "player": player, "room_code": "ABC234"}
+            )
 
 
 class TestProfileSchemas:

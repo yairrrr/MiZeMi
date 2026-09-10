@@ -74,7 +74,7 @@ class TestJoinRoomEndpoint:
     def _room(self, client: TestClient) -> str:
         return client.post("/api/v1/rooms").json()["room_code"]
 
-    def test_join_returns_201_with_exact_player_keys(self) -> None:
+    def test_join_returns_201_with_exact_response_and_player_keys(self) -> None:
         client, _ = _client_and_app()
         room_code = self._room(client)
 
@@ -82,10 +82,20 @@ class TestJoinRoomEndpoint:
 
         assert response.status_code == 201
         body = response.json()
-        assert set(body.keys()) == PLAYER_WIRE_KEYS
-        assert body["display_name"] == "Dana"
-        assert body["is_host"] is False
-        assert body["score"] == 0
+        assert set(body.keys()) == {"game_id", "player"}
+        assert set(body["player"].keys()) == PLAYER_WIRE_KEYS
+        assert body["player"]["display_name"] == "Dana"
+        assert body["player"]["is_host"] is False
+        assert body["player"]["score"] == 0
+
+    def test_join_returns_the_authoritative_room_game_id(self) -> None:
+        client, app = _client_and_app()
+        room_code = self._room(client)
+
+        body = _join(client, room_code, "Dana").json()
+
+        room = app.state.room_registry.get(room_code)
+        assert body["game_id"] == room.game.game_id
 
     def test_returned_player_id_finds_the_player_in_the_game(self) -> None:
         client, app = _client_and_app()
@@ -94,7 +104,7 @@ class TestJoinRoomEndpoint:
         body = _join(client, room_code, "Dana").json()
 
         game = app.state.room_registry.get(room_code).game
-        player = game.get_player(body["player_id"])
+        player = game.get_player(body["player"]["player_id"])
         assert player is not None
         assert player.display_name == "Dana"
 
@@ -104,7 +114,7 @@ class TestJoinRoomEndpoint:
 
         body = _join(client, room_code, "  Dana  ").json()
 
-        assert body["display_name"] == "Dana"
+        assert body["player"]["display_name"] == "Dana"
 
     def test_unknown_room_maps_to_room_not_found(self) -> None:
         client, _ = _client_and_app()

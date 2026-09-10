@@ -44,7 +44,7 @@ def _ready_room(client: TestClient) -> tuple[str, str]:
     ids = {
         name: client.post(
             f"/api/v1/rooms/{room_code}/players", json={"display_name": name}
-        ).json()["player_id"]
+        ).json()["player"]["player_id"]
         for name in PROFILES
     }
     for name, fields in PROFILES.items():

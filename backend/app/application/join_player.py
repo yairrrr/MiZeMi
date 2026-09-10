@@ -6,6 +6,7 @@ the registry's RoomNotFoundError) happens at the API boundary.
 """
 
 from collections.abc import Callable
+from dataclasses import dataclass
 from uuid import uuid4
 
 from app.domain.game import GameState, Player
@@ -36,6 +37,14 @@ class RoomNotJoinableError(Exception):
         self.state = state
 
 
+@dataclass(frozen=True)
+class JoinPlayerResult:
+    """Transport-independent outcome from one authoritative room resolution."""
+
+    game_id: str
+    player: Player
+
+
 class JoinPlayerService:
     """Joins a new player to an active room through the domain's own APIs."""
 
@@ -50,7 +59,7 @@ class JoinPlayerService:
             player_id_generator if player_id_generator is not None else generate_player_id
         )
 
-    def join(self, room_code: str, display_name: str) -> Player:
+    def join(self, room_code: str, display_name: str) -> JoinPlayerResult:
         room = self._registry.get(room_code)  # RoomNotFoundError propagates
         game = room.game
         if game.state not in JOINABLE_STATES:
@@ -70,4 +79,4 @@ class JoinPlayerService:
 
         player = Player(player_id=self._generate_player_id(), display_name=name)
         room.join(player)
-        return player
+        return JoinPlayerResult(game_id=game.game_id, player=player)

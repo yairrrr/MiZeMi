@@ -2,7 +2,7 @@ import type {
   CreateRoomResponse,
   ErrorResponse,
   JoinRoomRequest,
-  Player,
+  JoinRoomResponse,
 } from '../types'
 
 const API_PREFIX = '/api/v1'
@@ -45,7 +45,7 @@ export async function createRoom(): Promise<CreateRoomResponse> {
 export async function joinRoom(
   roomCode: string,
   request: JoinRoomRequest,
-): Promise<Player> {
+): Promise<JoinRoomResponse> {
   const response = await fetch(
     buildApiUrl(`/rooms/${encodeURIComponent(roomCode)}/players`),
     {
@@ -55,5 +55,5 @@ export async function joinRoom(
     },
   )
 
-  return readResponse<Player>(response)
+  return readResponse<JoinRoomResponse>(response)
 }

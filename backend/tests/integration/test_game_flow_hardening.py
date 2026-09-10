@@ -59,7 +59,7 @@ def _ready_room(client: TestClient) -> tuple[str, str, dict[str, str]]:
     for name in PROFILES:
         ids[name] = client.post(
             f"/api/v1/rooms/{room_code}/players", json={"display_name": name}
-        ).json()["player_id"]
+        ).json()["player"]["player_id"]
     for name, fields in PROFILES.items():
         payload = {
             "player_id": ids[name],
@@ -166,7 +166,7 @@ class TestStartBoundaries:
         room_code, game_id = created["room_code"], created["game_id"]
         player_id = client.post(
             f"/api/v1/rooms/{room_code}/players", json={"display_name": "Dana"}
-        ).json()["player_id"]
+        ).json()["player"]["player_id"]
         game = app.state.room_registry.get(room_code).game
 
         with pytest.raises(GameNotStartableError):

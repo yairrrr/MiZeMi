@@ -90,6 +90,11 @@ export type JoinRoomRequest = {
   display_name: string
 }
 
+export type JoinRoomResponse = {
+  game_id: string
+  player: Player
+}
+
 export const ERROR_CODES = [
   'ROOM_NOT_FOUND',
   'ROOM_FULL',
