@@ -666,3 +666,27 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 }
 /* Option colors belong to the result marker/bar, not the entire text row. */
 .answer-bar { background: transparent; }
+
+.question-explanation {
+  max-width: 48rem;
+  margin: 1rem auto;
+  padding: 1rem 1.25rem;
+  border-inline-start: 4px solid #6d58bd;
+  border-radius: 0.75rem;
+  background: #f2eefb;
+  color: #30264c;
+  font-size: clamp(1rem, 2.1vw, 1.25rem);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+.knowledge-credits {
+  max-width: 48rem;
+  margin: 1.5rem auto 0;
+  color: #5b526b;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  text-align: start;
+}
+.knowledge-credits summary { min-height: 44px; padding: 0.6rem 0; cursor: pointer; }
+.knowledge-credits a { display: inline-block; padding: 0.5rem 0.25rem; color: #543da0; }

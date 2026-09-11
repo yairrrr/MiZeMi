@@ -183,6 +183,7 @@ function HostResults({ view, send }: { view: GameView; send: SendFn }) {
   return (
     <div className="stage results-stage">
       <h2 className="question-text" lang={results.language} dir={direction(results.language)}>{results.text}</h2>
+      {results.explanation && <p className="question-explanation" lang={results.language} dir={direction(results.language)}>{results.explanation}</p>}
       <p className="correct-answer">{t("Correct answer:")} <strong><bdi>{correct?.text}</bdi></strong>
       </p>
       <AnswerBars options={results.options} statistics={results.statistics} />

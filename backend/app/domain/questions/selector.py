@@ -49,6 +49,7 @@ class QuestionSelector:
                         field_pick_counts.get(field_key, 0)
                         for field_key in set(candidate.source_field_keys)
                     ),
+                    -int(dict(candidate.metadata).get("reasoning_hops", 0)),
                     -score,
                     sum(
                         player_feature_counts.get(pid, 0)

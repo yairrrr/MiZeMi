@@ -145,6 +145,7 @@ export type PlayerQuestionResult = {
 }
 
 export type QuestionEnded = {
+  explanation?: string
   difficulty: 'EASY' | 'MEDIUM' | 'HARD'
   language: 'en' | 'he'
   question_id: string

@@ -22,7 +22,7 @@ def test_all_tables_compile_for_postgres():
     statements = []
     engine = create_mock_engine('postgresql+psycopg://', lambda sql, *a, **kw: statements.append(str(sql.compile(dialect=engine.dialect))))
     Base.metadata.create_all(engine)
-    assert len(statements) == 9
+    assert len(statements) == 10
     assert any('TIMESTAMP WITH TIME ZONE' in sql for sql in statements)
     assert any('CREATE TABLE answers' in sql for sql in statements)
     assert any('CREATE TABLE scores' in sql for sql in statements)
@@ -42,7 +42,7 @@ def test_real_postgres_game_persistence_rollback_and_retention(language):
     app.state.database.session_factory = create_session_factory(scoped)
     try:
         with TestClient(app) as client, Table(client, app, config={"question_count":1,"language":language}) as table:
-            # Startup creates all nine tables in the isolated schema.
+            # Startup creates all ten tables in the isolated schema.
             table.start()
             for name in NAMES:
                 table.answer(name, correct=(name == 'Dana'))
@@ -60,6 +60,8 @@ def test_real_postgres_game_persistence_rollback_and_retention(language):
                 assert record.config.question_count == 1
                 assert record.config.language == language
                 assert record.questions[0].language == language
+                assert record.questions[0].explanation == table.game.questions[0].explanation
+                assert record.questions[0].knowledge_version == table.game.questions[0].knowledge_version
                 assert record.questions[0].source_rule_id
                 assert record.questions[0].difficulty == table.game.questions[0].difficulty.value
                 assert {s.player_id: s.total_score for s in record.scores} == table.game.scores

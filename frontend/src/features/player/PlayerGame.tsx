@@ -236,6 +236,7 @@ function PlayerResults({ view }: { view: GameView }) {
   return (
     <div className="stage results-stage">
       <h2 className="question-text" lang={results.language} dir={direction(results.language)}>{results.text}</h2>
+      {results.explanation && <p className="question-explanation" lang={results.language} dir={direction(results.language)}>{results.explanation}</p>}
       <div className={`verdict ${tone}`} role="status">
         <strong>{verdict}</strong>
         {own !== null && own.points_awarded > 0 && <span><bdi dir="ltr">+{own.points_awarded}</bdi>{' '}{t('points')}</span>}

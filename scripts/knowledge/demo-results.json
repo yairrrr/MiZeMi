@@ -1,0 +1,537 @@
+{
+  "synthetic_profiles": [
+    [
+      "Haifa",
+      "Pizza",
+      "Running",
+      "Mizrahi",
+      "Saw",
+      20
+    ],
+    [
+      "Tel Aviv",
+      "Sushi",
+      "Football",
+      "Mizrahi",
+      "The Conjuring",
+      22
+    ],
+    [
+      "Rehovot",
+      "Spaghetti",
+      "Surfing",
+      "Rock",
+      "Toy Story",
+      24
+    ],
+    [
+      "Rishon LeZion",
+      "Lasagna",
+      "Guitar",
+      "Pop",
+      "Finding Nemo",
+      26
+    ],
+    [
+      "Beersheba",
+      "Falafel",
+      "Photography",
+      "Jazz",
+      "Titanic",
+      28
+    ]
+  ],
+  "specialized_profiles": {
+    "semantic_subset_count": [
+      {
+        "favorite_movie": "Saw"
+      },
+      {
+        "favorite_movie": "The Conjuring"
+      },
+      {
+        "favorite_movie": "Toy Story"
+      },
+      {
+        "favorite_movie": "unknown"
+      }
+    ],
+    "semantic_scoped_pair": [
+      {
+        "favorite_movie": "Saw"
+      },
+      {
+        "favorite_movie": "The Conjuring"
+      },
+      {
+        "favorite_movie": "Toy Story"
+      },
+      {
+        "favorite_movie": "unknown"
+      }
+    ],
+    "semantic_rare": [
+      {
+        "favorite_music": "Mizrahi"
+      },
+      {
+        "favorite_music": "Mizrahi"
+      },
+      {
+        "favorite_music": "Mizrahi"
+      },
+      {
+        "favorite_music": "Jazz"
+      },
+      {
+        "favorite_music": "Jazz"
+      },
+      {
+        "favorite_music": "Rock"
+      }
+    ],
+    "locality_distinct": [
+      {
+        "city": "תל אביב"
+      },
+      {
+        "city": "Tel-Aviv"
+      },
+      {
+        "city": "Haifa"
+      }
+    ]
+  },
+  "examples": {
+    "en": [
+      {
+        "rule": "semantic_count",
+        "question": "How many players chose hobbies in Sport?",
+        "options": [
+          "2",
+          "1",
+          "3",
+          "4"
+        ],
+        "correct": "3",
+        "explanation": "“Running”, “Association football”, “Surfing”: Sport. Players who made these choices: 3."
+      },
+      {
+        "rule": "semantic_subset_count",
+        "question": "Among Dana, Omer, Noa, how many chose movies in Horror?",
+        "options": [
+          "3",
+          "1",
+          "0",
+          "2"
+        ],
+        "correct": "2",
+        "explanation": "“Saw (film)”, “The Conjuring”: Horror. Players who made these choices: 2."
+      },
+      {
+        "rule": "semantic_scoped_pair",
+        "question": "Among the pairs below, who picked different movies that share Horror?",
+        "options": [
+          "Omer + Noa",
+          "Dana + Omer",
+          "Dana + Noa"
+        ],
+        "correct": "Dana + Omer",
+        "explanation": "“Saw (film)”, “The Conjuring”: Horror. Players who made these choices: 2."
+      },
+      {
+        "rule": "semantic_mode",
+        "question": "Which of these music styles connects the most players’ music selections?",
+        "options": [
+          "Pop",
+          "Mediterranean",
+          "Folk",
+          "Mizrahi"
+        ],
+        "correct": "Mizrahi",
+        "explanation": "“Mizrahi music”: Mizrahi. Players who made these choices: 2."
+      },
+      {
+        "rule": "semantic_rare",
+        "question": "Among the music styles represented here, which appears in the fewest players’ music selections?",
+        "options": [
+          "Jazz",
+          "Rock",
+          "Mizrahi"
+        ],
+        "correct": "Rock",
+        "explanation": "“Rock music”: Rock. Players who made these choices: 1."
+      },
+      {
+        "rule": "semantic_diversity",
+        "question": "Count different foods, not repeated picks: which of these cuisines connects the most?",
+        "options": [
+          "Greek cuisine",
+          "French cuisine",
+          "Spanish cuisine",
+          "Italian cuisine"
+        ],
+        "correct": "Italian cuisine",
+        "explanation": "“Pizza”, “Spaghetti”, “Lasagna”: Italian cuisine. Players who made these choices: 3. That makes 3 different choices in this family."
+      },
+      {
+        "rule": "semantic_different_pair",
+        "question": "Which pair picked movies in Horror, choosing different works or activities?",
+        "options": [
+          "Omer + Lior",
+          "Noa + Amit",
+          "Omer + Amit",
+          "Dana + Omer"
+        ],
+        "correct": "Dana + Omer",
+        "explanation": "“Saw (film)”, “The Conjuring”: Horror. Players who made these choices: 2."
+      },
+      {
+        "rule": "semantic_intersection",
+        "question": "Who connects both clues: movies in Thriller, and hobbies in Sport?",
+        "options": [
+          "Lior",
+          "Noa",
+          "Amit",
+          "Omer"
+        ],
+        "correct": "Omer",
+        "explanation": "Omer connects them: “The Conjuring” → Thriller; “Association football” → Sport."
+      },
+      {
+        "rule": "semantic_filtered_mode",
+        "question": "Among those who chose hobbies in Sport: Which of these film genres connects the most players’ movies?",
+        "options": [
+          "Mystery",
+          "Thriller",
+          "Crime",
+          "Horror"
+        ],
+        "correct": "Horror",
+        "explanation": "“Running”, “Association football”, “Surfing”: Sport. Players who made these choices: 3. “Saw (film)”, “The Conjuring”: Horror. Players who made these choices: 2."
+      },
+      {
+        "rule": "semantic_outlier",
+        "question": "Three of these players chose foods linked to Italian cuisine. Whose choice is linked to Asian cuisines?",
+        "options": [
+          "Noa",
+          "Dana",
+          "Amit",
+          "Omer"
+        ],
+        "correct": "Omer",
+        "explanation": "“Pizza”, “Spaghetti”, “Lasagna”: Italian cuisine. Players who made these choices: 3. “Sushi”: Asian cuisines. Players who made these choices: 1."
+      },
+      {
+        "rule": "music_artist_bridge",
+        "question": "Which artist below is listed in the game under the music style chosen most often by this group?",
+        "options": [
+          "Asaf Avidan",
+          "Omer Adam",
+          "The Temptations",
+          "Nathan Goshen"
+        ],
+        "correct": "Omer Adam",
+        "explanation": "Mizrahi connects 2 players’ choices. Omer Adam is classified in that style; the connection is the musical style."
+      },
+      {
+        "rule": "locality_extreme",
+        "question": "Whose town is furthest north in the group?",
+        "options": [
+          "Lior",
+          "Noa",
+          "Amit",
+          "Dana"
+        ],
+        "correct": "Dana",
+        "explanation": "Haifa, chosen by Dana, has the northernmost reference point among these towns."
+      },
+      {
+        "rule": "locality_distance_pair",
+        "question": "Which pair chose the towns that are closest by air distance?",
+        "options": [
+          "Omer + Amit",
+          "Omer + Lior",
+          "Omer + Noa",
+          "Noa + Amit"
+        ],
+        "correct": "Noa + Amit",
+        "explanation": "Reẖovot and Rishon LeTsiyyon are about 9 km apart by air, comparing locality reference points, not homes or roads."
+      },
+      {
+        "rule": "locality_nearest_to",
+        "question": "Whose town is closest to Dana’s town by air distance?",
+        "options": [
+          "Amit",
+          "Noa",
+          "Lior",
+          "Omer"
+        ],
+        "correct": "Omer",
+        "explanation": "Haifa and Tel Aviv are about 84 km apart by air, comparing locality reference points, not homes or roads."
+      },
+      {
+        "rule": "locality_middle",
+        "question": "If we order everyone’s towns from north to south, who lands exactly in the middle?",
+        "options": [
+          "Lior",
+          "Omer",
+          "Noa",
+          "Amit"
+        ],
+        "correct": "Amit",
+        "explanation": "From north to south: Haifa → Tel Aviv → Rishon LeTsiyyon → Reẖovot → Beersheba. The middle is Amit."
+      },
+      {
+        "rule": "locality_distinct",
+        "question": "Allowing for different spellings of the same place, how many different towns are represented here?",
+        "options": [
+          "3",
+          "1",
+          "0",
+          "2"
+        ],
+        "correct": "2",
+        "explanation": "There are 2 different towns. Different spellings of the same town count once."
+      },
+      {
+        "rule": "semantic_nearby_pair",
+        "question": "Among pairs with different hobbies in Sport and different towns, which pair’s towns are closest by air?",
+        "options": [
+          "Dana + Noa",
+          "Omer + Noa",
+          "Dana + Omer"
+        ],
+        "correct": "Omer + Noa",
+        "explanation": "“Association football”, “Surfing”: Sport. Players who made these choices: 2. Tel Aviv and Reẖovot are about 21 km apart by air, comparing locality reference points, not homes or roads."
+      },
+      {
+        "rule": "district_activity_diversity",
+        "question": "Which district brings together the widest variety of activity families through the hobbies chosen by its players?",
+        "options": [
+          "Tel Aviv District",
+          "Haifa District",
+          "Southern District",
+          "Central District"
+        ],
+        "correct": "Central District",
+        "explanation": "Players from Central District chose hobbies spanning Arts and crafts, Making music, Sport, Water activities."
+      }
+    ],
+    "he": [
+      {
+        "rule": "semantic_count",
+        "question": "כמה משתתפים בחרו תחביבים בתחום ספורט?",
+        "options": [
+          "2",
+          "1",
+          "3",
+          "4"
+        ],
+        "correct": "3",
+        "explanation": "“ריצה”, “כדורגל”, “גלישת גלים”: החיבור הוא ספורט. מספר המשתתפים שבחרו בהם: 3."
+      },
+      {
+        "rule": "semantic_subset_count",
+        "question": "מבין דנה, עומר, נועה, כמה בחרו סרטים בז׳אנר אימה?",
+        "options": [
+          "3",
+          "1",
+          "0",
+          "2"
+        ],
+        "correct": "2",
+        "explanation": "“המסור”, “לזמן את הרוע”: החיבור הוא אימה. מספר המשתתפים שבחרו בהם: 2."
+      },
+      {
+        "rule": "semantic_scoped_pair",
+        "question": "מבין הזוגות שמופיעים כאן, מי בחרו סרטים שונים שהחיבור ביניהם הוא אימה?",
+        "options": [
+          "עומר + נועה",
+          "דנה + עומר",
+          "דנה + נועה"
+        ],
+        "correct": "דנה + עומר",
+        "explanation": "“המסור”, “לזמן את הרוע”: החיבור הוא אימה. מספר המשתתפים שבחרו בהם: 2."
+      },
+      {
+        "rule": "semantic_mode",
+        "question": "איזה סגנון מוזיקה חוזר בבחירות של הכי הרבה משתתפים?",
+        "options": [
+          "פופ",
+          "ים תיכונית",
+          "פולק",
+          "מזרחית"
+        ],
+        "correct": "מזרחית",
+        "explanation": "“מוזיקה מזרחית”: החיבור הוא מזרחית. מספר המשתתפים שבחרו בהם: 2."
+      },
+      {
+        "rule": "semantic_rare",
+        "question": "מבין סגנונות מוזיקה שמופיעים כאן, מה חוזר אצל הכי מעט משתתפים לפי הבחירות מוזיקליות שנבחרו?",
+        "options": [
+          "ג׳אז",
+          "רוק",
+          "מזרחית"
+        ],
+        "correct": "רוק",
+        "explanation": "“מוזיקת רוק”: החיבור הוא רוק. מספר המשתתפים שבחרו בהם: 1."
+      },
+      {
+        "rule": "semantic_diversity",
+        "question": "סופרים מאכלים שונים, בלי לספור שוב את אותה בחירה: מה מבין מטבחים הבאים מחבר בין הכי הרבה מהם?",
+        "options": [
+          "המטבח היווני",
+          "המטבח הצרפתי",
+          "המטבח הספרדי",
+          "המטבח האיטלקי"
+        ],
+        "correct": "המטבח האיטלקי",
+        "explanation": "“פיצה”, “ספגטי”, “לזניה”: החיבור הוא המטבח האיטלקי. מספר המשתתפים שבחרו בהם: 3. יחד יש כאן 3 בחירות שונות במשפחה הזאת."
+      },
+      {
+        "rule": "semantic_different_pair",
+        "question": "איזה זוג בחרו סרטים בז׳אנר אימה, אבל כל אחד בחר משהו אחר?",
+        "options": [
+          "עומר + ליאור",
+          "נועה + עמית",
+          "עומר + עמית",
+          "דנה + עומר"
+        ],
+        "correct": "דנה + עומר",
+        "explanation": "“המסור”, “לזמן את הרוע”: החיבור הוא אימה. מספר המשתתפים שבחרו בהם: 2."
+      },
+      {
+        "rule": "semantic_intersection",
+        "question": "מי מחבר/ת בין שני הרמזים: סרטים בז׳אנר מתח, וגם תחביבים בתחום ספורט?",
+        "options": [
+          "ליאור",
+          "נועה",
+          "עמית",
+          "עומר"
+        ],
+        "correct": "עומר",
+        "explanation": "עומר מחבר/ת ביניהם: “לזמן את הרוע” → מתח; “כדורגל” → ספורט."
+      },
+      {
+        "rule": "semantic_filtered_mode",
+        "question": "מבין מי שבחרו תחביבים בתחום ספורט, איזה ז׳אנר קולנוע חוזר בבחירות של הכי הרבה משתתפים?",
+        "options": [
+          "מסתורין",
+          "מתח",
+          "פשע",
+          "אימה"
+        ],
+        "correct": "אימה",
+        "explanation": "“ריצה”, “כדורגל”, “גלישת גלים”: החיבור הוא ספורט. מספר המשתתפים שבחרו בהם: 3. “המסור”, “לזמן את הרוע”: החיבור הוא אימה. מספר המשתתפים שבחרו בהם: 2."
+      },
+      {
+        "rule": "semantic_outlier",
+        "question": "שלושה מהמשתתפים הבאים בחרו מאכלים שמזוהים עם המטבח האיטלקי. של מי הבחירה שמזוהה עם מטבחים אסייתיים?",
+        "options": [
+          "נועה",
+          "דנה",
+          "עמית",
+          "עומר"
+        ],
+        "correct": "עומר",
+        "explanation": "“פיצה”, “ספגטי”, “לזניה”: החיבור הוא המטבח האיטלקי. מספר המשתתפים שבחרו בהם: 3. “סושי”: החיבור הוא מטבחים אסייתיים. מספר המשתתפים שבחרו בהם: 1."
+      },
+      {
+        "rule": "music_artist_bridge",
+        "question": "איזה אמן מהרשימה משויך במשחק לסגנון המוזיקה שחוזר הכי הרבה בבחירות של הקבוצה?",
+        "options": [
+          "אסף אבידן",
+          "עומר אדם",
+          "The Temptations",
+          "נתן גושן"
+        ],
+        "correct": "עומר אדם",
+        "explanation": "מזרחית מחבר בין הבחירות של 2 משתתפים. עומר אדם מזוהה עם הסגנון הזה. זה החיבור המוזיקלי ביניהם."
+      },
+      {
+        "rule": "locality_extreme",
+        "question": "של מי היישוב הצפוני ביותר בקבוצה?",
+        "options": [
+          "ליאור",
+          "נועה",
+          "עמית",
+          "דנה"
+        ],
+        "correct": "דנה",
+        "explanation": "חיפה, היישוב של דנה, הוא היישוב הצפוני ביותר לפי נקודות הייחוס של היישובים שנבחרו."
+      },
+      {
+        "rule": "locality_distance_pair",
+        "question": "איזה זוג בחרו את היישובים הקרובים ביותר זה מזה בקו אווירי?",
+        "options": [
+          "עומר + עמית",
+          "עומר + ליאור",
+          "עומר + נועה",
+          "נועה + עמית"
+        ],
+        "correct": "נועה + עמית",
+        "explanation": "בין רחובות לראשון לציון יש כ־9 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
+      },
+      {
+        "rule": "locality_nearest_to",
+        "question": "של מי היישוב הכי קרוב ליישוב של דנה בקו אווירי?",
+        "options": [
+          "עמית",
+          "נועה",
+          "ליאור",
+          "עומר"
+        ],
+        "correct": "עומר",
+        "explanation": "בין חיפה לתל אביב יפו יש כ־84 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
+      },
+      {
+        "rule": "locality_middle",
+        "question": "אם מסדרים את היישובים של כולם מצפון לדרום, מי בדיוק באמצע?",
+        "options": [
+          "ליאור",
+          "עומר",
+          "נועה",
+          "עמית"
+        ],
+        "correct": "עמית",
+        "explanation": "מצפון לדרום: חיפה → תל אביב יפו → ראשון לציון → רחובות → באר שבע. באמצע נמצא/ת עמית."
+      },
+      {
+        "rule": "locality_distinct",
+        "question": "גם כשכותבים את אותו המקום בכמה דרכים, כמה יישובים שונים מיוצגים בקבוצה?",
+        "options": [
+          "3",
+          "1",
+          "0",
+          "2"
+        ],
+        "correct": "2",
+        "explanation": "יש כאן 2 יישובים שונים. כתיבים שונים של אותו יישוב נספרים פעם אחת."
+      },
+      {
+        "rule": "semantic_nearby_pair",
+        "question": "מבין הזוגות עם תחביבים שונים שמזוהים עם ספורט ועם יישובים שונים, של מי היישובים הכי קרובים בקו אווירי?",
+        "options": [
+          "דנה + נועה",
+          "עומר + נועה",
+          "דנה + עומר"
+        ],
+        "correct": "עומר + נועה",
+        "explanation": "“כדורגל”, “גלישת גלים”: החיבור הוא ספורט. מספר המשתתפים שבחרו בהם: 2. בין תל אביב יפו לרחובות יש כ־21 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
+      },
+      {
+        "rule": "district_activity_diversity",
+        "question": "איזה מחוז מביא לקבוצה את המגוון הגדול ביותר של משפחות תחביבים, לפי הבחירות של המשתתפים שגרים בו?",
+        "options": [
+          "מחוז תל אביב",
+          "מחוז חיפה",
+          "מחוז הדרום",
+          "מחוז המרכז"
+        ],
+        "correct": "מחוז המרכז",
+        "explanation": "המשתתפים ממחוז המרכז בחרו תחביבים שכוללים אמנות ויצירה, נגינה ושירה, ספורט, פעילות במים."
+      }
+    ]
+  }
+}

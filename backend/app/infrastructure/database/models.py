@@ -96,6 +96,7 @@ class GameQuestionRow(Base, TimestampMixin):
     correct_option_id: Mapped[str] = mapped_column(String, nullable=False)
     time_limit_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
 
+    explanation: Mapped["QuestionExplanationRow | None"] = relationship(cascade="all, delete-orphan", uselist=False)
     detail: Mapped["QuestionDetailRow | None"] = relationship(cascade="all, delete-orphan", uselist=False)
     game: Mapped[GameRow] = relationship(back_populates="questions")
     options: Mapped[list["QuestionOptionRow"]] = relationship(
@@ -150,3 +151,11 @@ class QuestionDetailRow(Base, TimestampMixin):
     difficulty: Mapped[str] = mapped_column(String(6), nullable=False)
     language: Mapped[str] = mapped_column(String(2), nullable=False)
     source_rule_id: Mapped[str] = mapped_column(String(64), nullable=False)
+
+
+class QuestionExplanationRow(Base, TimestampMixin):
+    """Additive result evidence; the reference catalog itself stays offline."""
+    __tablename__ = "question_explanations"
+    question_id: Mapped[str] = mapped_column(ForeignKey("game_questions.question_id", ondelete="CASCADE"), primary_key=True)
+    explanation: Mapped[str] = mapped_column(String, nullable=False)
+    knowledge_version: Mapped[str] = mapped_column(String(64), nullable=False)

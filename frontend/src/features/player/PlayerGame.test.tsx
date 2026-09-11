@@ -104,6 +104,7 @@ describe('PlayerGameView', () => {
     const results: QuestionEnded = {
       difficulty: 'EASY', language: 'en',
       question_id: 'q1',
+      explanation: 'Saw and The Conjuring are horror films. <img src=x onerror=alert(1)>',
       text: question.text,
       options: question.options,
       correct_option_id: 'a',
@@ -125,6 +126,9 @@ describe('PlayerGameView', () => {
     // The signed number is isolated from surrounding RTL/LTR words.
     expect(screen.getByRole('status')).toHaveTextContent('+842 points')
     expect(screen.getByText('+842')).toHaveAttribute('dir', 'ltr')
+    expect(screen.getByText(results.explanation!)).toHaveAttribute('lang', 'en')
+    expect(screen.getByText(results.explanation!)).toHaveAttribute('dir', 'ltr')
+    expect(document.querySelector('.question-explanation img')).toBeNull()
     expect(screen.getByLabelText('Answer distribution')).toHaveTextContent('67%')
   })
 

@@ -29,6 +29,7 @@ from app.infrastructure.database.models import (
     GameQuestionRow,
     GameConfigurationRow,
     QuestionDetailRow,
+    QuestionExplanationRow,
     AnswerRow,
     ScoreRow,
     GameRow,
@@ -65,6 +66,7 @@ def _question_to_row(question: Question, game_id: str) -> GameQuestionRow:
         correct_option_id=question.correct_option_id,
         time_limit_seconds=question.time_limit_seconds,
         detail=QuestionDetailRow(question_id=question.question_id, difficulty=question.difficulty.value, language=question.language, source_rule_id=question.source_rule_id),
+        explanation=QuestionExplanationRow(question_id=question.question_id, explanation=question.explanation, knowledge_version=question.knowledge_version),
         options=[
             QuestionOptionRow(
                 question_id=question.question_id,
@@ -163,6 +165,8 @@ def _row_to_record(row: GameRow) -> FinishedGameRecord:
                 difficulty=question.detail.difficulty if question.detail else "EASY",
                 language=question.detail.language if question.detail else "en",
                 source_rule_id=question.detail.source_rule_id if question.detail else "",
+                explanation=question.explanation.explanation if question.explanation else "",
+                knowledge_version=question.explanation.knowledge_version if question.explanation else "",
             )
             for question in row.questions
         ),

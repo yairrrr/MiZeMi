@@ -153,6 +153,22 @@ export const hebrew = {
   'Medium': 'בינוני',
   'Hard': 'קשה',
   'Only {actual} of {requested} questions could be made from the shared profiles.': 'מהפרופילים ששותפו אפשר היה ליצור {actual} שאלות מתוך {requested} שביקשתם.',
+  'Israeli Pop': 'פופ ישראלי',
+  'Mediterranean': 'ים תיכונית',
+  'House': 'האוס',
+  'Techno': 'טכנו',
+  'Trance': 'טראנס',
+  'Indie': 'אינדי',
+  'R&B': 'אר אנד בי',
+  'Reggae': 'רגאיי',
+  'Folk': 'פולק',
+  'Country': 'קאנטרי',
+  'Blues': 'בלוז',
+  'How the connections work': 'איך נוצרים החיבורים',
+  'The game connects the answers you agreed to share with facts about films, music, food, hobbies and towns.': 'המשחק מחבר בין התשובות שהסכמתם לשתף לבין עובדות על סרטים, מוזיקה, אוכל, תחביבים ויישובים.',
+  'Reference credits': 'קרדיטים למקורות',
+  'Facts from Wikidata (CC0). Place data from GeoNames (CC BY 4.0), filtered and adapted by MiZeMi.': 'עובדות מ־Wikidata ברישיון CC0. נתוני יישובים מ־GeoNames ברישיון CC BY 4.0, לאחר סינון והתאמה של MiZeMi.',
+  'Distances compare towns by air, not home addresses or driving routes.': 'המרחקים הם בין יישובים בקו אווירי, ולא בין כתובות מגורים או במסלולי נסיעה.',
 } as const
 
 export type MessageKey = keyof typeof hebrew

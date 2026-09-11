@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { KnowledgeCredits } from './KnowledgeCredits'
 import logo from '../assets/mizemi-logo.png'
 import { I18nProvider, LanguageSelector, useI18n } from '../i18n/I18n'
 
@@ -39,6 +40,7 @@ function AppContent() {
       <main className="app-shell game-mode">
         <LanguageSelector />
         <HostGame session={session} onLeave={leave} />
+        <KnowledgeCredits />
       </main>
     )
   }
@@ -47,6 +49,7 @@ function AppContent() {
       <main className="app-shell game-mode">
         <LanguageSelector />
         <PlayerGame session={session} onLeave={leave} />
+        <KnowledgeCredits />
       </main>
     )
   }
@@ -87,6 +90,7 @@ function AppContent() {
       </div>
 
       <p className="privacy-note">{t('No account needed. Just your group and a room code.')}</p>
+      <KnowledgeCredits />
     </main>
   )
 }

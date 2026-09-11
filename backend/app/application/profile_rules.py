@@ -26,6 +26,17 @@ MUSIC_STYLES: tuple[str, ...] = (
     "Classical",
     "Jazz",
     "Metal",
+    "Mediterranean",
+    "Israeli Pop",
+    "House",
+    "Techno",
+    "Trance",
+    "Indie",
+    "R&B",
+    "Reggae",
+    "Folk",
+    "Country",
+    "Blues",
     "Other",
 )
 

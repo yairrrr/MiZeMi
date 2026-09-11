@@ -49,6 +49,8 @@ class Question:
     difficulty: Difficulty = Difficulty.EASY
     language: str = "en"
     source_rule_id: str = ""
+    explanation: str = ""
+    knowledge_version: str = ""
 
     def __post_init__(self) -> None:
         option_ids = tuple(option.option_id for option in self.options)

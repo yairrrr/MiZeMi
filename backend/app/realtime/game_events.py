@@ -165,6 +165,7 @@ def build_question_ended(
             for option in question.options
         ],
         correct_option_id=question.correct_option_id,
+        explanation=question.explanation,
         statistics=QuestionStatisticsSchema.from_domain(statistics),
         player_result=player_result,
     )
