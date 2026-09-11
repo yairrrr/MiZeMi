@@ -182,6 +182,18 @@ Rules operate only on ProfileDataset, cache consent-safe indexes and pair overla
 
 ## 13. REST / API Conventions
 
+### Offline knowledge extension (v4, explicitly authorized)
+
+Reference knowledge lives in compact version-controlled assets under `backend/app/data/knowledge/`, not in Neon. Development-only scripts may retrieve licensed public facts; deployment and generation never fetch reference sources. An infrastructure loader validates the entire bundle and its provenance/schema before constructing immutable domain knowledge and alias indexes. The composition root injects this knowledge into the pure Question Engine; rules never open files, query databases or make network calls. Unknown and ambiguous aliases supply no semantic facts, while existing direct rules retain the original consented answer.
+
+Only player-consented facts, deterministic mathematics and trusted local classifications may determine an answer. Preferences never imply playlists, personality, demographics or behavior. Multi-label classifications are not exclusive identities; absent or incomplete classification must not become a negative fact. Group-wide comparisons require complete comparable information; limited comparisons explicitly identify their scope. Geographic questions compare locality representative coordinates and straight-line distances, never home locations or travel times, and reject close/tied results within documented precision margins.
+
+Semantic candidates carry a concise localized `explanation` and a private knowledge version. `question.ended` adds `explanation` (empty for legacy questions); it is NEVER included in active events because it can reveal the answer. Reconnect repeats the explanation. Finished records preserve it in an additive cascading `question_explanations` table, so no existing column migration is needed. Public reference attribution is available in the UI; source manifests document licenses, retrieval dates and transformations. Scoring, envelopes, host authorization and game configuration remain unchanged.
+
+The music dropdown retains existing wire choices and may add the supported styles Mediterranean, Israeli Pop, House, Techno, Trance, Indie, R&B, Reggae, Folk, Country and Blues. These remain explicit player selections; artist metadata supports objective artist-to-genre questions, never inferred listening behavior. Human question templates in both languages describe movies, food, hobbies and places without database/field/value terminology.
+
+`KNOWLEDGE_BASE_REPORT.md` records actual coverage, sources, all new rules, demonstrations, benchmarks, limitations and final verification. Dataset refresh is deliberate development work with validation/review; production uses the committed version unchanged.
+
 Base `/api/v1`, JSON objects, snake_case, UTC ISO-8601 `Z`. Public endpoints:
 
 | Method/path | Request | Success |
