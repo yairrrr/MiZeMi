@@ -110,7 +110,7 @@ Consent may be withheld for **every** field, including required fields. Empty op
 ### 9.3 Question format
 
 ```json
-{"question_id":"opaque-id","index":0,"total_questions":20,"question_type":"multiple_choice","text":"Question text","options":[{"option_id":"a","text":"Answer A"},{"option_id":"b","text":"Answer B"}],"time_limit_seconds":20,"started_at":"2026-09-11T08:00:00.000Z"}
+{"question_id":"opaque-id","index":0,"total_questions":20,"question_type":"multiple_choice","text":"Question text","options":[{"option_id":"a","text":"Answer A"},{"option_id":"b","text":"Answer B"}],"difficulty":"EASY","language":"en","time_limit_seconds":20,"started_at":"2026-09-11T08:00:00.000Z"}
 ```
 
 `index` is zero-based. The production rules generate 2–4 distinct options with exactly one correct option. Option ids are opaque. Default question count is 20 (host-configurable 1–50); default timeout is 20 seconds (1–300). The engine returns fewer questions if fewer valid candidates exist, and rejects starting with none. It never invents non-consented facts to fill a quota.
@@ -224,12 +224,12 @@ Clients reconnect with bounded backoff and restore their per-tab session after r
 | question.started | §9.3, no correct answer |
 | answer.accepted | `{question_id, option_id}` to answerer's sockets only |
 | statistics.updated | Active counts-only §9.6 |
-| question.ended | `{question_id, text, options, correct_option_id, statistics, player_result}` |
+| question.ended | `{question_id, text, options, difficulty, language, correct_option_id, statistics, player_result}` |
 | leaderboard.updated | §9.7 |
 | game.finished | `{leaderboard: Leaderboard, winners: LeaderboardEntry[]}` |
 | error | §17 error object |
 
-`question.ended.text` and `.options` repeat the public content so a reconnect needs no earlier question event to render results. Correct answer/statistics are only emitted after that question closes. `player.joined` and `player.updated` remain registered for compatibility; complete room snapshots currently carry their information.
+`question.ended.text`, `.options`, `.difficulty` and `.language` repeat the public content so a reconnect needs no earlier question event to render results. Correct answer/statistics are only emitted after that question closes. `player.joined` and `player.updated` remain registered for compatibility; complete room snapshots currently carry their information.
 
 ### 14.3 Message envelope
 
