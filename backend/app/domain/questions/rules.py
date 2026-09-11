@@ -23,12 +23,34 @@ def _label(field_key: str) -> str:
     return field_key.replace("_", " ")
 
 
+def _render(value: str | int) -> str:
+    """Quote free-text values; leave numbers bare ("is 27", "is \"pizza\"")."""
+    return str(value) if isinstance(value, int) else f'"{value}"'
+
+
+def _group_key(value: str | int) -> str | int:
+    """Case/whitespace-insensitive identity, so "Pizza" and " pizza" match."""
+    if isinstance(value, str):
+        return " ".join(value.split()).casefold()
+    return value
+
+
 def _grouped(dataset: ProfileDataset, field_key: str) -> dict[str | int, list[str]]:
-    """Group player_ids by value, preserving deterministic dataset order."""
+    """Group player_ids by normalized value, preserving dataset order.
+
+    Keys are the first-seen original spelling, so generated text shows a
+    value exactly as a player typed it while still matching equivalent
+    spellings from other players.
+    """
+    display: dict[str | int, str | int] = {}
     groups: dict[str | int, list[str]] = {}
     for player_id, value in dataset.values_for(field_key):
-        groups.setdefault(value, []).append(player_id)
-    return groups
+        key = _group_key(value)
+        if key not in groups:
+            display[key] = value
+            groups[key] = []
+        groups[key].append(player_id)
+    return {display[key]: player_ids for key, player_ids in groups.items()}
 
 
 def _build_options(
@@ -82,7 +104,7 @@ class UniqueValueRule(QuestionRule):
                 )
                 candidates.append(
                     QuestionCandidate(
-                        text=f'Who is the only player whose {_label(field_key)} is "{value}"?',
+                        text=f"Who is the only player whose {_label(field_key)} is {_render(value)}?",
                         options=options,
                         correct_option_id=correct_option_id,
                         source_rule_id=self.rule_id,
@@ -157,7 +179,7 @@ class ValueCountRule(QuestionRule):
                 )
                 candidates.append(
                     QuestionCandidate(
-                        text=f'How many players have "{value}" as their {_label(field_key)}?',
+                        text=f"How many players have {_render(value)} as their {_label(field_key)}?",
                         options=options,
                         correct_option_id=correct_option_id,
                         source_rule_id=self.rule_id,
