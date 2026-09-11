@@ -16,10 +16,10 @@ from enum import Enum
 from functools import lru_cache
 from typing import Annotated
 
-from pydantic import field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
-_DEFAULT_CORS_ORIGINS = ("http://localhost:5173",)
+_DEFAULT_CORS_ORIGINS = ("http://localhost:5173", "http://127.0.0.1:5173")
 
 
 class Environment(str, Enum):
@@ -45,16 +45,32 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
         frozen=True,
+        # Keep constructing Settings(database_url=...) by field name working
+        # alongside the DATABASE_URL alias below.
+        validate_by_name=True,
     )
 
     env: Environment = Environment.DEVELOPMENT
-    database_url: str = "sqlite:///./mizemi.db"
+    # MIZEMI_DATABASE_URL wins; the bare DATABASE_URL name that hosting
+    # providers (Render, Neon) inject is accepted as a fallback.
+    database_url: str = Field(
+        default="sqlite:///./mizemi.db",
+        validation_alias=AliasChoices("MIZEMI_DATABASE_URL", "DATABASE_URL"),
+    )
     host: str = "127.0.0.1"
     port: int = 8000
     # NoDecode: the raw env value is a §16 comma-separated string, not JSON —
     # let _parse_cors_origins own the parsing instead of the settings source.
     cors_origins: Annotated[tuple[str, ...], NoDecode] = _DEFAULT_CORS_ORIGINS
     log_level: str = "INFO"
+
+    # Gameplay (§9.3, §12): the approved MVP defaults.
+    questions_per_game: int = Field(default=10, ge=1, le=50)
+    question_time_limit_seconds: int = Field(default=20, ge=1, le=300)
+    # Abuse limits and lifetimes (§10, §15, §17).
+    max_players_per_room: int = Field(default=50, ge=1, le=500)
+    room_idle_ttl_minutes: int = Field(default=120, ge=1)
+    retention_days: int = Field(default=7, ge=1)
 
     @field_validator("cors_origins", mode="before")
     @classmethod

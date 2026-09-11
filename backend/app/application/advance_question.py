@@ -9,6 +9,8 @@ Transport-independent: the host trigger for ``game.next`` is not wired here
 because the host authorization mechanism remains deferred (§0).
 """
 
+from datetime import datetime
+
 from app.domain.game import Game, GameState
 from app.domain.questions import Question
 
@@ -24,7 +26,7 @@ class GameNotAdvanceableError(Exception):
 class AdvanceQuestionService:
     """LEADERBOARD → next question, or the end of the game."""
 
-    def advance(self, game: Game) -> Question | None:
+    def advance(self, game: Game, *, opened_at: datetime | None = None) -> Question | None:
         """Advance ``game`` and return the newly active question.
 
         Returns ``None`` when the final question was already played and the
@@ -33,7 +35,7 @@ class AdvanceQuestionService:
         """
         if game.state is not GameState.LEADERBOARD:
             raise GameNotAdvanceableError(game.state)
-        game.advance_to_next_question()
+        game.advance_to_next_question(opened_at=opened_at)
         return game.current_question
 
     @staticmethod

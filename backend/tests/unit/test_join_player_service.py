@@ -158,3 +158,37 @@ class TestJoinPlayerService:
 
         assert exc_info.value.state is GameState.QUESTION_ACTIVE
         assert room.game.players == (player,)
+
+
+class TestJoinCredentialsAndCapacity:
+    def test_join_issues_a_player_token_bound_to_that_player(self) -> None:
+        from app.infrastructure.credentials import CredentialStore
+
+        registry, _ = _registry_with_room()
+        credentials = CredentialStore()
+        service = JoinPlayerService(
+            registry, credentials=credentials, token_generator=lambda: "player-token-1"
+        )
+
+        result = service.join("ABC234", "Dana")
+
+        assert result.player_token == "player-token-1"
+        assert credentials.verify_player("ABC234", result.player.player_id, "player-token-1")
+
+    def test_join_without_credential_store_returns_no_token(self) -> None:
+        registry, _ = _registry_with_room()
+
+        assert JoinPlayerService(registry).join("ABC234", "Dana").player_token is None
+
+    def test_full_room_rejects_new_players_without_mutation(self) -> None:
+        from app.application.join_player import RoomFullError
+
+        registry, room = _registry_with_room()
+        service = JoinPlayerService(registry, max_players=2)
+        service.join("ABC234", "Dana")
+        service.join("ABC234", "Omer")
+
+        with pytest.raises(RoomFullError):
+            service.join("ABC234", "Noa")
+
+        assert len(room.game.players) == 2
