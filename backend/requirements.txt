@@ -1,10 +1,8 @@
-# MiZeMi backend dependencies (see MASTER_SPEC.md §4).
-# Only Pydantic and SQLAlchemy carry version bounds — MASTER_SPEC.md §4
-# requires Pydantic v2 and SQLAlchemy 2.x; nothing else is pinned yet.
-fastapi
-uvicorn
-pydantic>=2,<3
-pydantic-settings
-sqlalchemy>=2,<3
-pytest
-httpx
+# Free, pinned runtime dependencies; Python 3.12+.
+fastapi==0.141.1
+uvicorn==0.52.1
+websockets==17.1
+pydantic==2.13.4
+pydantic-settings==2.15.0
+sqlalchemy==2.0.51
+psycopg[binary]==3.3.5
