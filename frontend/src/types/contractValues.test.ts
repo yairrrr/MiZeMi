@@ -33,6 +33,7 @@ describe('shared contract closed values', () => {
       'UNKNOWN_EVENT',
       'INTERNAL_ERROR',
       'ROOM_NOT_JOINABLE',
+      'NO_QUESTIONS_AVAILABLE',
     ])
   })
 
@@ -44,6 +45,7 @@ describe('shared contract closed values', () => {
       'game.start',
       'answer.submit',
       'game.next',
+      'player.remove',
     ])
   })
 

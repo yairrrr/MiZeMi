@@ -12,6 +12,7 @@ aggregate has no rehydration path and the MVP never resumes a stored game).
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+from datetime import datetime
 
 from app.domain.game import Game
 
@@ -54,6 +55,20 @@ class RecordedQuestion:
 
 
 @dataclass(frozen=True)
+class RecordedScore:
+    player_id: str
+    total_score: int
+
+
+@dataclass(frozen=True)
+class RecordedAnswer:
+    player_id: str
+    question_id: str
+    option_id: str
+    answered_at: datetime
+
+
+@dataclass(frozen=True)
 class FinishedGameRecord:
     """A read-only snapshot of a persisted game (§15)."""
 
@@ -62,6 +77,8 @@ class FinishedGameRecord:
     current_question_index: int | None
     players: tuple[RecordedPlayer, ...]
     questions: tuple[RecordedQuestion, ...]
+    scores: tuple[RecordedScore, ...] = ()
+    answers: tuple[RecordedAnswer, ...] = ()
 
 
 class GameRepository(ABC):
@@ -80,6 +97,14 @@ class GameRepository(ABC):
     @abstractmethod
     def get(self, game_id: str) -> "FinishedGameRecord | None":
         """Return the stored snapshot for ``game_id``, or ``None`` if absent."""
+
+    @abstractmethod
+    def delete_older_than(self, cutoff: datetime) -> int:
+        """Delete every stored game last written before ``cutoff``.
+
+        The retention routine (§10.5) calls this periodically; returns how
+        many games were removed. The caller owns the transaction.
+        """
 
     @abstractmethod
     def delete(self, game_id: str) -> None:

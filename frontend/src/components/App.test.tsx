@@ -11,6 +11,18 @@ import type {
 } from '../types'
 import { App } from './App'
 
+vi.mock('../hooks/useGameConnection', async () => {
+  const { initialGameView } = await import('../state/gameReducer')
+  return {
+    useGameConnection: () => ({
+      view: initialGameView,
+      status: 'connecting',
+      send: () => true,
+      dismissError: () => {},
+    }),
+  }
+})
+
 vi.mock('../api/roomApi', async (importOriginal) => {
   const original = await importOriginal<typeof import('../api/roomApi')>()
   return { ...original, createRoom: vi.fn(), joinRoom: vi.fn() }
@@ -20,7 +32,7 @@ import { createRoom, joinRoom } from '../api/roomApi'
 
 const createRoomMock = vi.mocked(createRoom)
 const joinRoomMock = vi.mocked(joinRoom)
-const createdRoom: CreateRoomResponse = { room_code: 'K7PW3N', game_id: 'game-123' }
+const createdRoom: CreateRoomResponse = { room_code: 'K7PW3N', game_id: 'game-123', host_token: 'host-secret' }
 const joinedPlayer: Player = {
   player_id: 'player-123', display_name: 'Dana', is_host: false, connected: false,
   has_profile: false, is_ready: false, score: 0,
@@ -28,6 +40,7 @@ const joinedPlayer: Player = {
 const joinResponse: JoinRoomResponse = {
   game_id: 'game-123',
   player: joinedPlayer,
+  player_token: 'player-secret',
 }
 
 afterEach(cleanup)
@@ -49,6 +62,7 @@ describe('room entry screen', () => {
   beforeEach(() => {
     createRoomMock.mockReset()
     joinRoomMock.mockReset()
+    sessionStorage.clear()
   })
 
   test('renders the MiZeMi shell with Host and Player actions', () => {
@@ -88,6 +102,28 @@ describe('room entry screen', () => {
     const user = await fillJoinForm('room-7', 'Dana')
     await user.click(screen.getByRole('button', { name: 'Join Room' }))
     expect(joinRoomMock).toHaveBeenCalledWith('room-7', { display_name: 'Dana' })
+  })
+
+  test('keeps the session so a refresh returns to the same room', async () => {
+    joinRoomMock.mockResolvedValue(joinResponse)
+    render(<App />)
+    const user = await fillJoinForm()
+    await user.click(screen.getByRole('button', { name: 'Join Room' }))
+    await screen.findByText(/you’re in, Dana!/i)
+
+    const stored = JSON.parse(sessionStorage.getItem('mizemi.session') ?? '{}')
+    expect(stored).toMatchObject({ role: 'player', room_code: 'K7PW3N', player_id: 'player-123' })
+
+    cleanup()
+    render(<App />)
+    expect(await screen.findByText(/you’re in, Dana!/i)).toBeVisible()
+  })
+
+  test('prefills the room code from a shared join link', () => {
+    window.history.pushState({}, '', '/?room=AB12CD')
+    render(<App />)
+    expect(screen.getByLabelText('Room Code')).toHaveValue('AB12CD')
+    window.history.pushState({}, '', '/')
   })
 
   test('disables Join and prevents duplicate submissions while pending', async () => {

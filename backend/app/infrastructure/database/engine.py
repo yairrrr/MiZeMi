@@ -19,20 +19,43 @@ from app.infrastructure.settings import get_settings
 _IN_MEMORY_SQLITE_URLS = frozenset({"sqlite://", "sqlite:///:memory:"})
 
 
+def normalize_database_url(database_url: str) -> str:
+    """Point bare PostgreSQL URLs at the psycopg 3 driver.
+
+    Hosting providers (Neon, Render) hand out ``postgres://`` or
+    ``postgresql://`` URLs; SQLAlchemy needs ``postgresql+psycopg://`` to use
+    the installed psycopg 3 driver. Other URLs are returned unchanged.
+    """
+    for prefix in ("postgres://", "postgresql://"):
+        if database_url.startswith(prefix):
+            return "postgresql+psycopg://" + database_url[len(prefix):]
+    return database_url
+
+
 def create_database_engine(database_url: str) -> Engine:
-    """Build an ``Engine`` for ``database_url`` with SQLite-safe defaults.
+    """Build an ``Engine`` for ``database_url`` with backend-appropriate defaults.
 
     For SQLite, ``check_same_thread=False`` lets the connection be used from
     FastAPI's threadpool (a pysqlite driver arg, not a schema feature), and an
     in-memory URL additionally gets a ``StaticPool`` so every session in the
-    process shares the one in-memory database. A non-SQLite URL gets neither.
+    process shares the one in-memory database. Server databases get
+    ``pool_pre_ping`` and a short ``pool_recycle`` so connections dropped by a
+    serverless provider (Neon suspends idle compute) are replaced
+    transparently instead of failing a request.
     """
-    kwargs: dict[str, object] = {}
-    if database_url.startswith("sqlite"):
+    url = normalize_database_url(database_url)
+    kwargs: dict[str, object] = {"hide_parameters": True}
+    if url.startswith("sqlite"):
         kwargs["connect_args"] = {"check_same_thread": False}
-        if database_url in _IN_MEMORY_SQLITE_URLS:
+        if url in _IN_MEMORY_SQLITE_URLS:
             kwargs["poolclass"] = StaticPool
-    return create_engine(database_url, **kwargs)
+    else:
+        kwargs["pool_pre_ping"] = True
+        kwargs["pool_recycle"] = 300
+        kwargs["pool_size"] = 2
+        kwargs["max_overflow"] = 1
+        kwargs["connect_args"] = {"connect_timeout": 10}
+    return create_engine(url, **kwargs)
 
 
 def create_session_factory(engine: Engine) -> sessionmaker[Session]:

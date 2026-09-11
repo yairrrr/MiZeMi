@@ -5,8 +5,7 @@ import type { CreateRoomResponse } from '../../types'
 
 const GENERIC_CREATE_ERROR = 'We could not create a room. Please try again.'
 
-export function HostRoomEntry() {
-  const [room, setRoom] = useState<CreateRoomResponse | null>(null)
+export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomResponse) => void }) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const isPending = useRef(false)
@@ -21,12 +20,10 @@ export function HostRoomEntry() {
     setErrorMessage(null)
 
     try {
-      setRoom(await createRoom())
+      onCreated(await createRoom())
     } catch (error) {
       setErrorMessage(
-        error instanceof RestApiError
-          ? error.response.error.message
-          : GENERIC_CREATE_ERROR,
+        error instanceof RestApiError ? error.response.error.message : GENERIC_CREATE_ERROR,
       )
     } finally {
       isPending.current = false
@@ -46,7 +43,7 @@ export function HostRoomEntry() {
         </div>
       </div>
       <p className="card-copy">
-        Create a room, then share the code so everyone can join the fun.
+        Create a room on the big screen, then share the code so everyone can join from their phone.
       </p>
 
       <button
@@ -62,16 +59,6 @@ export function HostRoomEntry() {
         <p className="status-message error-message" role="alert">
           {errorMessage}
         </p>
-      )}
-
-      {room !== null && (
-        <div className="room-success" role="status" aria-live="polite">
-          <p>Your room is ready!</p>
-          <strong aria-label={`Room code ${room.room_code}`}>
-            {room.room_code}
-          </strong>
-          <span>Share this code with your players.</span>
-        </div>
       )}
     </section>
   )

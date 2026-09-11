@@ -1,208 +1,57 @@
-"""Player WebSocket connection and gameplay commands (MASTER_SPEC.md §14).
+"""Player WebSocket endpoint (MASTER_SPEC.md §14.1).
 
-Approved behavior only: resolve room/player (close without envelope when
-unknown), maintain the ``connected`` flag, and expose the two approved
-pre-game client intents — ``player.profile_submit`` and ``player.ready`` —
-by delegating to the existing Game domain methods. No success
-acknowledgements exist (``room.updated`` is deferred); errors reuse the
-approved §17 payload inside the approved §14.3 envelope.
-
-Accepted connections register with the room connection registry so server
-events can be delivered to them, and deregister on disconnect. Registration
-is by connection identity only — it introduces no reconnect or
-simultaneous-connection policy (both deferred, §0).
-
-Known deferred edge case (unchanged by the registry, pre-existing since the
-connection endpoint was introduced): ``Player.connected`` is a single
-boolean, so if one player holds two live sockets and one closes, the flag
-becomes false while the other socket is still connected and still receives
-broadcasts. Resolving this requires the deferred simultaneous-connection /
-session-replacement policy, so the current semantics are left untouched
-rather than fixed by inventing a rule.
+``/ws/rooms/{room_code}?player_id=...`` with the player token offered as the
+subprotocol pair ``["mizemi.player", <token>]``. The room, the player and
+the token are all verified before the socket is accepted; any failure closes
+the connection without a realtime envelope (§14.1). Everything after that is
+delegated to the ``GameHub``.
 """
 
-import json
 from typing import Any
 
 from fastapi import APIRouter, WebSocket
-from pydantic import ValidationError
 
-from app.api.schemas import PlayerProfileSchema, PlayerReadyPayloadSchema
-from app.domain.game import Game, PlayerProfile, ProfileField
-from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
-from app.realtime.connections import RoomConnectionRegistry
-from app.realtime.envelope import (
-    MalformedEnvelopeError,
-    UnknownEventError,
-    parse_client_envelope,
+from app.realtime.connections import ConnectionHandle
+from app.realtime.errors import ErrorCode
+from app.realtime.game_events import build_error
+from app.realtime.hub import GameHub
+from app.realtime.transport import (
+    FORBIDDEN_ORIGIN_CLOSE_CODE,
+    PLAYER_PROTOCOL,
+    UNRESOLVED_CLOSE_CODE,
+    origin_allowed,
+    receive_loop,
+    requested_token,
 )
-from app.realtime.game_events import build_envelope
-from app.realtime.errors import ErrorCode, ErrorDetail, ErrorPayload
-from app.realtime.events import ClientToServerEvent, ServerToClientEvent
-
-# Internal implementation value for pre-resolution closes. Deliberately NOT a
-# MiZeMi protocol guarantee: the spec promises only "closed without envelope".
-_UNRESOLVED_CLOSE_CODE = 4404
-
-_MALFORMED_MESSAGE = "The message is not a valid realtime envelope."
 
 router = APIRouter()
 
 
 def _error_envelope(game_id: str, code: ErrorCode, message: str) -> dict[str, Any]:
     """Build an §17 error payload inside the canonical §14.3 envelope."""
-    payload = ErrorPayload(error=ErrorDetail(code=code, message=message)).model_dump(
-        mode="json"
-    )
-    return build_envelope(ServerToClientEvent.ERROR, payload, game_id)
-
-
-async def _send_error(
-    websocket: WebSocket, game_id: str, code: ErrorCode, message: str
-) -> None:
-    await websocket.send_json(_error_envelope(game_id, code, message))
-
-
-async def _handle_profile_submit(
-    websocket: WebSocket, game: Game, player_id: str, payload: dict[str, Any]
-) -> None:
-    try:
-        schema = PlayerProfileSchema.model_validate(payload)
-    except ValidationError:
-        await _send_error(
-            websocket,
-            game.game_id,
-            ErrorCode.VALIDATION_ERROR,
-            "The payload is not a valid profile submission.",
-        )
-        return
-    # The connected player is authoritative — a payload naming another
-    # player is rejected, never honored.
-    if schema.player_id != player_id:
-        await _send_error(
-            websocket,
-            game.game_id,
-            ErrorCode.VALIDATION_ERROR,
-            "The profile player_id does not match this connection's player.",
-        )
-        return
-    profile = PlayerProfile(
-        player_id=player_id,
-        fields=tuple(
-            ProfileField(
-                field_key=field.field_key,
-                value=field.value,
-                allow_question_usage=field.allow_question_usage,
-            )
-            for field in schema.fields
-        ),
-    )
-    try:
-        game.submit_initial_profile(player_id, profile)
-    except ValueError:
-        await _send_error(
-            websocket,
-            game.game_id,
-            ErrorCode.VALIDATION_ERROR,
-            "The profile submission was rejected.",
-        )
-
-
-async def _handle_player_ready(
-    websocket: WebSocket, game: Game, player_id: str, payload: dict[str, Any]
-) -> None:
-    try:
-        PlayerReadyPayloadSchema.model_validate(payload)
-    except ValidationError:
-        await _send_error(
-            websocket,
-            game.game_id,
-            ErrorCode.VALIDATION_ERROR,
-            "The player.ready payload must be exactly empty.",
-        )
-        return
-    try:
-        game.mark_player_ready(player_id)
-    except ValueError:
-        await _send_error(
-            websocket,
-            game.game_id,
-            ErrorCode.VALIDATION_ERROR,
-            "The ready request was rejected.",
-        )
-
-
-async def _handle_text_frame(
-    websocket: WebSocket, game: Game, player_id: str, raw_text: str
-) -> None:
-    game_id = game.game_id
-    try:
-        data = json.loads(raw_text)
-    except json.JSONDecodeError:
-        await _send_error(websocket, game_id, ErrorCode.VALIDATION_ERROR, _MALFORMED_MESSAGE)
-        return
-    if not isinstance(data, dict):
-        await _send_error(websocket, game_id, ErrorCode.VALIDATION_ERROR, _MALFORMED_MESSAGE)
-        return
-    try:
-        event, envelope = parse_client_envelope(data)
-    except MalformedEnvelopeError:
-        await _send_error(websocket, game_id, ErrorCode.VALIDATION_ERROR, _MALFORMED_MESSAGE)
-        return
-    except UnknownEventError:
-        await _send_error(websocket, game_id, ErrorCode.UNKNOWN_EVENT, "Unknown event.")
-        return
-    if envelope.game_id != game_id:
-        await _send_error(
-            websocket,
-            game_id,
-            ErrorCode.VALIDATION_ERROR,
-            "The envelope game_id does not match this connection's game.",
-        )
-        return
-
-    if event is ClientToServerEvent.PLAYER_PROFILE_SUBMIT:
-        await _handle_profile_submit(websocket, game, player_id, envelope.payload)
-    elif event is ClientToServerEvent.PLAYER_READY:
-        await _handle_player_ready(websocket, game, player_id, envelope.payload)
-    # Registry-known events without a handler yet (player.join, game.start,
-    # answer.submit, game.next) are a temporary implementation gap: no
-    # mutation, no reply. This is NOT a protocol guarantee — each event's
-    # own task defines its behavior.
+    return build_error(game_id, code, message)
 
 
 @router.websocket("/ws/rooms/{room_code}")
 async def player_websocket(websocket: WebSocket, room_code: str, player_id: str) -> None:
-    registry: RoomRegistry = websocket.app.state.room_registry
-    try:
-        room = registry.get(room_code)
-    except RoomNotFoundError:
-        await websocket.close(code=_UNRESOLVED_CLOSE_CODE)
+    hub: GameHub = websocket.app.state.game_hub
+    if not origin_allowed(websocket):
+        await websocket.close(code=FORBIDDEN_ORIGIN_CLOSE_CODE)
         return
-    player = room.game.get_player(player_id)
-    if player is None:
-        await websocket.close(code=_UNRESOLVED_CLOSE_CODE)
+    room = hub.resolve_player(room_code, player_id, requested_token(websocket, PLAYER_PROTOCOL))
+    if room is None:
+        await websocket.close(code=UNRESOLVED_CLOSE_CODE)
         return
 
-    await websocket.accept()
-    player.connected = True
-    connections: RoomConnectionRegistry = websocket.app.state.room_connections
-    connections.add(room_code, websocket)
+    if websocket.app.state.room_connections.player_connection_count(room.room_code, player_id) >= 4:
+        await websocket.close(code=4429)
+        return
+
+    await websocket.accept(subprotocol=PLAYER_PROTOCOL)
+    handle = ConnectionHandle(websocket, role="player", player_id=player_id)
+    hub.connect(room, handle)
     try:
-        while True:
-            message = await websocket.receive()
-            if message["type"] == "websocket.disconnect":
-                break
-            raw_text = message.get("text")
-            if raw_text is None:
-                await _send_error(
-                    websocket,
-                    room.game.game_id,
-                    ErrorCode.VALIDATION_ERROR,
-                    _MALFORMED_MESSAGE,
-                )
-                continue
-            await _handle_text_frame(websocket, room.game, player_id, raw_text)
+        await receive_loop(websocket, hub, room, handle)
     finally:
-        connections.remove(room_code, websocket)
-        player.connected = False
+        hub.disconnect(room, handle)
+        await handle.shutdown()

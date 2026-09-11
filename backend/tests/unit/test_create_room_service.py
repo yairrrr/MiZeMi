@@ -94,3 +94,24 @@ class TestCreateRoomService:
 
         with pytest.raises(RoomNotFoundError):
             registry_b.get(room.room_code)
+
+
+class TestHostedRoom:
+    def test_hosted_room_issues_a_verifiable_host_token(self) -> None:
+        from app.infrastructure.credentials import CredentialStore
+
+        registry, credentials = RoomRegistry(), CredentialStore()
+        service = CreateRoomService(
+            registry, credentials=credentials, token_generator=lambda: "host-token-1"
+        )
+
+        hosted = service.create_hosted_room()
+
+        assert hosted.host_token == "host-token-1"
+        assert registry.get(hosted.room.room_code) is hosted.room
+        assert credentials.verify_host(hosted.room.room_code, "host-token-1") is True
+        assert credentials.verify_host(hosted.room.room_code, "guess") is False
+
+    def test_hosted_room_requires_a_credential_store(self) -> None:
+        with pytest.raises(RuntimeError):
+            CreateRoomService(RoomRegistry()).create_hosted_room()

@@ -7,16 +7,28 @@
 from app.domain.game.player import Player
 from app.domain.game.profile import PlayerProfile, ProfileField
 from app.domain.game.state import GameState, GameStateMachine
+from app.domain.game.answer import (
+    Answer,
+    AnswerRejectedError,
+    AnswerRejection,
+    PlayerRoundResult,
+    RoundResult,
+)
 from app.domain.game.game import Game, InvalidStateTransitionError
 from app.domain.game.room import Room
 
 __all__ = [
+    "Answer",
+    "AnswerRejectedError",
+    "AnswerRejection",
     "Game",
     "GameState",
     "GameStateMachine",
     "InvalidStateTransitionError",
     "Player",
     "PlayerProfile",
+    "PlayerRoundResult",
     "ProfileField",
     "Room",
+    "RoundResult",
 ]

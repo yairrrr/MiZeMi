@@ -1,4 +1,9 @@
-"""Room REST endpoints (MASTER_SPEC.md §13, first vertical)."""
+"""Room REST endpoints (MASTER_SPEC.md §13).
+
+``async`` handlers on purpose: they run on the event loop, like the
+WebSocket handlers, so every room mutation goes through the ``GameHub`` on a
+single thread and joins are broadcast to connected clients immediately.
+"""
 
 from typing import Annotated
 
@@ -11,15 +16,15 @@ from app.api.schemas import (
     JoinRoomResponse,
     PlayerSchema,
 )
-from app.application.create_room import CreateRoomService
 from app.application.join_player import (
     InvalidDisplayNameError,
-    JoinPlayerService,
     NameTakenError,
+    RoomFullError,
     RoomNotJoinableError,
 )
 from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
 from app.realtime.errors import ErrorCode
+from app.realtime.hub import GameHub, RoomLimitError
 
 router = APIRouter()
 
@@ -28,30 +33,41 @@ def get_room_registry(request: Request) -> RoomRegistry:
     return request.app.state.room_registry
 
 
+def get_game_hub(request: Request) -> GameHub:
+    return request.app.state.game_hub
+
+
 @router.post("/rooms", status_code=201)
-def create_room(
-    registry: Annotated[RoomRegistry, Depends(get_room_registry)],
-) -> CreateRoomResponse:
-    room = CreateRoomService(registry).create_room()
-    return CreateRoomResponse(room_code=room.room_code, game_id=room.game.game_id)
+async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)]):
+    try:
+        hosted = hub.create_room()
+    except RoomLimitError:
+        return error_response(503, ErrorCode.ROOM_FULL, "The server has too many rooms. Please try again later.")
+    return CreateRoomResponse(
+        room_code=hosted.room.room_code,
+        game_id=hosted.room.game.game_id,
+        host_token=hosted.host_token,
+    )
 
 
 @router.post("/rooms/{room_code}/players", status_code=201, response_model=JoinRoomResponse)
-def join_room(
+async def join_room(
     room_code: str,
     body: JoinRoomRequest,
-    registry: Annotated[RoomRegistry, Depends(get_room_registry)],
+    hub: Annotated[GameHub, Depends(get_game_hub)],
 ):
     try:
-        result = JoinPlayerService(registry).join(room_code, body.display_name)
-    except RoomNotFoundError as exc:
+        result = hub.join(room_code, body.display_name)
+    except RoomNotFoundError:
         return error_response(
-            404, ErrorCode.ROOM_NOT_FOUND, f"No room exists with code {exc.room_code}."
+            404, ErrorCode.ROOM_NOT_FOUND, "No room exists with that code."
         )
     except RoomNotJoinableError:
         return error_response(
             409, ErrorCode.ROOM_NOT_JOINABLE, "The game can no longer be joined."
         )
+    except RoomFullError:
+        return error_response(409, ErrorCode.ROOM_FULL, "This room is full.")
     except NameTakenError:
         return error_response(
             409, ErrorCode.NAME_TAKEN, "That display name is already taken in this room."
@@ -62,8 +78,10 @@ def join_room(
             ErrorCode.VALIDATION_ERROR,
             "display_name must be 1-20 characters after trimming.",
         )
+    assert result.player_token is not None  # the hub always issues credentials
     # score=0: the approved initial score for a newly joined player (§9.1).
     return JoinRoomResponse(
         game_id=result.game_id,
         player=PlayerSchema.from_domain(result.player, score=0),
+        player_token=result.player_token,
     )

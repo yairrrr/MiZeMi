@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from app.infrastructure.database.engine import (
+    normalize_database_url,
     create_database_engine,
     create_session_factory,
     get_engine,
@@ -38,6 +39,27 @@ class TestCreateDatabaseEngine:
             writer.commit()
         with factory() as reader:
             assert reader.execute(text("SELECT id FROM t")).scalar_one() == 1
+
+
+class TestPostgresSupport:
+    @pytest.mark.parametrize(
+        ("raw", "expected"),
+        [
+            ("postgres://u:p@h/db", "postgresql+psycopg://u:p@h/db"),
+            ("postgresql://u:p@h/db?sslmode=require", "postgresql+psycopg://u:p@h/db?sslmode=require"),
+            ("postgresql+psycopg://u:p@h/db", "postgresql+psycopg://u:p@h/db"),
+            ("sqlite:///./mizemi.db", "sqlite:///./mizemi.db"),
+        ],
+    )
+    def test_url_normalization(self, raw: str, expected: str) -> None:
+        assert normalize_database_url(raw) == expected
+
+    def test_postgres_engine_uses_psycopg_and_pre_ping_without_connecting(self) -> None:
+        engine = create_database_engine("postgresql://user:pw@db.example.invalid/mizemi")
+
+        assert engine.dialect.name == "postgresql"
+        assert engine.dialect.driver == "psycopg"
+        assert engine.pool._pre_ping is True
 
 
 class TestCreateSessionFactory:

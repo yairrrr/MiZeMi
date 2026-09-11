@@ -6,6 +6,13 @@ from pydantic import ValidationError
 from app.infrastructure.settings import Environment, Settings, get_settings
 
 
+@pytest.fixture(autouse=True)
+def _real_environment_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Undo the suite-wide in-memory database override for these tests."""
+    monkeypatch.delenv("MIZEMI_DATABASE_URL", raising=False)
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+
+
 def _settings(**overrides: object) -> Settings:
     """Build Settings without reading any real .env file on the machine."""
     return Settings(_env_file=None, **overrides)  # type: ignore[call-arg]
@@ -19,8 +26,17 @@ class TestDefaults:
         assert settings.database_url == "sqlite:///./mizemi.db"
         assert settings.host == "127.0.0.1"
         assert settings.port == 8000
-        assert settings.cors_origins == ("http://localhost:5173",)
+        assert settings.cors_origins == ("http://localhost:5173", "http://127.0.0.1:5173")
         assert settings.log_level == "INFO"
+
+    def test_gameplay_defaults_are_the_approved_mvp_values(self) -> None:
+        settings = _settings()
+
+        assert settings.questions_per_game == 10
+        assert settings.question_time_limit_seconds == 20
+        assert settings.max_players_per_room == 50
+        assert settings.room_idle_ttl_minutes == 120
+        assert settings.retention_days == 7
 
 
 class TestEnvironmentLoading:
@@ -43,12 +59,31 @@ class TestEnvironmentLoading:
         monkeypatch.setenv("MIZEMI_PORT", "8123")
         assert _settings().port == 8123
 
-    def test_unprefixed_variables_are_ignored(
+    def test_host_alias_is_supported_but_generic_env_is_ignored(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setenv("ENV", "production")
-        monkeypatch.setenv("DATABASE_URL", "postgres://nope")
-        assert _settings().env is Environment.DEVELOPMENT
+        monkeypatch.setenv("HOST", "0.0.0.0")
+        settings = _settings()
+        assert settings.env is Environment.DEVELOPMENT
+        assert settings.host == "0.0.0.0"
+
+    def test_bare_database_url_is_accepted_as_a_fallback(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.delenv("MIZEMI_DATABASE_URL", raising=False)
+        monkeypatch.setenv("DATABASE_URL", "postgresql://user:pw@db.example/mizemi")
+        assert _settings().database_url == "postgresql://user:pw@db.example/mizemi"
+
+    def test_prefixed_database_url_wins_over_the_bare_name(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setenv("DATABASE_URL", "postgresql://bare/db")
+        monkeypatch.setenv("MIZEMI_DATABASE_URL", "sqlite:///./preferred.db")
+        assert _settings().database_url == "sqlite:///./preferred.db"
+
+    def test_database_url_can_be_set_by_field_name(self) -> None:
+        assert _settings(database_url="sqlite://").database_url == "sqlite://"
 
     def test_unknown_prefixed_variables_are_ignored(
         self, monkeypatch: pytest.MonkeyPatch
@@ -96,6 +131,21 @@ class TestValidationAndImmutability:
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setenv("MIZEMI_ENV", "staging")
+        with pytest.raises(ValidationError):
+            _settings()
+
+    @pytest.mark.parametrize(
+        ("variable", "value"),
+        [
+            ("MIZEMI_QUESTIONS_PER_GAME", "0"),
+            ("MIZEMI_QUESTION_TIME_LIMIT_SECONDS", "0"),
+            ("MIZEMI_MAX_PLAYERS_PER_ROOM", "0"),
+        ],
+    )
+    def test_gameplay_limits_are_validated(
+        self, monkeypatch: pytest.MonkeyPatch, variable: str, value: str
+    ) -> None:
+        monkeypatch.setenv(variable, value)
         with pytest.raises(ValidationError):
             _settings()
 

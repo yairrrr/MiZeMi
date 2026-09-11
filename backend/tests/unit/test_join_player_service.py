@@ -134,17 +134,20 @@ class TestJoinPlayerService:
         with pytest.raises(RoomNotFoundError):
             JoinPlayerService(registry).join("ZZZZZ2", "Dana")
 
-    def test_join_rejected_in_ready_state(self) -> None:
+    def test_join_in_ready_reopens_profile_collection(self) -> None:
         registry, room = _registry_with_room()
         player = JoinPlayerService(registry).join("ABC234", "Dana").player
         room.game.submit_initial_profile(player.player_id, _profile_for(player.player_id))
         room.game.mark_player_ready(player.player_id)
         assert room.game.state is GameState.READY
 
-        with pytest.raises(RoomNotJoinableError):
-            JoinPlayerService(registry).join("ABC234", "Omer")
-
-        assert room.game.players == (player,)
+        newcomer = JoinPlayerService(registry).join("ABC234", "Omer").player
+        assert room.game.players == (player, newcomer)
+        assert room.game.state is GameState.PROFILE_COLLECTION
+        assert player.is_ready and not newcomer.is_ready
+        room.game.submit_initial_profile(newcomer.player_id, _profile_for(newcomer.player_id))
+        room.game.mark_player_ready(newcomer.player_id)
+        assert room.game.state is GameState.READY
 
     def test_join_rejected_in_question_active_state(self) -> None:
         registry, room = _registry_with_room()
@@ -158,3 +161,37 @@ class TestJoinPlayerService:
 
         assert exc_info.value.state is GameState.QUESTION_ACTIVE
         assert room.game.players == (player,)
+
+
+class TestJoinCredentialsAndCapacity:
+    def test_join_issues_a_player_token_bound_to_that_player(self) -> None:
+        from app.infrastructure.credentials import CredentialStore
+
+        registry, _ = _registry_with_room()
+        credentials = CredentialStore()
+        service = JoinPlayerService(
+            registry, credentials=credentials, token_generator=lambda: "player-token-1"
+        )
+
+        result = service.join("ABC234", "Dana")
+
+        assert result.player_token == "player-token-1"
+        assert credentials.verify_player("ABC234", result.player.player_id, "player-token-1")
+
+    def test_join_without_credential_store_returns_no_token(self) -> None:
+        registry, _ = _registry_with_room()
+
+        assert JoinPlayerService(registry).join("ABC234", "Dana").player_token is None
+
+    def test_full_room_rejects_new_players_without_mutation(self) -> None:
+        from app.application.join_player import RoomFullError
+
+        registry, room = _registry_with_room()
+        service = JoinPlayerService(registry, max_players=2)
+        service.join("ABC234", "Dana")
+        service.join("ABC234", "Omer")
+
+        with pytest.raises(RoomFullError):
+            service.join("ABC234", "Noa")
+
+        assert len(room.game.players) == 2

@@ -1,0 +1,61 @@
+name: Verify classroom game
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: mizemi_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install Python dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r backend/requirements-dev.txt
+      - name: Install frontend and browser
+        working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Backend including PostgreSQL
+        env:
+          MIZEMI_TEST_POSTGRES_URL: postgresql://postgres@localhost:5432/mizemi_test
+        run: .venv/bin/python -m pytest backend/tests -q
+      - name: Frontend typecheck, unit tests and production build
+        working-directory: frontend
+        run: |
+          npm run type-check
+          npm test
+          npm run build
+      - name: Browser game
+        working-directory: frontend
+        run: npm run test:e2e
+      - name: Classroom concurrency
+        run: .venv/bin/python backend/tests/smoke_classroom.py
+      - name: Secrets and dependency audits
+        run: |
+          .venv/bin/python scripts/check_secrets.py
+          npm --prefix frontend audit --audit-level=low
+          .venv/bin/python -m pip_audit --progress-spinner off

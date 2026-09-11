@@ -202,3 +202,35 @@ class TestRuleEdgeCases:
         assert candidates  # the rule emits; the validator is the safety net
         validator = QuestionValidator()
         assert all(not validator.is_valid(c, dataset) for c in candidates)
+
+
+class TestValueNormalization:
+    def test_equivalent_spellings_are_grouped_together(self) -> None:
+        dataset = ProfileDataset(
+            [
+                _player("p1", "Dana", [("favorite_food", "Pizza")]),
+                _player("p2", "Omer", [("favorite_food", "  pizza ")]),
+                _player("p3", "Noa", [("favorite_food", "sushi")]),
+            ]
+        )
+
+        candidates = MostCommonValueRule().generate(dataset, Random(7))
+
+        assert len(candidates) == 1
+        correct = next(
+            o for o in candidates[0].options if o.option_id == candidates[0].correct_option_id
+        )
+        assert correct.text == "Pizza"  # first-seen spelling is displayed
+        assert set(candidates[0].involved_player_ids) == {"p1", "p2"}
+
+    def test_numbers_are_rendered_without_quotes(self) -> None:
+        dataset = ProfileDataset(
+            [
+                _player("p1", "Dana", [("age", 27)]),
+                _player("p2", "Omer", [("age", 31)]),
+            ]
+        )
+
+        texts = [c.text for c in UniqueValueRule().generate(dataset, Random(7))]
+
+        assert "Who is the only player whose age is 27?" in texts

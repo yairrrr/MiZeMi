@@ -1,3 +1,4 @@
+import { getApiBaseUrl } from '../config'
 import type {
   CreateRoomResponse,
   ErrorResponse,
@@ -6,6 +7,8 @@ import type {
 } from '../types'
 
 const API_PREFIX = '/api/v1'
+const UNAVAILABLE_MESSAGE =
+  'The game server is not responding. It may be waking up — please try again in a moment.'
 
 export class RestApiError extends Error {
   readonly status: number
@@ -20,17 +23,38 @@ export class RestApiError extends Error {
 }
 
 function buildApiUrl(path: string): string {
-  const baseUrl = import.meta.env.VITE_MIZEMI_API_BASE_URL ?? ''
-  return `${baseUrl.replace(/\/+$/, '')}${API_PREFIX}${path}`
+  return `${getApiBaseUrl()}${API_PREFIX}${path}`
+}
+
+function isErrorResponse(body: unknown): body is ErrorResponse {
+  if (typeof body !== 'object' || body === null || !('error' in body)) {
+    return false
+  }
+  const error = (body as { error: unknown }).error
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    typeof (error as { message?: unknown }).message === 'string'
+  )
 }
 
 async function readResponse<T>(response: Response): Promise<T> {
-  const body: unknown = await response.json()
-
-  if (!response.ok) {
-    throw new RestApiError(response.status, body as ErrorResponse)
+  let body: unknown
+  try {
+    body = await response.json()
+  } catch {
+    body = undefined
   }
 
+  if (!response.ok) {
+    // A sleeping or failing host may answer with HTML instead of §17 JSON.
+    throw new RestApiError(
+      response.status,
+      isErrorResponse(body)
+        ? body
+        : { error: { code: 'INTERNAL_ERROR', message: UNAVAILABLE_MESSAGE } },
+    )
+  }
   return body as T
 }
 

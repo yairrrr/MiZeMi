@@ -22,45 +22,26 @@ from app.domain.statistics import QuestionStatisticsCalculator
 from app.infrastructure.repositories import SqlAlchemyGameRepository
 from app.main import create_app
 from tests.fixtures.factories import answers_from_counts, play_to_finished
+from tests.fixtures.live import create_room, join, player_ws, submit_profile_and_ready
 
 CONFIG = QuestionGenerationConfig(question_count=3, time_limit_seconds=20, seed=42)
-TIMESTAMP = "2026-09-10T10:00:00.000Z"
 
-PROFILES: dict[str, list[tuple[str, str | int]]] = {
-    "Dana": [("favorite_food", "pizza"), ("city", "Haifa"), ("age", 27)],
-    "Omer": [("favorite_food", "pizza"), ("city", "Tel Aviv"), ("age", 31)],
-    "Noa": [("favorite_food", "sushi"), ("city", "Haifa"), ("age", 27)],
-    "Yael": [("favorite_food", "pizza"), ("city", "Haifa"), ("age", 41)],
+# Valid §9.2 profiles: the four required fields plus an optional age.
+PROFILES: dict[str, dict[str, str | int]] = {
+    "Dana": {"favorite_food": "pizza", "city": "Haifa", "age": 27},
+    "Omer": {"favorite_food": "pizza", "city": "Tel Aviv", "age": 31},
+    "Noa": {"favorite_food": "sushi", "city": "Haifa", "age": 27},
+    "Yael": {"favorite_food": "pizza", "city": "Haifa", "age": 41},
 }
 
 
-def _envelope(event: str, payload: dict, game_id: str) -> dict:
-    return {"event": event, "payload": payload, "timestamp": TIMESTAMP, "game_id": game_id}
-
-
 def _ready_room(client: TestClient) -> tuple[str, str]:
-    created = client.post("/api/v1/rooms").json()
-    room_code, game_id = created["room_code"], created["game_id"]
-    ids = {
-        name: client.post(
-            f"/api/v1/rooms/{room_code}/players", json={"display_name": name}
-        ).json()["player"]["player_id"]
-        for name in PROFILES
-    }
-    for name, fields in PROFILES.items():
-        payload = {
-            "player_id": ids[name],
-            "fields": [
-                {"field_key": k, "value": v, "allow_question_usage": True}
-                for k, v in fields
-            ],
-        }
-        with client.websocket_connect(
-            f"/ws/rooms/{room_code}?player_id={ids[name]}"
-        ) as ws:
-            ws.send_json(_envelope("player.profile_submit", payload, game_id))
-            ws.send_json(_envelope("player.ready", {}, game_id))
-    return room_code, game_id
+    room = create_room(client)
+    players = {name: join(client, room.room_code, name) for name in PROFILES}
+    for name, values in PROFILES.items():
+        with player_ws(client, room.room_code, players[name]) as ws:
+            submit_profile_and_ready(ws, room.game_id, players[name], **values)
+    return room.room_code, room.game_id
 
 
 class TestFullVerticalIsPersisted:
@@ -99,7 +80,19 @@ class TestFullVerticalIsPersisted:
 
         dana = next(p for p in record.players if p.display_name == "Dana")
         stored = {f.field_key: f.value for f in dana.profile_fields}
-        assert stored == {"favorite_food": "pizza", "city": "Haifa", "age": 27}
+        assert stored == {
+            "city": "Haifa",
+            "favorite_food": "pizza",
+            "hobby": "chess",
+            "favorite_music": "Rock",
+            "age": 27,
+        }
+        assert [f.field_key for f in dana.profile_fields][:4] == [
+            "city",
+            "favorite_food",
+            "hobby",
+            "favorite_music",
+        ]
         assert all(f.allow_question_usage for f in dana.profile_fields)
 
 
