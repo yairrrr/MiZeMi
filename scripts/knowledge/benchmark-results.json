@@ -1,0 +1,75 @@
+{
+  "python": "3.14.0",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "dataset_version": "2026-09-11.1",
+  "entity_counts": {
+    "movies": 467,
+    "music": 66,
+    "artists": 282,
+    "foods": 182,
+    "hobbies": 212,
+    "localities": 1225
+  },
+  "aliases": {
+    "movies": 422,
+    "music": 46,
+    "artists": 38,
+    "foods": 18,
+    "hobbies": 51,
+    "localities": 627
+  },
+  "normalized_lookup_keys": {
+    "movies": 1335,
+    "music": 173,
+    "artists": 581,
+    "foods": 381,
+    "hobbies": 475,
+    "localities": 2811
+  },
+  "ambiguous_keys_rejected": {
+    "movies": 10,
+    "music": 0,
+    "artists": 2,
+    "foods": 0,
+    "hobbies": 0,
+    "localities": 22
+  },
+  "categories": 93,
+  "raw_bundle_bytes": 262152,
+  "gzip_bundle_bytes": 76874,
+  "raw_files_bytes": {
+    "artists.json": 30029,
+    "categories.json": 6355,
+    "foods.json": 17306,
+    "hobbies.json": 18714,
+    "localities.json": 108425,
+    "manifest.json": 2991,
+    "movies.json": 71980,
+    "music.json": 6352
+  },
+  "build_curation_bytes": 60281,
+  "load_with_tracemalloc_ms": 186.83,
+  "load_uninstrumented": {
+    "median_ms": 25.046,
+    "max_ms": 27.966,
+    "runs": 10
+  },
+  "knowledge_retained_python_bytes": 3972703,
+  "knowledge_peak_python_bytes": 5612526,
+  "process_max_rss_bytes": 54018048,
+  "lookup_average_microseconds": 6.243,
+  "lookups": 100000,
+  "cold_app_import_median_ms": 256.523,
+  "cold_app_import_median_rss_bytes": 87949312,
+  "30_players_20_questions": {
+    "median_ms": 60.085,
+    "max_ms": 62.281,
+    "runs": 20
+  },
+  "25_rooms_30_players_20_questions_total_ms": 1504.301,
+  "30_players_one_unknown_movie": {
+    "median_ms": 65.613,
+    "max_ms": 66.061,
+    "runs": 10
+  }
+}

@@ -2,6 +2,10 @@
 
 Verified locally on 2026-09-11. This report covers the bilingual/configuration/Question Engine/logo enhancement. The earlier completion mission is recorded separately in [COMPLETION_REPORT.md](COMPLETION_REPORT.md).
 
+## Offline knowledge follow-up (2026-09-11)
+
+The subsequent implementation is documented in [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md). It preserves this enhancement and adds 18 knowledge rule families (47 production rules total), 2,434 offline reference entities, 93 taxonomy labels, explicit partial-knowledge scopes, private-until-ended explanations, a tenth additive persistence table, reference attribution and 20 music choices. The original 29 rules remain; their Hebrew wording now uses human concepts instead of field/value terminology. The catalog below records the earlier 29-rule implementation; the linked report contains the current complete verification and new rule catalog. Render/Neon configuration and the unrelated lockfile metadata are preserved.
+
 ## 1. Branch and recovery
 
 Continued on `feature/complete-mizemi-product` from `5bbb7f79bfe3435c68fbcc08f572a25599c1f957`. The code on disk was already a complete playable application, beyond the older interrupted-frontend handoff. The latest supplied enhancement request therefore governed this work; the project was not rebuilt.

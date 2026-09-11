@@ -2,6 +2,8 @@
 
 A working classroom icebreaker: the host creates a room, players join from phones, share consented profile facts, and play a live quiz through to a final leaderboard. Question generation is deterministic Python. No runtime AI, accounts, paid APIs, or hosted realtime dependency.
 
+The offline knowledge engine connects different films, foods, hobbies, music styles and towns using 2,434 compact local reference entries. It adds semantic grouping, geographic reasoning and cross-domain questions, then explains discoveries after each question. See [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md) for sources, licenses, all 47 rules and verification.
+
 ## Run locally
 
 Prerequisites: Python 3.12+ and Node 22.12+ (verified with Python 3.14 and Node 26).
@@ -38,7 +40,7 @@ For phones on the same Wi-Fi, use the Network URL printed by Vite on **both** th
 1. The host shares the six-character room code or displayed join link.
 2. Players may join until the host starts, even if earlier players already marked ready. Each supplies a unique display name and a profile. Every field has a consent checkbox; personal facts start opted out.
 3. Players tap **I'm ready**. The host starts when all players are ready. The host can remove an abandoned seat before starting.
-4. Answer each question once. The server closes it when all players answer or after 20 seconds, then shows the correct answer, anonymous distribution, and each player's own points.
+4. Answer each question once. The server closes it when all players answer or after 20 seconds, then shows the correct answer, an explanation for knowledge questions, anonymous distribution, and each player's own points.
 5. The host shows the leaderboard, advances to the next question, and shows the final results after the last round.
 
 Default: 20 requested questions, configurable from 1–50 when creating a room; correct answers earn 500–1,000 points based on server-measured speed, wrong/missing answers earn zero. Ties share ranks and retain join order. If consented data supports fewer questions, the game is shorter. If everyone withholds their data, no questions can be generated; create a new room if participants choose to share different facts.
@@ -61,7 +63,7 @@ npm --prefix frontend audit --audit-level=low
 .venv/bin/python -m pip check
 ```
 
-Playwright starts its own isolated backend and production frontend preview. The test runs a full 20-question English game and a 7-question Hebrew game with one host and three mobile browser sessions, a real timeout, scoring checks, privacy checks, and reloads in multiple states. Ports 4173 and 8765 must be free. The smoke test starts another disposable backend on port 8766 and uses 21 actual WebSockets.
+Playwright starts its own isolated backend and production frontend preview. It runs a 20-question English game and a 7-question Hebrew game with three mobile players, plus a 20-question Hebrew knowledge game with five mobile players. Scenarios cover a real timeout, scoring, semantic discoveries/explanations, privacy, no external requests, and reloads in multiple states. Ports 4173 and 8765 must be free. The smoke test starts another disposable backend on port 8766 and uses 21 actual WebSockets.
 
 The PostgreSQL integration tests run when `MIZEMI_TEST_POSTGRES_URL` points to a disposable PostgreSQL database whose role can create schemas. They create and remove unique schemas for English and Hebrew games; do not point them at production. Without that variable, the two live PostgreSQL cases are explicitly skipped; SQL dialect tests still run.
 
