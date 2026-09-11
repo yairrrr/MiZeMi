@@ -128,9 +128,11 @@ class TestJoinRoomResponse:
             Player(player_id="p1", display_name="Dana"), score=0
         )
 
-        dumped = JoinRoomResponse(game_id="g1", player=player).model_dump(mode="json")
+        dumped = JoinRoomResponse(
+            game_id="g1", player=player, player_token="token-1"
+        ).model_dump(mode="json")
 
-        assert set(dumped.keys()) == {"game_id", "player"}
+        assert set(dumped.keys()) == {"game_id", "player", "player_token"}
         assert set(dumped["player"].keys()) == PLAYER_WIRE_KEYS
 
     def test_extra_response_fields_rejected(self) -> None:
@@ -140,7 +142,12 @@ class TestJoinRoomResponse:
 
         with pytest.raises(ValidationError):
             JoinRoomResponse.model_validate(
-                {"game_id": "g1", "player": player, "room_code": "ABC234"}
+                {
+                    "game_id": "g1",
+                    "player": player,
+                    "player_token": "token-1",
+                    "room_code": "ABC234",
+                }
             )
 
 

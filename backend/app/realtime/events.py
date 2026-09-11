@@ -18,6 +18,7 @@ class ClientToServerEvent(Enum):
     GAME_START = "game.start"
     ANSWER_SUBMIT = "answer.submit"
     GAME_NEXT = "game.next"
+    PLAYER_REMOVE = "player.remove"
 
 
 @unique

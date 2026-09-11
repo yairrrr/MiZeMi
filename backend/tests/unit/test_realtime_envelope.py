@@ -27,6 +27,7 @@ APPROVED_CLIENT_EVENTS = [
     "game.start",
     "answer.submit",
     "game.next",
+    "player.remove",
 ]
 
 APPROVED_SERVER_EVENTS = [
@@ -55,6 +56,7 @@ APPROVED_ERROR_CODES = [
     "UNKNOWN_EVENT",
     "INTERNAL_ERROR",
     "ROOM_NOT_JOINABLE",
+    "NO_QUESTIONS_AVAILABLE",
 ]
 
 
@@ -70,7 +72,7 @@ def _valid_raw_envelope() -> dict:
 class TestEventRegistries:
     def test_client_events_match_approved_contract_exactly(self) -> None:
         assert [event.value for event in ClientToServerEvent] == APPROVED_CLIENT_EVENTS
-        assert len(ClientToServerEvent) == 6
+        assert len(ClientToServerEvent) == 7
 
     def test_server_events_match_approved_contract_exactly(self) -> None:
         assert [event.value for event in ServerToClientEvent] == APPROVED_SERVER_EVENTS

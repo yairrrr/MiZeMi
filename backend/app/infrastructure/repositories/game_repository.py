@@ -7,6 +7,9 @@ layer — the application receives only the plain ``FinishedGameRecord``.
 The session is injected; the caller owns the transaction and commits (§15).
 """
 
+from datetime import datetime
+
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.application.repositories import (
@@ -162,6 +165,15 @@ class SqlAlchemyGameRepository(GameRepository):
     def get(self, game_id: str) -> FinishedGameRecord | None:
         row = self._session.get(GameRow, game_id)
         return _row_to_record(row) if row is not None else None
+
+    def delete_older_than(self, cutoff: datetime) -> int:
+        # ORM deletes (not a bulk DELETE) so the delete-orphan cascade removes
+        # child rows on every backend, including SQLite without FK pragmas.
+        rows = self._session.scalars(select(GameRow).where(GameRow.updated_at < cutoff)).all()
+        for row in rows:
+            self._session.delete(row)
+        self._session.flush()
+        return len(rows)
 
     def delete(self, game_id: str) -> None:
         row = self._session.get(GameRow, game_id)

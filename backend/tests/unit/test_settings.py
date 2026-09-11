@@ -6,6 +6,13 @@ from pydantic import ValidationError
 from app.infrastructure.settings import Environment, Settings, get_settings
 
 
+@pytest.fixture(autouse=True)
+def _real_environment_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Undo the suite-wide in-memory database override for these tests."""
+    monkeypatch.delenv("MIZEMI_DATABASE_URL", raising=False)
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+
+
 def _settings(**overrides: object) -> Settings:
     """Build Settings without reading any real .env file on the machine."""
     return Settings(_env_file=None, **overrides)  # type: ignore[call-arg]

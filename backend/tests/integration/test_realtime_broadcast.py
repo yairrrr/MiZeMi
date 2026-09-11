@@ -1,143 +1,117 @@
 """Integration tests for live connection registration and broadcast delivery.
 
-Covers the wiring between the WebSocket endpoint and the room connection
+Covers the wiring between the WebSocket endpoints and the room connection
 registry (MASTER_SPEC.md §14): accepted connections receive room events and
-deregister on disconnect.
+deregister on disconnect; rejected ones never register.
 """
 
 import asyncio
 from datetime import UTC, datetime
 
+import pytest
 from fastapi.testclient import TestClient
+from starlette.websockets import WebSocketDisconnect
 
-from app.domain.questions import Question, QuestionOption, QuestionType
 from app.main import create_app
 from app.realtime.game_events import broadcast_question_started
+from tests.fixtures.factories import make_question
+from tests.fixtures.live import create_room, host_ws, join, player_ws, receive_until
 
 STARTED_AT = datetime(2026, 9, 5, 10, 15, 30, tzinfo=UTC)
-
-
-def _question() -> Question:
-    return Question(
-        question_id="q1",
-        index=0,
-        total_questions=2,
-        question_type=QuestionType.MULTIPLE_CHOICE,
-        text="Who is the only player from Haifa?",
-        options=(
-            QuestionOption(option_id="a", text="Dana"),
-            QuestionOption(option_id="b", text="Omer"),
-        ),
-        correct_option_id="b",
-        time_limit_seconds=20,
-    )
-
-
-def _room_with_player(client: TestClient, name: str = "Dana") -> tuple[str, str]:
-    room_code = client.post("/api/v1/rooms").json()["room_code"]
-    player_id = client.post(
-        f"/api/v1/rooms/{room_code}/players", json={"display_name": name}
-    ).json()["player"]["player_id"]
-    return room_code, player_id
-
-
-def _ws(room_code: str, player_id: str) -> str:
-    return f"/ws/rooms/{room_code}?player_id={player_id}"
 
 
 class TestConnectionRegistration:
     def test_accepted_connection_is_registered_and_deregistered(self) -> None:
         app = create_app()
         client = TestClient(app)
-        room_code, player_id = _room_with_player(client)
+        room = create_room(client)
+        dana = join(client, room.room_code, "Dana")
         connections = app.state.room_connections
 
-        assert connections.connections_for(room_code) == ()
-        with client.websocket_connect(_ws(room_code, player_id)):
-            assert len(connections.connections_for(room_code)) == 1
-        assert connections.connections_for(room_code) == ()
+        assert connections.connections_for(room.room_code) == ()
+        with player_ws(client, room.room_code, dana) as ws:
+            receive_until(ws, "room.updated")
+            assert len(connections.connections_for(room.room_code)) == 1
+        assert connections.connections_for(room.room_code) == ()
+
+    def test_host_connection_is_registered_with_the_host_role(self) -> None:
+        app = create_app()
+        client = TestClient(app)
+        room = create_room(client)
+
+        with host_ws(client, room) as ws:
+            receive_until(ws, "room.updated")
+            handles = app.state.room_connections.handles_for(room.room_code)
+            assert [h.role for h in handles] == ["host"]
 
     def test_rejected_connection_is_never_registered(self) -> None:
         app = create_app()
         client = TestClient(app)
-        room_code, _ = _room_with_player(client)
+        room = create_room(client)
 
-        try:
-            with client.websocket_connect(_ws(room_code, "not-a-player")):
-                pass
-        except Exception:
-            pass
+        with pytest.raises(WebSocketDisconnect):
+            with client.websocket_connect(
+                f"/ws/rooms/{room.room_code}?player_id=not-a-player",
+                subprotocols=["mizemi.player", "token"],
+            ):
+                pytest.fail("session must not be established")  # pragma: no cover
 
-        assert app.state.room_connections.connections_for(room_code) == ()
+        assert app.state.room_connections.connections_for(room.room_code) == ()
 
     def test_connected_player_receives_question_started_broadcast(self) -> None:
         app = create_app()
         client = TestClient(app)
-        room_code, player_id = _room_with_player(client)
-        game = app.state.room_registry.get(room_code).game
+        room = create_room(client)
+        dana = join(client, room.room_code, "Dana")
 
-        with client.websocket_connect(_ws(room_code, player_id)) as ws:
+        with player_ws(client, room.room_code, dana) as ws:
+            receive_until(ws, "room.updated")
             asyncio.run(
                 broadcast_question_started(
-                    app.state.room_connections,
-                    room_code,
-                    _question(),
-                    game.game_id,
-                    STARTED_AT,
+                    app.state.room_connections, room.room_code, make_question(), room.game_id, STARTED_AT
                 )
             )
-            message = ws.receive_json()
+            message = receive_until(ws, "question.started")
 
-        assert message["event"] == "question.started"
-        assert message["game_id"] == game.game_id
+        assert message["game_id"] == room.game_id
         assert message["payload"]["question_id"] == "q1"
         assert "correct_option_id" not in message["payload"]
 
     def test_two_players_both_receive_the_broadcast(self) -> None:
         app = create_app()
         client = TestClient(app)
-        room_code, dana = _room_with_player(client, "Dana")
-        omer = client.post(
-            f"/api/v1/rooms/{room_code}/players", json={"display_name": "Omer"}
-        ).json()["player"]["player_id"]
-        game = app.state.room_registry.get(room_code).game
+        room = create_room(client)
+        dana = join(client, room.room_code, "Dana")
+        omer = join(client, room.room_code, "Omer")
 
-        with client.websocket_connect(_ws(room_code, dana)) as ws_one:
-            with client.websocket_connect(_ws(room_code, omer)) as ws_two:
+        with player_ws(client, room.room_code, dana) as ws_one:
+            with player_ws(client, room.room_code, omer) as ws_two:
                 delivered = asyncio.run(
                     broadcast_question_started(
-                        app.state.room_connections,
-                        room_code,
-                        _question(),
-                        game.game_id,
-                        STARTED_AT,
+                        app.state.room_connections, room.room_code, make_question(), room.game_id, STARTED_AT
                     )
                 )
-                first = ws_one.receive_json()
-                second = ws_two.receive_json()
+                first = receive_until(ws_one, "question.started")
+                second = receive_until(ws_two, "question.started")
 
         assert delivered == 2
-        assert first["payload"]["question_id"] == "q1"
-        assert second["payload"]["question_id"] == "q1"
+        assert first["payload"]["question_id"] == second["payload"]["question_id"] == "q1"
 
     def test_broadcast_does_not_cross_rooms(self) -> None:
         app = create_app()
         client = TestClient(app)
-        room_a, player_a = _room_with_player(client, "Dana")
-        room_b, player_b = _room_with_player(client, "Omer")
-        game_a = app.state.room_registry.get(room_a).game
+        room_a = create_room(client)
+        room_b = create_room(client)
+        dana = join(client, room_a.room_code, "Dana")
+        omer = join(client, room_b.room_code, "Omer")
 
-        with client.websocket_connect(_ws(room_a, player_a)) as ws_a:
-            with client.websocket_connect(_ws(room_b, player_b)):
+        with player_ws(client, room_a.room_code, dana) as ws_a:
+            with player_ws(client, room_b.room_code, omer):
                 delivered = asyncio.run(
                     broadcast_question_started(
-                        app.state.room_connections,
-                        room_a,
-                        _question(),
-                        game_a.game_id,
-                        STARTED_AT,
+                        app.state.room_connections, room_a.room_code, make_question(), room_a.game_id, STARTED_AT
                     )
                 )
                 assert delivered == 1
-                assert ws_a.receive_json()["event"] == "question.started"
-        assert app.state.room_connections.connections_for(room_b) == ()
+                assert receive_until(ws_a, "question.started")["event"] == "question.started"
+        assert app.state.room_connections.connections_for(room_b.room_code) == ()

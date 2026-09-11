@@ -8,10 +8,12 @@ changes here are shared-contract changes (§21).
 from datetime import UTC, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, field_serializer, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
 
 from app.domain.game import Player, PlayerProfile
 from app.domain.questions.question import Question
+from app.domain.scoring import LeaderboardEntry
+from app.domain.statistics import QuestionStatistics
 
 
 class PlayerSchema(BaseModel):
@@ -81,20 +83,29 @@ class PlayerProfileSchema(BaseModel):
 
 
 class CreateRoomResponse(BaseModel):
-    """The §13 create-room response — exactly room_code and game_id."""
+    """The §13 create-room response.
+
+    ``host_token`` is returned only to the creating client; it authorizes the
+    host WebSocket (§14.1) and is never broadcast or persisted in plaintext.
+    """
 
     model_config = ConfigDict(extra="forbid")
 
     room_code: str
     game_id: str
+    host_token: str
 
 
 class JoinRoomRequest(BaseModel):
-    """The §13 join request — exactly display_name; rules enforced in application."""
+    """The §13 join request — exactly display_name; rules enforced in application.
+
+    The generous schema cap only rejects abusive payloads early; the approved
+    1–20 character rule is applied after trimming by the application layer.
+    """
 
     model_config = ConfigDict(extra="forbid")
 
-    display_name: str
+    display_name: str = Field(max_length=100)
 
 
 class JoinRoomResponse(BaseModel):
@@ -104,6 +115,8 @@ class JoinRoomResponse(BaseModel):
 
     game_id: str
     player: PlayerSchema
+    # The player's WebSocket credential (§14.1); returned only to this client.
+    player_token: str
 
 
 class PlayerReadyPayloadSchema(BaseModel):
@@ -195,3 +208,162 @@ class PublicQuestionSchema(BaseModel):
             time_limit_seconds=question.time_limit_seconds,
             started_at=started_at,
         )
+
+
+class EmptyPayloadSchema(BaseModel):
+    """A payload that must be exactly {} (``game.start``, ``game.next``)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class RemovePlayerPayloadSchema(BaseModel):
+    """The host's ``player.remove`` payload (§14.2)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    player_id: str = Field(min_length=1, max_length=64)
+
+
+class RoomSnapshotSchema(BaseModel):
+    """The ``room.updated`` payload: the authoritative room snapshot (§14.2)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    room_code: str
+    state: str
+    players: list[PlayerSchema]
+    current_question_index: int | None
+    total_questions: int
+
+
+class GameStartedSchema(BaseModel):
+    """The ``game.started`` payload."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    total_questions: int
+
+
+class AnswerAcceptedSchema(BaseModel):
+    """The ``answer.accepted`` payload, sent only to the answering player."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str
+    option_id: str
+
+
+class AnswerProgressSchema(BaseModel):
+    """The ``statistics.updated`` payload during an active question.
+
+    Counts only — no distribution and no correct option — so the live
+    progress bar cannot leak the answer or the crowd's choice.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str
+    answered_count: int
+    player_count: int
+
+
+class OptionStatisticsSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    option_id: str
+    count: int
+    percentage: float
+
+
+class QuestionStatisticsSchema(BaseModel):
+    """The §9.6 statistics shape plus a per-option ``percentage`` (0–100)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str
+    correct_option_id: str
+    answer_distribution: list[OptionStatisticsSchema]
+    answered_count: int
+    player_count: int
+
+    @classmethod
+    def from_domain(cls, statistics: QuestionStatistics) -> "QuestionStatisticsSchema":
+        answered = statistics.answered_count
+        return cls(
+            question_id=statistics.question_id,
+            correct_option_id=statistics.correct_option_id,
+            answer_distribution=[
+                OptionStatisticsSchema(
+                    option_id=entry.option_id,
+                    count=entry.count,
+                    percentage=round(entry.count * 100 / answered, 1) if answered else 0.0,
+                )
+                for entry in statistics.answer_distribution
+            ],
+            answered_count=answered,
+            player_count=statistics.player_count,
+        )
+
+
+class PlayerQuestionResultSchema(BaseModel):
+    """One player's own outcome, sent only to that player."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    option_id: str | None
+    is_correct: bool
+    points_awarded: int
+    total_score: int
+
+
+class QuestionEndedSchema(BaseModel):
+    """The ``question.ended`` payload (§14.2).
+
+    ``player_result`` is the recipient's own result on player connections
+    and ``null`` on the host connection — no player ever receives another
+    player's individual answer.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str
+    correct_option_id: str
+    statistics: QuestionStatisticsSchema
+    player_result: PlayerQuestionResultSchema | None
+
+
+class LeaderboardEntrySchema(BaseModel):
+    """One §9.7 leaderboard entry."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    rank: int
+    player_id: str
+    display_name: str
+    total_score: int
+
+    @classmethod
+    def from_domain(cls, entry: LeaderboardEntry) -> "LeaderboardEntrySchema":
+        return cls(
+            rank=entry.rank,
+            player_id=entry.player_id,
+            display_name=entry.display_name,
+            total_score=entry.total_score,
+        )
+
+
+class LeaderboardSchema(BaseModel):
+    """The §9.7 ``leaderboard.updated`` payload."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    entries: list[LeaderboardEntrySchema]
+
+
+class GameFinishedSchema(BaseModel):
+    """The ``game.finished`` payload: final leaderboard plus every rank-1 winner."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    leaderboard: LeaderboardSchema
+    winners: list[LeaderboardEntrySchema]
