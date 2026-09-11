@@ -110,6 +110,7 @@ describe('HostGameView', () => {
     const results: QuestionEnded = {
       difficulty: 'EASY', language: 'en',
       question_id: 'q1',
+      explanation: 'Saw and The Conjuring are horror films. <img src=x onerror=alert(1)>',
       text: question.text,
       options: question.options,
       correct_option_id: 'a',
@@ -128,6 +129,9 @@ describe('HostGameView', () => {
     const send = renderView({ room: room('QUESTION_RESULTS', []), results })
 
     expect(screen.getByText('Correct answer:')).toHaveTextContent('pizza')
+    expect(screen.getByText(results.explanation!)).toHaveAttribute('lang', 'en')
+    expect(screen.getByText(results.explanation!)).toHaveAttribute('dir', 'ltr')
+    expect(document.querySelector('.question-explanation img')).toBeNull()
     expect(screen.getByLabelText('Answer distribution')).toHaveTextContent('75%')
     await userEvent.setup().click(screen.getByRole('button', { name: 'Show leaderboard' }))
     expect(send).toHaveBeenCalledWith('game.next')

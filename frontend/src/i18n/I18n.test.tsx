@@ -96,7 +96,7 @@ const player={role:'player' as const,room_code:'ABC234',game_id:'g',player_id:'p
 const person={player_id:'p',display_name:'דנה',is_host:false,connected:true,has_profile:true,is_ready:true,score:900}
 const room:RoomSnapshot={room_code:'ABC234',state:'READY',players:[person],current_question_index:0,total_questions:5,config:{question_count:5,language:'he'}}
 const q:Question={question_id:'q',index:0,total_questions:5,question_type:'multiple_choice',difficulty:'HARD',language:'he',text:'מי בחר פיצה?',options:[{option_id:'a',text:'דנה'},{option_id:'b',text:'Noa'}],time_limit_seconds:20,started_at:new Date().toISOString()}
-const ended:QuestionEnded={question_id:'q',text:q.text,options:q.options,difficulty:'HARD',language:'he',correct_option_id:'a',statistics:{question_id:'q',correct_option_id:'a',answer_distribution:[{option_id:'a',count:1,percentage:100},{option_id:'b',count:0,percentage:0}],answered_count:1,player_count:1},player_result:{option_id:'a',is_correct:true,points_awarded:900,total_score:900}}
+const ended:QuestionEnded={explanation:'המסור ולזמן את הרוע הם סרטי אימה.',question_id:'q',text:q.text,options:q.options,difficulty:'HARD',language:'he',correct_option_id:'a',statistics:{question_id:'q',correct_option_id:'a',answer_distribution:[{option_id:'a',count:1,percentage:100},{option_id:'b',count:0,percentage:0}],answered_count:1,player_count:1},player_result:{option_id:'a',is_correct:true,points_awarded:900,total_score:900}}
 const board=[{player_id:'p',display_name:'דנה',rank:1,total_score:900}]
 const view={...initialGameView,room,question:q,results:ended,leaderboard:board,finished:{leaderboard:{entries:board},winners:board}}
 const callbacks={send:vi.fn(() => true),dismissError:()=>{},onLeave:()=>{},status:'open' as const}
@@ -110,10 +110,15 @@ test.each(['READY','QUESTION_ACTIVE','QUESTION_RESULTS','LEADERBOARD','FINISHED'
     expect(rendered.container.textContent).not.toContain(text)
   }
   if (state==='QUESTION_ACTIVE') {
+    expect(screen.queryByText(ended.explanation!)).toBeNull()
     expect(screen.getAllByText('שאלה 1 מתוך 5')).toHaveLength(2)
     expect(screen.getAllByRole('heading',{name:q.text})[0]).toHaveAttribute('dir','rtl')
   }
   if (state==='QUESTION_RESULTS') {
+    for (const explanation of screen.getAllByText(ended.explanation!)) {
+      expect(explanation).toHaveAttribute('lang','he')
+      expect(explanation).toHaveAttribute('dir','rtl')
+    }
     expect(screen.getByText('+900')).toHaveAttribute('dir','ltr')
     expect(rendered.container.querySelector('.verdict')).toHaveTextContent('+900 נקודות')
   }
