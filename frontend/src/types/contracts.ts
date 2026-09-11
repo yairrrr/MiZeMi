@@ -44,6 +44,8 @@ export type Question = {
   index: number
   total_questions: number
   question_type: 'multiple_choice'
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD'
+  language: 'en' | 'he'
   text: string
   options: QuestionOption[]
   time_limit_seconds: number
@@ -87,7 +89,13 @@ export type Leaderboard = {
 
 // --- REST (§13) --------------------------------------------------------------
 
+export type GameConfig = {
+  question_count: number
+  language: 'en' | 'he'
+}
+
 export type CreateRoomResponse = {
+  config: GameConfig
   room_code: string
   game_id: string
   host_token: string
@@ -106,6 +114,7 @@ export type JoinRoomResponse = {
 // --- Realtime payloads (§14.2) ---------------------------------------------------
 
 export type RoomSnapshot = {
+  config: GameConfig
   room_code: string
   state: GameState
   players: Player[]
@@ -136,6 +145,8 @@ export type PlayerQuestionResult = {
 }
 
 export type QuestionEnded = {
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD'
+  language: 'en' | 'he'
   question_id: string
   text: string
   options: QuestionOption[]

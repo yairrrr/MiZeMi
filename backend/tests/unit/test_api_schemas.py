@@ -221,6 +221,8 @@ class TestProfileSchemas:
 
 
 PUBLIC_QUESTION_WIRE_KEYS = {
+    "difficulty",
+    "language",
     "question_id",
     "index",
     "total_questions",

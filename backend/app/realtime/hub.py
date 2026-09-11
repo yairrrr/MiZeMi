@@ -49,6 +49,7 @@ from app.domain.game import (
     InvalidStateTransitionError,
     Room,
 )
+from app.domain.game.config import GameConfig
 from app.infrastructure.credentials import CredentialStore
 from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
 from app.realtime import game_events as events
@@ -158,10 +159,12 @@ class GameHub:
 
     # --- REST-triggered --------------------------------------------------
 
-    def create_room(self) -> HostedRoom:
+    def create_room(self, config: GameConfig | None = None) -> HostedRoom:
         if len(self._rooms) >= MAX_ACTIVE_ROOMS:
             raise RoomLimitError()
-        hosted = CreateRoomService(self._registry, credentials=self._credentials).create_hosted_room()
+        hosted = CreateRoomService(self._registry, credentials=self._credentials).create_hosted_room(
+            config if config is not None else GameConfig(question_count=self._gameplay.config.questions_per_game)
+        )
         self._touch(self._runtime(hosted.room.room_code))
         return hosted
 

@@ -1,6 +1,8 @@
 """Consent-safe input boundary for question generation (MASTER_SPEC.md §10, §12)."""
 
 from collections.abc import Iterable
+from functools import cached_property
+from copy import copy
 
 from app.domain.game import Player, ProfileField
 
@@ -14,7 +16,10 @@ class ProfileDataset:
     Input order is preserved to keep downstream algorithms deterministic.
     """
 
-    def __init__(self, players: Iterable[Player]) -> None:
+    def __init__(self, players: Iterable[Player], language: str = "en") -> None:
+        if language not in ("en", "he"):
+            raise ValueError("unsupported question language")
+        self.language = language
         player_ids: list[str] = []
         display_names: dict[str, str] = {}
         fields_by_player: dict[str, tuple[ProfileField, ...]] = {}
@@ -65,3 +70,18 @@ class ProfileDataset:
             for field in self._fields_by_player[player_id]
             if field.field_key == field_key
         )
+
+    def with_language(self, language: str) -> "ProfileDataset":
+        if language not in ("en", "he"):
+            raise ValueError("unsupported question language")
+        if language == self.language:
+            return self
+        result = copy(self)
+        result.language = language
+        result.__dict__.pop("index", None)
+        return result
+
+    @cached_property
+    def index(self):
+        from app.domain.questions.index import DatasetIndex
+        return DatasetIndex(self)

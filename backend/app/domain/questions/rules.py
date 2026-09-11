@@ -1,14 +1,8 @@
-"""Production question rules and the rule registry (MASTER_SPEC.md §12.2).
-
-Schema-agnostic by design: the final profile field keys are deferred, so
-each rule works over whatever consented fields the ProfileDataset actually
-holds and renders field keys into text deterministically (underscores to
-spaces). Pure counting/grouping — no AI, no NLP, no external services.
-Rules may emit imperfect candidates (e.g. colliding option texts from
-duplicate display names); the shared QuestionValidator is the safety net.
-"""
+"""Original production rules, preserved and rendered in both game languages."""
 
 from random import Random
+
+from app.domain.questions.language import normalize, label, say
 
 from app.domain.questions.candidate import QuestionCandidate
 from app.domain.questions.dataset import ProfileDataset
@@ -30,9 +24,7 @@ def _render(value: str | int) -> str:
 
 def _group_key(value: str | int) -> str | int:
     """Case/whitespace-insensitive identity, so "Pizza" and " pizza" match."""
-    if isinstance(value, str):
-        return " ".join(value.split()).casefold()
-    return value
+    return normalize(value)
 
 
 def _grouped(dataset: ProfileDataset, field_key: str) -> dict[str | int, list[str]]:
@@ -104,7 +96,7 @@ class UniqueValueRule(QuestionRule):
                 )
                 candidates.append(
                     QuestionCandidate(
-                        text=f"Who is the only player whose {_label(field_key)} is {_render(value)}?",
+                        text=say(dataset.language, "Who is the only player whose {field} is {value}?", "מי המשתתף היחיד שהערך שלו בשדה {field} הוא {value}?", field=label(field_key, dataset.language), value=_render(value)),
                         options=options,
                         correct_option_id=correct_option_id,
                         source_rule_id=self.rule_id,
@@ -143,7 +135,7 @@ class MostCommonValueRule(QuestionRule):
             )
             candidates.append(
                 QuestionCandidate(
-                    text=f"What is the most common {_label(field_key)} in this group?",
+                    text=say(dataset.language, "What is the most common {field} in this group?", "מהו הערך הנפוץ ביותר בשדה {field} בקבוצה?", field=label(field_key, dataset.language)),
                     options=options,
                     correct_option_id=correct_option_id,
                     source_rule_id=self.rule_id,
@@ -179,7 +171,7 @@ class ValueCountRule(QuestionRule):
                 )
                 candidates.append(
                     QuestionCandidate(
-                        text=f"How many players have {_render(value)} as their {_label(field_key)}?",
+                        text=say(dataset.language, "How many players have {value} as their {field}?", "כמה משתתפים בחרו בערך {value} בשדה {field}?", field=label(field_key, dataset.language), value=_render(value)),
                         options=options,
                         correct_option_id=correct_option_id,
                         source_rule_id=self.rule_id,
@@ -192,4 +184,5 @@ class ValueCountRule(QuestionRule):
 
 def default_rules() -> tuple[QuestionRule, ...]:
     """The production rule registry — adding a rule means one entry here (§12.2)."""
-    return (UniqueValueRule(), MostCommonValueRule(), ValueCountRule())
+    from app.domain.questions.advanced_rules import advanced_rules
+    return (UniqueValueRule(), MostCommonValueRule(), ValueCountRule(), *advanced_rules())

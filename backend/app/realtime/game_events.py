@@ -24,6 +24,7 @@ from app.api.schemas import (
     QuestionOptionSchema,
     QuestionStatisticsSchema,
     RoomSnapshotSchema,
+    GameConfigSchema,
 )
 from app.domain.game import Answer, Game, RoundResult
 from app.domain.questions import Question
@@ -71,7 +72,8 @@ def build_room_updated(room_code: str, game: Game) -> dict[str, Any]:
             for player in game.players
         ],
         current_question_index=game.current_question_index,
-        total_questions=len(game.questions),
+        total_questions=len(game.questions) or game.config.question_count,
+        config=GameConfigSchema(question_count=game.config.question_count, language=game.config.language),
     )
     return build_envelope(
         ServerToClientEvent.ROOM_UPDATED, snapshot.model_dump(mode="json"), game.game_id
@@ -156,6 +158,8 @@ def build_question_ended(
     payload = QuestionEndedSchema(
         question_id=question.question_id,
         text=question.text,
+        difficulty=question.difficulty.value,
+        language=question.language,
         options=[
             QuestionOptionSchema(option_id=option.option_id, text=option.text)
             for option in question.options

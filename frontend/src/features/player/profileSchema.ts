@@ -1,3 +1,4 @@
+import { translate, type MessageKey, type Translate } from '../../i18n/messages'
 import type { ProfileField } from '../../types'
 
 // Mirror of the server's profile schema (MASTER_SPEC.md §9.2; backend
@@ -18,14 +19,14 @@ export const MUSIC_STYLES = [
 
 export type ProfileFieldSpec = {
   key: string
-  label: string
+  label: MessageKey
   kind: 'text' | 'int' | 'choice'
   required: boolean
   maxLength?: number
   min?: number
   max?: number
-  choices?: readonly string[]
-  placeholder?: string
+  choices?: readonly MessageKey[]
+  placeholder?: MessageKey
   /** Initial consent. Personal facts start opted out (§10.2). */
   defaultAllow: boolean
 }
@@ -58,13 +59,14 @@ export function initialConsent(): ProfileConsent {
 export function buildProfileFields(
   values: ProfileFormValues,
   consent: ProfileConsent,
+  t: Translate = (key, values) => translate('en', key, values),
 ): { fields: ProfileField[] } | { error: string } {
   const fields: ProfileField[] = []
   for (const spec of PROFILE_FIELDS) {
     const raw = (values[spec.key] ?? '').trim().replace(/\s+/g, ' ')
     if (raw === '') {
       if (spec.required) {
-        return { error: `${spec.label} is required.` }
+        return { error: t('{field} is required.', { field: t(spec.label) }) }
       }
       continue
     }
@@ -72,22 +74,22 @@ export function buildProfileFields(
     let value: string | number = raw
     if (spec.kind === 'int') {
       if (!/^\d+$/.test(raw)) {
-        return { error: `${spec.label} must be a whole number.` }
+        return { error: t('{field} must be a whole number.', { field: t(spec.label) }) }
       }
       value = Number(raw)
       if (value < (spec.min ?? 0) || value > (spec.max ?? Number.MAX_SAFE_INTEGER)) {
-        return { error: `${spec.label} must be between ${spec.min} and ${spec.max}.` }
+        return { error: t('{field} must be between {min} and {max}.', { field: t(spec.label), min: spec.min!, max: spec.max! }) }
       }
     } else if (spec.kind === 'choice') {
-      if (!spec.choices?.includes(raw)) {
-        return { error: `Choose one of the listed options for ${spec.label}.` }
+      if (!spec.choices?.some((choice) => choice === raw)) {
+        return { error: t('Choose one of the listed options for {field}.', { field: t(spec.label) }) }
       }
     } else {
       if (raw.length > (spec.maxLength ?? Infinity)) {
-        return { error: `${spec.label} must be at most ${spec.maxLength} characters.` }
+        return { error: t('{field} must be at most {max} characters.', { field: t(spec.label), max: spec.maxLength! }) }
       }
       if (EMAIL.test(raw) || LINK.test(raw) || LONG_NUMBER.test(raw)) {
-        return { error: PRIVACY_MESSAGE }
+        return { error: t(PRIVACY_MESSAGE) }
       }
     }
 

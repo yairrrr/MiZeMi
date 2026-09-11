@@ -30,6 +30,7 @@ const me = (overrides: Partial<Player> = {}): Player => ({
 })
 
 const room = (state: RoomSnapshot['state'], players: Player[] = [me()]): RoomSnapshot => ({
+  config: { question_count: 20, language: 'en' },
   room_code: 'K7PW3N',
   state,
   players,
@@ -41,7 +42,7 @@ const question: Question = {
   question_id: 'q1',
   index: 0,
   total_questions: 3,
-  question_type: 'multiple_choice',
+  question_type: 'multiple_choice', difficulty: 'EASY', language: 'en',
   text: 'Whose hobby is chess?',
   options: [
     { option_id: 'a', text: 'Dana' },
@@ -101,6 +102,7 @@ describe('PlayerGameView', () => {
 
   test('shows the player’s own result with the correct answer', () => {
     const results: QuestionEnded = {
+      difficulty: 'EASY', language: 'en',
       question_id: 'q1',
       text: question.text,
       options: question.options,
@@ -120,7 +122,9 @@ describe('PlayerGameView', () => {
     renderView({ room: room('QUESTION_RESULTS'), results })
 
     expect(screen.getByText('Correct!')).toBeVisible()
-    expect(screen.getByText('+842 points')).toBeVisible()
+    // The signed number is isolated from surrounding RTL/LTR words.
+    expect(screen.getByRole('status')).toHaveTextContent('+842 points')
+    expect(screen.getByText('+842')).toHaveAttribute('dir', 'ltr')
     expect(screen.getByLabelText('Answer distribution')).toHaveTextContent('67%')
   })
 

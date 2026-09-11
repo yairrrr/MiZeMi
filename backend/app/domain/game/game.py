@@ -26,6 +26,7 @@ from app.domain.game.state import GameState, GameStateMachine
 # Imported from the module, not the questions package: the package __init__
 # pulls in dataset.py, which imports app.domain.game — a circular import.
 from app.domain.questions.question import Question
+from app.domain.game.config import GameConfig
 from app.domain.scoring.policy import ScoringPolicy
 
 _PRE_GAME_STATES = (GameState.LOBBY, GameState.PROFILE_COLLECTION, GameState.READY)
@@ -52,8 +53,9 @@ class Game:
     application layer before it calls in.
     """
 
-    def __init__(self, game_id: str) -> None:
+    def __init__(self, game_id: str, config: GameConfig | None = None) -> None:
         self._game_id = game_id
+        self._config = config if config is not None else GameConfig()
         self._state = GameState.LOBBY
         self._players: dict[str, Player] = {}
         self._state_machine = GameStateMachine()
@@ -67,6 +69,10 @@ class Game:
         self._last_round: RoundResult | None = None
 
     # --- read model -------------------------------------------------------
+
+    @property
+    def config(self) -> GameConfig:
+        return self._config
 
     @property
     def game_id(self) -> str:

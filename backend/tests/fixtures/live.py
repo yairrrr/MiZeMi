@@ -34,8 +34,8 @@ class JoinedPlayer:
     display_name: str
 
 
-def create_room(client: TestClient) -> CreatedRoom:
-    response = client.post("/api/v1/rooms")
+def create_room(client: TestClient, config: dict | None = None) -> CreatedRoom:
+    response = client.post("/api/v1/rooms", **({"json": config} if config is not None else {}))
     assert response.status_code == 201, response.text
     body = response.json()
     return CreatedRoom(body["room_code"], body["game_id"], body["host_token"])

@@ -29,6 +29,8 @@ class GameRow(Base, TimestampMixin):
     state: Mapped[str] = mapped_column(String, nullable=False)
     current_question_index: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
+    configuration: Mapped["GameConfigurationRow | None"] = relationship(cascade="all, delete-orphan", uselist=False)
+
     scores: Mapped[list["ScoreRow"]] = relationship(cascade="all, delete-orphan", order_by="ScoreRow.player_id")
     answers: Mapped[list["AnswerRow"]] = relationship(cascade="all, delete-orphan", order_by="AnswerRow.answered_at, AnswerRow.player_id")
 
@@ -94,6 +96,7 @@ class GameQuestionRow(Base, TimestampMixin):
     correct_option_id: Mapped[str] = mapped_column(String, nullable=False)
     time_limit_seconds: Mapped[int] = mapped_column(Integer, nullable=False)
 
+    detail: Mapped["QuestionDetailRow | None"] = relationship(cascade="all, delete-orphan", uselist=False)
     game: Mapped[GameRow] = relationship(back_populates="questions")
     options: Mapped[list["QuestionOptionRow"]] = relationship(
         back_populates="question",
@@ -131,3 +134,19 @@ class AnswerRow(Base, TimestampMixin):
     player_id: Mapped[str] = mapped_column(String, primary_key=True)
     option_id: Mapped[str] = mapped_column(String, nullable=False)
     answered_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class GameConfigurationRow(Base, TimestampMixin):
+    """Additive table: no destructive migration of pre-enhancement games."""
+    __tablename__ = "game_configurations"
+    game_id: Mapped[str] = mapped_column(ForeignKey("games.game_id", ondelete="CASCADE"), primary_key=True)
+    question_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    language: Mapped[str] = mapped_column(String(2), nullable=False)
+
+
+class QuestionDetailRow(Base, TimestampMixin):
+    __tablename__ = "question_details"
+    question_id: Mapped[str] = mapped_column(ForeignKey("game_questions.question_id", ondelete="CASCADE"), primary_key=True)
+    difficulty: Mapped[str] = mapped_column(String(6), nullable=False)
+    language: Mapped[str] = mapped_column(String(2), nullable=False)
+    source_rule_id: Mapped[str] = mapped_column(String(64), nullable=False)

@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from uuid import uuid4
 
 from app.domain.game import Game, Room
+from app.domain.game.config import GameConfig
 from app.infrastructure.credentials import CredentialStore, issue_token
 from app.infrastructure.rooms import (
     DuplicateRoomCodeError,
@@ -49,7 +50,7 @@ class CreateRoomService:
         self._credentials = credentials
         self._generate_token = token_generator if token_generator is not None else issue_token
 
-    def create_hosted_room(self) -> HostedRoom:
+    def create_hosted_room(self, config: GameConfig | None = None) -> HostedRoom:
         """Create a room and issue its host token (§8).
 
         Only a digest of the token is stored; the plaintext is returned once,
@@ -57,13 +58,13 @@ class CreateRoomService:
         """
         if self._credentials is None:
             raise RuntimeError("create_hosted_room requires a CredentialStore")
-        room = self.create_room()
+        room = self.create_room(config)
         host_token = self._generate_token()
         self._credentials.register_host(room.room_code, host_token)
         return HostedRoom(room=room, host_token=host_token)
 
-    def create_room(self) -> Room:
-        game = Game(game_id=str(uuid4()))
+    def create_room(self, config: GameConfig | None = None) -> Room:
+        game = Game(game_id=str(uuid4()), config=config)
         for _ in range(MAX_ROOM_CODE_ATTEMPTS):
             room = Room(room_code=self._generate_code(), game=game)
             try:

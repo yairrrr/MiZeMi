@@ -123,11 +123,11 @@ class TestQuestionValidatorDatasetSafety:
         assert QuestionValidator().is_valid(candidate, _dataset(allow_city=False)) is False
 
 
-class TestQuestionValidatorDeferredBounds:
-    def test_does_not_invent_deferred_option_count_bounds(self) -> None:
+class TestQuestionValidatorApprovedBounds:
+    def test_rejects_single_option_under_approved_quality_gate(self) -> None:
         candidate = _candidate(
             options=(QuestionOption(option_id="haifa", text="Haifa"),),
             correct_option_id="haifa",
         )
 
-        assert QuestionValidator().is_valid(candidate, _dataset()) is True
+        assert QuestionValidator().is_valid(candidate, _dataset()) is False

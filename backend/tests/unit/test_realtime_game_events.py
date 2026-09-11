@@ -64,6 +64,8 @@ class TestBuildQuestionStarted:
             "index",
             "total_questions",
             "question_type",
+            "difficulty",
+            "language",
             "text",
             "options",
             "time_limit_seconds",

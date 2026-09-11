@@ -8,6 +8,13 @@ from enum import Enum, unique
 
 
 @unique
+class Difficulty(str, Enum):
+    EASY = "EASY"
+    MEDIUM = "MEDIUM"
+    HARD = "HARD"
+
+
+@unique
 class QuestionType(Enum):
     """Question formats supported by the MVP."""
 
@@ -39,6 +46,9 @@ class Question:
     options: tuple[QuestionOption, ...]
     correct_option_id: str
     time_limit_seconds: int
+    difficulty: Difficulty = Difficulty.EASY
+    language: str = "en"
+    source_rule_id: str = ""
 
     def __post_init__(self) -> None:
         option_ids = tuple(option.option_id for option in self.options)

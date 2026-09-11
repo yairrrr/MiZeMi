@@ -1,15 +1,19 @@
 """Structural candidate validation (MASTER_SPEC.md §12.3)."""
 
+import re
+
 from app.domain.questions.candidate import QuestionCandidate
 from app.domain.questions.dataset import ProfileDataset
+from app.domain.questions.language import normalize
+from app.domain.questions.question import Difficulty
 
 
 class QuestionValidator:
     """Reject candidates that violate approved correctness and safety rules.
 
-    Option-count and maximum-length checks remain absent until their deferred
-    bounds are approved. Rule-specific semantic correctness is added alongside
-    concrete rules; this validator enforces the shared structural invariants.
+    Enforces shared option, length, metadata and literal-answer constraints.
+    Each concrete rule proves its own mathematical uniqueness before emitting
+    a candidate; only consent-filtered data is available to either layer.
     """
 
     def is_valid(
@@ -17,6 +21,12 @@ class QuestionValidator:
         candidate: QuestionCandidate,
         dataset: ProfileDataset,
     ) -> bool:
+        if not isinstance(candidate.difficulty, Difficulty):
+            return False
+        if not 2 <= len(candidate.options) <= 4:
+            return False
+        if len(candidate.text) > 600 or any(len(o.text) > 160 for o in candidate.options):
+            return False
         if not candidate.text.strip():
             return False
 
@@ -36,6 +46,17 @@ class QuestionValidator:
         if len(normalized_texts) != len(set(normalized_texts)):
             return False
 
+        answer = next(o.text for o in candidate.options if o.option_id == candidate.correct_option_id)
+        answer_key = self._normalize(answer)
+        # Avoid clues accidentally naming their own answer. Short tokens and
+        # numbers can coincide with grammatical words/counts without a reveal.
+        if len(answer_key) >= 3 and not answer_key.isdecimal() and re.search(
+            r"(?<!\w)" + re.escape(answer_key) + r"(?!\w)", self._normalize(candidate.text)
+        ):
+            return False
+        if not set(candidate.focus_player_ids).issubset(dataset.player_ids):
+            return False
+
         if not set(candidate.involved_player_ids).issubset(dataset.player_ids):
             return False
         if not set(candidate.source_field_keys).issubset(dataset.field_keys):
@@ -45,4 +66,4 @@ class QuestionValidator:
 
     @staticmethod
     def _normalize(value: str) -> str:
-        return value.strip().casefold()
+        return str(normalize(value))

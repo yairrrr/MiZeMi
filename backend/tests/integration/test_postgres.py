@@ -22,14 +22,15 @@ def test_all_tables_compile_for_postgres():
     statements = []
     engine = create_mock_engine('postgresql+psycopg://', lambda sql, *a, **kw: statements.append(str(sql.compile(dialect=engine.dialect))))
     Base.metadata.create_all(engine)
-    assert len(statements) == 7
+    assert len(statements) == 9
     assert any('TIMESTAMP WITH TIME ZONE' in sql for sql in statements)
     assert any('CREATE TABLE answers' in sql for sql in statements)
     assert any('CREATE TABLE scores' in sql for sql in statements)
 
 
 @pytest.mark.skipif(not os.environ.get('MIZEMI_TEST_POSTGRES_URL'), reason='Set MIZEMI_TEST_POSTGRES_URL for a disposable PostgreSQL database')
-def test_real_postgres_game_persistence_rollback_and_retention():
+@pytest.mark.parametrize("language", ["en", "he"])
+def test_real_postgres_game_persistence_rollback_and_retention(language):
     engine = create_database_engine(os.environ['MIZEMI_TEST_POSTGRES_URL'])
     schema = f'mizemi_test_{uuid4().hex}'
     with engine.begin() as connection:
@@ -40,8 +41,8 @@ def test_real_postgres_game_persistence_rollback_and_retention():
     app.state.database.engine = scoped
     app.state.database.session_factory = create_session_factory(scoped)
     try:
-        with TestClient(app) as client, Table(client, app) as table:
-            # Startup creates all seven tables in the isolated schema.
+        with TestClient(app) as client, Table(client, app, config={"question_count":1,"language":language}) as table:
+            # Startup creates all nine tables in the isolated schema.
             table.start()
             for name in NAMES:
                 table.answer(name, correct=(name == 'Dana'))
@@ -56,6 +57,11 @@ def test_real_postgres_game_persistence_rollback_and_retention():
                 repository = SqlAlchemyGameRepository(session)
                 record = repository.get(table.game.game_id)
                 assert record.state == 'FINISHED'
+                assert record.config.question_count == 1
+                assert record.config.language == language
+                assert record.questions[0].language == language
+                assert record.questions[0].source_rule_id
+                assert record.questions[0].difficulty == table.game.questions[0].difficulty.value
                 assert {s.player_id: s.total_score for s in record.scores} == table.game.scores
                 assert len(record.answers) == 3
                 assert all(a.answered_at.tzinfo is not None for a in record.answers)

@@ -105,7 +105,8 @@ class GameplayService:
         game in its previous state.
         """
         generation = QuestionGenerationConfig(
-            question_count=self._config.questions_per_game,
+            question_count=game.config.question_count,
+            language=game.config.language,
             time_limit_seconds=self._config.time_limit_seconds,
             seed=seed_for_game(game.game_id),
         )

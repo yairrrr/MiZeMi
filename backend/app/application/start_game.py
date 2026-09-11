@@ -1,17 +1,4 @@
-"""Start-game orchestration (MASTER_SPEC.md §11, §12).
-
-Application layer: builds the consent-safe dataset from the game's players,
-invokes the deterministic Question Engine, and starts the game through the
-domain. No FastAPI, no Pydantic, no transport concerns.
-
-Deliberately transport-independent: the host trigger for ``game.start`` is
-not wired here because the host authorization mechanism remains deferred
-(§0). Whatever host transport is later approved calls this service.
-
-``question_count``, ``time_limit_seconds``, and ``seed`` are explicit inputs
-rather than constants: the per-game question count and time limit are
-deferred product decisions (§0, §9.3), so this layer must not invent them.
-"""
+"""Generate from consented profiles using the immutable room configuration."""
 
 from dataclasses import dataclass
 from datetime import datetime
@@ -22,11 +9,12 @@ from app.domain.questions import ProfileDataset, Question, QuestionGenerator
 
 @dataclass(frozen=True)
 class QuestionGenerationConfig:
-    """Caller-supplied generation settings — no product defaults exist yet."""
+    """Validated generation inputs, including the shared question language."""
 
     question_count: int
     time_limit_seconds: int
     seed: int
+    language: str = "en"
 
 
 class GameNotStartableError(Exception):
@@ -75,6 +63,7 @@ class StartGameService:
             question_count=config.question_count,
             time_limit_seconds=config.time_limit_seconds,
             seed=config.seed,
+            language=config.language,
         )
         if not questions:
             # Game.start would reject this anyway; failing here keeps the

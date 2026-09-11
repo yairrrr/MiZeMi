@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from app.domain.questions.question import QuestionOption
+from app.domain.questions.question import Difficulty, QuestionOption
 
 
 @dataclass(frozen=True)
@@ -20,4 +20,7 @@ class QuestionCandidate:
     source_rule_id: str
     source_field_keys: tuple[str, ...]
     involved_player_ids: tuple[str, ...]
+    difficulty: Difficulty = Difficulty.EASY
+    semantic_key: tuple[str, ...] = ()
+    focus_player_ids: tuple[str, ...] = ()
     metadata: tuple[tuple[str, str | int | float | bool], ...] = ()

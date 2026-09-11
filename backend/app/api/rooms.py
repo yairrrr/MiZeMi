@@ -10,8 +10,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Request
 
 from app.api.errors import error_response
+from app.domain.game.config import GameConfig
 from app.api.schemas import (
     CreateRoomResponse,
+    CreateRoomRequest,
+    GameConfigSchema,
     JoinRoomRequest,
     JoinRoomResponse,
     PlayerSchema,
@@ -38,15 +41,16 @@ def get_game_hub(request: Request) -> GameHub:
 
 
 @router.post("/rooms", status_code=201)
-async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)]):
+async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)], body: CreateRoomRequest | None = None):
     try:
-        hosted = hub.create_room()
+        hosted = hub.create_room(GameConfig(**body.model_dump()) if body is not None else None)
     except RoomLimitError:
         return error_response(503, ErrorCode.ROOM_FULL, "The server has too many rooms. Please try again later.")
     return CreateRoomResponse(
         room_code=hosted.room.room_code,
         game_id=hosted.room.game.game_id,
         host_token=hosted.host_token,
+        config=GameConfigSchema(question_count=hosted.room.game.config.question_count, language=hosted.room.game.config.language),
     )
 
 

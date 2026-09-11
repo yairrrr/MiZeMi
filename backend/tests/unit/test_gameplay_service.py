@@ -11,6 +11,7 @@ from app.application.gameplay import (
     seed_for_game,
 )
 from app.application.start_game import GameNotStartableError
+from app.domain.game.config import GameConfig
 from app.domain.game import AnswerRejectedError, GameState, InvalidStateTransitionError
 from tests.fixtures.factories import make_ready_game
 
@@ -42,7 +43,7 @@ def _answer_correct(service: GameplayService, game, player_id: str):
 class TestStartGame:
     def test_start_uses_configured_count_limit_and_server_clock(self) -> None:
         clock = FakeClock()
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
 
         questions = _service(clock, count=2, limit=15).start_game(game)
 
@@ -61,7 +62,7 @@ class TestStartGame:
         assert seed_for_game("game-x") != seed_for_game("game-y")
 
     def test_start_rejected_when_not_ready(self) -> None:
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         _service(FakeClock()).start_game(game)
 
         with pytest.raises(GameNotStartableError):
@@ -72,7 +73,7 @@ class TestAnswers:
     def test_answer_is_stamped_with_server_time(self) -> None:
         clock = FakeClock()
         service = _service(clock)
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         service.start_game(game)
         clock.advance(seconds=3)
 
@@ -83,7 +84,7 @@ class TestAnswers:
 
     def test_all_answered_reported_on_last_answer(self) -> None:
         service = _service(FakeClock())
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         service.start_game(game)
         _answer_correct(service, game, "p1")
         _answer_correct(service, game, "p2")
@@ -95,7 +96,7 @@ class TestAnswers:
     def test_answer_after_deadline_uses_server_clock(self) -> None:
         clock = FakeClock()
         service = _service(clock, limit=10)
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         service.start_game(game)
         clock.advance(seconds=10, milliseconds=1)
 
@@ -107,7 +108,7 @@ class TestRoundFlow:
     def test_close_scores_and_leaderboard_ranks(self) -> None:
         clock = FakeClock()
         service = _service(clock)
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         service.start_game(game)
         _answer_correct(service, game, "p2")  # instant -> 1000
         clock.advance(seconds=10)
@@ -127,7 +128,7 @@ class TestRoundFlow:
 
     def test_statistics_count_every_answer(self) -> None:
         service = _service(FakeClock())
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         service.start_game(game)
         _answer_correct(service, game, "p1")
         _answer_correct(service, game, "p2")
@@ -141,7 +142,7 @@ class TestRoundFlow:
     def test_next_walks_results_leaderboard_question_and_finish(self) -> None:
         clock = FakeClock()
         service = _service(clock, count=2)
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         questions = service.start_game(game)
         assert len(questions) == 2
 
@@ -162,7 +163,7 @@ class TestRoundFlow:
 
     def test_next_rejected_while_question_active(self) -> None:
         service = _service(FakeClock())
-        game = make_ready_game()
+        game = make_ready_game(config=GameConfig(question_count=2))
         service.start_game(game)
 
         with pytest.raises(InvalidStateTransitionError):
