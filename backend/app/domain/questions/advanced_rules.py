@@ -116,8 +116,8 @@ class MostSimilarPairRule(IndexedRule):
     def candidates(self, ix, rng):
         winner = unique_extreme(ix.overlaps)
         if winner is not None and ix.overlaps[winner] >= 2:
-            text = self.text(ix, 'Which pair shares the most values across {fields}?',
-                             'לאיזה זוג יש הכי הרבה ערכים משותפים בשדות {fields}?', fields=self.comparison_fields(ix))
+            text = self.text(ix, 'Which pair has the most in common when comparing {fields}?',
+                             'לאיזה זוג יש הכי הרבה במשותף כשמשווים {fields}?', fields=self.comparison_fields(ix))
             yield from self.make(ix, rng, text, ix.pair_name(winner), [ix.pair_name(p) for p in ix.pairs],
                                  ix.common_fields, ix.ids, focus=winner)
 
@@ -133,8 +133,8 @@ class SimilarToPlayerRule(IndexedRule):
             winner = unique_extreme(scores)
             if winner is None or scores[winner] < 1:
                 continue
-            text = self.text(ix, 'Who shares the most values with {name} across {fields}?',
-                             'למי יש הכי הרבה ערכים משותפים עם {name} בשדות {fields}?',
+            text = self.text(ix, 'Who has the most in common with {name} when comparing {fields}?',
+                             'למי יש הכי הרבה במשותף עם {name} כשמשווים {fields}?',
                              name=ix.name(anchor), fields=self.comparison_fields(ix))
             yield from self.person(ix, rng, text, winner, tuple(scores), ix.common_fields, focus=(anchor, winner))
 
@@ -152,7 +152,7 @@ class OddOneOutRule(IndexedRule):
                 for odd in others:
                     group = (*holders[:3], odd)
                     text = self.text(ix, 'Three of these players chose the same {field}. Who chose something different?',
-                                     'שלושה מהמשתתפים הבאים בחרו באותו ערך בשדה {field}. מי בחר משהו אחר?', field=self.field(ix, field))
+                                     'שלושה מהמשתתפים הבאים נתנו תשובה זהה לגבי {field}. מי בחר משהו אחר?', field=self.field(ix, field))
                     yield from self.person(ix, rng, text, odd, group, (field,), key=('exception', field, *sorted(group)))
 
 
@@ -171,7 +171,7 @@ class FilteredModeRule(IndexedRule):
                 if winner is None or counts[winner] < 2:
                     continue
                 text = self.text(ix, 'Among players whose {condition} is "{value}", what is the most common {field}?',
-                                 'אצל המשתתפים שבחרו "{value}" בשדה {condition}, מהו הערך הנפוץ ביותר בשדה {field}?',
+                                 'מבין המשתתפים שבחרו "{value}" לגבי {condition}, מה הכי נפוץ אצלם לגבי {field}?',
                                  condition=self.field(ix, condition), value=ix.displays[condition][value], field=self.field(ix, field))
                 yield from self.make(ix, rng, text, ix.displays[field][winner], [ix.displays[field][v] for v in counts],
                                      (condition, field), holders, key=('filtered_mode', condition, value, field))
@@ -189,7 +189,7 @@ class SharedReferenceRule(IndexedRule):
                 if len(winners) != 1 or len(eligible) < 3:
                     continue
                 text = self.text(ix, 'Who shares both {fields} with {name}?',
-                                 'למי יש ערכים זהים לאלה של {name} בשני השדות {fields}?',
+                                 'מי בחר/ה בדיוק כמו {name} גם לגבי {fields}?',
                                  fields=self.fields(ix, fields), name=ix.name(anchor))
                 yield from self.person(ix, rng, text, winners[0], [p for p in eligible if p != anchor], fields,
                                        focus=(anchor, winners[0]))
@@ -207,7 +207,7 @@ class GroupComparisonRule(IndexedRule):
                 winner = a if len(ix.groups[field][a]) > len(ix.groups[field][b]) else b
                 # Values appear as options, never alongside their counts.
                 text = self.text(ix, 'Which of these two {field} choices was shared by more players?',
-                                 'איזו משתי האפשרויות בשדה {field} נבחרה על ידי יותר משתתפים?', field=self.field(ix, field))
+                                 'איזו משתי הבחירות לגבי {field} משותפת ליותר משתתפים?', field=self.field(ix, field))
                 yield from self.make(ix, rng, text, ix.displays[field][winner], [ix.displays[field][v] for v in (a, b)],
                                      (field,), (*ix.groups[field][a], *ix.groups[field][b]), key=('group_comparison', field))
 
@@ -222,7 +222,7 @@ class LeastCommonValueRule(IndexedRule):
             if winner is None or len(ix.complete(field)) < 4:
                 continue
             text = self.text(ix, 'Which shared {field} choice belongs to the smallest group?',
-                             'איזה ערך משותף בשדה {field} שייך לקבוצה הקטנה ביותר?', field=self.field(ix, field))
+                             'איזו בחירה לגבי {field} משותפת לקבוצה הקטנה ביותר?', field=self.field(ix, field))
             yield from self.make(ix, rng, text, ix.displays[field][winner], list(ix.displays[field].values()),
                                  (field,), ix.complete(field), key=('least_common', field))
 
@@ -238,8 +238,8 @@ class MinorityFractionRule(IndexedRule):
             small = [v for v, p in ix.groups[field].items() if len(p) * 4 < len(participants)]
             if len(small) != 1:
                 continue
-            text = self.text(ix, 'Which {field} choice was shared by fewer than a quarter of the players who shared this field?',
-                             'איזה ערך בשדה {field} נבחר על ידי פחות מרבע מהמשתתפים ששיתפו את השדה?', field=self.field(ix, field))
+            text = self.text(ix, 'Which {field} choice was shared by fewer than a quarter of those who answered?',
+                             'איזו בחירה לגבי {field} משותפת לפחות מרבע מהמשתתפים שענו?', field=self.field(ix, field))
             yield from self.make(ix, rng, text, ix.displays[field][small[0]], list(ix.displays[field].values()),
                                  (field,), participants, key=('least_common', field))
 
@@ -270,7 +270,7 @@ class AttributeChainRule(IndexedRule):
                     continue
                 text = self.text(ix,
                     'Who shares {f} with {a} and {g} with {b}, but has a different {h} from both?',
-                    'למי יש אותו ערך בשדה {f} כמו ל{a}, אותו ערך בשדה {g} כמו ל{b}, וערך שונה משניהם בשדה {h}?',
+                    'מי דומה ל{a} לגבי {f}, דומה ל{b} לגבי {g}, אבל שונה משניהם לגבי {h}?',
                     f=self.field(ix, f), g=self.field(ix, g), h=self.field(ix, h), a=ix.name(a), b=ix.name(b))
                 yield from self.person(ix, rng, text, winners[0], pool, (f, g, h), focus=(winners[0], a, b))
 
@@ -289,7 +289,7 @@ class CrossPersonRule(IndexedRule):
                 continue
             text = self.text(ix,
                 'Across {fields}, who has the highest total of matches with {a} plus matches with {b}? Count a match with each person separately.',
-                'בשדות {fields}, למי יש הכי הרבה התאמות עם {a} ועם {b} יחד? התאמה לכל אחד מהם נספרת בנפרד.',
+                'כשמשווים {fields}, למי יש הכי הרבה במשותף עם {a} ועם {b} יחד? סופרים כל תשובה משותפת עם כל אחד מהם בנפרד.',
                 fields=self.comparison_fields(ix), a=ix.name(a), b=ix.name(b))
             yield from self.person(ix, rng, text, winner, tuple(scores), ix.common_fields, focus=(winner, a, b))
 
@@ -299,8 +299,8 @@ class CommonalityCountRule(IndexedRule):
 
     def candidates(self, ix, rng):
         for (a, b), count in ix.overlaps.items():
-            text = self.text(ix, 'How many values do {a} and {b} share across {fields}?',
-                             'כמה ערכים משותפים יש ל{a} ול{b} בשדות {fields}?',
+            text = self.text(ix, 'How many answers do {a} and {b} have in common when comparing {fields}?',
+                             'בכמה תשובות {a} ו{b} דומים כשמשווים {fields}?',
                              a=ix.name(a), b=ix.name(b), fields=self.comparison_fields(ix))
             yield from self.number(ix, rng, text, count, len(ix.common_fields), ix.common_fields, (a, b),
                                    key=('commonality_count', a, b), focus=(a, b))
@@ -318,8 +318,8 @@ class ExclusionRule(IndexedRule):
                 if len(holders) != len(eligible) - 1:
                     continue
                 odd = next(p for p in eligible if p not in holders)
-                text = self.text(ix, 'Among players who shared {field}, everyone but one chose the same value. Who is the exception?',
-                                 'מבין המשתתפים ששיתפו את השדה {field}, כולם חוץ מאחד בחרו באותו ערך. מי יוצא הדופן?', field=self.field(ix, field))
+                text = self.text(ix, 'Among players who shared their {field}, everyone but one gave the same answer. Who is the exception?',
+                                 'מבין מי ששיתפו {field}, כולם חוץ מאחד נתנו אותה תשובה. מי יוצא/ת הדופן?', field=self.field(ix, field))
                 yield from self.person(ix, rng, text, odd, eligible, (field,), key=('exception', field, *sorted(eligible)))
 
 
@@ -336,7 +336,7 @@ class ConditionalYoungestRule(IndexedRule):
                 if winner is None:
                     continue
                 text = self.text(ix, 'Who is youngest among players whose {field} is "{value}"?',
-                                 'מי הצעיר ביותר מבין המשתתפים שבחרו "{value}" בשדה {field}?',
+                                 'מי הצעיר/ה ביותר מבין המשתתפים שבחרו "{value}" לגבי {field}?',
                                  field=self.field(ix, field), value=ix.displays[field][value])
                 yield from self.person(ix, rng, text, winner, holders, (field, 'age'))
 
@@ -367,7 +367,7 @@ class SecondLargestGroupRule(IndexedRule):
             if sum(len(p) == count for p in groups.values()) != 1 or len(groups[ranked[0]]) == count:
                 continue
             text = self.text(ix, 'Which {field} choice has the second-largest group?',
-                             'איזה ערך בשדה {field} שייך לקבוצה השנייה בגודלה?', field=self.field(ix, field))
+                             'איזו בחירה לגבי {field} שייכת לקבוצה השנייה בגודלה?', field=self.field(ix, field))
             yield from self.make(ix, rng, text, ix.displays[field][ranked[1]], list(ix.displays[field].values()),
                                  (field,), ix.complete(field))
 
@@ -383,8 +383,8 @@ class PairMatchRule(IndexedRule):
             winners = [pair for pair in pairs if all(ix.equal(*pair, f) for f in fields)]
             if len(winners) != 1 or len(pairs) < 3:
                 continue
-            text = self.text(ix, 'Which pair chose the same values for both {fields}?',
-                             'איזה זוג בחר ערכים זהים בשני השדות {fields}?', fields=self.fields(ix, fields))
+            text = self.text(ix, 'Which pair gave matching answers for both {fields}?',
+                             'איזה זוג נתנו תשובות זהות גם לגבי {fields}?', fields=self.fields(ix, fields))
             yield from self.make(ix, rng, text, ix.pair_name(winners[0]), [ix.pair_name(p) for p in pairs], fields,
                                  eligible, focus=winners[0])
 
@@ -401,7 +401,7 @@ class SharedButDifferentRule(IndexedRule):
                 if len(winners) != 1:
                     continue
                 text = self.text(ix, 'Who shares {f} with {name}, but has a different {g}?',
-                                 'למי יש אותו ערך בשדה {f} כמו ל{name}, אבל ערך שונה בשדה {g}?',
+                                 'מי דומה ל{name} לגבי {f}, אבל שונה לגבי {g}?',
                                  f=self.field(ix, f), g=self.field(ix, g), name=ix.name(anchor))
                 yield from self.person(ix, rng, text, winners[0], pool, (f, g), focus=(anchor, winners[0]))
 
@@ -419,8 +419,8 @@ class CategoryCoverageRule(IndexedRule):
             winner = unique_extreme(variety)
             if winner is None or variety[winner] < 2 or len(ix.complete(group, field)) < 4:
                 continue
-            text = self.text(ix, 'Which {group} group includes the greatest variety of {field} values?',
-                             'באיזו קבוצה לפי {group} יש את המגוון הגדול ביותר של ערכים בשדה {field}?',
+            text = self.text(ix, 'Which group sharing the same {group} has the widest variety of {field} choices?',
+                             'באיזו קבוצה עם {group} משותף יש את המגוון הגדול ביותר של בחירות לגבי {field}?',
                              group=self.field(ix, group), field=self.field(ix, field))
             yield from self.make(ix, rng, text, ix.displays[group][winner], list(ix.displays[group].values()),
                                  (group, field), ix.complete(group, field), key=('coverage', group, field))
@@ -436,8 +436,8 @@ class UniqueConnectionRule(IndexedRule):
         winners = [p for p in ix.ids if all(ix.overlap(p, q) > 0 for q in ix.ids if q != p)]
         if len(winners) != 1:
             return
-        text = self.text(ix, 'Across {fields}, who is the only player sharing at least one value with every other player?',
-                         'בשדות {fields}, מי המשתתף היחיד שיש לו לפחות ערך משותף אחד עם כל משתתף אחר?', fields=self.comparison_fields(ix))
+        text = self.text(ix, 'When comparing {fields}, who has at least one answer in common with every other player?',
+                         'כשמשווים {fields}, למי יש לפחות תשובה אחת במשותף עם כל אחד מהמשתתפים האחרים?', fields=self.comparison_fields(ix))
         yield from self.person(ix, rng, text, winners[0], ix.ids, ix.common_fields)
 
 
@@ -458,7 +458,7 @@ class TwoStepEliminationRule(IndexedRule):
                     if len(winners) != 1:
                         continue
                     text = self.text(ix, 'Who chose "{value}" for {f}, but did not choose "{excluded}" for {g}?',
-                                     'מי בחר "{value}" בשדה {f}, אבל לא בחר "{excluded}" בשדה {g}?',
+                                     'מי בחר "{value}" לגבי {f}, אבל בחר משהו אחר מ"{excluded}" לגבי {g}?',
                                      value=ix.displays[f][value], f=self.field(ix, f), excluded=ix.displays[g][excluded], g=self.field(ix, g))
                     yield from self.person(ix, rng, text, winners[0], ix.complete(f, g), (f, g))
 
@@ -491,8 +491,8 @@ class BalancedSplitRule(IndexedRule):
         winners = [f for f in eligible if len(ix.groups[f]) == 2 and all(len(p) * 2 == len(ix.ids) for p in ix.groups[f].values())]
         if len(winners) != 1 or len(eligible) < 2:
             return
-        text = self.text(ix, 'Which field divides the group into exactly two equally large groups?',
-                         'איזה שדה מחלק את המשתתפים בדיוק לשתי קבוצות שוות בגודלן?')
+        text = self.text(ix, 'Which topic divides the players into exactly two equally large groups?',
+                         'איזה נושא מחלק את המשתתפים בדיוק לשתי קבוצות שוות בגודלן?')
         yield from self.make(ix, rng, text, self.field(ix, winners[0]), [self.field(ix, f) for f in eligible], eligible, ix.ids)
 
 
@@ -509,8 +509,8 @@ class RarestProfileRule(IndexedRule):
         if winner is None:
             return
         text = self.text(ix,
-            'Across {fields}, who has the fewest matches with the rest of the group? Count each matching field with each other player separately.',
-            'בשדות {fields}, למי יש הכי מעט התאמות עם שאר הקבוצה? כל שדה תואם עם כל משתתף אחר נספר בנפרד.',
+            'When comparing {fields}, who has the fewest answers in common with everyone else? Count each shared answer with each other player separately.',
+            'כשמשווים {fields}, למי יש הכי מעט במשותף עם שאר הקבוצה? כל תשובה משותפת עם כל משתתף אחר נספרת בנפרד.',
             fields=self.comparison_fields(ix))
         yield from self.person(ix, rng, text, winner, ix.ids, ix.common_fields)
 
@@ -524,8 +524,8 @@ class ExactOverlapPairRule(IndexedRule):
         for pair, count in ix.overlaps.items():
             if count < 1 or frequencies[count] != 1:
                 continue
-            text = self.text(ix, 'Across {fields}, which pair shares exactly {count} values?',
-                             'בשדות {fields}, לאיזה זוג יש בדיוק {count} ערכים משותפים?',
+            text = self.text(ix, 'When comparing {fields}, which pair has exactly {count} answers in common?',
+                             'כשמשווים {fields}, לאיזה זוג יש בדיוק {count} תשובות משותפות?',
                              fields=self.comparison_fields(ix), count=count)
             yield from self.make(ix, rng, text, ix.pair_name(pair), [ix.pair_name(p) for p in ix.pairs],
                                  ix.common_fields, ix.ids, focus=pair)

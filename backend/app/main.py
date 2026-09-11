@@ -24,6 +24,8 @@ from app.api.health import router as health_router
 from app.api.rooms import router as rooms_router
 from app.application.gameplay import GameplayConfig, GameplayService, utc_now
 from app.domain.game import Game
+from app.domain.questions.generator import QuestionGenerator
+from app.infrastructure.knowledge import get_knowledge
 from app.infrastructure.credentials import CredentialStore
 from app.infrastructure.database import (
     Base,
@@ -104,7 +106,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             GameplayConfig(
                 questions_per_game=settings.questions_per_game,
                 time_limit_seconds=settings.question_time_limit_seconds,
-            )
+            ),
+            generator=QuestionGenerator(knowledge=get_knowledge()),
         ),
         max_players=settings.max_players_per_room,
         persist=database.save_finished_game,

@@ -56,6 +56,8 @@ class RecordedQuestion:
     difficulty: str = "EASY"
     language: str = "en"
     source_rule_id: str = ""
+    explanation: str = ""
+    knowledge_version: str = ""
 
 
 @dataclass(frozen=True)

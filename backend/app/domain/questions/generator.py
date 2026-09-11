@@ -12,6 +12,7 @@ from collections.abc import Sequence
 from random import Random
 
 from app.domain.questions.candidate import QuestionCandidate
+from app.domain.questions.knowledge import KnowledgeBase
 from app.domain.questions.dataset import ProfileDataset
 from app.domain.questions.question import Question, QuestionType
 from app.domain.questions.rule import QuestionRule
@@ -32,8 +33,12 @@ class QuestionGenerator:
         validator: QuestionValidator | None = None,
         scorer: QuestionQualityScorer | None = None,
         selector: QuestionSelector | None = None,
+        knowledge: KnowledgeBase | None = None,
     ) -> None:
         self._rules = tuple(rules) if rules is not None else default_rules()
+        if knowledge is not None:
+            from app.domain.questions.semantic_rules import semantic_rules
+            self._rules += semantic_rules(knowledge)
         self._validator = validator if validator is not None else QuestionValidator()
         self._scorer = scorer if scorer is not None else QuestionQualityScorer()
         self._selector = selector if selector is not None else QuestionSelector()
@@ -80,6 +85,8 @@ class QuestionGenerator:
                 difficulty=candidate.difficulty,
                 language=dataset.language,
                 source_rule_id=candidate.source_rule_id,
+                explanation=candidate.explanation,
+                knowledge_version=candidate.knowledge_version,
             )
             for index, candidate in enumerate(selected)
         )

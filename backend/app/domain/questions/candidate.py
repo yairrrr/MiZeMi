@@ -24,3 +24,5 @@ class QuestionCandidate:
     semantic_key: tuple[str, ...] = ()
     focus_player_ids: tuple[str, ...] = ()
     metadata: tuple[tuple[str, str | int | float | bool], ...] = ()
+    explanation: str = ""
+    knowledge_version: str = ""

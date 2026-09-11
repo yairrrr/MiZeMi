@@ -27,6 +27,8 @@ class QuestionValidator:
             return False
         if len(candidate.text) > 600 or any(len(o.text) > 160 for o in candidate.options):
             return False
+        if len(candidate.explanation) > 1200 or len(candidate.knowledge_version) > 64:
+            return False
         if not candidate.text.strip():
             return False
 

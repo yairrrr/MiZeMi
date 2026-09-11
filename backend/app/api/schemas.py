@@ -348,6 +348,7 @@ class QuestionEndedSchema(BaseModel):
     language: Literal["en", "he"] = "en"
     text: str
     options: list[QuestionOptionSchema]
+    explanation: str = ""
     correct_option_id: str
     statistics: QuestionStatisticsSchema
     player_result: PlayerQuestionResultSchema | None

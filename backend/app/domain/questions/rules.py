@@ -2,7 +2,7 @@
 
 from random import Random
 
-from app.domain.questions.language import normalize, label, say
+from app.domain.questions.language import normalize, label, say, direct_hebrew
 
 from app.domain.questions.candidate import QuestionCandidate
 from app.domain.questions.dataset import ProfileDataset
@@ -96,7 +96,7 @@ class UniqueValueRule(QuestionRule):
                 )
                 candidates.append(
                     QuestionCandidate(
-                        text=say(dataset.language, "Who is the only player whose {field} is {value}?", "מי המשתתף היחיד שהערך שלו בשדה {field} הוא {value}?", field=label(field_key, dataset.language), value=_render(value)),
+                        text=say(dataset.language, "Who is the only player whose {field} is {value}?", direct_hebrew("unique", field_key), field=label(field_key, dataset.language), value=_render(value)),
                         options=options,
                         correct_option_id=correct_option_id,
                         source_rule_id=self.rule_id,
@@ -135,7 +135,7 @@ class MostCommonValueRule(QuestionRule):
             )
             candidates.append(
                 QuestionCandidate(
-                    text=say(dataset.language, "What is the most common {field} in this group?", "מהו הערך הנפוץ ביותר בשדה {field} בקבוצה?", field=label(field_key, dataset.language)),
+                    text=say(dataset.language, "What is the most common {field} in this group?", direct_hebrew("mode", field_key), field=label(field_key, dataset.language)),
                     options=options,
                     correct_option_id=correct_option_id,
                     source_rule_id=self.rule_id,
@@ -171,7 +171,7 @@ class ValueCountRule(QuestionRule):
                 )
                 candidates.append(
                     QuestionCandidate(
-                        text=say(dataset.language, "How many players have {value} as their {field}?", "כמה משתתפים בחרו בערך {value} בשדה {field}?", field=label(field_key, dataset.language), value=_render(value)),
+                        text=say(dataset.language, "How many players have {value} as their {field}?", direct_hebrew("count", field_key), field=label(field_key, dataset.language), value=_render(value)),
                         options=options,
                         correct_option_id=correct_option_id,
                         source_rule_id=self.rule_id,

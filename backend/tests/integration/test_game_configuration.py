@@ -99,13 +99,13 @@ def test_public_config_controls_full_game_and_survives_results_and_persistence(l
 
 def test_additive_schema_preserves_old_records_without_configuration():
     engine=create_database_engine('sqlite://')
-    original=[t for t in Base.metadata.sorted_tables if t.name not in ('game_configurations','question_details')]
+    original=[t for t in Base.metadata.sorted_tables if t.name not in ('game_configurations','question_details','question_explanations')]
     Base.metadata.create_all(engine, tables=original)
     with create_session_factory(engine)() as session:
         session.add(GameRow(game_id='old',state='FINISHED',current_question_index=None))
         session.commit()
     Base.metadata.create_all(engine)
-    assert len(inspect(engine).get_table_names()) == 9
+    assert len(inspect(engine).get_table_names()) == 10
     with create_session_factory(engine)() as session:
         record=SqlAlchemyGameRepository(session).get('old')
         assert record.game_id == 'old' and record.config.language == 'en'
