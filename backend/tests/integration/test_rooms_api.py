@@ -39,7 +39,7 @@ class TestCreateRoomEndpoint:
 
         assert response.status_code == 201
         body = response.json()
-        assert set(body.keys()) == {"room_code", "game_id", "host_token"}
+        assert set(body.keys()) == {"room_code", "game_id", "host_token", "config"}
         assert isinstance(body["room_code"], str) and body["room_code"]
         assert isinstance(body["game_id"], str) and body["game_id"]
         assert len(body["host_token"]) >= 40

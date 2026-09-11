@@ -445,7 +445,7 @@ h2 {
 }
 
 .option-button { cursor: pointer; transition: transform 120ms ease, opacity 120ms ease; }
-.option-button:hover:not(:disabled) { transform: translateY(-2px); }
+.option-button:hover:not(:disabled) { box-shadow: inset 0 0 0 3px rgb(255 255 255 / 45%); }
 .option-button:disabled:not(.is-chosen) { opacity: 0.45; cursor: default; }
 .option-button.is-chosen { outline: 4px solid #272145; outline-offset: 3px; }
 
@@ -515,7 +515,6 @@ h2 {
 
 .answer-bar-fill { height: 100%; border-radius: inherit; transition: width 500ms ease; }
 .answer-bar:not(.is-correct) .answer-bar-fill { opacity: 0.45; }
-.answer-bar.is-own .answer-bar-label::after { content: "Your answer"; color: #686477; font-size: 0.78rem; }
 .answer-bar-value { grid-row: 1; grid-column: 2; color: #686477; font-weight: 700; }
 
 .correct-mark {
@@ -628,3 +627,42 @@ h2 {
 
 button, input, select { touch-action: manipulation; }
 .game-shell { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+
+/* Localization, readable user text, and the supplied brand asset. */
+.language-bar { display: flex; justify-content: flex-end; align-items: center; gap: .65rem; margin-block-end: 1rem; color: #5d5a70; font-size: .9rem; }
+.language-bar select, .room-settings select { min-height: 2.75rem; padding: .4rem .75rem; border: 1px solid #d9d4e2; border-radius: .8rem; color: #39354b; background: #fff; }
+.app-shell { padding-block-start: clamp(.75rem, 2vw, 1.5rem); }
+.brand-heading { margin: 0; line-height: 1; }
+.brand-logo { display: block; width: clamp(11rem, 22vw, 17rem); height: auto; margin-inline: auto; }
+.welcome-copy { margin-block-end: 1.75rem; }
+.welcome-copy > p:last-child { margin-block-start: .5rem; }
+.room-settings { display: grid; gap: .65rem; margin: 0; padding: 0; border: 0; min-width: 0; }
+.room-settings > label { font-size: .9rem; font-weight: 750; }
+.room-settings small { color: #686477; line-height: 1.5; }
+.count-stepper { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr) 3.25rem; gap: .6rem; }
+.count-stepper input { width: 100%; text-align: center; font-size: 1.5rem; font-weight: 800; border: 1px solid #d9d4e2; background: #fff; color: #4f35aa; appearance: textfield; }
+.count-stepper input::-webkit-inner-spin-button, .count-stepper input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.count-stepper button { border: 1px solid #d9d4e2; background: #f4f0ff; color: #4f35aa; font-size: 1.4rem; cursor: pointer; }
+.count-stepper button:disabled { opacity: .45; cursor: default; }
+.game-config-summary { margin: 0; color: #6547cb; font-weight: 750; }
+.difficulty-badge { justify-self: start; border-radius: 999px; padding: .25rem .7rem; color: #6547cb; background: #f4f0ff; font-size: .8rem; font-weight: 750; }
+.option-tile, .option-button { text-align: start; }
+.timer-seconds { text-align: end; direction: ltr; }
+.room-code { direction: ltr; unicode-bidi: isolate; text-align: start; }
+.question-text, .roster-name, .leaderboard-name, .winner-banner strong, .player-name, .answer-bar-text, .option-button bdi, .option-tile bdi { min-width: 0; overflow-wrap: anywhere; }
+.question-text { line-height: 1.4; }
+.own-answer-label { color: #5d5a70; font-size: .78rem; }
+.answer-bar-label { flex-wrap: wrap; }
+.answer-bar-value, .leaderboard-score, .leaderboard-rank { white-space: nowrap; unicode-bidi: isolate; }
+[dir="rtl"] .eyebrow, [dir="rtl"] .card-kicker, [dir="rtl"] .question-count, [dir="rtl"] h2 { letter-spacing: normal; }
+[dir="rtl"] .player-card .card-icon { transform: scaleX(-1); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid rgb(96 67 210 / 45%); outline-offset: 3px; }
+.consent-toggle { min-height: 2.75rem; cursor: pointer; }
+.icon-button { min-height: 2.75rem; min-width: 2.75rem; }
+@media (max-width: 740px) {
+  .brand-logo { width: 12rem; }
+  .welcome-copy > p:last-child { font-size: 1rem; }
+  .app-shell { padding-block-start: .75rem; }
+}
+/* Option colors belong to the result marker/bar, not the entire text row. */
+.answer-bar { background: transparent; }

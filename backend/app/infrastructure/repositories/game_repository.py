@@ -23,9 +23,12 @@ from app.application.repositories import (
     RecordedQuestionOption,
 )
 from app.domain.game import Game
+from app.domain.game.config import GameConfig
 from app.domain.questions import Question
 from app.infrastructure.database.models import (
     GameQuestionRow,
+    GameConfigurationRow,
+    QuestionDetailRow,
     AnswerRow,
     ScoreRow,
     GameRow,
@@ -61,6 +64,7 @@ def _question_to_row(question: Question, game_id: str) -> GameQuestionRow:
         text=question.text,
         correct_option_id=question.correct_option_id,
         time_limit_seconds=question.time_limit_seconds,
+        detail=QuestionDetailRow(question_id=question.question_id, difficulty=question.difficulty.value, language=question.language, source_rule_id=question.source_rule_id),
         options=[
             QuestionOptionRow(
                 question_id=question.question_id,
@@ -77,6 +81,7 @@ def _game_to_row(game: Game) -> GameRow:
     row = GameRow(
         game_id=game.game_id,
         state=game.state.value,
+        configuration=GameConfigurationRow(game_id=game.game_id, question_count=game.config.question_count, language=game.config.language),
         current_question_index=_current_question_index(game),
     )
     for position, player in enumerate(game.players):
@@ -120,6 +125,7 @@ def _row_to_record(row: GameRow) -> FinishedGameRecord:
                                     option_id=answer.option_id,
                                     answered_at=answer.answered_at.replace(tzinfo=UTC) if answer.answered_at.tzinfo is None else answer.answered_at.astimezone(UTC))
                       for answer in row.answers),
+        config=GameConfig(question_count=row.configuration.question_count, language=row.configuration.language) if row.configuration else GameConfig(question_count=max(1, len(row.questions))),
         game_id=row.game_id,
         state=row.state,
         current_question_index=row.current_question_index,
@@ -154,6 +160,9 @@ def _row_to_record(row: GameRow) -> FinishedGameRecord:
                 ),
                 correct_option_id=question.correct_option_id,
                 time_limit_seconds=question.time_limit_seconds,
+                difficulty=question.detail.difficulty if question.detail else "EASY",
+                language=question.detail.language if question.detail else "en",
+                source_rule_id=question.detail.source_rule_id if question.detail else "",
             )
             for question in row.questions
         ),

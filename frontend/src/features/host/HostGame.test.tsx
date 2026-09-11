@@ -23,6 +23,7 @@ const player = (id: string, name: string, overrides: Partial<Player> = {}): Play
 })
 
 const room = (state: RoomSnapshot['state'], players: Player[], index: number | null = 0): RoomSnapshot => ({
+  config: { question_count: 20, language: 'en' },
   room_code: 'K7PW3N',
   state,
   players,
@@ -34,7 +35,7 @@ const question: Question = {
   question_id: 'q1',
   index: 0,
   total_questions: 2,
-  question_type: 'multiple_choice',
+  question_type: 'multiple_choice', difficulty: 'EASY', language: 'en',
   text: 'What is the most common favorite food?',
   options: [
     { option_id: 'a', text: 'pizza' },
@@ -107,6 +108,7 @@ describe('HostGameView', () => {
 
   test('shows results with the correct answer and moves to the leaderboard', async () => {
     const results: QuestionEnded = {
+      difficulty: 'EASY', language: 'en',
       question_id: 'q1',
       text: question.text,
       options: question.options,

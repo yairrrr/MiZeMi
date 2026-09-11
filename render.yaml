@@ -21,7 +21,7 @@ services:
       - key: FRONTEND_ORIGIN
         sync: false
       - key: MIZEMI_QUESTIONS_PER_GAME
-        value: "10"
+        value: "20"
       - key: MIZEMI_QUESTION_TIME_LIMIT_SECONDS
         value: "20"
       - key: MIZEMI_RETENTION_DAYS

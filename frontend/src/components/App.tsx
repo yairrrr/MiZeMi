@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import logo from '../assets/mizemi-logo.png'
+import { I18nProvider, LanguageSelector, useI18n } from '../i18n/I18n'
 
 import { HostGame } from '../features/host/HostGame'
 import { HostRoomEntry } from '../features/host/HostRoomEntry'
@@ -15,6 +17,11 @@ function roomCodeFromUrl(): string {
 }
 
 export function App() {
+  return <I18nProvider><AppContent /></I18nProvider>
+}
+
+function AppContent() {
+  const { t } = useI18n()
   const [session, setSession] = useState<Session | null>(() => loadSession())
 
   function begin(next: Session) {
@@ -30,6 +37,7 @@ export function App() {
   if (session?.role === 'host') {
     return (
       <main className="app-shell game-mode">
+        <LanguageSelector />
         <HostGame session={session} onLeave={leave} />
       </main>
     )
@@ -37,6 +45,7 @@ export function App() {
   if (session?.role === 'player') {
     return (
       <main className="app-shell game-mode">
+        <LanguageSelector />
         <PlayerGame session={session} onLeave={leave} />
       </main>
     )
@@ -44,10 +53,11 @@ export function App() {
 
   return (
     <main className="app-shell">
+      <LanguageSelector />
       <header className="welcome-copy">
-        <p className="eyebrow">Who’s Who · Made for your group</p>
-        <h1 id="app-title">MiZeMi</h1>
-        <p>Turn the stories you share into a game everyone will remember.</p>
+
+        <h1 id="app-title" className="brand-heading"><img className="brand-logo" src={logo} width={1254} height={1254} alt="MiZeMi" /></h1>
+        <p>{t('Turn the stories you share into a game everyone will remember.')}</p>
       </header>
 
       <div className="entry-grid" aria-labelledby="app-title">
@@ -76,7 +86,7 @@ export function App() {
         />
       </div>
 
-      <p className="privacy-note">No account needed. Just your group and a room code.</p>
+      <p className="privacy-note">{t('No account needed. Just your group and a room code.')}</p>
     </main>
   )
 }

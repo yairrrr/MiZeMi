@@ -14,6 +14,7 @@ function apply(view: GameView, message: ServerMessage, receivedAt = Date.parse(S
 }
 
 const room = (state: RoomSnapshot['state']): RoomSnapshot => ({
+  config: { question_count: 20, language: 'en' },
   room_code: 'K7PW3N',
   state,
   players: [],
@@ -25,7 +26,7 @@ const question: Question = {
   question_id: 'q1',
   index: 0,
   total_questions: 2,
-  question_type: 'multiple_choice',
+  question_type: 'multiple_choice', difficulty: 'EASY', language: 'en',
   text: 'Who is the only player from Haifa?',
   options: [
     { option_id: 'a', text: 'Dana' },
@@ -69,6 +70,7 @@ describe('gameReducer', () => {
     expect(view.progress?.answered_count).toBe(2)
 
     const ended = {
+      difficulty: 'EASY' as const, language: 'en' as const,
       question_id: 'q1',
       text: question.text,
       options: question.options,
@@ -116,6 +118,12 @@ describe('gameReducer', () => {
 })
 
 describe('remainingMs', () => {
+  test('a new question cannot briefly display more than its time limit', () => {
+    const start = Date.parse(STAMP)
+    expect(remainingMs(question, 0, start - 250)).toBe(20_000)
+    expect(remainingMs(question, -1_000, start)).toBe(20_000)
+  })
+
   test('counts down to started_at + time limit using server time', () => {
     const start = Date.parse(STAMP)
     expect(remainingMs(question, 0, start + 5_000)).toBe(15_000)

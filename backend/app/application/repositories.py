@@ -15,6 +15,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from app.domain.game import Game
+from app.domain.game.config import GameConfig
 
 
 @dataclass(frozen=True)
@@ -52,6 +53,9 @@ class RecordedQuestion:
     options: tuple[RecordedQuestionOption, ...]
     correct_option_id: str
     time_limit_seconds: int
+    difficulty: str = "EASY"
+    language: str = "en"
+    source_rule_id: str = ""
 
 
 @dataclass(frozen=True)
@@ -77,6 +81,7 @@ class FinishedGameRecord:
     current_question_index: int | None
     players: tuple[RecordedPlayer, ...]
     questions: tuple[RecordedQuestion, ...]
+    config: GameConfig = GameConfig()
     scores: tuple[RecordedScore, ...] = ()
     answers: tuple[RecordedAnswer, ...] = ()
 

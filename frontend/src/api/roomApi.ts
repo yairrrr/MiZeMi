@@ -1,6 +1,7 @@
 import { getApiBaseUrl } from '../config'
 import type {
   CreateRoomResponse,
+  GameConfig,
   ErrorResponse,
   JoinRoomRequest,
   JoinRoomResponse,
@@ -58,9 +59,10 @@ async function readResponse<T>(response: Response): Promise<T> {
   return body as T
 }
 
-export async function createRoom(): Promise<CreateRoomResponse> {
+export async function createRoom(config?: GameConfig): Promise<CreateRoomResponse> {
   const response = await fetch(buildApiUrl('/rooms'), {
     method: 'POST',
+    ...(config === undefined ? {} : { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(config) }),
   })
 
   return readResponse<CreateRoomResponse>(response)

@@ -50,10 +50,10 @@ def _app(**overrides):
 class Table:
     """A host and players connected to one room, with helpers to play."""
 
-    def __init__(self, client: TestClient, app, names=NAMES) -> None:
+    def __init__(self, client: TestClient, app, names=NAMES, *, config: dict | None = None) -> None:
         self.client = client
         self.app = app
-        self.room: CreatedRoom = create_room(client)
+        self.room: CreatedRoom = create_room(client, config)
         self.players: dict[str, JoinedPlayer] = {
             name: join(client, self.room.room_code, name) for name in names
         }

@@ -5,10 +5,13 @@ from random import Random
 
 from app.domain.questions.candidate import QuestionCandidate
 from app.domain.questions.dataset import ProfileDataset
+from app.domain.questions.question import Difficulty
 
 
 class QuestionRule(ABC):
     """Base contract for one independent deterministic question idea."""
+
+    difficulty = Difficulty.EASY
 
     @property
     @abstractmethod

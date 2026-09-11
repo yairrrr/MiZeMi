@@ -1,3 +1,4 @@
+import { useI18n, direction } from '../../i18n/I18n'
 import {
   AnswerBars,
   ConnectionBanner,
@@ -29,26 +30,25 @@ export function HostGame({ session, onLeave }: { session: HostSession; onLeave: 
 }
 
 export function HostGameView({ session, view, status, send, dismissError, onLeave }: HostGameViewProps) {
+  const { t } = useI18n()
   const room = view.room
   return (
-    <section className="game-shell host-shell" aria-label="Host screen">
+    <section className="game-shell host-shell" aria-label={t("Host screen")}>
       <header className="game-header">
         <div>
-          <p className="eyebrow">MiZeMi · Room code</p>
-          <strong className="room-code" aria-label={`Room code ${session.room_code}`}>
+          <p className="eyebrow">{t("MiZeMi · Room code")}</p>
+          <strong className="room-code" dir="ltr" aria-label={t('Room code {code}', { code: session.room_code })}>
             {session.room_code}
           </strong>
         </div>
-        <button type="button" className="ghost-button" onClick={onLeave}>
-          Leave
-        </button>
+        <button type="button" className="ghost-button" onClick={onLeave}>{t("Leave")}</button>
       </header>
 
       <ConnectionBanner status={status} onLeave={onLeave} />
       {view.error !== null && <ErrorToast error={view.error} onDismiss={dismissError} />}
 
       {room === null ? (
-        <p className="waiting-copy">Connecting to your room…</p>
+        <p className="waiting-copy">{t("Connecting to your room…")}</p>
       ) : (
         <fieldset className="stage-controls" disabled={status !== 'open'}>
           <HostStage room={room} view={view} send={send} onLeave={onLeave} />
@@ -86,35 +86,37 @@ function HostStage({
 }
 
 function HostLobby({ room, send }: { room: RoomSnapshot; send: SendFn }) {
+  const { t } = useI18n()
   const players = room.players
   const readyCount = players.filter((player) => player.is_ready).length
   const canStart = room.state === 'READY'
   const joinUrl = `${window.location.origin}/?room=${room.room_code}`
 
-  let startLabel = 'Start game'
+  let startLabel = t('Start game')
   if (!canStart) {
-    startLabel = players.length === 0 ? 'Waiting for players to join…' : 'Waiting for everyone to be ready…'
+    startLabel = t(players.length === 0 ? 'Waiting for players to join…' : 'Waiting for everyone to be ready…')
   }
 
   return (
     <div className="stage lobby-stage">
       <div className="join-instructions">
-        <h2>Join on your phone</h2>
+        <h2>{t("Join on your phone")}</h2>
         <p>
-          Open <strong>{window.location.host}</strong> and enter the room code — or use{' '}
-          <span className="join-link">{joinUrl}</span>
+          {t('Open {host} and enter the room code — or use', { host: window.location.host })}{' '}
+          <bdi className="join-link" dir="ltr">{joinUrl}</bdi>
         </p>
       </div>
 
+      <p className="game-config-summary">{t('{count} questions · {language}', { count: room.config.question_count, language: t(room.config.language === 'he' ? 'Hebrew' : 'English') })}</p>
       <div className="lobby-summary" aria-live="polite">
         <span>
-          <strong>{players.length}</strong> joined
+          {t('{count} joined', { count: players.length })}
         </span>
         <span>
-          <strong>{players.filter((player) => player.has_profile).length}</strong> profiles
+          {t('{count} profiles', { count: players.filter((player) => player.has_profile).length })}
         </span>
         <span>
-          <strong>{readyCount}</strong> ready
+          {t('{count} ready', { count: readyCount })}
         </span>
       </div>
 
@@ -136,9 +138,10 @@ function HostLobby({ room, send }: { room: RoomSnapshot; send: SendFn }) {
 }
 
 function HostQuestion({ room, view }: { room: RoomSnapshot; view: GameView }) {
+  const { t } = useI18n()
   const question = view.question
   if (question === null) {
-    return <p className="waiting-copy">Loading the question…</p>
+    return <p className="waiting-copy">{t("Loading the question…")}</p>
   }
   const progress = view.progress?.question_id === question.question_id ? view.progress : null
   const answered = progress?.answered_count ?? 0
@@ -147,82 +150,82 @@ function HostQuestion({ room, view }: { room: RoomSnapshot; view: GameView }) {
   return (
     <div className="stage question-stage">
       <p className="question-count">
-        Question {question.index + 1} of {question.total_questions}
+        {t('Question {current} of {total}', { current: question.index + 1, total: question.total_questions })}
       </p>
-      <h2 className="question-text">{question.text}</h2>
+      <h2 className="question-text" lang={question.language} dir={direction(question.language)}>{question.text}</h2>
+      <span className="difficulty-badge">{t(question.difficulty === 'HARD' ? 'Hard' : question.difficulty === 'MEDIUM' ? 'Medium' : 'Easy')}</span>
+      {room.config.question_count > room.total_questions && <p className="privacy-hint">{t('Only {actual} of {requested} questions could be made from the shared profiles.', { actual: room.total_questions, requested: room.config.question_count })}</p>}
       <Timer question={question} serverOffsetMs={view.serverOffsetMs} />
-      <ol className="option-grid host-options">
+      <ol className="option-grid host-options" dir={direction(question.language)}>
         {question.options.map((option, index) => (
           <li key={option.option_id} className={`option-tile option-${index}`}>
             <span className="option-letter">{optionLetter(index)}</span>
-            <span>{option.text}</span>
+            <bdi>{option.text}</bdi>
           </li>
         ))}
       </ol>
       <p className="answer-progress" aria-live="polite">
-        {answered} / {total} answered
+        {t('{answered} / {total} answered', { answered, total })}
       </p>
     </div>
   )
 }
 
 function HostResults({ view, send }: { view: GameView; send: SendFn }) {
+  const { t } = useI18n()
   const results = view.results
   if (results === null) {
-    return <p className="waiting-copy">Tallying the answers…</p>
+    return <p className="waiting-copy">{t("Tallying the answers…")}</p>
   }
   const correct = results.options.find((option) => option.option_id === results.correct_option_id)
   const { answered_count, player_count } = results.statistics
 
   return (
     <div className="stage results-stage">
-      <h2 className="question-text">{results.text}</h2>
-      <p className="correct-answer">
-        Correct answer: <strong>{correct?.text}</strong>
+      <h2 className="question-text" lang={results.language} dir={direction(results.language)}>{results.text}</h2>
+      <p className="correct-answer">{t("Correct answer:")} <strong><bdi>{correct?.text}</bdi></strong>
       </p>
       <AnswerBars options={results.options} statistics={results.statistics} />
       <p className="answer-progress">
-        {answered_count} of {player_count} players answered
+        {t('{answered} of {total} players answered', { answered: answered_count, total: player_count })}
       </p>
-      <button type="button" className="primary-button" onClick={() => send('game.next')}>
-        Show leaderboard
-      </button>
+      <button type="button" className="primary-button" onClick={() => send('game.next')}>{t("Show leaderboard")}</button>
     </div>
   )
 }
 
 function HostLeaderboard({ room, view, send }: { room: RoomSnapshot; view: GameView; send: SendFn }) {
+  const { t } = useI18n()
   const entries = view.leaderboard ?? []
   const index = room.current_question_index ?? 0
   const isLast = index + 1 >= room.total_questions
 
   return (
     <div className="stage leaderboard-stage">
-      <h2>Leaderboard</h2>
+      <h2>{t("Leaderboard")}</h2>
       <p className="question-count">
-        After question {index + 1} of {room.total_questions}
+        {t('After question {current} of {total}', { current: index + 1, total: room.total_questions })}
       </p>
       <LeaderboardList entries={entries} />
       <button type="button" className="primary-button" onClick={() => send('game.next')}>
-        {isLast ? 'Show final results' : 'Next question'}
+        {t(isLast ? 'Show final results' : 'Next question')}
       </button>
     </div>
   )
 }
 
 function HostFinal({ view, onLeave }: { view: GameView; onLeave: () => void }) {
+  const { t } = useI18n()
   const finished = view.finished
   if (finished === null) {
-    return <p className="waiting-copy">Calculating the final results…</p>
+    return <p className="waiting-copy">{t("Calculating the final results…")}</p>
   }
   return (
     <div className="stage final-stage">
       <Winners winners={finished.winners} />
-      <h2>Final leaderboard</h2>
+      <h2>{t("Final leaderboard")}</h2>
       <LeaderboardList entries={finished.leaderboard.entries} />
-      <button type="button" className="primary-button" onClick={onLeave}>
-        Host a new game
-      </button>
+      <button type="button" className="primary-button" onClick={onLeave}>{t("Host a new game")}</button>
     </div>
   )
 }

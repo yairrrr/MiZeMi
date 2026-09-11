@@ -1,3 +1,4 @@
+import { useI18n, direction } from '../../i18n/I18n'
 import { useEffect, useState } from 'react'
 
 import {
@@ -31,6 +32,7 @@ export function PlayerGame({ session, onLeave }: { session: PlayerSession; onLea
 }
 
 export function PlayerGameView({ session, view, status, send, dismissError, onLeave }: PlayerGameViewProps) {
+  const { t } = useI18n()
   const room = view.room
   const me = room?.players.find((player) => player.player_id === session.player_id) ?? null
 
@@ -38,26 +40,24 @@ export function PlayerGameView({ session, view, status, send, dismissError, onLe
     return (
       <section className="game-shell player-shell">
         <div className="stage centered-stage">
-          <h2>You left the room</h2>
-          <p className="card-copy">The host removed you from this game.</p>
-          <button type="button" className="primary-button" onClick={onLeave}>
-            Back to start
-          </button>
+          <h2>{t("You left the room")}</h2>
+          <p className="card-copy">{t("The host removed you from this game.")}</p>
+          <button type="button" className="primary-button" onClick={onLeave}>{t("Back to start")}</button>
         </div>
       </section>
     )
   }
 
   return (
-    <section className="game-shell player-shell" aria-label="Player screen">
+    <section className="game-shell player-shell" aria-label={t("Player screen")}>
       <header className="game-header compact">
         <div>
-          <p className="eyebrow">Room {session.room_code}</p>
-          <strong className="player-name">{session.display_name}</strong>
+          <p className="eyebrow">{t('Room {code}', { code: session.room_code })}</p>
+          <strong className="player-name"><bdi>{session.display_name}</bdi></strong>
         </div>
         {me !== null && room !== null && !['LOBBY', 'PROFILE_COLLECTION', 'READY'].includes(room.state) && (
-          <span className="score-pill" aria-label="Your score">
-            {me.score.toLocaleString('en-US')} pts
+          <span className="score-pill" aria-label={t("Your score")}>
+            {t('{score} pts', { score: me.score.toLocaleString('en-US') })}
           </span>
         )}
       </header>
@@ -67,8 +67,8 @@ export function PlayerGameView({ session, view, status, send, dismissError, onLe
 
       {room === null || me === null ? (
         <div className="stage centered-stage">
-          <p className="eyebrow">You’re in, {session.display_name}!</p>
-          <p className="waiting-copy">Connecting to the room…</p>
+          <p className="eyebrow">{t('You’re in, {name}!', { name: session.display_name })}</p>
+          <p className="waiting-copy">{t("Connecting to the room…")}</p>
         </div>
       ) : (
         <fieldset className="stage-controls" disabled={status !== 'open'}>
@@ -96,6 +96,7 @@ function PlayerStage({
   onLeave: () => void
   connected: boolean
 }) {
+  const { t } = useI18n()
   switch (room.state) {
     case 'LOBBY':
     case 'PROFILE_COLLECTION':
@@ -114,7 +115,7 @@ function PlayerStage({
       return <PlayerLobby room={room} me={me} send={send} />
     case 'QUESTION_ACTIVE':
       return view.question === null ? (
-        <p className="waiting-copy">Get ready…</p>
+        <p className="waiting-copy">{t("Get ready…")}</p>
       ) : (
         <PlayerQuestion key={view.question.question_id} question={view.question} view={view} send={send} connected={connected} />
       )
@@ -123,9 +124,9 @@ function PlayerStage({
     case 'LEADERBOARD':
       return (
         <div className="stage leaderboard-stage">
-          <h2>Leaderboard</h2>
+          <h2>{t("Leaderboard")}</h2>
           <LeaderboardList entries={view.leaderboard ?? []} highlightPlayerId={me.player_id} />
-          <p className="waiting-copy">Waiting for the host…</p>
+          <p className="waiting-copy">{t("Waiting for the host…")}</p>
         </div>
       )
     case 'FINISHED':
@@ -134,33 +135,33 @@ function PlayerStage({
 }
 
 function PlayerLobby({ room, me, send }: { room: RoomSnapshot; me: Player; send: SendFn }) {
+  const { t } = useI18n()
   const readyCount = room.players.filter((player) => player.is_ready).length
   if (!me.is_ready) {
     return (
       <div className="stage centered-stage">
         <span className="big-check" aria-hidden="true">✓</span>
-        <h2>Profile saved!</h2>
-        <p className="card-copy">Tap ready when you’re set. The game starts once everyone is ready.</p>
-        <button type="button" className="primary-button join-button" onClick={() => send('player.ready')}>
-          I’m ready
-        </button>
+        <h2>{t("Profile saved!")}</h2>
+        <p className="card-copy">{t("Tap ready when you’re set. The game starts once everyone is ready.")}</p>
+        <button type="button" className="primary-button join-button" onClick={() => send('player.ready')}>{t("I’m ready")}</button>
       </div>
     )
   }
   return (
     <div className="stage centered-stage">
       <span className="big-check" aria-hidden="true">🎉</span>
-      <h2>You’re ready!</h2>
+      <h2>{t("You’re ready!")}</h2>
       <p className="card-copy" aria-live="polite">
         {room.state === 'READY'
-          ? 'Everyone is ready — waiting for the host to start.'
-          : `${readyCount} of ${room.players.length} players ready…`}
+          ? t('Everyone is ready — waiting for the host to start.')
+          : t('{count} of {total} players ready…', { count: readyCount, total: room.players.length })}
       </p>
     </div>
   )
 }
 
 function PlayerQuestion({ question, view, send, connected }: { question: Question; view: GameView; send: SendFn; connected: boolean }) {
+  const { t } = useI18n()
   const [pending, setPending] = useState<string | null>(null)
   const locked = view.answeredOptionId !== null
   const chosen = view.answeredOptionId ?? pending
@@ -186,11 +187,12 @@ function PlayerQuestion({ question, view, send, connected }: { question: Questio
   return (
     <div className="stage question-stage player-question">
       <p className="question-count">
-        Question {question.index + 1} of {question.total_questions}
+        {t('Question {current} of {total}', { current: question.index + 1, total: question.total_questions })}
       </p>
-      <h2 className="question-text">{question.text}</h2>
+      <h2 className="question-text" lang={question.language} dir={direction(question.language)}>{question.text}</h2>
+      <span className="difficulty-badge">{t(question.difficulty === 'HARD' ? 'Hard' : question.difficulty === 'MEDIUM' ? 'Medium' : 'Easy')}</span>
       <Timer question={question} serverOffsetMs={view.serverOffsetMs} />
-      <div className="option-grid player-options" role="group" aria-label="Answers">
+      <div className="option-grid player-options" dir={direction(question.language)} role="group" aria-label={t("Answers")}>
         {question.options.map((option, index) => (
           <button
             key={option.option_id}
@@ -201,14 +203,14 @@ function PlayerQuestion({ question, view, send, connected }: { question: Questio
             onClick={() => choose(option.option_id)}
           >
             <span className="option-letter">{optionLetter(index)}</span>
-            <span>{option.text}</span>
+            <bdi>{option.text}</bdi>
           </button>
         ))}
       </div>
       {chosen !== null && (
         <p className="answer-status" role="status">
-          {locked ? 'Answer locked in!' : 'Sending…'}
-          {progress !== null && ` ${progress.answered_count} of ${progress.player_count} answered.`}
+          {t(locked ? 'Answer locked in!' : 'Sending…')}
+          {progress !== null && ` ${t('{count} of {total} answered.', { count: progress.answered_count, total: progress.player_count })}`}
         </p>
       )}
     </div>
@@ -216,40 +218,41 @@ function PlayerQuestion({ question, view, send, connected }: { question: Questio
 }
 
 function PlayerResults({ view }: { view: GameView }) {
+  const { t } = useI18n()
   const results = view.results
   if (results === null) {
-    return <p className="waiting-copy">Checking answers…</p>
+    return <p className="waiting-copy">{t("Checking answers…")}</p>
   }
   const own = results.player_result
   const correct = results.options.find((option) => option.option_id === results.correct_option_id)
 
-  let verdict = 'Time’s up!'
+  let verdict = t('Time’s up!')
   let tone = 'is-missed'
   if (own !== null && own.option_id !== null) {
-    verdict = own.is_correct ? 'Correct!' : 'Not this time'
+    verdict = t(own.is_correct ? 'Correct!' : 'Not this time')
     tone = own.is_correct ? 'is-right' : 'is-wrong'
   }
 
   return (
     <div className="stage results-stage">
-      <h2 className="question-text">{results.text}</h2>
+      <h2 className="question-text" lang={results.language} dir={direction(results.language)}>{results.text}</h2>
       <div className={`verdict ${tone}`} role="status">
         <strong>{verdict}</strong>
-        {own !== null && own.points_awarded > 0 && <span>+{own.points_awarded} points</span>}
+        {own !== null && own.points_awarded > 0 && <span><bdi dir="ltr">+{own.points_awarded}</bdi>{' '}{t('points')}</span>}
       </div>
-      <p className="correct-answer">
-        Correct answer: <strong>{correct?.text}</strong>
+      <p className="correct-answer">{t("Correct answer:")} <strong><bdi>{correct?.text}</bdi></strong>
       </p>
       <AnswerBars options={results.options} statistics={results.statistics} ownOptionId={own?.option_id} />
-      {own !== null && <p className="total-score">Total: {own.total_score.toLocaleString('en-US')} points</p>}
+      {own !== null && <p className="total-score">{t('Total: {score} points', { score: own.total_score.toLocaleString('en-US') })}</p>}
     </div>
   )
 }
 
 function PlayerFinal({ view, me, onLeave }: { view: GameView; me: Player; onLeave: () => void }) {
+  const { t } = useI18n()
   const finished = view.finished
   if (finished === null) {
-    return <p className="waiting-copy">Final results are coming…</p>
+    return <p className="waiting-copy">{t("Final results are coming…")}</p>
   }
   const mine = finished.leaderboard.entries.find((entry) => entry.player_id === me.player_id)
   return (
@@ -257,13 +260,11 @@ function PlayerFinal({ view, me, onLeave }: { view: GameView; me: Player; onLeav
       <Winners winners={finished.winners} />
       {mine !== undefined && (
         <p className="your-place">
-          You finished <strong>#{mine.rank}</strong> with {mine.total_score.toLocaleString('en-US')} points
+          {t('You finished #{rank} with {score} points', { rank: mine.rank, score: mine.total_score.toLocaleString('en-US') })}
         </p>
       )}
       <LeaderboardList entries={finished.leaderboard.entries} highlightPlayerId={me.player_id} />
-      <button type="button" className="primary-button" onClick={onLeave}>
-        Play again
-      </button>
+      <button type="button" className="primary-button" onClick={onLeave}>{t("Play again")}</button>
     </div>
   )
 }

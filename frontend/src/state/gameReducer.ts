@@ -113,5 +113,6 @@ export function gameReducer(view: GameView, action: GameAction): GameView {
 /** Milliseconds left on the active question, using server-corrected time. */
 export function remainingMs(question: Question, serverOffsetMs: number, now: number): number {
   const deadline = Date.parse(question.started_at) + question.time_limit_seconds * 1000
-  return Math.max(0, deadline - (now + serverOffsetMs))
+  // A new round can render just before the next 250ms UI clock tick.
+  return Math.min(question.time_limit_seconds * 1000, Math.max(0, deadline - (now + serverOffsetMs)))
 }

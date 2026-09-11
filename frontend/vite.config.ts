@@ -16,6 +16,8 @@ export default defineConfig({
   preview: { host: true, proxy },
   test: {
     environment: 'jsdom',
+    // Node 26's native localStorage must not shadow jsdom's browser storage.
+    execArgv: ['--no-experimental-webstorage'],
     setupFiles: './src/setupTests.ts',
     exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
   },

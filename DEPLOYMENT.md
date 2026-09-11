@@ -28,7 +28,7 @@ Environment:
 - `PORT`: Render supplies this automatically; the entrypoint reads it.
 - `DATABASE_URL`: private Neon connection URI with required TLS.
 - `FRONTEND_ORIGIN`: exact frontend HTTPS origin, no path or trailing slash.
-- Optional `MIZEMI_QUESTIONS_PER_GAME=10`, `MIZEMI_QUESTION_TIME_LIMIT_SECONDS=20`, `MIZEMI_MAX_PLAYERS_PER_ROOM=50`, `MIZEMI_ROOM_IDLE_TTL_MINUTES=120`, `MIZEMI_RETENTION_DAYS=7`, `MIZEMI_LOG_LEVEL=INFO`.
+- Optional `MIZEMI_QUESTIONS_PER_GAME=20`, `MIZEMI_QUESTION_TIME_LIMIT_SECONDS=20`, `MIZEMI_MAX_PLAYERS_PER_ROOM=50`, `MIZEMI_ROOM_IDLE_TTL_MINUTES=120`, `MIZEMI_RETENTION_DAYS=7`, `MIZEMI_LOG_LEVEL=INFO`.
 
 Existing `MIZEMI_ENV`, `MIZEMI_DATABASE_URL`, `MIZEMI_HOST`, `MIZEMI_PORT`, and `MIZEMI_CORS_ORIGINS` remain supported and take precedence over aliases. Avoid setting both forms. Production startup rejects SQLite, non-TLS database URLs, wildcard origins and non-HTTPS origins. Uvicorn handles WebSockets on the same port, with pings every 20 seconds and a 64 KiB transport frame cap. Tokens use WebSocket subprotocol headers and are never put in URLs. Access logs are disabled by the production entrypoint.
 
@@ -52,7 +52,7 @@ Use origins only; the app appends `/api/v1` and `/ws/...`. Rebuild after changin
 
 ## Schema and retention
 
-Startup runs `Base.metadata.create_all` before the service becomes healthy. This is the explicit initial-schema strategy for the MVP: it creates missing tables, is idempotent, and does **not** alter existing tables. Seven tables store games, players, profile fields, generated questions/options, accepted answers and final scores. The completion change adds the `answers` and `scores` tables without altering earlier tables. Older game records have no historical scores/answers to backfill.
+Startup runs `Base.metadata.create_all` before the service becomes healthy. This is the explicit initial-schema strategy for the MVP: it creates missing tables, is idempotent, and does **not** alter existing tables. Nine tables store games, players, profile fields, generated questions/options, accepted answers, final scores, game configuration and question metadata. The completion change adds the `answers` and `scores` tables without altering earlier tables. Older game records have no historical scores/answers to backfill. The bilingual enhancement adds `game_configurations` and `question_details` as cascading tables without changing existing columns. Legacy records remain readable; new games retain the requested count, language, rule and difficulty.
 
 A fresh Neon database requires no manual SQL. The database role must be permitted to create tables. Future column changes require a versioned migration (add Alembic before such changes); `create_all` is not a schema migration engine. Back up existing retained data before a future migration.
 

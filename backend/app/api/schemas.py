@@ -82,6 +82,17 @@ class PlayerProfileSchema(BaseModel):
         )
 
 
+class GameConfigSchema(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    question_count: StrictInt = Field(default=20, ge=1, le=50)
+    language: Literal["en", "he"] = "en"
+
+
+class CreateRoomRequest(GameConfigSchema):
+    """Optional room configuration; defaults preserve body-less clients."""
+
+
 class CreateRoomResponse(BaseModel):
     """The §13 create-room response.
 
@@ -94,6 +105,7 @@ class CreateRoomResponse(BaseModel):
     room_code: str
     game_id: str
     host_token: str
+    config: GameConfigSchema = Field(default_factory=GameConfigSchema)
 
 
 class JoinRoomRequest(BaseModel):
@@ -163,6 +175,8 @@ class PublicQuestionSchema(BaseModel):
     question_id: str
     index: int
     total_questions: int
+    difficulty: Literal["EASY", "MEDIUM", "HARD"] = "EASY"
+    language: Literal["en", "he"] = "en"
     question_type: Literal["multiple_choice"]
     text: str
     options: list[QuestionOptionSchema]
@@ -198,6 +212,8 @@ class PublicQuestionSchema(BaseModel):
             index=question.index,
             total_questions=question.total_questions,
             question_type=question.question_type.value,
+            difficulty=question.difficulty.value,
+            language=question.language,
             text=question.text,
             options=[
                 QuestionOptionSchema(option_id=option.option_id, text=option.text)
@@ -231,6 +247,7 @@ class RoomSnapshotSchema(BaseModel):
     state: str
     players: list[PlayerSchema]
     current_question_index: int | None
+    config: GameConfigSchema = Field(default_factory=GameConfigSchema)
     total_questions: int
 
 
@@ -327,6 +344,8 @@ class QuestionEndedSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     question_id: str
+    difficulty: Literal["EASY", "MEDIUM", "HARD"] = "EASY"
+    language: Literal["en", "he"] = "en"
     text: str
     options: list[QuestionOptionSchema]
     correct_option_id: str

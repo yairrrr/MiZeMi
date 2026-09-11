@@ -1,7 +1,9 @@
+import { useI18n, publicError, direction } from '../../i18n/I18n'
 import { type FormEvent, useRef, useState } from 'react'
 
 import { joinRoom, RestApiError } from '../../api/roomApi'
-import type { JoinRoomResponse } from '../../types'
+import type { MessageKey } from '../../i18n/messages'
+import type { ErrorResponse, JoinRoomResponse } from '../../types'
 
 const GENERIC_JOIN_ERROR = 'We could not join the room. Please try again.'
 
@@ -12,9 +14,10 @@ export function PlayerRoomEntry({
   initialRoomCode?: string
   onJoined: (roomCode: string, response: JoinRoomResponse) => void
 }) {
+  const { t, language } = useI18n()
   const [roomCode, setRoomCode] = useState(initialRoomCode)
   const [displayName, setDisplayName] = useState('')
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<MessageKey | ErrorResponse['error'] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const isPending = useRef(false)
 
@@ -48,7 +51,7 @@ export function PlayerRoomEntry({
       onJoined(roomCode.trim().toUpperCase(), response)
     } catch (error) {
       setErrorMessage(
-        error instanceof RestApiError ? error.response.error.message : GENERIC_JOIN_ERROR,
+        error instanceof RestApiError ? error.response.error : GENERIC_JOIN_ERROR,
       )
     } finally {
       isPending.current = false
@@ -63,22 +66,21 @@ export function PlayerRoomEntry({
           →
         </span>
         <div>
-          <p className="card-kicker">Ready to play?</p>
-          <h2 id="player-title">Join your friends</h2>
+          <p className="card-kicker">{t("Ready to play?")}</p>
+          <h2 id="player-title">{t("Join your friends")}</h2>
         </div>
       </div>
-      <p className="card-copy">
-        Enter the room code from your host and choose the name everyone will see.
-      </p>
+      <p className="card-copy">{t("Enter the room code from your host and choose the name everyone will see.")}</p>
 
       <form className="join-form" onSubmit={handleSubmit} noValidate>
-        <label htmlFor="room-code">Room Code</label>
+        <label htmlFor="room-code">{t("Room Code")}</label>
         <input
           id="room-code"
+          dir="ltr"
           name="room_code"
           value={roomCode}
           onChange={(event) => setRoomCode(event.target.value)}
-          placeholder="e.g. K7PW3N"
+          placeholder={t("e.g. K7PW3N")}
           autoComplete="off"
           autoCapitalize="characters"
           spellCheck={false}
@@ -86,26 +88,27 @@ export function PlayerRoomEntry({
           disabled={isLoading}
         />
 
-        <label htmlFor="display-name">Display Name</label>
+        <label htmlFor="display-name">{t("Display Name")}</label>
         <input
           id="display-name"
+          dir={displayName ? 'auto' : direction(language)}
           name="display_name"
           value={displayName}
           onChange={(event) => setDisplayName(event.target.value)}
-          placeholder="What should we call you?"
+          placeholder={t("What should we call you?")}
           autoComplete="nickname"
           maxLength={40}
           disabled={isLoading}
         />
 
         <button className="primary-button join-button" type="submit" disabled={isLoading}>
-          {isLoading ? 'Joining…' : 'Join Room'}
+          {t(isLoading ? 'Joining…' : 'Join Room')}
         </button>
       </form>
 
       {errorMessage !== null && (
         <p className="status-message error-message" role="alert">
-          {errorMessage}
+          {typeof errorMessage === 'string' ? t(errorMessage) : publicError(language, errorMessage)}
         </p>
       )}
     </section>

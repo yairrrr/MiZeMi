@@ -4,8 +4,8 @@ dataset → rules → validate → score → select → final ordered Questions.
 
 Deterministic given (dataset, question_count, time_limit_seconds, seed):
 question ids are minted from the seeded RNG, never from global state.
-``question_count`` and ``time_limit_seconds`` are caller-supplied because
-both product values remain deferred (§0) — the engine must not decide them.
+``question_count`` and ``time_limit_seconds`` come from validated game settings.
+The domain engine neither reads environment variables nor decides room defaults.
 """
 
 from collections.abc import Sequence
@@ -45,6 +45,7 @@ class QuestionGenerator:
         question_count: int,
         time_limit_seconds: int,
         seed: int,
+        language: str | None = None,
     ) -> tuple[Question, ...]:
         """Return up to ``question_count`` final Questions in selection order.
 
@@ -56,6 +57,7 @@ class QuestionGenerator:
         if time_limit_seconds < 1:
             raise ValueError("time_limit_seconds must be at least 1")
 
+        dataset = dataset.with_language(language or dataset.language)
         rng = Random(seed)
         candidates: list[QuestionCandidate] = []
         for rule in self._rules:
@@ -75,6 +77,9 @@ class QuestionGenerator:
                 options=candidate.options,
                 correct_option_id=candidate.correct_option_id,
                 time_limit_seconds=time_limit_seconds,
+                difficulty=candidate.difficulty,
+                language=dataset.language,
+                source_rule_id=candidate.source_rule_id,
             )
             for index, candidate in enumerate(selected)
         )

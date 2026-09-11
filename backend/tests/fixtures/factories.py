@@ -12,6 +12,7 @@ Nothing here is a pytest fixture — import the builders directly:
 
 from collections.abc import Iterable, Mapping, Sequence
 
+from app.domain.game.config import GameConfig
 from app.domain.game import Game, GameState, Player, PlayerProfile, ProfileField
 from app.domain.questions import (
     ProfileDataset,
@@ -109,9 +110,10 @@ def make_game(
     game_id: str = "g1",
     *,
     players: Iterable[Player] | None = None,
+    config: GameConfig | None = None,
 ) -> Game:
     """A Game in ``LOBBY`` with the given players added (default: 3 players)."""
-    game = Game(game_id=game_id)
+    game = Game(game_id=game_id, config=config)
     for player in players if players is not None else make_players(3):
         game.add_player(player)
     return game
@@ -143,9 +145,10 @@ def make_ready_game(
     game_id: str = "g1",
     *,
     players: Iterable[Player] | None = None,
+    config: GameConfig | None = None,
 ) -> Game:
     """A Game walked through profile collection to ``READY`` via domain calls."""
-    game = make_game(game_id, players=players)
+    game = make_game(game_id, players=players, config=config)
     collect_profiles(game)
     ready_all(game)
     assert game.state is GameState.READY

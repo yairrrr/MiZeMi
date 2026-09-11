@@ -7,13 +7,13 @@ export default defineConfig({
   workers: 1,
   fullyParallel: false,
   reporter: 'list',
-  use: { baseURL: 'http://127.0.0.1:4173', headless: true, trace: 'off' },
+  use: { actionTimeout: 10_000, baseURL: 'http://127.0.0.1:4173', headless: true, trace: 'off' },
   webServer: [
     {
       command: '../.venv/bin/python -m uvicorn app.main:app --app-dir ../backend --host 127.0.0.1 --port 8765 --ws-max-size 65536',
       url: 'http://127.0.0.1:8765/api/v1/health',
       reuseExistingServer: false,
-      env: { MIZEMI_ENV: 'test', MIZEMI_DATABASE_URL: 'sqlite:///./.e2e.db', MIZEMI_CORS_ORIGINS: 'http://127.0.0.1:4173', MIZEMI_QUESTIONS_PER_GAME: '10', MIZEMI_QUESTION_TIME_LIMIT_SECONDS: '20' },
+      env: { MIZEMI_ENV: 'test', MIZEMI_DATABASE_URL: 'sqlite:///./.e2e.db', MIZEMI_CORS_ORIGINS: 'http://127.0.0.1:4173', MIZEMI_QUESTIONS_PER_GAME: '20', MIZEMI_QUESTION_TIME_LIMIT_SECONDS: '20' },
     },
     {
       command: 'npm run build && npm exec vite preview -- --host 127.0.0.1 --port 4173 --strictPort',

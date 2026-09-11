@@ -67,7 +67,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     # Gameplay (§9.3, §12): the approved MVP defaults.
-    questions_per_game: int = Field(default=10, ge=1, le=50)
+    questions_per_game: int = Field(default=20, ge=1, le=50)
     question_time_limit_seconds: int = Field(default=20, ge=1, le=300)
     # Abuse limits and lifetimes (§10, §15, §17).
     max_players_per_room: int = Field(default=50, ge=1, le=500)
