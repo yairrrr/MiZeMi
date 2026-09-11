@@ -47,3 +47,7 @@ Thumbs.db
 # --- Logs ---
 *.log
 logs/
+
+# Local browser test artifacts (may contain session data)
+frontend/test-results/
+frontend/playwright-report/
