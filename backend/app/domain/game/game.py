@@ -146,6 +146,10 @@ class Game:
             raise ValueError(f"player_id already in game: {player.player_id}")
         self._players[player.player_id] = player
         self._scores[player.player_id] = 0
+        if self._state is GameState.READY:
+            # Readiness describes the current roster, not a closed lobby.
+            # Only the host starting play closes admission to the room.
+            self.transition_to(GameState.PROFILE_COLLECTION)
 
     def remove_player(self, player_id: str) -> None:
         """Remove a player before the game starts (host moderation).

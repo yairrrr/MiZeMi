@@ -129,6 +129,11 @@ class TestCompleteGame:
             # The last answer closes the question automatically.
             host_view = receive_until(table.host, "question.ended")["payload"]
             assert host_view["player_result"] is None
+            assert host_view["text"] == table.game.current_question.text
+            assert host_view["options"] == [
+                {"option_id": o.option_id, "text": o.text}
+                for o in table.game.current_question.options
+            ]
             stats = host_view["statistics"]
             assert stats["answered_count"] == 3 and stats["player_count"] == 3
             assert sum(o["count"] for o in stats["answer_distribution"]) == 3
@@ -192,6 +197,9 @@ class TestCompleteGame:
 
         assert isinstance(record, FinishedGameRecord)
         assert record.state == "FINISHED"
+        assert {s.player_id: s.total_score for s in record.scores} == table.game.scores
+        assert len(record.answers) == 3
+        assert all(a.answered_at.tzinfo is not None for a in record.answers)
         assert {p.display_name for p in record.players} == set(NAMES)
 
     def test_correct_answer_never_reaches_players_before_the_question_ends(self) -> None:
@@ -484,3 +492,42 @@ class TestReconnection:
                 board = receive_until(again, "leaderboard.updated")
 
         assert len(board["payload"]["entries"]) == 3
+
+
+@pytest.mark.parametrize("state,event", [
+    ("QUESTION_RESULTS", "question.ended"),
+    ("LEADERBOARD", "leaderboard.updated"),
+    ("FINISHED", "game.finished"),
+])
+@pytest.mark.parametrize("role", ["host", "player"])
+def test_reconnect_replays_complete_post_question_state(state, event, role):
+    app = _app(questions_per_game=1)
+    with TestClient(app) as client, Table(client, app) as table:
+        question = table.start()
+        for name in NAMES:
+            table.answer(name, correct=(name == "Dana"))
+        original_result = receive_until(table.sockets["Dana"], "question.ended")["payload"]
+        receive_until(table.host, "question.ended")
+        if state in ("LEADERBOARD", "FINISHED"):
+            table.host_send("game.next")
+            receive_until(table.host, "leaderboard.updated")
+        if state == "FINISHED":
+            table.host_send("game.next")
+            receive_until(table.host, "game.finished")
+        connection = host_ws(client, table.room) if role == "host" else player_ws(
+            client, table.room.room_code, table.players["Dana"]
+        )
+        with connection as again:
+            messages = collect_until(again, event)
+        assert messages[0]["payload"]["state"] == state
+        replay = messages[-1]["payload"]
+        if event == "question.ended":
+            assert replay["text"] == question["text"]
+            assert replay["options"] == question["options"]
+            assert replay["statistics"] == original_result["statistics"]
+            assert replay["player_result"] == (original_result["player_result"] if role == "player" else None)
+        elif event == "leaderboard.updated":
+            assert replay["entries"][0]["display_name"] == "Dana"
+        else:
+            assert replay["winners"][0]["display_name"] == "Dana"
+            assert len(replay["leaderboard"]["entries"]) == 3

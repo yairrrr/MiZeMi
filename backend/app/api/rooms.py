@@ -24,7 +24,7 @@ from app.application.join_player import (
 )
 from app.infrastructure.rooms import RoomNotFoundError, RoomRegistry
 from app.realtime.errors import ErrorCode
-from app.realtime.hub import GameHub
+from app.realtime.hub import GameHub, RoomLimitError
 
 router = APIRouter()
 
@@ -38,8 +38,11 @@ def get_game_hub(request: Request) -> GameHub:
 
 
 @router.post("/rooms", status_code=201)
-async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)]) -> CreateRoomResponse:
-    hosted = hub.create_room()
+async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)]):
+    try:
+        hosted = hub.create_room()
+    except RoomLimitError:
+        return error_response(503, ErrorCode.ROOM_FULL, "The server has too many rooms. Please try again later.")
     return CreateRoomResponse(
         room_code=hosted.room.room_code,
         game_id=hosted.room.game.game_id,

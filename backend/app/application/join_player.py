@@ -13,7 +13,7 @@ from app.domain.game import GameState, Player
 from app.infrastructure.credentials import CredentialStore, issue_token
 from app.infrastructure.rooms import RoomRegistry
 
-JOINABLE_STATES = (GameState.LOBBY, GameState.PROFILE_COLLECTION)
+JOINABLE_STATES = (GameState.LOBBY, GameState.PROFILE_COLLECTION, GameState.READY)
 MAX_DISPLAY_NAME_LENGTH = 20
 
 
@@ -35,7 +35,7 @@ class RoomFullError(Exception):
 
 
 class RoomNotJoinableError(Exception):
-    """The game is not in a joinable state (LOBBY / PROFILE_COLLECTION)."""
+    """The game is not in a joinable state (LOBBY / PROFILE_COLLECTION / READY)."""
 
     def __init__(self, state: GameState) -> None:
         super().__init__(f"game not joinable in state {state.value}")

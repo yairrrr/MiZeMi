@@ -64,6 +64,12 @@ from app.realtime.events import ClientToServerEvent
 logger = logging.getLogger("mizemi.realtime")
 
 MAX_FRAME_CHARS = 16_384
+MAX_ACTIVE_ROOMS = 100
+
+
+class RoomLimitError(Exception):
+    """The server is holding its classroom room limit."""
+
 # Close slightly after the deadline so an answer the server stamped just
 # before it is never raced by the timer.
 DEADLINE_GRACE_SECONDS = 0.25
@@ -153,6 +159,8 @@ class GameHub:
     # --- REST-triggered --------------------------------------------------
 
     def create_room(self) -> HostedRoom:
+        if len(self._rooms) >= MAX_ACTIVE_ROOMS:
+            raise RoomLimitError()
         hosted = CreateRoomService(self._registry, credentials=self._credentials).create_hosted_room()
         self._touch(self._runtime(hosted.room.room_code))
         return hosted
@@ -267,7 +275,7 @@ class GameHub:
                     self._handle_player(room, handle, event, envelope.payload)
             except Exception:
                 # Event name only — payloads may hold profile data (§10).
-                logger.exception("unexpected error handling %s", event.value)
+                logger.error("unexpected error handling %s", event.value)
                 self._reply_error(handle, game, ErrorCode.INTERNAL_ERROR, INTERNAL_MESSAGE)
 
     # --- player commands -----------------------------------------------------
@@ -513,7 +521,7 @@ class GameHub:
             try:
                 self.close_if_active(room, question_id)
             except Exception:  # pragma: no cover - defensive; never kill the loop
-                logger.exception("failed to close a question at its deadline")
+                logger.error("failed to close a question at its deadline")
 
     def close_if_active(self, room: Room, question_id: str) -> bool:
         """Close ``question_id`` if it is still active; idempotent."""
@@ -565,6 +573,12 @@ class GameHub:
         if pending:
             wait(pending, timeout=timeout)
 
+    def shutdown(self) -> None:
+        """Cancel timers and finish database work before the engine is disposed."""
+        for runtime in self._rooms.values():
+            self._cancel_deadline(runtime)
+        self._executor.shutdown(wait=True)
+
     def has_pending_deadline(self, room_code: str) -> bool:
         """Whether a question-deadline timer is armed for ``room_code``."""
         return self._runtime(room_code).deadline_timer is not None
@@ -574,7 +588,7 @@ class GameHub:
         try:
             self._persist(game)
         except Exception:
-            logger.exception("failed to persist a finished game")
+            logger.error("failed to persist a finished game")
 
     def sweep_idle_rooms(self, *, idle_ttl: timedelta) -> int:
         """Forget rooms with no live connections and no activity within ``idle_ttl``.

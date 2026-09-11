@@ -43,6 +43,10 @@ async def player_websocket(websocket: WebSocket, room_code: str, player_id: str)
         await websocket.close(code=UNRESOLVED_CLOSE_CODE)
         return
 
+    if websocket.app.state.room_connections.player_connection_count(room.room_code, player_id) >= 4:
+        await websocket.close(code=4429)
+        return
+
     await websocket.accept(subprotocol=PLAYER_PROTOCOL)
     handle = ConnectionHandle(websocket, role="player", player_id=player_id)
     hub.connect(room, handle)

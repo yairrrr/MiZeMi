@@ -45,23 +45,25 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
         frozen=True,
+        hide_input_in_errors=True,
         # Keep constructing Settings(database_url=...) by field name working
         # alongside the DATABASE_URL alias below.
         validate_by_name=True,
     )
 
-    env: Environment = Environment.DEVELOPMENT
+    env: Environment = Field(default=Environment.DEVELOPMENT, validation_alias=AliasChoices("MIZEMI_ENV", "APP_ENV"))
     # MIZEMI_DATABASE_URL wins; the bare DATABASE_URL name that hosting
     # providers (Render, Neon) inject is accepted as a fallback.
     database_url: str = Field(
         default="sqlite:///./mizemi.db",
+        repr=False,
         validation_alias=AliasChoices("MIZEMI_DATABASE_URL", "DATABASE_URL"),
     )
-    host: str = "127.0.0.1"
-    port: int = 8000
+    host: str = Field(default="127.0.0.1", validation_alias=AliasChoices("MIZEMI_HOST", "HOST"))
+    port: int = Field(default=8000, ge=1, le=65535, validation_alias=AliasChoices("MIZEMI_PORT", "PORT"))
     # NoDecode: the raw env value is a §16 comma-separated string, not JSON —
     # let _parse_cors_origins own the parsing instead of the settings source.
-    cors_origins: Annotated[tuple[str, ...], NoDecode] = _DEFAULT_CORS_ORIGINS
+    cors_origins: Annotated[tuple[str, ...], NoDecode] = Field(default=_DEFAULT_CORS_ORIGINS, validation_alias=AliasChoices("MIZEMI_CORS_ORIGINS", "FRONTEND_ORIGIN"))
     log_level: str = "INFO"
 
     # Gameplay (§9.3, §12): the approved MVP defaults.

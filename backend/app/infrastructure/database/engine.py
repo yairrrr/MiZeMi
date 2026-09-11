@@ -44,7 +44,7 @@ def create_database_engine(database_url: str) -> Engine:
     transparently instead of failing a request.
     """
     url = normalize_database_url(database_url)
-    kwargs: dict[str, object] = {}
+    kwargs: dict[str, object] = {"hide_parameters": True}
     if url.startswith("sqlite"):
         kwargs["connect_args"] = {"check_same_thread": False}
         if url in _IN_MEMORY_SQLITE_URLS:
@@ -52,6 +52,9 @@ def create_database_engine(database_url: str) -> Engine:
     else:
         kwargs["pool_pre_ping"] = True
         kwargs["pool_recycle"] = 300
+        kwargs["pool_size"] = 2
+        kwargs["max_overflow"] = 1
+        kwargs["connect_args"] = {"connect_timeout": 10}
     return create_engine(url, **kwargs)
 
 

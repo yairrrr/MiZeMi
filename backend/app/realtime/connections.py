@@ -17,6 +17,8 @@ from dataclasses import dataclass
 from typing import Any, Literal, Protocol
 
 Role = Literal["host", "player"]
+MAX_QUEUED_MESSAGES = 256
+SEND_TIMEOUT_SECONDS = 5.0
 
 
 class MessageSink(Protocol):
@@ -51,7 +53,7 @@ class ConnectionHandle:
         self.role: Role = role
         self.player_id = player_id
         self._loop = asyncio.get_running_loop()
-        self._queue: asyncio.Queue[Any] = asyncio.Queue()
+        self._queue: asyncio.Queue[Any] = asyncio.Queue(maxsize=MAX_QUEUED_MESSAGES)
         self._closed = False
         self._writer = self._loop.create_task(self._drain())
 
@@ -86,12 +88,26 @@ class ConnectionHandle:
             running = None
         try:
             if running is self._loop:
-                self._queue.put_nowait(item)
+                self._enqueue_on_loop(item)
             else:
-                self._loop.call_soon_threadsafe(self._queue.put_nowait, item)
+                self._loop.call_soon_threadsafe(self._enqueue_on_loop, item)
         except RuntimeError:
             # The loop that owned this socket has stopped.
             self._closed = True
+
+    def _enqueue_on_loop(self, item: Any) -> None:
+        if self._closed:
+            return
+        try:
+            self._queue.put_nowait(item)
+        except asyncio.QueueFull:
+            self._closed = True
+            self._writer.cancel()
+            self._loop.create_task(self._close_failed_socket())
+
+    async def _close_failed_socket(self) -> None:
+        with contextlib.suppress(Exception):
+            await asyncio.wait_for(self.websocket.close(code=1013), timeout=SEND_TIMEOUT_SECONDS)
 
     async def _drain(self) -> None:
         while True:
@@ -102,9 +118,10 @@ class ConnectionHandle:
                     await self.websocket.close(code=item.code)
                 return
             try:
-                await self.websocket.send_json(item)
+                await asyncio.wait_for(self.websocket.send_json(item), timeout=SEND_TIMEOUT_SECONDS)
             except Exception:  # noqa: BLE001 - a dead socket just stops
                 self._closed = True
+                await self._close_failed_socket()
                 return
 
 

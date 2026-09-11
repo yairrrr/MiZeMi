@@ -7,13 +7,15 @@ layer — the application receives only the plain ``FinishedGameRecord``.
 The session is injected; the caller owns the transaction and commits (§15).
 """
 
-from datetime import datetime
+from datetime import UTC, datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.application.repositories import (
     FinishedGameRecord,
+    RecordedAnswer,
+    RecordedScore,
     GameRepository,
     RecordedPlayer,
     RecordedProfileField,
@@ -24,6 +26,8 @@ from app.domain.game import Game
 from app.domain.questions import Question
 from app.infrastructure.database.models import (
     GameQuestionRow,
+    AnswerRow,
+    ScoreRow,
     GameRow,
     PlayerRow,
     ProfileFieldRow,
@@ -100,11 +104,22 @@ def _game_to_row(game: Game) -> GameRow:
         row.players.append(player_row)
     for question in game.questions:
         row.questions.append(_question_to_row(question, game.game_id))
+    row.scores = [ScoreRow(game_id=game.game_id, player_id=pid, total_score=score)
+                  for pid, score in game.scores.items()]
+    row.answers = [AnswerRow(game_id=game.game_id, question_id=answer.question_id,
+                            player_id=answer.player_id, option_id=answer.option_id,
+                            answered_at=answer.answered_at)
+                   for question in game.questions for answer in game.answers_for(question.question_id)]
     return row
 
 
 def _row_to_record(row: GameRow) -> FinishedGameRecord:
     return FinishedGameRecord(
+        scores=tuple(RecordedScore(player_id=score.player_id, total_score=score.total_score) for score in row.scores),
+        answers=tuple(RecordedAnswer(player_id=answer.player_id, question_id=answer.question_id,
+                                    option_id=answer.option_id,
+                                    answered_at=answer.answered_at.replace(tzinfo=UTC) if answer.answered_at.tzinfo is None else answer.answered_at.astimezone(UTC))
+                      for answer in row.answers),
         game_id=row.game_id,
         state=row.state,
         current_question_index=row.current_question_index,

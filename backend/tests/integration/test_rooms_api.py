@@ -227,6 +227,7 @@ class TestJoinRoomEndpoint:
         game = app.state.room_registry.get(room_code).game
         game.transition_to(GameState.PROFILE_COLLECTION)
         game.transition_to(GameState.READY)
+        game.transition_to(GameState.QUESTION_ACTIVE)
 
         response = _join(client, room_code, "Omer")
 

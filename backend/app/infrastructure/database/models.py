@@ -14,7 +14,9 @@ through the ORM ``delete-orphan`` cascade.
 Schema note (§15): no migration tooling yet — this is the first schema.
 """
 
-from sqlalchemy import Boolean, ForeignKey, Integer, String
+from datetime import datetime
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infrastructure.database.base import Base, TimestampMixin
@@ -26,6 +28,9 @@ class GameRow(Base, TimestampMixin):
     game_id: Mapped[str] = mapped_column(String, primary_key=True)
     state: Mapped[str] = mapped_column(String, nullable=False)
     current_question_index: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+    scores: Mapped[list["ScoreRow"]] = relationship(cascade="all, delete-orphan", order_by="ScoreRow.player_id")
+    answers: Mapped[list["AnswerRow"]] = relationship(cascade="all, delete-orphan", order_by="AnswerRow.answered_at, AnswerRow.player_id")
 
     players: Mapped[list["PlayerRow"]] = relationship(
         back_populates="game",
@@ -108,3 +113,21 @@ class QuestionOptionRow(Base, TimestampMixin):
     text: Mapped[str] = mapped_column(String, nullable=False)
 
     question: Mapped[GameQuestionRow] = relationship(back_populates="options")
+
+
+class ScoreRow(Base, TimestampMixin):
+    __tablename__ = "scores"
+
+    game_id: Mapped[str] = mapped_column(ForeignKey("games.game_id", ondelete="CASCADE"), primary_key=True)
+    player_id: Mapped[str] = mapped_column(String, primary_key=True)
+    total_score: Mapped[int] = mapped_column(Integer, nullable=False)
+
+
+class AnswerRow(Base, TimestampMixin):
+    __tablename__ = "answers"
+
+    game_id: Mapped[str] = mapped_column(ForeignKey("games.game_id", ondelete="CASCADE"), primary_key=True)
+    question_id: Mapped[str] = mapped_column(String, primary_key=True)
+    player_id: Mapped[str] = mapped_column(String, primary_key=True)
+    option_id: Mapped[str] = mapped_column(String, nullable=False)
+    answered_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

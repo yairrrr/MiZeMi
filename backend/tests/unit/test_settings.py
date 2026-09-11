@@ -59,14 +59,14 @@ class TestEnvironmentLoading:
         monkeypatch.setenv("MIZEMI_PORT", "8123")
         assert _settings().port == 8123
 
-    def test_unprefixed_variables_are_ignored(
+    def test_host_alias_is_supported_but_generic_env_is_ignored(
         self, monkeypatch: pytest.MonkeyPatch
     ) -> None:
         monkeypatch.setenv("ENV", "production")
         monkeypatch.setenv("HOST", "0.0.0.0")
         settings = _settings()
         assert settings.env is Environment.DEVELOPMENT
-        assert settings.host == "127.0.0.1"
+        assert settings.host == "0.0.0.0"
 
     def test_bare_database_url_is_accepted_as_a_fallback(
         self, monkeypatch: pytest.MonkeyPatch

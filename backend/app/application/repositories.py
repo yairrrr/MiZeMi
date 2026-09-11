@@ -55,6 +55,20 @@ class RecordedQuestion:
 
 
 @dataclass(frozen=True)
+class RecordedScore:
+    player_id: str
+    total_score: int
+
+
+@dataclass(frozen=True)
+class RecordedAnswer:
+    player_id: str
+    question_id: str
+    option_id: str
+    answered_at: datetime
+
+
+@dataclass(frozen=True)
 class FinishedGameRecord:
     """A read-only snapshot of a persisted game (§15)."""
 
@@ -63,6 +77,8 @@ class FinishedGameRecord:
     current_question_index: int | None
     players: tuple[RecordedPlayer, ...]
     questions: tuple[RecordedQuestion, ...]
+    scores: tuple[RecordedScore, ...] = ()
+    answers: tuple[RecordedAnswer, ...] = ()
 
 
 class GameRepository(ABC):

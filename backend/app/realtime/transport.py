@@ -7,6 +7,8 @@ access logs. The server accepts by echoing only the role protocol.
 """
 
 from typing import TYPE_CHECKING
+from collections import deque
+from time import monotonic
 
 from fastapi import WebSocket
 from starlette.websockets import WebSocketDisconnect
@@ -53,6 +55,7 @@ async def receive_loop(
     websocket: WebSocket, hub: "GameHub", room: "Room", handle: "ConnectionHandle"
 ) -> None:
     """Feed every inbound frame to the hub until the socket closes."""
+    received: deque[float] = deque()
     while True:
         try:
             message = await websocket.receive()
@@ -60,4 +63,11 @@ async def receive_loop(
             return
         if message["type"] == "websocket.disconnect":
             return
+        now = monotonic()
+        while received and received[0] <= now - 10:
+            received.popleft()
+        if len(received) >= 120:
+            await websocket.close(code=1013)
+            return
+        received.append(now)
         hub.handle_message(room, handle, message.get("text"))

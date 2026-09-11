@@ -32,7 +32,7 @@ class GameStateMachine:
     _ALLOWED: dict[GameState, frozenset[GameState]] = {
         GameState.LOBBY: frozenset({GameState.PROFILE_COLLECTION}),
         GameState.PROFILE_COLLECTION: frozenset({GameState.READY}),
-        GameState.READY: frozenset({GameState.QUESTION_ACTIVE}),
+        GameState.READY: frozenset({GameState.PROFILE_COLLECTION, GameState.QUESTION_ACTIVE}),
         GameState.QUESTION_ACTIVE: frozenset({GameState.QUESTION_RESULTS}),
         GameState.QUESTION_RESULTS: frozenset({GameState.LEADERBOARD}),
         GameState.LEADERBOARD: frozenset({GameState.QUESTION_ACTIVE, GameState.FINISHED}),

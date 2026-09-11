@@ -33,6 +33,10 @@ async def host_websocket(websocket: WebSocket, room_code: str) -> None:
         await websocket.close(code=UNRESOLVED_CLOSE_CODE)
         return
 
+    if sum(h.role == "host" for h in websocket.app.state.room_connections.handles_for(room.room_code)) >= 4:
+        await websocket.close(code=4429)
+        return
+
     await websocket.accept(subprotocol=HOST_PROTOCOL)
     handle = ConnectionHandle(websocket, role="host")
     hub.connect(room, handle)
