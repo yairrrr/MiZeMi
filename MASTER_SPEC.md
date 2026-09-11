@@ -1,6 +1,6 @@
 # MiZeMi — MASTER SPECIFICATION
 
-**Status:** Implemented classroom MVP, v2.0, 2026-09-11. The completion mission explicitly authorized finalizing the previously deferred MVP decisions. This revision records the behavior on disk and supersedes the earlier proposed baseline. Architecture, no-runtime-AI, consent and zero-cost constraints remain binding.
+**Status:** Classroom enhancement, v3.0, 2026-09-11. The completion mission explicitly authorized finalizing the previously deferred MVP decisions. This revision records the behavior on disk and supersedes the earlier proposed baseline. Architecture, no-runtime-AI, consent and zero-cost constraints remain binding.
 
 ## 0. Decision Status and Deferred Decisions
 
@@ -22,7 +22,7 @@ No user accounts, cross-game identity, persistent public history, horizontal sca
 
 ## 3. Future Enhancements
 
-Additional question rules, profile editing, localization, durable active-game recovery and versioned migration tooling can be added when specifically scoped. They must preserve the consent boundary and zero-cost/no-AI constraints.
+Profile editing, durable active-game recovery and versioned migration tooling can be added when specifically scoped. They must preserve the consent boundary and zero-cost/no-AI constraints.
 
 ## 4. Technology Stack
 
@@ -75,6 +75,12 @@ Credentials contain 256 bits of randomness. Only SHA-256 digests are retained se
 
 Wire keys are snake_case; TypeScript mirrors are in `frontend/src/types/`, Pydantic definitions in `backend/app/api/schemas.py`. No raw domain object is serialized to clients.
 
+### 9.0 Game configuration and languages
+
+The host sets immutable `Game.config = {question_count, language}` at creation. Count is a strict integer 1–50, default **20**; booleans, strings, floats, null, out-of-range values and unknown keys are rejected. Language is exactly `en` (default) or `he`. Missing request/body fields retain defaults; a deployment may explicitly override the no-body count with MIZEMI_QUESTIONS_PER_GAME (default 20). The public response and all room snapshots include this configuration. Requested count remains intact when quality gates yield fewer questions; `total_questions` reports the actual generated count after start and the requested count in the lobby. The UI explicitly explains shortfalls.
+
+Each browser stores its UI locale in localStorage (`mizemi.language`), independently of per-tab credentials. A persistent selector sets document lang/dir (English LTR, Hebrew RTL). Game language is separately selected by the host, defaults to their UI language, and never changes during play. Questions/options use deterministic bilingual templates on the server, with `language` and `difficulty` in started/ended payloads; clients render that shared text unchanged using its own direction. Player-entered names/values are never translated. Music choices have localized UI labels but stable existing wire values. Errors are localized by stable public error code; backend diagnostic messages remain safe English for older clients.
+
 ### 9.1 Player contract
 
 ```json
@@ -104,10 +110,10 @@ Consent may be withheld for **every** field, including required fields. Empty op
 ### 9.3 Question format
 
 ```json
-{"question_id":"opaque-id","index":0,"total_questions":10,"question_type":"multiple_choice","text":"Question text","options":[{"option_id":"a","text":"Answer A"},{"option_id":"b","text":"Answer B"}],"time_limit_seconds":20,"started_at":"2026-09-11T08:00:00.000Z"}
+{"question_id":"opaque-id","index":0,"total_questions":20,"question_type":"multiple_choice","text":"Question text","options":[{"option_id":"a","text":"Answer A"},{"option_id":"b","text":"Answer B"}],"time_limit_seconds":20,"started_at":"2026-09-11T08:00:00.000Z"}
 ```
 
-`index` is zero-based. The production rules generate 2–4 distinct options with exactly one correct option. Option ids are opaque. Default question count is 10 (configurable 1–50); default timeout is 20 seconds (1–300). The engine returns fewer questions if fewer valid candidates exist, and rejects starting with none. It never invents non-consented facts to fill a quota.
+`index` is zero-based. The production rules generate 2–4 distinct options with exactly one correct option. Option ids are opaque. Default question count is 20 (host-configurable 1–50); default timeout is 20 seconds (1–300). The engine returns fewer questions if fewer valid candidates exist, and rejects starting with none. It never invents non-consented facts to fill a quota.
 
 `correct_option_id` stays server-private until the corresponding question ends. `started_at` is stamped by the server when the question opens, not during generation. Future questions and their answers are never sent early.
 
@@ -166,9 +172,13 @@ Only a verified host starts or advances. Generation occurs at host start from RE
 
 Pure pipeline: `ProfileDataset → QuestionRule[] → QuestionValidator → QuestionQualityScorer → QuestionSelector → Question[]`. Seed is a stable SHA-256-derived integer from game id; identical dataset/config/seed yields identical questions. Randomness is local seeded Python Random, never global or an external service.
 
-Production rules: unique value, most common value with a strict winner, and value count. Rules normalize whitespace/case for grouping, draw plausible distractors from the dataset or nearby counts, and shuffle options deterministically. Rule-level tests prove semantic correctness and consent exclusion. The shared validator enforces nonempty/distinct text/ids, exactly one designated correct option, and valid dataset references. Current generated lengths are bounded by the validated input schema.
+The original unique-value, strict-most-common and value-count rules remain. New families cover minimal two/three-attribute identification, similarity/pairs, reference intersections, objective odd-one-out/exclusion, filtered modes and ages, group size/minority/rank, clue chains, cross-person similarity, commonality counts, pair matching, equality plus inequality, distinct-category coverage, universal connections and two-step elimination. Original additional families cover closest-age pairs, balanced partitions and a uniquely least-overlapping profile. A production rule catalog with generation conditions/examples is maintained in ENHANCEMENT_REPORT.md.
 
-Selection removes normalized duplicate text and repeated `(rule, fields, subject)` signatures. It prioritizes rule and field diversity, quality, player spread, then text for stable order. Adding a rule requires a class, registration, and truth/consent tests; it must preserve these invariants.
+Difficulty is explicit EASY/MEDIUM/HARD metadata on candidates and final questions. Selection targets the first 25% easy, the next 45% medium, the last 30% hard (20 questions: 5/9/6), preferring the nearest available level when data is sparse. Within each band a greedy selector balances rule, field and subject diversity and recent-use penalties. It suppresses normalized text duplicates and semantic signatures across equivalent families; it does not fabricate or repeat questions to fill a quota.
+
+Comparison normalization is Unicode NFC, collapsed whitespace and casefold; displayed user text keeps its original spelling. Fixed bilingual field labels/templates are selected from an allowlist, never dynamic paths. Similarity counts equal shared values once per field among city, favorite food, hobby, music and movie; age and personal facts are excluded. Similarity families require at least two preference fields shared by every compared participant and use that same field set, explicitly named in the question. Ties are rejected. Inequality/exclusion/age rules require consented data for every field actually tested; missing values are never treated as a different value. Minimal fingerprints require every smaller clue subset to remain ambiguous.
+
+Rules operate only on ProfileDataset, cache consent-safe indexes and pair overlap counts, cap candidate output and bound combination work. Distractors are real participants/pairs/categories or bounded neighboring integers. Every candidate passes structural/length/option/metadata validation; each family owns and tests its mathematical uniqueness gate. No eval, dynamic template execution, AI or network IO exists in generation.
 
 ## 13. REST / API Conventions
 
@@ -177,7 +187,7 @@ Base `/api/v1`, JSON objects, snake_case, UTC ISO-8601 `Z`. Public endpoints:
 | Method/path | Request | Success |
 |---|---|---|
 | GET `/health` | None | 200 health response |
-| POST `/rooms` | No payload required | 201 `{room_code, game_id, host_token}` |
+| POST `/rooms` | Optional `{question_count: 20, language: "en"}` | 201 `{room_code, game_id, host_token, config}` |
 | POST `/rooms/{room_code}/players` | `{display_name}` | 201 `{game_id, player, player_token}` |
 
 The private credential belongs only to the response recipient. HTTP responses use no-store. Unknown room: 404; duplicate name, non-joinable room or full room: 409. Validation errors: 400/422. Oversized HTTP body: 413. Request bursts: 429. Global room cap reached: 503. Error bodies follow §17 without echoing untrusted input.
@@ -209,7 +219,7 @@ Clients reconnect with bounded backoff and restore their per-tab session after r
 
 | Server event | Payload |
 |---|---|
-| room.updated | `{room_code, state, players: Player[], current_question_index: number|null, total_questions}` |
+| room.updated | `{room_code, state, players: Player[], current_question_index: number|null, total_questions, config}` |
 | game.started | `{total_questions}` |
 | question.started | §9.3, no correct answer |
 | answer.accepted | `{question_id, option_id}` to answerer's sockets only |
@@ -237,11 +247,11 @@ All room mutations and event enqueueing occur under one room lock. Each socket d
 
 SQLAlchemy declarative models and repository interfaces. ORM/bound statements only; no input-interpolated SQL. Every row has UTC created/updated timestamps. Sessions own transactions; commit explicitly, roll back on failure/close. SQL error parameter printing is disabled.
 
-One finished game stores players, profiles/consent, generated questions/options, accepted answers with server times, and final scores. The seven tables are `games`, `players`, `profile_fields`, `game_questions`, `question_options`, `answers`, `scores`. Answers/scores are additive tables, so old retained games have empty answers/scores. Writes occur off-loop at FINISHED; shutdown waits for submitted writes before disposing the engine. Persistence failure emits a safe log message, without credentials/query parameters; no durable retry queue exists.
+One finished game stores players, profiles/consent, generated questions/options, accepted answers with server times, and final scores. The original seven tables are `games`, `players`, `profile_fields`, `game_questions`, `question_options`, `answers`, `scores`. Answers/scores are additive tables, so old retained games have empty answers/scores. Writes occur off-loop at FINISHED; shutdown waits for submitted writes before disposing the engine. Persistence failure emits a safe log message, without credentials/query parameters; no durable retry queue exists.
 
 Active rooms, token digests and active games are memory-only; process restart invalidates their credentials and loses unfinished games. Finished records are internal read-only repository records, not rehydrated active rooms. Whole-tree upserts, rollback and retention cascades work on SQLite and PostgreSQL.
 
-**Initial schema strategy:** `Base.metadata.create_all` before startup becomes healthy, on local or production databases. It creates missing tables only; no automatic column alteration. A fresh Neon project needs no manual SQL. Add versioned migrations before future existing-table changes. See DEPLOYMENT.md.
+**Initial schema strategy:** `Base.metadata.create_all` before startup becomes healthy, on local or production databases. It creates missing tables only; no automatic column alteration. A fresh Neon project needs no manual SQL. This enhancement adds `game_configurations` and `question_details` as separate cascading tables, retaining compatibility with existing databases without altering old columns. Old retained records without details read as English/EASY and retain their recorded actual length. New records preserve the requested config and difficulty/rule metadata. Add versioned migrations before future existing-table changes. See DEPLOYMENT.md.
 
 ## 16. Environment Variable Conventions
 
@@ -255,7 +265,7 @@ Frozen typed Pydantic settings loaded once, optional backend `.env`, real env fi
 | PORT / MIZEMI_PORT | 8000 |
 | FRONTEND_ORIGIN / MIZEMI_CORS_ORIGINS | http://localhost:5173,http://127.0.0.1:5173 |
 | MIZEMI_LOG_LEVEL | INFO |
-| MIZEMI_QUESTIONS_PER_GAME | 10 |
+| MIZEMI_QUESTIONS_PER_GAME | 20 |
 | MIZEMI_QUESTION_TIME_LIMIT_SECONDS | 20 |
 | MIZEMI_MAX_PLAYERS_PER_ROOM | 50 |
 | MIZEMI_ROOM_IDLE_TTL_MINUTES | 120 |
@@ -279,7 +289,7 @@ Python snake_case modules/functions, PascalCase classes, Enum states/events. Typ
 
 ## 19. Testing Conventions
 
-pytest tests mirror backend modules. Pure domain tests have no IO; integration tests use real ASGI routes/sockets and isolated databases. Fake clocks test boundary times; short real timers test integration. Every regression gets coverage. TypeScript uses Vitest/Testing Library; Playwright exercises the actual production build with one host and three mobile browser contexts through ten rounds, timeout, answer privacy, scoring and reconnects. A standalone smoke test uses 21 real TCP WebSockets.
+pytest tests mirror backend modules. Pure domain tests have no IO; integration tests use real ASGI routes/sockets and isolated databases. Fake clocks test boundary times; short real timers test integration. Every regression gets coverage. TypeScript uses Vitest/Testing Library; Playwright exercises the actual production build with one host and three mobile browser contexts through twenty English rounds and a shorter Hebrew game, timeout, answer privacy, scoring and reconnects. A standalone smoke test uses 21 real TCP WebSockets.
 
 PostgreSQL tests compile all table DDL and, with `MIZEMI_TEST_POSTGRES_URL`, verify real schema creation, complete game persistence, rollback, upsert and cleanup inside a temporary schema. Never point tests at production. CI runs the backend with PostgreSQL, frontend checks/build/browser test, secrets check and audits. Local commands are in README.md. No test may be deleted/weakened merely to turn a failure green; test corrections must explain the faulty expectation.
 
