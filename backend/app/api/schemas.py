@@ -8,7 +8,7 @@ changes here are shared-contract changes (§21).
 from datetime import UTC, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_serializer, field_validator
 
 from app.domain.game import Player, PlayerProfile
 from app.domain.questions.question import Question
@@ -55,8 +55,8 @@ class ProfileFieldSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     field_key: str
-    value: str | int
-    allow_question_usage: bool
+    value: StrictStr | StrictInt
+    allow_question_usage: StrictBool
 
 
 class PlayerProfileSchema(BaseModel):
@@ -65,7 +65,7 @@ class PlayerProfileSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     player_id: str
-    fields: list[ProfileFieldSchema]
+    fields: list[ProfileFieldSchema] = Field(max_length=7)
 
     @classmethod
     def from_domain(cls, profile: PlayerProfile) -> "PlayerProfileSchema":
@@ -132,15 +132,13 @@ class PlayerReadyPayloadSchema(BaseModel):
 class AnswerSubmissionSchema(BaseModel):
     """The answer.submit payload — exactly question_id + option_id (§9.4).
 
-    Wire shape only. Recording an answer additionally requires the answer
-    domain/scoring components and the deferred resubmission and deadline
-    policies, so no handler consumes this schema yet.
+    The server stamps ``answered_at`` on receipt; clients never send a time.
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    question_id: str
-    option_id: str
+    question_id: str = Field(min_length=1, max_length=64)
+    option_id: str = Field(min_length=1, max_length=64)
 
 
 class QuestionOptionSchema(BaseModel):
@@ -319,6 +317,8 @@ class PlayerQuestionResultSchema(BaseModel):
 class QuestionEndedSchema(BaseModel):
     """The ``question.ended`` payload (§14.2).
 
+    Repeats the question text and options so the results screen is complete
+    on its own — including for a client that reconnects during results.
     ``player_result`` is the recipient's own result on player connections
     and ``null`` on the host connection — no player ever receives another
     player's individual answer.
@@ -327,6 +327,8 @@ class QuestionEndedSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     question_id: str
+    text: str
+    options: list[QuestionOptionSchema]
     correct_option_id: str
     statistics: QuestionStatisticsSchema
     player_result: PlayerQuestionResultSchema | None

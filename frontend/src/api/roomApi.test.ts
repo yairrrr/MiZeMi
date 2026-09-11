@@ -12,6 +12,7 @@ import { createRoom, joinRoom, RestApiError } from './roomApi'
 const createRoomResponse: CreateRoomResponse = {
   room_code: 'K7PW3N',
   game_id: 'game-123',
+  host_token: 'host-token',
 }
 
 const playerResponse: Player = {
@@ -27,6 +28,7 @@ const playerResponse: Player = {
 const joinRoomResponse: JoinRoomResponse = {
   game_id: 'game-123',
   player: playerResponse,
+  player_token: 'player-token',
 }
 
 function jsonResponse(body: unknown, status: number): Response {
@@ -121,5 +123,21 @@ describe('room REST API', () => {
       status: 409,
       response: errorResponse,
     } satisfies Partial<RestApiError>)
+  })
+
+  test('turns a non-JSON failure (e.g. a waking server) into a friendly error', async () => {
+    fetchMock.mockResolvedValue({
+      json: async () => {
+        throw new SyntaxError('Unexpected token <')
+      },
+      ok: false,
+      status: 502,
+    } as unknown as Response)
+
+    await expect(createRoom()).rejects.toMatchObject({
+      name: 'RestApiError',
+      status: 502,
+      response: { error: { code: 'INTERNAL_ERROR' } },
+    })
   })
 })

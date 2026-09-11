@@ -1,0 +1,204 @@
+import { useEffect, useState } from 'react'
+
+import type { SocketStatus } from '../realtime/gameSocket'
+import { remainingMs } from '../state/gameReducer'
+import type {
+  ErrorResponse,
+  LeaderboardEntry,
+  Player,
+  Question,
+  QuestionOption,
+  Statistics,
+} from '../types'
+
+const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F']
+
+export function optionLetter(index: number): string {
+  return LETTERS[index] ?? String(index + 1)
+}
+
+/** Countdown driven by the server's question clock, corrected for skew. */
+export function Timer({ question, serverOffsetMs }: { question: Question; serverOffsetMs: number }) {
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 250)
+    return () => clearInterval(id)
+  }, [])
+
+  const left = remainingMs(question, serverOffsetMs, now)
+  const seconds = Math.ceil(left / 1000)
+  const fraction = Math.min(1, left / (question.time_limit_seconds * 1000))
+
+  return (
+    <div className={`timer ${seconds <= 5 ? 'timer-urgent' : ''}`} role="timer" aria-label={`${seconds} seconds left`}>
+      <div className="timer-track">
+        <div className="timer-fill" style={{ width: `${fraction * 100}%` }} />
+      </div>
+      <span className="timer-seconds">{seconds}</span>
+    </div>
+  )
+}
+
+export function AnswerBars({
+  options,
+  statistics,
+  ownOptionId,
+}: {
+  options: QuestionOption[]
+  statistics: Statistics
+  ownOptionId?: string | null
+}) {
+  const byOption = new Map(statistics.answer_distribution.map((entry) => [entry.option_id, entry]))
+
+  return (
+    <ol className="answer-bars" aria-label="Answer distribution">
+      {options.map((option, index) => {
+        const entry = byOption.get(option.option_id)
+        const percentage = entry?.percentage ?? 0
+        const isCorrect = option.option_id === statistics.correct_option_id
+        return (
+          <li
+            key={option.option_id}
+            className={`answer-bar option-${index} ${isCorrect ? 'is-correct' : ''} ${
+              option.option_id === ownOptionId ? 'is-own' : ''
+            }`}
+          >
+            <div className="answer-bar-label">
+              <span className="option-letter">{optionLetter(index)}</span>
+              <span className="answer-bar-text">{option.text}</span>
+              {isCorrect && <span className="correct-mark" aria-label="Correct answer">✓</span>}
+            </div>
+            <div className="answer-bar-track">
+              <div className="answer-bar-fill" style={{ width: `${percentage}%` }} />
+            </div>
+            <span className="answer-bar-value">
+              {entry?.count ?? 0} · {Math.round(percentage)}%
+            </span>
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
+
+const MEDALS = ['🥇', '🥈', '🥉']
+
+export function LeaderboardList({
+  entries,
+  highlightPlayerId,
+  limit,
+}: {
+  entries: LeaderboardEntry[]
+  highlightPlayerId?: string
+  limit?: number
+}) {
+  const shown = limit === undefined ? entries : entries.slice(0, limit)
+  return (
+    <ol className="leaderboard" aria-label="Leaderboard">
+      {shown.map((entry) => (
+        <li
+          key={entry.player_id}
+          className={`leaderboard-row ${entry.player_id === highlightPlayerId ? 'is-me' : ''}`}
+        >
+          <span className="leaderboard-rank">{MEDALS[entry.rank - 1] ?? `#${entry.rank}`}</span>
+          <span className="leaderboard-name">{entry.display_name}</span>
+          <span className="leaderboard-score">{entry.total_score.toLocaleString('en-US')}</span>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+export function Winners({ winners }: { winners: LeaderboardEntry[] }) {
+  if (winners.length === 0) {
+    return <p className="winner-banner">No winner this time.</p>
+  }
+  const names = winners.map((winner) => winner.display_name).join(' & ')
+  return (
+    <div className="winner-banner" role="status">
+      <span className="winner-trophy" aria-hidden="true">🏆</span>
+      <p>{winners.length > 1 ? "It's a tie!" : 'And the winner is…'}</p>
+      <strong>{names}</strong>
+      <span>{winners[0].total_score.toLocaleString('en-US')} points</span>
+    </div>
+  )
+}
+
+export function PlayerRoster({
+  players,
+  onRemove,
+}: {
+  players: Player[]
+  onRemove?: (player: Player) => void
+}) {
+  if (players.length === 0) {
+    return <p className="empty-roster">No players yet — share the room code!</p>
+  }
+  return (
+    <ul className="roster" aria-label="Players">
+      {players.map((player) => (
+        <li key={player.player_id} className="roster-row">
+          <span className={`presence ${player.connected ? 'online' : 'offline'}`} aria-label={player.connected ? 'Connected' : 'Disconnected'} />
+          <span className="roster-name">{player.display_name}</span>
+          <span className={`chip ${player.has_profile ? 'chip-done' : ''}`}>
+            {player.has_profile ? 'Profile ✓' : 'Profile…'}
+          </span>
+          <span className={`chip ${player.is_ready ? 'chip-ready' : ''}`}>
+            {player.is_ready ? 'Ready ✓' : 'Not ready'}
+          </span>
+          {onRemove && (
+            <button
+              type="button"
+              className="icon-button"
+              aria-label={`Remove ${player.display_name}`}
+              onClick={() => onRemove(player)}
+            >
+              ×
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+const STATUS_COPY: Partial<Record<SocketStatus, string>> = {
+  connecting: 'Connecting…',
+  reconnecting: 'Connection interrupted — reconnecting…',
+  lost: 'We lost the connection to this room. It may have ended or the server restarted.',
+}
+
+export function ConnectionBanner({ status, onLeave }: { status: SocketStatus; onLeave: () => void }) {
+  const copy = STATUS_COPY[status]
+  if (copy === undefined || status === 'connecting') {
+    return null
+  }
+  return (
+    <div className={`connection-banner status-${status}`} role="status">
+      <span>{copy}</span>
+      {status === 'lost' && (
+        <button type="button" className="ghost-button" onClick={onLeave}>
+          Back to start
+        </button>
+      )}
+    </div>
+  )
+}
+
+export function ErrorToast({
+  error,
+  onDismiss,
+}: {
+  error: ErrorResponse['error']
+  onDismiss: () => void
+}) {
+  return (
+    <div className="error-toast" role="alert">
+      <span>{error.message}</span>
+      <button type="button" className="icon-button" aria-label="Dismiss" onClick={onDismiss}>
+        ×
+      </button>
+    </div>
+  )
+}

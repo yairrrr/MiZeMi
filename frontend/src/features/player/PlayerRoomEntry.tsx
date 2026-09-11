@@ -5,10 +5,15 @@ import type { JoinRoomResponse } from '../../types'
 
 const GENERIC_JOIN_ERROR = 'We could not join the room. Please try again.'
 
-export function PlayerRoomEntry() {
-  const [roomCode, setRoomCode] = useState('')
+export function PlayerRoomEntry({
+  initialRoomCode = '',
+  onJoined,
+}: {
+  initialRoomCode?: string
+  onJoined: (roomCode: string, response: JoinRoomResponse) => void
+}) {
+  const [roomCode, setRoomCode] = useState(initialRoomCode)
   const [displayName, setDisplayName] = useState('')
-  const [joinResponse, setJoinResponse] = useState<JoinRoomResponse | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const isPending = useRef(false)
@@ -39,12 +44,11 @@ export function PlayerRoomEntry() {
     setErrorMessage(null)
 
     try {
-      setJoinResponse(await joinRoom(roomCode, { display_name: displayName }))
+      const response = await joinRoom(roomCode, { display_name: displayName })
+      onJoined(roomCode.trim().toUpperCase(), response)
     } catch (error) {
       setErrorMessage(
-        error instanceof RestApiError
-          ? error.response.error.message
-          : GENERIC_JOIN_ERROR,
+        error instanceof RestApiError ? error.response.error.message : GENERIC_JOIN_ERROR,
       )
     } finally {
       isPending.current = false
@@ -76,6 +80,9 @@ export function PlayerRoomEntry() {
           onChange={(event) => setRoomCode(event.target.value)}
           placeholder="e.g. K7PW3N"
           autoComplete="off"
+          autoCapitalize="characters"
+          spellCheck={false}
+          maxLength={12}
           disabled={isLoading}
         />
 
@@ -86,7 +93,8 @@ export function PlayerRoomEntry() {
           value={displayName}
           onChange={(event) => setDisplayName(event.target.value)}
           placeholder="What should we call you?"
-          autoComplete="name"
+          autoComplete="nickname"
+          maxLength={40}
           disabled={isLoading}
         />
 
@@ -99,16 +107,6 @@ export function PlayerRoomEntry() {
         <p className="status-message error-message" role="alert">
           {errorMessage}
         </p>
-      )}
-
-      {joinResponse !== null && (
-        <div className="join-success" role="status" aria-live="polite">
-          <span aria-hidden="true">✓</span>
-          <div>
-            <strong>You’re in, {joinResponse.player.display_name}!</strong>
-            <p>Next, complete your profile and get ready to play.</p>
-          </div>
-        </div>
       )}
     </section>
   )

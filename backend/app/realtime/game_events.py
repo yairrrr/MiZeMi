@@ -21,6 +21,7 @@ from app.api.schemas import (
     PlayerSchema,
     PublicQuestionSchema,
     QuestionEndedSchema,
+    QuestionOptionSchema,
     QuestionStatisticsSchema,
     RoomSnapshotSchema,
 )
@@ -151,9 +152,15 @@ def build_question_ended(
                 points_awarded=own.points_awarded,
                 total_score=game.score_of(player_id),
             )
+    question = result.question
     payload = QuestionEndedSchema(
-        question_id=result.question.question_id,
-        correct_option_id=result.question.correct_option_id,
+        question_id=question.question_id,
+        text=question.text,
+        options=[
+            QuestionOptionSchema(option_id=option.option_id, text=option.text)
+            for option in question.options
+        ],
+        correct_option_id=question.correct_option_id,
         statistics=QuestionStatisticsSchema.from_domain(statistics),
         player_result=player_result,
     )
