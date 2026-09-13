@@ -91,5 +91,15 @@
 ["place.haifa","place.district","Haifa District","מחוז חיפה"],
 ["place.tel_aviv","place.district","Tel Aviv District","מחוז תל אביב"],
 ["place.jerusalem","place.district","Jerusalem District","מחוז ירושלים"],
-["hobby.travel","hobby.family","Travel","טיולים ונסיעות"]
+["hobby.travel","hobby.family","Travel","טיולים ונסיעות"],
+["movie.animation","movie.genre","Animation","אנימציה"],
+["region.north","place.region","Northern Israel","הצפון"],
+["region.central","place.region","Central Israel","המרכז"],
+["region.south","place.region","Southern Israel","הדרום"],
+["region.jerusalem","place.region","Jerusalem area","אזור ירושלים"],
+["setting.outdoor","hobby.setting","Outdoors","בחוץ"],
+["setting.indoor","hobby.setting","Indoors","בבית או בחלל סגור"],
+["setting.flexible","hobby.setting","Flexible setting","מקום גמיש"],
+["activity.physical","hobby.physical","Physical activity","פעילות גופנית"],
+["activity.nonphysical","hobby.physical","Non-physical recreation","עיסוק שאינו פעילות גופנית"]
 ]

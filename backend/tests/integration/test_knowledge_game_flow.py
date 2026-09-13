@@ -56,7 +56,7 @@ def test_twenty_round_knowledge_game_reconnects_and_persists_explanations(langua
         finished=receive_until(table.host,'game.finished')['payload']
         assert finished['winners']
         assert len(explanations)>=10
-        cross_domain={'semantic_intersection','semantic_filtered_mode','semantic_nearby_pair','district_activity_diversity'}
+        cross_domain={'group_intersection_count','group_filtered_mode','region_hobby_diversity'}
         assert len(cross_domain & {q.source_rule_id for q in table.game.questions})>=2
         app.state.game_hub.flush_persistence()
         with app.state.database.session_factory() as session:

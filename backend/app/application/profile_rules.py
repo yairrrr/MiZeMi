@@ -64,6 +64,8 @@ PROFILE_FIELD_SPECS: tuple[ProfileFieldSpec, ...] = (
     ),
     ProfileFieldSpec("age", "Age", "int", required=False, min_value=5, max_value=120),
     ProfileFieldSpec("favorite_movie", "Favorite movie", "text", required=False, max_length=60),
+    ProfileFieldSpec("favorite_artist", "Favorite artist", "text", required=False, max_length=60),
+    ProfileFieldSpec("favorite_song", "Favorite song", "text", required=False, max_length=60),
     ProfileFieldSpec(
         "personal_fact", "Something interesting about me", "text", required=False, max_length=120
     ),

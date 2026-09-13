@@ -207,7 +207,11 @@ class GroupComparisonRule(IndexedRule):
                 winner = a if len(ix.groups[field][a]) > len(ix.groups[field][b]) else b
                 # Values appear as options, never alongside their counts.
                 text = self.text(ix, 'Which of these two {field} choices was shared by more players?',
-                                 'איזו משתי הבחירות לגבי {field} משותפת ליותר משתתפים?', field=self.field(ix, field))
+                                 {'city':'באיזו משתי הערים האלה גרים יותר אנשים בקבוצה?',
+                                  'favorite_food':'איזה משני המאכלים האלה נבחר יותר בקבוצה?',
+                                  'hobby':'איזה משני התחביבים האלה נפוץ יותר בקבוצה?',
+                                  'favorite_movie':'איזה משני הסרטים האלה נבחר יותר בקבוצה?',
+                                  'favorite_music':'איזה משני סגנונות המוזיקה האלה נפוץ יותר בקבוצה?'}[field], field=self.field(ix, field))
                 yield from self.make(ix, rng, text, ix.displays[field][winner], [ix.displays[field][v] for v in (a, b)],
                                      (field,), (*ix.groups[field][a], *ix.groups[field][b]), key=('group_comparison', field))
 
@@ -222,7 +226,7 @@ class LeastCommonValueRule(IndexedRule):
             if winner is None or len(ix.complete(field)) < 4:
                 continue
             text = self.text(ix, 'Which shared {field} choice belongs to the smallest group?',
-                             'איזו בחירה לגבי {field} משותפת לקבוצה הקטנה ביותר?', field=self.field(ix, field))
+                             'מה הכי פחות נפוץ בקבוצה מבין הבחירות האלה של {field}?', field=self.field(ix, field))
             yield from self.make(ix, rng, text, ix.displays[field][winner], list(ix.displays[field].values()),
                                  (field,), ix.complete(field), key=('least_common', field))
 
@@ -367,7 +371,7 @@ class SecondLargestGroupRule(IndexedRule):
             if sum(len(p) == count for p in groups.values()) != 1 or len(groups[ranked[0]]) == count:
                 continue
             text = self.text(ix, 'Which {field} choice has the second-largest group?',
-                             'איזו בחירה לגבי {field} שייכת לקבוצה השנייה בגודלה?', field=self.field(ix, field))
+                             'איזו מהבחירות האלה של {field} נמצאת במקום השני בקבוצה?', field=self.field(ix, field))
             yield from self.make(ix, rng, text, ix.displays[field][ranked[1]], list(ix.displays[field].values()),
                                  (field,), ix.complete(field))
 
@@ -419,9 +423,17 @@ class CategoryCoverageRule(IndexedRule):
             winner = unique_extreme(variety)
             if winner is None or variety[winner] < 2 or len(ix.complete(group, field)) < 4:
                 continue
-            text = self.text(ix, 'Which group sharing the same {group} has the widest variety of {field} choices?',
-                             'באיזו קבוצה עם {group} משותף יש את המגוון הגדול ביותר של בחירות לגבי {field}?',
-                             group=self.field(ix, group), field=self.field(ix, field))
+            he = {
+                'city': 'אצל תושבי איזו עיר יש בקבוצה את המגוון הכי רחב של {choices}?',
+                'favorite_food': 'אצל חובבי איזה מאכל יש בקבוצה את המגוון הכי רחב של {choices}?',
+                'hobby': 'אצל בעלי איזה תחביב יש בקבוצה את המגוון הכי רחב של {choices}?',
+                'favorite_music': 'אצל חובבי איזה סגנון מוזיקה יש בקבוצה את המגוון הכי רחב של {choices}?',
+                'favorite_movie': 'אצל חובבי איזה סרט יש בקבוצה את המגוון הכי רחב של {choices}?',
+            }[group]
+            choices = {'city':'יישובים','favorite_food':'מאכלים אהובים','hobby':'תחביבים',
+                       'favorite_music':'סגנונות מוזיקה','favorite_movie':'סרטים אהובים'}[field]
+            text = self.text(ix, 'Which shared {group} connects the widest variety of {field} choices?',
+                             he, group=self.field(ix, group), field=self.field(ix, field), choices=choices)
             yield from self.make(ix, rng, text, ix.displays[group][winner], list(ix.displays[group].values()),
                                  (group, field), ix.complete(group, field), key=('coverage', group, field))
 

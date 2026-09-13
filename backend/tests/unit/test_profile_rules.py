@@ -90,6 +90,8 @@ class TestValidProfiles:
             "favorite_music",
             "age",
             "favorite_movie",
+            "favorite_artist",
+            "favorite_song",
             "personal_fact",
         ]
 

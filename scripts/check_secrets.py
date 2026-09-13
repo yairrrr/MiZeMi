@@ -34,7 +34,10 @@ def scan() -> int:
             local_env.append(str(relative))
             if str(relative) in tracked:
                 found.append((str(relative), 1, 'tracked environment file'))
-        if path.stat().st_size > 2_000_000:
+        # Expanded reference assets are source inputs too. Do not silently
+        # omit a film/song catalog just because it exceeds the old text limit.
+        limit = 30_000_000 if relative.parts[:4] == ('backend', 'app', 'data', 'knowledge') else 2_000_000
+        if path.stat().st_size > limit:
             continue
         try:
             content = path.read_text()

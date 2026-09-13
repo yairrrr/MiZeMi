@@ -13,7 +13,10 @@ from app.domain.questions.language import say
 from app.domain.questions.question import Difficulty
 from app.domain.questions.rule import QuestionRule
 from app.domain.questions.rules import _build_options
-from app.domain.questions.semantic import DIMENSIONS, enrich
+from app.domain.questions.semantic import DIMENSIONS as ALL_DIMENSIONS, enrich
+
+# Historical rule catalog remains testable; production uses group_rules.py.
+DIMENSIONS = {d: ALL_DIMENSIONS[d] for d in ("movie.genre", "music.genre", "food.cuisine", "food.format", "hobby.family", "place.district")}
 from app.domain.questions.semantic_distractors import category_choices, NEIGHBORS
 
 MAX_CANDIDATES = 60
@@ -44,7 +47,7 @@ class SemanticRule(QuestionRule):
             return
         options, correct = _build_options(str(answer), rng.sample(distractors,min(3,len(distractors))),rng)
         yield QuestionCandidate(text,options,correct,self.rule_id,
-            tuple(dict.fromkeys(DIMENSIONS[d][0] for d in dims)),tuple(people or v.ids),
+            tuple(dict.fromkeys(ALL_DIMENSIONS[d][0] for d in dims)),tuple(people or v.ids),
             difficulty=self.difficulty,semantic_key=(self.rule_id,*map(str,key)),
             focus_player_ids=tuple(focus),metadata=(('reasoning_hops',self.hops),),
             explanation=explanation,knowledge_version=self.knowledge.version)
@@ -321,6 +324,8 @@ class LocalityExtremeRule(SemanticRule):
             direction=self.text(v,'south' if south else 'north','דרומי' if south else 'צפוני')
             text=self.text(v,'Whose town is furthest {direction} in the group?',
                            'של מי היישוב ה{direction} ביותר בקבוצה?',direction=direction)
+            if v.dataset.language=='he':
+                text='מי בקבוצה גר הכי '+('דרומה' if south else 'צפונה')+'?'
             explanation=self.text(v,'{town}, chosen by {name}, has the {direction}ernmost reference point among these towns.',
                                    '{town}, היישוב של {name}, הוא היישוב ה{direction} ביותר לפי נקודות הייחוס של היישובים שנבחרו.',
                                    town=places[winner].label(v.dataset.language),name=v.name(winner),direction=direction)
@@ -341,7 +346,7 @@ class LocalityDistanceRule(SemanticRule):
             if v.rows['city'][pair[0]]==v.rows['city'][pair[1]]: continue
             adjective=self.text(v,'closest' if closest else 'furthest apart','הקרובים ביותר' if closest else 'הרחוקים ביותר')
             text=self.text(v,'Which pair chose the towns that are {adjective} by air distance?',
-                           'איזה זוג בחרו את היישובים {adjective} זה מזה בקו אווירי?',adjective=adjective)
+                           'אילו שני אנשים בקבוצה גרים ביישובים {adjective} זה לזה בקו אווירי?',adjective=adjective)
             explanation=distance_explanation(self,v,pair)
             yield from self.make(v,rng,text,v.pair_name(pair),[v.pair_name(p) for p in v.distances],('place.district',),explanation,key=(closest,),focus=pair)
 

@@ -1,55 +1,56 @@
-# Building MiZeMi’s offline reference bundle
+# Building the offline group reference bundle
 
-Production reads the committed JSON in `backend/app/data/knowledge`. It never runs these scripts or accesses a reference provider. The catalog has **2,434 entities**: 467 films, 282 artists, 66 music styles, 182 foods, 212 hobbies and 1,225 localities. It deliberately omits entries without supported classifications.
+Production reads the committed, validated JSON under `backend/app/data/knowledge`. It never runs a fetch/build script. Neon stores application/game records only. See [KNOWLEDGE_BASE_REPORT.md](../../KNOWLEDGE_BASE_REPORT.md) for final counts, benchmarks, sample games and limitations.
 
-## Sources and licensing
+## Sources and rights
 
-All sources were investigated/retrieved on **2026-09-11**.
+- [Wikidata structured data](https://www.wikidata.org/wiki/Wikidata:Licensing): CC0. Reviewed seed records were retrieved on 2026-09-11; the bounded expansion over 2026-09-13–14. Fields: entity IDs, short English/Hebrew labels and sitelink titles, P136 genre, P31 instance, P279 subclass, P2012 cuisine, P495 origin, P577 release, P179 series and P175 performer. No article text, descriptions, biographies, plots, lyrics, posters or raw API responses are redistributed.
+- [GeoNames IL extract](https://download.geonames.org/export/dump/IL.zip), [format and license](https://download.geonames.org/export/dump/readme.txt): CC BY 4.0, refreshed 2026-09-13. The compressed input was 582,338 bytes. **Contains information from GeoNames, available under CC BY 4.0. MiZeMi filtered, normalized and adapted the data.** The source/license notice and accessible application credits must accompany redistribution. GeoNames is an aggregation, not an official Israeli administrative register; names and coverage make no sovereignty assertion.
+- The [official Population Authority locality dataset](https://data.gov.il/he/datasets/population_authority/citiesandsettelments) and CBS listings were investigated. The keyless CKAN package metadata advertised `other-open` without a specific license URL; no bulk government CSV was imported under unclear terms.
+- [MusicBrainz](https://musicbrainz.org/doc/About/Data_License) has different core and supplementary/tag licenses. No MusicBrainz tags, IMDb/TMDB bulk metadata, paid/keyed sources or copyrighted prose were imported.
+- `group-curation.json.review_notes` records factual spot checks and conservative inclusion overrides. The Eden Ben Zaken record retains only corroborated Mizrahi/pop classifications; questionable unreferenced classical/folk/soul seed claims are excluded. The Apple Music curator page is a spot-check source only; no Apple catalog, text or API data is imported. Authored factual inclusion policies and aliases are dedicated to CC0 alongside the Wikidata projections.
 
-- [Wikidata structured data](https://www.wikidata.org/wiki/Wikidata:Licensing) is CC0. We use entity IDs, revisions, English/Hebrew sitelink titles, P136 (genre), P279 (subclass), P31 (instance) and P2012 (cuisine), plus a small, explicitly listed set of reviewed classifications from factual entity descriptions. Descriptions themselves are **not** retained. A record’s Q ID and revision reconstruct its source URL: `https://www.wikidata.org/w/index.php?title=Q…&oldid=…`.
-- [GeoNames country extract](https://download.geonames.org/export/dump/IL.zip), [format/licensing](https://download.geonames.org/export/dump/readme.txt), and [district code table](https://download.geonames.org/export/dump/admin1CodesASCII.txt): CC BY 4.0. Only populated-place features and six district codes are used. The original compressed country extract was 581,687 bytes. Attribution is shipped in the manifest, dataset license notice, this document and the application’s accessible credits. **Contains information from GeoNames, available under CC BY 4.0. MiZeMi filtered, normalized and adapted the data.**
-- Israeli [CBS open-data listings](https://data.gov.il/he/organizations/lamas) were investigated as an official alternative. Retrieval/redistribution terms could not be verified reliably for the locality spreadsheets, so no CBS bulk data was imported. GeoNames has explicit reusable terms and publishes its sources; it is an aggregation, not an authoritative Israeli administrative register.
-- [MusicBrainz licensing](https://musicbrainz.org/doc/About/Data_License) was reviewed. Its core metadata and supplementary/tag licenses differ; no MusicBrainz genre-tag data was imported. No IMDb/TMDB descriptions, posters, cast lists, copyrighted prose, paid/keyed sources or Wikipedia article text was copied.
-- The [BBFC classification for The Conjuring](https://www.bbfc.co.uk/release/the-conjuring-q29sbgvjdglvbjpwwc0znzgwmjc) independently corroborates the horror classification; no BBFC prose was copied. Saw uses Wikidata **Q486239**, the feature film, rather than its short film or franchise entities. Its retained classifications include horror and crime; this bundle does **not** invent a thriller membership for Saw from the task’s example.
+## Coverage selection and transformations
 
-## Selection and transformation
+`scripts/expand_knowledge.py` is development-only and requires an explicit `--fetch`. It selects finite popularity-ranked film, song, artist, dish and activity pools. Sitelink counts only select useful reference coverage; they NEVER determine a game answer or predict a participant's taste. A second pass adds Hebrew-linked works, a focused Israeli-artist selection, animated films, reviewed seeds and popular video games as digital hobbies. Candidates without supported useful classifications are omitted. The query text and finite limits are in the script; compact cache selections retain their queries and dates.
 
-`curation.json` is the development recipe: selected entity IDs, bilingual taxonomy labels, approved classification roots, individually reviewed hobby families, explicit food additions, known aliases and modern place-name overrides. It contains no biography, plot, image URL, population or raw response.
+The source sometimes returns 429 or times out. The build stops on 429/Retry-After, resumes from completed batches only after the requested interval, and uses bounded transient retries. Fixed-root activity queries replace an expensive variable-root graph traversal. Requests are sequential and paced. Do not bypass provider limits. See [WDQS graph split](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/WDQS_graph_split) and [API etiquette](https://www.mediawiki.org/wiki/API:Etiquette).
 
-Initial discovery investigated 502 film titles, 316 artist names, 239 foods, 237 activities and 101 genre/concept titles using the MediaWiki entity API. Some titles were redirects/disambiguations/missing; the resolved pools contained 473 films, 295 artists, 224 foods and 217 activities. Entries lacking the required positive classifications were omitted. Adding uncertain long-tail records was less useful than improving Hebrew coverage and aliases. The music table additionally includes hip-hop, Mediterranean music and the local lexical subtype “Israeli pop”.
+The offline compiler merges these factual projections with `curation.json` (reviewed v1 seeds/roots) and `group-curation.json` (activity roots, setting policies, regions, aliases and review overrides). Genre closure follows at most two P279 edges. Food/activity closure follows at most three, plus immediate P31 and bounded cuisine ancestry. Musical instruments mean playing that instrument in the hobby context. Songs use their OWN P136 statements, never a performer's typical genres. Unknown-value blank nodes are discarded. Explicit disambiguation/list/person-as-hobby and adult-film types are excluded.
 
-Genre enrichment follows P136 to approved genre roots with at most two P279 edges. Food enrichment uses at most three P279 edges, immediate P31 and P2012. It never equates origin, ethnicity, influence or ingredient association with genre/cuisine membership. Cuisines describe associations, not exclusive national ownership. Broad regional cuisine groupings are authored taxonomy choices; there are no dietary/allergy promises.
+Food cuisine/region associations are not exclusive national-origin claims. Formats overlap. No allergy, vegetarian or vegan guarantee is inferred. Physical sports differ from tabletop/mind games. Fitness contributes to the broad sport family; playing instruments contributes to creative hobbies. Broad-family answer choices exclude their own narrower child families. Setting classifications describe the conventional activity setting, not where a person actually practises it. Flexible activities belong to neither indoor nor outdoor totals; unsupported settings stay unknown.
 
-Hobby families are an explicit reviewed activity taxonomy, rather than an unrestricted walk through Wikidata’s ontology. Instruments in the hobby context mean making music. Physical sports are separated from tabletop/mind games; travel is not a claim about sociability. A selected Israeli-pop style is classified as pop by definition; it never infers an artist’s nationality or a listener’s playlist.
+Regions group provider districts: Northern + Haifa → north; Central + Tel Aviv → center; Southern → south; Jerusalem stays separate. Unsupported district codes remain unknown. Geographic comparisons can still use known coordinates. Keep PPL/PPLA/PPLA2/PPLA3/PPLC; exclude historic/abandoned places and neighborhood PPLX. Coordinates are rounded to five decimals, and pairwise distances are calculated, never stored.
 
-Wikidata labels/aliases are not blindly trusted. The discovery encountered vandalized English aliases for Saw and a bad Hebrew label for Jachnun. Canonical enwiki/hewiki sitelink titles replace raw labels where available, and broad alias harvesting is disabled. Short disambiguated titles become aliases; collisions are rejected even against another canonical name. Remakes sharing a name require a distinguishing title/year when ambiguous in this catalog. Manual spellings are conservative, not fuzzy matching.
+Names are conservative: canonical English/Hebrew sitelink names when available, fallback labels otherwise, reviewed spellings, short film/song disambiguation aliases and year/performer-qualified names. Activity qualifiers are retained unless a synonym is reviewed: a narrower track-running discipline must not mask general running. No bulk upstream alias harvesting or fuzzy matching. The earlier research encountered vandalized aliases, so simply importing every alias is intentionally avoided. Remakes and same-name songs collide and stay UNKNOWN unless qualified. A normalized canonical label has no priority over a colliding alias. Unknown input remains available to consented direct fallback rules.
 
-GeoNames filtering keeps PPL/PPLA/PPLA2/PPLA3/PPLC; excludes historic/abandoned feature classes and neighborhood PPLX. One modern Hebrew name is selected, preferring the pointed form when present, with reviewed overrides and explicit common aliases. Bulk alternate names are dropped: they can contain ancient names and unrelated settlements. English primary/ASCII names are retained. Duplicate place names remain UNKNOWN unless a distinct supported name is supplied. Names/coverage follow the provider and make no sovereignty assertion. Unknown district codes remain absent (22 records), while usable coordinates can still support geographic rules. No pairwise distances are stored.
+Reviewed taxonomy edges can also be excluded: disaster-film membership alone is not accepted as evidence of the thriller genre. The exclusion does not remove independently supported thriller statements. These decisions are recorded with source links in `group-curation.json.review_notes`.
 
-## Rebuild/update commands
+## Rebuild and review
 
 ```sh
-# Default is strictly offline: validate the shipped hashes and schema.
+# Offline validation only (safe for CI; never downloads anything).
 .venv/bin/python scripts/build_knowledge_base.py
 
-# DEVELOPMENT ONLY, explicit public network access, no credentials:
-# Use a NEW empty directory for an update; an existing cache resumes a fetch.
-.venv/bin/python scripts/build_knowledge_base.py --refresh /tmp/mizemi-reference-review
+# Development only. Use a NEW cache for a source refresh; reuse it to resume.
+.venv/bin/python scripts/expand_knowledge.py --fetch /tmp/mizemi-reference-review
+.venv/bin/python scripts/expand_knowledge.py --fetch /tmp/mizemi-reference-review --hebrew
+.venv/bin/python scripts/expand_knowledge.py --fetch /tmp/mizemi-reference-review --places-only
 
-# Review the compact cache and curation first, then compile into a draft folder.
-.venv/bin/python scripts/build_knowledge_base.py \
-  --compile /tmp/mizemi-reference-review \
-  --output /tmp/mizemi-reference-draft \
-  --version YYYY-MM-DD.1 --retrieved YYYY-MM-DD
+# Review compact facts, source dates and curation. Compile offline to a draft.
+.venv/bin/python scripts/compile_group_knowledge.py /tmp/mizemi-reference-review \
+  --output /tmp/mizemi-reference-draft --version YYYY-MM-DD.1 --retrieved YYYY-MM-DD
+.venv/bin/python scripts/audit_group_questions.py --bundle /tmp/mizemi-reference-draft \
+  --output /tmp/mizemi-game-review.json
 
-# Validate the draft, review its diff/provenance, then compile to the real
-# asset directory with the same reviewed cache/version/date (omit --output).
-# Run the full regression suite and regenerate measurements/demonstrations:
+# After source/alias/fact/style review, compile to the real asset directory
+# with the same reviewed cache/date/version by omitting --output.
 .venv/bin/python scripts/benchmark_knowledge.py
+.venv/bin/python scripts/audit_group_questions.py
 ```
 
-Refresh uses one API request at a time, batches of at most 40 entities, 1.1-second pacing, bounded ancestor expansion, timeouts and bounded retries for transient responses. Respect a longer Retry-After by stopping and resuming later; do not work around restrictions. During initial research WDQS reported an outage/429; it was abandoned instead of repeatedly queried. The ordinary MediaWiki entity API was used. Deployment never depends on SPARQL or fetching a dump.
+`build_knowledge_base.py --refresh/--compile` remains the historical small-seed builder. Use the new expansion/compiler for schema 2. Source caches stay outside the repository and are not runtime dependencies. Public refreshes can change facts and are not byte-identical; bump the bundle version. The same cache, base seeds, curation, date and compiler produce identical artifacts, verified by tests. `compile_group_knowledge.py --base` can pin the seed bundle during review.
 
-The committed version was compiled from the reviewed discovery cache with `--version 2026-09-11.1 --retrieved 2026-09-11`. Source revisions and artifact hashes preserve provenance. A later public-source refresh is **not guaranteed byte-identical**: providers change. Review changed facts and bump the dataset version. The same reviewed cache, curation, builder, version and retrieval date produce identical artifacts, which is tested. Raw caches stay outside the repository. JSON is one compact entity array per line; memory indexes are rebuilt once per process.
+Runtime rows contain canonical ID, English/Hebrew names, bounded aliases, shared category IDs, optional coordinate pair, retained seed revision and optional compact details. New records use revision 0 because WDQS does not return entity revisions: provenance is the dated query projection, selection/curation hashes and artifact hashes, not an invented revision. Seed facts may be augmented by the dated expansion. `manifest.json` records these transformations. Checksums detect accidental corruption, not upstream factual errors. Long-tail community classifications require continued review.
 
-The manifest is a checksum/schema integrity check, not a cryptographic assertion that every upstream fact is true. All future source/curation changes require review. Runtime rejects malformed, oversized, duplicate, mismatched, symlinked or incorrectly typed artifacts before they can be used for scoring.
+All JSON is schema/type/size/hash validated before indexing. Files with duplicate IDs/keys/options, invalid domains, bad metadata, nonfinite/out-of-region coordinates, unsupported licenses, symlinks or unexpected paths fail closed. Runtime indexes and immutable classification sets are built once; compact JSON stays comfortably below the asset budget without a compression dependency. Compression is measured for repository impact, not required at startup.
