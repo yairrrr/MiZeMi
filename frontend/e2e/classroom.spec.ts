@@ -55,7 +55,7 @@ test(`${prefix}: host and ${playerCount} mobile players complete ${count} rounds
       ['עומר', 'תל אביב', 'סושי', 'כדורגל', 'Mizrahi', '22', 'לזמן את הרוע'],
       ['נועה', 'רחובות', 'ספגטי', 'גלישה', 'Rock', '24', 'צעצוע של סיפור'],
       ['עמית', 'ראשון לציון', 'לזניה', 'גיטרה', 'Pop', '26', 'מוצאים את נמו'],
-      ['ליאור', 'באר שבע', 'פלאפל', 'צילום', 'Jazz', '28', 'טיטניק'],
+      ['ליאור', 'באר שבע', 'פלאפל', 'צילום', 'Jazz', '28', 'טיטניק (סרט, 1997)'],
     ] : language === 'he' ? [
       ['דנה', 'חיפה', 'פיצה', 'שחמט', 'Rock', '16', 'למעלה'],
       ['עומר', 'תל אביב', 'סושי', 'ריצה', 'Pop', '17', 'מכוניות'],
@@ -78,6 +78,10 @@ test(`${prefix}: host and ${playerCount} mobile players complete ${count} rounds
       await page.getByLabel(t('Favorite food'), { exact: true }).fill(food)
       await page.getByLabel(t('Hobby'), { exact: true }).fill(hobby)
       await page.getByLabel(t('Favorite music style'), { exact: true }).selectOption(music)
+      if (knowledge) {
+        await page.getByLabel(t('Favorite artist') + t(' (optional)')).fill(['עומר אדם', 'עדן בן זקן', 'Taylor Swift', 'Metallica', 'Coldplay'][i])
+        await page.getByLabel(t('Favorite song') + t(' (optional)')).fill(['Shake It Off - Taylor Swift', 'Blank Space', 'Enter Sandman', 'Yellow - Coldplay', 'Paradise - Coldplay'][i])
+      }
       await page.getByLabel(t('Age') + t(' (optional)')).fill(age)
       await page.getByLabel(t('Favorite movie') + t(' (optional)')).fill(movie)
       await page.getByLabel(t('Something interesting about me') + t(' (optional)')).fill('PRIVATE_MARKER_DO_NOT_SHARE')

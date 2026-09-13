@@ -1,6 +1,10 @@
 // English source keys keep messages readable at their call sites. Missing keys
 // are TypeScript errors. Interpolation is plain text, never HTML.
 export const hebrew = {
+  'e.g. Titanic 1997': 'למשל: טיטניק 1997',
+  'Song title, with artist if needed': 'שם השיר, ואם צריך גם האמן',
+  'Favorite artist': 'אמן אהוב',
+  'Favorite song': 'שיר אהוב',
   'Who’s Who · Made for your group': 'מי זה מי · המשחק של הקבוצה שלכם',
   'Turn the stories you share into a game everyone will remember.': 'הסיפורים שאתם משתפים הופכים למשחק שכולם יזכרו.',
   'No account needed. Just your group and a room code.': 'בלי לפתוח חשבון. רק הקבוצה שלכם וקוד חדר.',
