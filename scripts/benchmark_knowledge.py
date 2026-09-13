@@ -22,9 +22,10 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'backend'))
 from app.domain.questions import QuestionGenerator, QuestionValidator
 from app.domain.questions.knowledge import KINDS
-from app.domain.questions.semantic_rules import semantic_rules
+from app.domain.questions.group_rules import group_rules
 from app.infrastructure.knowledge import BUNDLE_DIR, load_knowledge
 from tests.fixtures.knowledge import dataset, ROWS, correct
+from audit_group_questions import GROUPS, FIELDS, ARTISTS, SONGS, profile_values
 
 
 def timed(function, repeats):
@@ -45,7 +46,7 @@ def main():
     for i in range(n): kb.resolve(*lookups[i%len(lookups)])
     lookup_us=(perf_counter()-start)*1_000_000/n
     generation=QuestionGenerator(knowledge=kb)
-    rows=[(*ROWS[i%5][:-1],15+i) for i in range(30)]
+    rows=[{**dict(zip(FIELDS,ROWS[i%5])),'age':15+i,'favorite_artist':ARTISTS[i%5],'favorite_song':SONGS[i%5]} for i in range(30)]
     def generate(seed=77):
         qs=generation.generate(dataset(rows),question_count=20,time_limit_seconds=20,seed=seed)
         assert len(qs)==20
@@ -67,7 +68,8 @@ def main():
         'categories':len(kb.categories),'raw_bundle_bytes':len(all_bytes),
         'gzip_bundle_bytes':len(gzip.compress(all_bytes,compresslevel=9,mtime=0)),
         'raw_files_bytes':{name:len(value) for name,value in raw.items()},
-        'build_curation_bytes':(ROOT/'scripts/knowledge/curation.json').stat().st_size,
+        'build_curation_bytes':sum((ROOT/'scripts/knowledge'/name).stat().st_size for name in ('curation.json','group-curation.json')),
+        'hebrew_names':{kind:sum(bool(e.hebrew) for e in kb.in_kind(kind)) for kind in KINDS},
         'load_with_tracemalloc_ms':round(load_ms,3),'load_uninstrumented':timed(load_knowledge,10),
         'knowledge_retained_python_bytes':retained,'knowledge_peak_python_bytes':peak,
         'process_max_rss_bytes':resource.getrusage(resource.RUSAGE_SELF).ru_maxrss*(1 if sys.platform=='darwin' else 1024),
@@ -79,30 +81,35 @@ def main():
     }
     target=ROOT/'scripts/knowledge/benchmark-results.json'
     target.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
-    partial_rows=[dict(zip(('city','favorite_food','hobby','favorite_music','favorite_movie','age'),row)) for row in rows]
+    partial_rows=[dict(row) for row in rows]
     partial_rows[-1]['favorite_movie']='unknown movie'
     data['30_players_one_unknown_movie']=timed(lambda: generation.generate(dataset(partial_rows),question_count=20,time_limit_seconds=20,seed=77),10)
     target.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     examples={}
-    specialized={
-        'semantic_subset_count':[{'favorite_movie':m} for m in ('Saw','The Conjuring','Toy Story','unknown')],
-        'semantic_scoped_pair':[{'favorite_movie':m} for m in ('Saw','The Conjuring','Toy Story','unknown')],
-        'semantic_rare':[{'favorite_music':m} for m in ['Mizrahi']*3+['Jazz']*2+['Rock']],
-        'locality_distinct':[{'city':c} for c in ('תל אביב','Tel-Aviv','Haifa')],
-    }
+    specialized={}
     for language in ('en','he'):
         examples[language]=[]
-        for rule in semantic_rules(kb):
+        for rule in group_rules(kb):
             ds=dataset(specialized.get(rule.rule_id,ROWS),language=language)
             candidates=[c for c in rule.generate(ds,Random(5)) if QuestionValidator().is_valid(c,ds)]
-            if rule.rule_id=='semantic_different_pair': candidates=[c for c in candidates if c.semantic_key[-1]=='movie.horror']
-            if rule.rule_id=='semantic_subset_count': candidates=[c for c in candidates if c.semantic_key[2]=='movie.horror']
-            if rule.rule_id=='semantic_count': candidates=[c for c in candidates if c.semantic_key[-1]=='hobby.sport']
             if not candidates: continue
             c=candidates[0]
             examples[language].append({'rule':rule.rule_id,'question':c.text,'options':[o.text for o in c.options],
                                        'correct':correct(c),'explanation':c.explanation})
     (ROOT/'scripts/knowledge/demo-results.json').write_text(json.dumps({'synthetic_profiles':ROWS,'specialized_profiles':specialized,'examples':examples},ensure_ascii=False,indent=2)+'\n')
+    field_kinds={'city':'localities','favorite_food':'foods','hobby':'hobbies','favorite_music':'music','favorite_movie':'movies','favorite_artist':'artists','favorite_song':'songs'}
+    coverage={}
+    for field,kind in field_kinds.items():
+        values=[values[field] for rows in GROUPS.values() for row in rows if field in (values:=profile_values(row))]
+        coverage[field]={'recognized':sum(kb.resolve(kind,v).entity is not None for v in values),'entered':len(values)}
+    data['synthetic_group_recognition']=coverage
+    from app.domain.questions.semantic import DIMENSIONS, enrich
+    from audit_group_questions import profiles
+    views=[enrich(profiles(rows,'he'),kb) for rows in GROUPS.values()]
+    data['synthetic_group_usable_dimensions']={dim:{'known':sum(len(v.memberships[dim]) for v in views),
+        'participants':sum(len(v.ids) for v in views)} for dim in DIMENSIONS if dim not in ('artist.genre','song.genre')}
+    data['note']='Recognition describes these published synthetic fixtures, not a population estimate. RSS includes Python and benchmark instrumentation.'
+    target.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(data,ensure_ascii=False,indent=2))
 
 if __name__=='__main__': main()

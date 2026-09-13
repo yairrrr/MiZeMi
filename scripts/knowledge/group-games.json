@@ -1,0 +1,2784 @@
+{
+  "version": "2026-09-14.1",
+  "synthetic": true,
+  "games": [
+    {
+      "group": "new_class",
+      "language": "he",
+      "seed": 41,
+      "profiles": [
+        {
+          "city": "תל אביב",
+          "favorite_food": "פיצה",
+          "hobby": "ריצה",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "המסור",
+          "age": 20
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פסטה",
+          "hobby": "כדורגל",
+          "favorite_music": "Pop",
+          "favorite_movie": "לזמן את הרוע",
+          "age": 22
+        },
+        {
+          "city": "ראשון לציון",
+          "favorite_food": "לזניה",
+          "hobby": "גלישה",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 24
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "גיימינג",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 21
+        },
+        {
+          "city": "באר שבע",
+          "favorite_food": "פלאפל",
+          "hobby": "גינון",
+          "favorite_music": "Trance",
+          "favorite_movie": "שרק 2",
+          "age": 23
+        }
+      ],
+      "rules": {
+        "group_mode": 3,
+        "group_unique": 2,
+        "locality_extreme": 1,
+        "age_ranking": 1,
+        "group_count": 3,
+        "region_majority": 1,
+        "group_diversity": 2,
+        "locality_distance_pair": 1,
+        "group_comparison_semantic": 3,
+        "category_coverage": 1,
+        "group_filtered_mode": 1,
+        "group_intersection_count": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "איזה סגנון מוזיקה הכי נפוץ בקבוצה?",
+          "options": [
+            "ים תיכונית",
+            "פופ",
+            "מזרחית",
+            "פולק"
+          ],
+          "correct": "מזרחית",
+          "explanation": "2 אנשים בחרו מוזיקה בסגנון מזרחית: “מוזיקה מזרחית”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "רק אחד בקבוצה בחר מאכל שמזוהה עם המטבח היפני. מי זה?",
+          "options": [
+            "נועה",
+            "דנה",
+            "עמית",
+            "עומר"
+          ],
+          "correct": "עמית",
+          "explanation": "עמית: אדם אחד בחר מאכל שמזוהה עם המטבח היפני: “סושי”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "מי בקבוצה גר הכי דרומה?",
+          "options": [
+            "ליאור",
+            "עמית",
+            "נועה",
+            "דנה"
+          ],
+          "correct": "ליאור",
+          "explanation": "באר שבע, היישוב של ליאור, הוא היישוב הדרומי ביותר לפי נקודות הייחוס של היישובים שנבחרו."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי התחביבים שבחרתם, איזה תחום הכי נפוץ בקבוצה?",
+          "options": [
+            "אספנות",
+            "פעילות דיגיטלית",
+            "ספורט",
+            "פעילות בטבע"
+          ],
+          "correct": "ספורט",
+          "explanation": "3 אנשים בחרו תחביבים שקשורים לספורט: “ריצה”, “כדורגל”, “גלישת גלים”."
+        },
+        {
+          "number": 5,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "מי המבוגר ביותר מבין המשתתפים ששיתפו את הגיל שלהם?",
+          "options": [
+            "דנה",
+            "עומר",
+            "ליאור",
+            "נועה"
+          ],
+          "correct": "נועה",
+          "explanation": ""
+        },
+        {
+          "number": 6,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו מאכלים שמזוהים עם המטבח האיטלקי?",
+          "options": [
+            "3",
+            "2",
+            "1",
+            "4"
+          ],
+          "correct": "3",
+          "explanation": "3 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “פסטה”, “לזניה”."
+        },
+        {
+          "number": 7,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "רק אחד בקבוצה בחר תחביב שקשור לפעילות בטבע. מי זה?",
+          "options": [
+            "נועה",
+            "עומר",
+            "ליאור",
+            "דנה"
+          ],
+          "correct": "ליאור",
+          "explanation": "ליאור: אדם אחד בחר תחביב שקשור לפעילות בטבע: “גינון”."
+        },
+        {
+          "number": 8,
+          "rule": "region_majority",
+          "difficulty": "EASY",
+          "text": "מאיזה אזור בארץ מגיע רוב הקבוצה?",
+          "options": [
+            "המרכז",
+            "הצפון",
+            "הדרום",
+            "אזור ירושלים"
+          ],
+          "correct": "המרכז",
+          "explanation": "3 אנשים מגיעים מהמרכז: “תל אביב יפו”, “רמת גן”, “ראשון לציון”."
+        },
+        {
+          "number": 9,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקה בסגנון אלקטרונית?",
+          "options": [
+            "2",
+            "0",
+            "3",
+            "1"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר מוזיקה בסגנון אלקטרונית: “מוזיקת טראנס”."
+        },
+        {
+          "number": 10,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו מאכלים שמזוהים עם מטבחי המזרח התיכון?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר מאכל שמזוהה עם מטבחי המזרח התיכון: “פלאפל”."
+        },
+        {
+          "number": 11,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי המאכלים שבחרתם, איזה מטבח הכי פופולרי בקבוצה?",
+          "options": [
+            "המטבח היווני",
+            "המטבח האיטלקי",
+            "המטבח הצרפתי",
+            "המטבח הספרדי"
+          ],
+          "correct": "המטבח האיטלקי",
+          "explanation": "3 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “פסטה”, “לזניה”."
+        },
+        {
+          "number": 12,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה אזורים בארץ מיוצגים בקבוצה?",
+          "options": [
+            "3",
+            "2",
+            "4",
+            "1"
+          ],
+          "correct": "3",
+          "explanation": "3 תחומים: המרכז, הצפון, הדרום. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 13,
+          "rule": "locality_distance_pair",
+          "difficulty": "MEDIUM",
+          "text": "אילו שני אנשים בקבוצה גרים ביישובים הקרובים ביותר זה לזה בקו אווירי?",
+          "options": [
+            "עומר + נועה",
+            "נועה + ליאור",
+            "דנה + עומר",
+            "דנה + נועה"
+          ],
+          "correct": "דנה + עומר",
+          "explanation": "בין תל אביב יפו לרמת גן יש כ־3 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
+        },
+        {
+          "number": 14,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין ז׳אנרי הסרטים הבאים?",
+          "options": [
+            "אימה",
+            "פשע"
+          ],
+          "correct": "אימה",
+          "explanation": "אדם אחד בחר סרט בז׳אנר פשע: “המסור”. 2 אנשים בחרו סרטים בז׳אנר אימה: “המסור”, “לזמן את הרוע”."
+        },
+        {
+          "number": 15,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה מטבחים שונים מסתתרים מאחורי המאכלים שבחרתם?",
+          "options": [
+            "1",
+            "2",
+            "4",
+            "3"
+          ],
+          "correct": "3",
+          "explanation": "3 תחומים: המטבח האיטלקי, המטבח היפני, מטבחי המזרח התיכון. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין תחומי התחביבים הבאים?",
+          "options": [
+            "ספורט",
+            "פעילות דיגיטלית"
+          ],
+          "correct": "ספורט",
+          "explanation": "3 אנשים בחרו תחביבים שקשורים לספורט: “ריצה”, “כדורגל”, “גלישת גלים”. אדם אחד בחר תחביב שקשור לפעילות דיגיטלית: “משחקי מחשב”."
+        },
+        {
+          "number": 17,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין סגנונות המוזיקה הבאים?",
+          "options": [
+            "מזרחית",
+            "פופ"
+          ],
+          "correct": "מזרחית",
+          "explanation": "2 אנשים בחרו מוזיקה בסגנון מזרחית: “מוזיקה מזרחית”. אדם אחד בחר מוזיקה בסגנון פופ: “מוזיקת פופ”."
+        },
+        {
+          "number": 18,
+          "rule": "category_coverage",
+          "difficulty": "HARD",
+          "text": "אצל חובבי איזה סגנון מוזיקה יש בקבוצה את המגוון הכי רחב של סרטים אהובים?",
+          "options": [
+            "מוזיקת פופ",
+            "מוזיקת רוק",
+            "מוזיקה מזרחית",
+            "מוזיקת טראנס"
+          ],
+          "correct": "מוזיקה מזרחית",
+          "explanation": ""
+        },
+        {
+          "number": 19,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "מבין מי שבחרו תחביבים שקשורים לספורט, איזה ז׳אנר קולנוע הכי נפוץ?",
+          "options": [
+            "מסתורין",
+            "פשע",
+            "אימה",
+            "מתח"
+          ],
+          "correct": "אימה",
+          "explanation": "3 אנשים בחרו תחביבים שקשורים לספורט: “ריצה”, “כדורגל”, “גלישת גלים”. 2 אנשים בחרו סרטים בז׳אנר אימה: “המסור”, “לזמן את הרוע”."
+        },
+        {
+          "number": 20,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "כמה אנשים בחרו גם סרטים בז׳אנר אנימציה וגם תחביבים שקשורים לספורט?",
+          "options": [
+            "0",
+            "2",
+            "1",
+            "3"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר סרט בז׳אנר אנימציה: “שרק”. אדם אחד בחר תחביב שקשור לספורט: “גלישת גלים”."
+        }
+      ]
+    },
+    {
+      "group": "new_class",
+      "language": "en",
+      "seed": 41,
+      "profiles": [
+        {
+          "city": "תל אביב",
+          "favorite_food": "פיצה",
+          "hobby": "ריצה",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "המסור",
+          "age": 20
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פסטה",
+          "hobby": "כדורגל",
+          "favorite_music": "Pop",
+          "favorite_movie": "לזמן את הרוע",
+          "age": 22
+        },
+        {
+          "city": "ראשון לציון",
+          "favorite_food": "לזניה",
+          "hobby": "גלישה",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 24
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "גיימינג",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 21
+        },
+        {
+          "city": "באר שבע",
+          "favorite_food": "פלאפל",
+          "hobby": "גינון",
+          "favorite_music": "Trance",
+          "favorite_movie": "שרק 2",
+          "age": 23
+        }
+      ],
+      "rules": {
+        "group_mode": 3,
+        "group_unique": 2,
+        "locality_extreme": 1,
+        "group_count": 3,
+        "age_ranking": 1,
+        "region_majority": 1,
+        "group_diversity": 2,
+        "locality_distance_pair": 1,
+        "group_comparison_semantic": 3,
+        "category_coverage": 1,
+        "group_filtered_mode": 1,
+        "group_intersection_count": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which activity family is most common in our group?",
+          "options": [
+            "Collecting",
+            "Digital activities",
+            "Sport",
+            "Nature activities"
+          ],
+          "correct": "Sport",
+          "explanation": "3 people chose hobbies related to Sport: “Running”, “Association football”, “Surfing”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "Only one person in our group chose Electronic music. Who?",
+          "options": [
+            "עומר",
+            "דנה",
+            "עמית",
+            "ליאור"
+          ],
+          "correct": "ליאור",
+          "explanation": "ליאור: One person chose Electronic music: “Trance music”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "Whose town is furthest north in the group?",
+          "options": [
+            "ליאור",
+            "נועה",
+            "עומר",
+            "עמית"
+          ],
+          "correct": "עמית",
+          "explanation": "Haifa, chosen by עמית, has the northernmost reference point among these towns."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which cuisine is most popular in our group’s food choices?",
+          "options": [
+            "Greek cuisine",
+            "Italian cuisine",
+            "French cuisine",
+            "Spanish cuisine"
+          ],
+          "correct": "Italian cuisine",
+          "explanation": "3 people chose foods associated with Italian cuisine: “Pizza”, “Pasta”, “Lasagna”."
+        },
+        {
+          "number": 5,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Action movies?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "One person chose an Action movie: “Shrek 2”."
+        },
+        {
+          "number": 6,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "Who is oldest among the players who shared their age?",
+          "options": [
+            "דנה",
+            "עומר",
+            "ליאור",
+            "נועה"
+          ],
+          "correct": "נועה",
+          "explanation": ""
+        },
+        {
+          "number": 7,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "Only one person in our group chose Pop music. Who?",
+          "options": [
+            "נועה",
+            "עמית",
+            "דנה",
+            "עומר"
+          ],
+          "correct": "עומר",
+          "explanation": "עומר: One person chose Pop music: “Pop music”."
+        },
+        {
+          "number": 8,
+          "rule": "region_majority",
+          "difficulty": "EASY",
+          "text": "Which region is home to the majority of our group?",
+          "options": [
+            "Central Israel",
+            "Northern Israel",
+            "Southern Israel",
+            "Jerusalem area"
+          ],
+          "correct": "Central Israel",
+          "explanation": "3 people are from Central Israel: “Tel Aviv”, “Ramat Gan”, “Rishon LeTsiyyon”."
+        },
+        {
+          "number": 9,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Adventure movies?",
+          "options": [
+            "1",
+            "2",
+            "0",
+            "3"
+          ],
+          "correct": "2",
+          "explanation": "2 people chose Adventure movies: “Shrek”, “Shrek 2”."
+        },
+        {
+          "number": 10,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Crime movies?",
+          "options": [
+            "3",
+            "0",
+            "2",
+            "1"
+          ],
+          "correct": "1",
+          "explanation": "One person chose a Crime movie: “Saw (film)”."
+        },
+        {
+          "number": 11,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which music style is most common in our group?",
+          "options": [
+            "Mediterranean",
+            "Pop",
+            "Mizrahi",
+            "Folk"
+          ],
+          "correct": "Mizrahi",
+          "explanation": "2 people chose Mizrahi music: “Mizrahi music”."
+        },
+        {
+          "number": 12,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many activity families are represented in our group?",
+          "options": [
+            "3",
+            "4",
+            "1",
+            "2"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Sport, Digital activities, Nature activities. A choice can belong to more than one family."
+        },
+        {
+          "number": 13,
+          "rule": "locality_distance_pair",
+          "difficulty": "MEDIUM",
+          "text": "Which pair chose the towns that are closest by air distance?",
+          "options": [
+            "עומר + נועה",
+            "נועה + ליאור",
+            "דנה + עומר",
+            "דנה + נועה"
+          ],
+          "correct": "דנה + עומר",
+          "explanation": "Tel Aviv and Ramat Gan are about 3 km apart by air, comparing locality reference points, not homes or roads."
+        },
+        {
+          "number": 14,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these film genres is more common in our group?",
+          "options": [
+            "Horror",
+            "Crime"
+          ],
+          "correct": "Horror",
+          "explanation": "One person chose a Crime movie: “Saw (film)”. 2 people chose Horror movies: “Saw (film)”, “The Conjuring”."
+        },
+        {
+          "number": 15,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many cuisines are behind our group’s food choices?",
+          "options": [
+            "1",
+            "2",
+            "4",
+            "3"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Italian cuisine, Japanese cuisine, Middle Eastern cuisines. A choice can belong to more than one family."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "What is more common in our group: outdoor hobbies or indoor hobbies?",
+          "options": [
+            "Outdoors",
+            "Indoors"
+          ],
+          "correct": "Outdoors",
+          "explanation": "3 people chose hobbies usually done Outdoors: “Association football”, “Surfing”, “Gardening”. This describes the usual setting of the activity, not where anyone actually does it. One person chose a hobby usually done Indoors: “Video game”. This describes the usual setting of the activity, not where anyone actually does it."
+        },
+        {
+          "number": 17,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these activity families is more common in our group?",
+          "options": [
+            "Sport",
+            "Digital activities"
+          ],
+          "correct": "Sport",
+          "explanation": "3 people chose hobbies related to Sport: “Running”, “Association football”, “Surfing”. One person chose a hobby related to Digital activities: “Video game”."
+        },
+        {
+          "number": 18,
+          "rule": "category_coverage",
+          "difficulty": "HARD",
+          "text": "Which shared music style connects the widest variety of favorite food choices?",
+          "options": [
+            "Rock",
+            "Pop",
+            "Mizrahi",
+            "Trance"
+          ],
+          "correct": "Mizrahi",
+          "explanation": ""
+        },
+        {
+          "number": 19,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "Among people from Central Israel, which cuisine is most common?",
+          "options": [
+            "French cuisine",
+            "Greek cuisine",
+            "Spanish cuisine",
+            "Italian cuisine"
+          ],
+          "correct": "Italian cuisine",
+          "explanation": "3 people are from Central Israel: “Tel Aviv”, “Ramat Gan”, “Rishon LeTsiyyon”. 3 people chose foods associated with Italian cuisine: “Pizza”, “Pasta”, “Lasagna”."
+        },
+        {
+          "number": 20,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "How many people chose both Mizrahi music and foods associated with Italian cuisine?",
+          "options": [
+            "3",
+            "0",
+            "1",
+            "2"
+          ],
+          "correct": "1",
+          "explanation": "One person chose Mizrahi music: “Mizrahi music”. One person chose a food associated with Italian cuisine: “Pizza”."
+        }
+      ]
+    },
+    {
+      "group": "creative_workshop",
+      "language": "he",
+      "seed": 42,
+      "profiles": [
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "ציור",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 25
+        },
+        {
+          "city": "קריית שמונה",
+          "favorite_food": "ראמן",
+          "hobby": "גיטרה",
+          "favorite_music": "Pop",
+          "favorite_movie": "צעצוע של סיפור",
+          "age": 27
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "פיצה",
+          "hobby": "צילום",
+          "favorite_music": "Rock",
+          "favorite_movie": "מוצאים את נמו",
+          "age": 26
+        },
+        {
+          "city": "תל אביב",
+          "favorite_food": "פסטה",
+          "hobby": "פילאטיס",
+          "favorite_music": "Jazz",
+          "favorite_movie": "שרק 2",
+          "age": 28
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פלאפל",
+          "hobby": "כדורגל",
+          "favorite_music": "Pop",
+          "favorite_movie": "המסור",
+          "age": 24
+        },
+        {
+          "city": "ירושלים",
+          "favorite_food": "סושי",
+          "hobby": "אפייה",
+          "favorite_music": "Rock",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 29
+        }
+      ],
+      "rules": {
+        "group_mode": 2,
+        "group_unique": 1,
+        "locality_extreme": 1,
+        "group_count": 1,
+        "age_ranking": 1,
+        "group_comparison": 1,
+        "most_common_value": 2,
+        "second_largest_group": 1,
+        "group_different_pair": 1,
+        "geographic_outlier": 1,
+        "group_diversity": 2,
+        "least_common_value": 1,
+        "group_comparison_semantic": 2,
+        "group_filtered_mode": 1,
+        "category_coverage": 1,
+        "group_intersection_count": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "איזה סגנון מוזיקה הכי נפוץ בקבוצה?",
+          "options": [
+            "רוק",
+            "מטאל",
+            "בלוז",
+            "אינדי"
+          ],
+          "correct": "רוק",
+          "explanation": "3 אנשים בחרו מוזיקה בסגנון רוק: “מוזיקת רוק”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "רק אחד בקבוצה בחר מאכל ממשפחת מאפים. מי זה?",
+          "options": [
+            "עומר",
+            "עמית",
+            "ליאור",
+            "נועה"
+          ],
+          "correct": "נועה",
+          "explanation": "נועה: אדם אחד בחר מאכל ממשפחת מאפים: “פיצה”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "מי בקבוצה גר הכי דרומה?",
+          "options": [
+            "יעל",
+            "ליאור",
+            "נועה",
+            "עמית"
+          ],
+          "correct": "יעל",
+          "explanation": "ירושלים, היישוב של יעל, הוא היישוב הדרומי ביותר לפי נקודות הייחוס של היישובים שנבחרו."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי התחביבים שבחרתם, איזה תחום הכי נפוץ בקבוצה?",
+          "options": [
+            "אמנות ויצירה",
+            "בישול ואפייה",
+            "ספורט",
+            "פעילות דיגיטלית"
+          ],
+          "correct": "אמנות ויצירה",
+          "explanation": "3 אנשים בחרו תחביבים שקשורים לאמנות ויצירה: “ציור”, “גיטרה”, “צילום”."
+        },
+        {
+          "number": 5,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו סרטים בז׳אנר אימה?",
+          "options": [
+            "1",
+            "0",
+            "2",
+            "3"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר סרט בז׳אנר אימה: “המסור”."
+        },
+        {
+          "number": 6,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "מי המבוגר ביותר מבין המשתתפים ששיתפו את הגיל שלהם?",
+          "options": [
+            "יעל",
+            "ליאור",
+            "נועה",
+            "עומר"
+          ],
+          "correct": "יעל",
+          "explanation": ""
+        },
+        {
+          "number": 7,
+          "rule": "group_comparison",
+          "difficulty": "EASY",
+          "text": "באיזו משתי הערים האלה גרים יותר אנשים בקבוצה?",
+          "options": [
+            "חיפה",
+            "קריית שמונה"
+          ],
+          "correct": "חיפה",
+          "explanation": ""
+        },
+        {
+          "number": 8,
+          "rule": "most_common_value",
+          "difficulty": "EASY",
+          "text": "איזה אוכל אהוב נבחר הכי הרבה בקבוצה?",
+          "options": [
+            "פסטה",
+            "סושי",
+            "פלאפל",
+            "פיצה"
+          ],
+          "correct": "סושי",
+          "explanation": ""
+        },
+        {
+          "number": 9,
+          "rule": "most_common_value",
+          "difficulty": "EASY",
+          "text": "איזו עיר מופיעה הכי הרבה בקבוצה?",
+          "options": [
+            "ירושלים",
+            "רמת גן",
+            "חיפה",
+            "קריית שמונה"
+          ],
+          "correct": "חיפה",
+          "explanation": ""
+        },
+        {
+          "number": 10,
+          "rule": "second_largest_group",
+          "difficulty": "MEDIUM",
+          "text": "איזו מהבחירות האלה של סגנון מוזיקה נמצאת במקום השני בקבוצה?",
+          "options": [
+            "ג'אז",
+            "מוזיקת רוק",
+            "מוזיקת פופ"
+          ],
+          "correct": "מוזיקת פופ",
+          "explanation": ""
+        },
+        {
+          "number": 11,
+          "rule": "group_different_pair",
+          "difficulty": "MEDIUM",
+          "text": "איזה שני אנשים בחרו תחביבים שונים שמתחברים דרך ספורט?",
+          "options": [
+            "עמית + יעל",
+            "נועה + ליאור",
+            "עומר + ליאור",
+            "עמית + ליאור"
+          ],
+          "correct": "עמית + ליאור",
+          "explanation": "2 אנשים בחרו תחביבים שקשורים לספורט: “פילאטיס”, “כדורגל”."
+        },
+        {
+          "number": 12,
+          "rule": "geographic_outlier",
+          "difficulty": "MEDIUM",
+          "text": "מי גר הכי רחוק משאר הקבוצה, בממוצע?",
+          "options": [
+            "דנה",
+            "עומר",
+            "נועה",
+            "יעל"
+          ],
+          "correct": "עומר",
+          "explanation": "עומר, מקריית שמונה: בממוצע כ־119 ק״מ בקו אווירי לשאר היישובים בקבוצה."
+        },
+        {
+          "number": 13,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה מטבחים שונים מסתתרים מאחורי המאכלים שבחרתם?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "4"
+          ],
+          "correct": "3",
+          "explanation": "3 תחומים: המטבח היפני, המטבח האיטלקי, מטבחי המזרח התיכון. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 14,
+          "rule": "least_common_value",
+          "difficulty": "MEDIUM",
+          "text": "מה הכי פחות נפוץ בקבוצה מבין הבחירות האלה של סגנון מוזיקה?",
+          "options": [
+            "מוזיקת רוק",
+            "מוזיקת פופ",
+            "ג'אז"
+          ],
+          "correct": "ג'אז",
+          "explanation": ""
+        },
+        {
+          "number": 15,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין המטבחים הבאים?",
+          "options": [
+            "מטבחים אסייתיים",
+            "המטבח האיטלקי"
+          ],
+          "correct": "מטבחים אסייתיים",
+          "explanation": "3 אנשים בחרו מאכלים שמזוהים עם מטבחים אסייתיים: “סושי”, “ראמן”. 2 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “פסטה”."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין ז׳אנרי הסרטים הבאים?",
+          "options": [
+            "הרפתקאות",
+            "פנטזיה"
+          ],
+          "correct": "הרפתקאות",
+          "explanation": "4 אנשים בחרו סרטים בז׳אנר הרפתקאות: “שרק”, “צעצוע של סיפור”, “מוצאים את נמו”, “שרק 2”. 3 אנשים בחרו סרטים בז׳אנר פנטזיה: “שרק”, “צעצוע של סיפור”, “שרק 2”."
+        },
+        {
+          "number": 17,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה אזורים בארץ מיוצגים בקבוצה?",
+          "options": [
+            "4",
+            "3",
+            "1",
+            "2"
+          ],
+          "correct": "3",
+          "explanation": "3 תחומים: הצפון, המרכז, אזור ירושלים. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 18,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "מבין מי שבחרו סרטים בז׳אנר אנימציה, איזה תחום תחביבים הכי נפוץ?",
+          "options": [
+            "ספורט",
+            "אמנות ויצירה",
+            "פעילות דיגיטלית",
+            "בישול ואפייה"
+          ],
+          "correct": "אמנות ויצירה",
+          "explanation": "4 אנשים בחרו סרטים בז׳אנר אנימציה: “שרק”, “צעצוע של סיפור”, “מוצאים את נמו”, “שרק 2”. 3 אנשים בחרו תחביבים שקשורים לאמנות ויצירה: “ציור”, “גיטרה”, “צילום”."
+        },
+        {
+          "number": 19,
+          "rule": "category_coverage",
+          "difficulty": "HARD",
+          "text": "אצל חובבי איזה סגנון מוזיקה יש בקבוצה את המגוון הכי רחב של סרטים אהובים?",
+          "options": [
+            "ג'אז",
+            "מוזיקת פופ",
+            "מוזיקת רוק"
+          ],
+          "correct": "מוזיקת רוק",
+          "explanation": ""
+        },
+        {
+          "number": 20,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "כמה אנשים בחרו גם מאכלים שמזוהים עם המטבח האיטלקי וגם תחביבים שקשורים לאמנות ויצירה?",
+          "options": [
+            "3",
+            "2",
+            "1",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר מאכל שמזוהה עם המטבח האיטלקי: “פיצה”. אדם אחד בחר תחביב שקשור לאמנות ויצירה: “צילום”."
+        }
+      ]
+    },
+    {
+      "group": "creative_workshop",
+      "language": "en",
+      "seed": 42,
+      "profiles": [
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "ציור",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 25
+        },
+        {
+          "city": "קריית שמונה",
+          "favorite_food": "ראמן",
+          "hobby": "גיטרה",
+          "favorite_music": "Pop",
+          "favorite_movie": "צעצוע של סיפור",
+          "age": 27
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "פיצה",
+          "hobby": "צילום",
+          "favorite_music": "Rock",
+          "favorite_movie": "מוצאים את נמו",
+          "age": 26
+        },
+        {
+          "city": "תל אביב",
+          "favorite_food": "פסטה",
+          "hobby": "פילאטיס",
+          "favorite_music": "Jazz",
+          "favorite_movie": "שרק 2",
+          "age": 28
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פלאפל",
+          "hobby": "כדורגל",
+          "favorite_music": "Pop",
+          "favorite_movie": "המסור",
+          "age": 24
+        },
+        {
+          "city": "ירושלים",
+          "favorite_food": "סושי",
+          "hobby": "אפייה",
+          "favorite_music": "Rock",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 29
+        }
+      ],
+      "rules": {
+        "group_mode": 2,
+        "group_unique": 1,
+        "region_unique": 1,
+        "group_count": 2,
+        "age_ranking": 1,
+        "group_comparison": 1,
+        "locality_distinct": 1,
+        "most_common_value": 1,
+        "second_largest_group": 1,
+        "group_different_pair": 1,
+        "geographic_outlier": 1,
+        "group_diversity": 2,
+        "least_common_value": 1,
+        "group_comparison_semantic": 2,
+        "category_coverage": 1,
+        "group_filtered_mode": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which activity family is most common in our group?",
+          "options": [
+            "Arts and crafts",
+            "Cooking and baking",
+            "Sport",
+            "Digital activities"
+          ],
+          "correct": "Arts and crafts",
+          "explanation": "3 people chose hobbies related to Arts and crafts: “Painting”, “Guitar”, “Photography”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "Only one person in our group chose Jazz music. Who?",
+          "options": [
+            "עמית",
+            "ליאור",
+            "עומר",
+            "נועה"
+          ],
+          "correct": "עמית",
+          "explanation": "עמית: One person chose Jazz music: “Jazz”."
+        },
+        {
+          "number": 3,
+          "rule": "region_unique",
+          "difficulty": "EASY",
+          "text": "Who is the only person from a region nobody else in our group comes from?",
+          "options": [
+            "יעל",
+            "עמית",
+            "ליאור",
+            "דנה"
+          ],
+          "correct": "יעל",
+          "explanation": "יעל: One person is from Jerusalem area: “Jerusalem”."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which music style is most common in our group?",
+          "options": [
+            "Rock",
+            "Metal",
+            "Blues",
+            "Indie"
+          ],
+          "correct": "Rock",
+          "explanation": "3 people chose Rock music: “Rock music”."
+        },
+        {
+          "number": 5,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Action movies?",
+          "options": [
+            "2",
+            "1",
+            "0",
+            "3"
+          ],
+          "correct": "1",
+          "explanation": "One person chose an Action movie: “Shrek 2”."
+        },
+        {
+          "number": 6,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "Who is oldest among the players who shared their age?",
+          "options": [
+            "יעל",
+            "ליאור",
+            "נועה",
+            "עומר"
+          ],
+          "correct": "יעל",
+          "explanation": ""
+        },
+        {
+          "number": 7,
+          "rule": "group_comparison",
+          "difficulty": "EASY",
+          "text": "Which of these two favorite food choices was shared by more players?",
+          "options": [
+            "פלאפל",
+            "סושי"
+          ],
+          "correct": "סושי",
+          "explanation": ""
+        },
+        {
+          "number": 8,
+          "rule": "locality_distinct",
+          "difficulty": "EASY",
+          "text": "Allowing for different spellings of the same place, how many different towns are represented here?",
+          "options": [
+            "3",
+            "5",
+            "6",
+            "4"
+          ],
+          "correct": "5",
+          "explanation": "There are 5 different towns. Different spellings of the same town count once."
+        },
+        {
+          "number": 9,
+          "rule": "most_common_value",
+          "difficulty": "EASY",
+          "text": "What is the most common favorite food in this group?",
+          "options": [
+            "פסטה",
+            "סושי",
+            "פלאפל",
+            "פיצה"
+          ],
+          "correct": "סושי",
+          "explanation": ""
+        },
+        {
+          "number": 10,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose foods associated with Asian cuisines?",
+          "options": [
+            "3",
+            "2",
+            "1",
+            "4"
+          ],
+          "correct": "3",
+          "explanation": "3 people chose foods associated with Asian cuisines: “Sushi”, “Ramen”."
+        },
+        {
+          "number": 11,
+          "rule": "second_largest_group",
+          "difficulty": "MEDIUM",
+          "text": "Which music style choice has the second-largest group?",
+          "options": [
+            "Jazz",
+            "Rock",
+            "Pop"
+          ],
+          "correct": "Pop",
+          "explanation": ""
+        },
+        {
+          "number": 12,
+          "rule": "group_different_pair",
+          "difficulty": "MEDIUM",
+          "text": "Which two people chose different foods, both in Italian cuisine?",
+          "options": [
+            "עומר + ליאור",
+            "עמית + יעל",
+            "נועה + עמית",
+            "ליאור + יעל"
+          ],
+          "correct": "נועה + עמית",
+          "explanation": "2 people chose foods associated with Italian cuisine: “Pizza”, “Pasta”."
+        },
+        {
+          "number": 13,
+          "rule": "geographic_outlier",
+          "difficulty": "MEDIUM",
+          "text": "Who lives furthest from the rest of our group, on average?",
+          "options": [
+            "דנה",
+            "עומר",
+            "נועה",
+            "יעל"
+          ],
+          "correct": "עומר",
+          "explanation": "עומר, from Qiryat Shmona: an average of about 119 km to the other towns, by air."
+        },
+        {
+          "number": 14,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many activity families are represented in our group?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "4"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Arts and crafts, Sport, Cooking and baking. A choice can belong to more than one family."
+        },
+        {
+          "number": 15,
+          "rule": "least_common_value",
+          "difficulty": "MEDIUM",
+          "text": "Which shared music style choice belongs to the smallest group?",
+          "options": [
+            "Rock",
+            "Pop",
+            "Jazz"
+          ],
+          "correct": "Jazz",
+          "explanation": ""
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these film genres is more common in our group?",
+          "options": [
+            "Adventure",
+            "Fantasy"
+          ],
+          "correct": "Adventure",
+          "explanation": "4 people chose Adventure movies: “Shrek”, “Toy Story”, “Finding Nemo”, “Shrek 2”. 3 people chose Fantasy movies: “Shrek”, “Toy Story”, “Shrek 2”."
+        },
+        {
+          "number": 17,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these activity families is more common in our group?",
+          "options": [
+            "Sport",
+            "Arts and crafts"
+          ],
+          "correct": "Arts and crafts",
+          "explanation": "3 people chose hobbies related to Arts and crafts: “Painting”, “Guitar”, “Photography”. 2 people chose hobbies related to Sport: “Pilates”, “Association football”."
+        },
+        {
+          "number": 18,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many cuisines are behind our group’s food choices?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "4"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Japanese cuisine, Italian cuisine, Middle Eastern cuisines. A choice can belong to more than one family."
+        },
+        {
+          "number": 19,
+          "rule": "category_coverage",
+          "difficulty": "HARD",
+          "text": "Which shared city connects the widest variety of favorite movie choices?",
+          "options": [
+            "רמת גן",
+            "חיפה",
+            "תל אביב",
+            "קריית שמונה"
+          ],
+          "correct": "חיפה",
+          "explanation": ""
+        },
+        {
+          "number": 20,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "Among people who chose Adventure movies, which activity family is most common?",
+          "options": [
+            "Arts and crafts",
+            "Cooking and baking",
+            "Sport",
+            "Digital activities"
+          ],
+          "correct": "Arts and crafts",
+          "explanation": "4 people chose Adventure movies: “Shrek”, “Toy Story”, “Finding Nemo”, “Shrek 2”. 3 people chose hobbies related to Arts and crafts: “Painting”, “Guitar”, “Photography”."
+        }
+      ]
+    },
+    {
+      "group": "mixed_interests",
+      "language": "he",
+      "seed": 43,
+      "profiles": [
+        {
+          "city": "תל אביב",
+          "favorite_food": "פיצה",
+          "hobby": "כדורגל",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "המסור",
+          "age": 19
+        },
+        {
+          "city": "רחובות",
+          "favorite_food": "סושי",
+          "hobby": "גלישה",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "לזמן את הרוע",
+          "age": 20
+        },
+        {
+          "city": "ראשון לציון",
+          "favorite_food": "לזניה",
+          "hobby": "ריצה",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 21
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פלאפל",
+          "hobby": "גיטרה",
+          "favorite_music": "Pop",
+          "favorite_movie": "מוצאים את נמו",
+          "age": 22
+        },
+        {
+          "city": "באר שבע",
+          "favorite_food": "המבורגר",
+          "hobby": "גיימינג",
+          "favorite_music": "Jazz",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 23
+        },
+        {
+          "city": "אילת",
+          "favorite_food": "פסטה",
+          "hobby": "פילאטיס",
+          "favorite_music": "Trance",
+          "favorite_movie": "שרק 2",
+          "age": 24
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "צילום",
+          "favorite_music": "Rock",
+          "favorite_movie": "צעצוע של סיפור",
+          "age": 25
+        },
+        {
+          "city": "קריית שמונה",
+          "favorite_food": "פיצה",
+          "hobby": "ציור",
+          "favorite_music": "Pop",
+          "favorite_movie": "סרט מקומי שלא נמצא במאגר",
+          "age": 26
+        }
+      ],
+      "rules": {
+        "group_mode": 2,
+        "group_unique": 1,
+        "locality_extreme": 1,
+        "age_ranking": 1,
+        "group_count": 4,
+        "group_comparison": 1,
+        "geographic_outlier": 1,
+        "group_diversity": 2,
+        "group_comparison_semantic": 3,
+        "locality_distance_pair": 1,
+        "group_filtered_mode": 2,
+        "group_intersection_count": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי המאכלים שבחרתם, איזה מטבח הכי פופולרי בקבוצה?",
+          "options": [
+            "המטבח האיטלקי",
+            "המטבח היווני",
+            "המטבח הספרדי",
+            "המטבח הצרפתי"
+          ],
+          "correct": "המטבח האיטלקי",
+          "explanation": "4 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “לזניה”, “פסטה”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "רק אחד בקבוצה בחר מוזיקה בסגנון אלקטרונית. מי זה?",
+          "options": [
+            "רוני",
+            "ליאור",
+            "איתי",
+            "יעל"
+          ],
+          "correct": "יעל",
+          "explanation": "יעל: אדם אחד בחר מוזיקה בסגנון אלקטרונית: “מוזיקת טראנס”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "מי בקבוצה גר הכי צפונה?",
+          "options": [
+            "נועה",
+            "יעל",
+            "עמית",
+            "רוני"
+          ],
+          "correct": "רוני",
+          "explanation": "קריית שמונה, היישוב של רוני, הוא היישוב הצפוני ביותר לפי נקודות הייחוס של היישובים שנבחרו."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי התחביבים שבחרתם, איזה תחום הכי נפוץ בקבוצה?",
+          "options": [
+            "פעילות בטבע",
+            "פעילות דיגיטלית",
+            "אמנות ויצירה",
+            "ספורט"
+          ],
+          "correct": "ספורט",
+          "explanation": "4 אנשים בחרו תחביבים שקשורים לספורט: “כדורגל”, “גלישת גלים”, “ריצה”, “פילאטיס”."
+        },
+        {
+          "number": 5,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "מי המבוגר ביותר מבין המשתתפים ששיתפו את הגיל שלהם?",
+          "options": [
+            "עמית",
+            "עומר",
+            "דנה",
+            "רוני"
+          ],
+          "correct": "רוני",
+          "explanation": ""
+        },
+        {
+          "number": 6,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקה בסגנון ג׳אז?",
+          "options": [
+            "2",
+            "3",
+            "0",
+            "1"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר מוזיקה בסגנון ג׳אז: “ג'אז”."
+        },
+        {
+          "number": 7,
+          "rule": "group_comparison",
+          "difficulty": "EASY",
+          "text": "איזה משני המאכלים האלה נבחר יותר בקבוצה?",
+          "options": [
+            "לזניה",
+            "סושי"
+          ],
+          "correct": "סושי",
+          "explanation": ""
+        },
+        {
+          "number": 8,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו תחביבים שכוללים פעילות גופנית?",
+          "options": [
+            "2",
+            "5",
+            "3",
+            "4"
+          ],
+          "correct": "4",
+          "explanation": "4 אנשים בחרו תחביבים שכוללים פעילות גופנית: “כדורגל”, “גלישת גלים”, “ריצה”, “פילאטיס”."
+        },
+        {
+          "number": 9,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו מאכלים שמזוהים עם המטבח האיטלקי?",
+          "options": [
+            "2",
+            "4",
+            "5",
+            "3"
+          ],
+          "correct": "4",
+          "explanation": "4 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “לזניה”, “פסטה”."
+        },
+        {
+          "number": 10,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקה בסגנון מזרחית?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "correct": "2",
+          "explanation": "2 אנשים בחרו מוזיקה בסגנון מזרחית: “מוזיקה מזרחית”."
+        },
+        {
+          "number": 11,
+          "rule": "geographic_outlier",
+          "difficulty": "MEDIUM",
+          "text": "מי גר הכי רחוק משאר הקבוצה, בממוצע?",
+          "options": [
+            "עמית",
+            "נועה",
+            "יעל",
+            "איתי"
+          ],
+          "correct": "יעל",
+          "explanation": "יעל, מאילת: בממוצע כ־293 ק״מ בקו אווירי לשאר היישובים בקבוצה."
+        },
+        {
+          "number": 12,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה מטבחים שונים מסתתרים מאחורי המאכלים שבחרתם?",
+          "options": [
+            "5",
+            "2",
+            "3",
+            "4"
+          ],
+          "correct": "4",
+          "explanation": "4 תחומים: המטבח האיטלקי, המטבח היפני, מטבחי המזרח התיכון, המטבח האמריקאי. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 13,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין תחומי התחביבים הבאים?",
+          "options": [
+            "ספורט",
+            "אמנות ויצירה"
+          ],
+          "correct": "ספורט",
+          "explanation": "4 אנשים בחרו תחביבים שקשורים לספורט: “כדורגל”, “גלישת גלים”, “ריצה”, “פילאטיס”. 3 אנשים בחרו תחביבים שקשורים לאמנות ויצירה: “גיטרה”, “צילום”, “ציור”."
+        },
+        {
+          "number": 14,
+          "rule": "locality_distance_pair",
+          "difficulty": "MEDIUM",
+          "text": "אילו שני אנשים בקבוצה גרים ביישובים הקרובים ביותר זה לזה בקו אווירי?",
+          "options": [
+            "דנה + יעל",
+            "עמית + איתי",
+            "דנה + עמית",
+            "דנה + עומר"
+          ],
+          "correct": "דנה + עמית",
+          "explanation": "בין תל אביב יפו לרמת גן יש כ־3 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
+        },
+        {
+          "number": 15,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה סגנונות מוזיקה מיוצגים בקבוצה?",
+          "options": [
+            "4",
+            "3",
+            "6",
+            "5"
+          ],
+          "correct": "5",
+          "explanation": "5 סגנונות שנבחרו: מוזיקה מזרחית, מוזיקת רוק, מוזיקת פופ, ג'אז, מוזיקת טראנס. כתיבים שונים של אותו סגנון נספרים פעם אחת."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין אזורי המגורים הבאים?",
+          "options": [
+            "המרכז",
+            "הדרום"
+          ],
+          "correct": "המרכז",
+          "explanation": "4 אנשים מגיעים מהמרכז: “תל אביב יפו”, “רחובות”, “ראשון לציון”, “רמת גן”. 2 אנשים מגיעים מהדרום: “באר שבע”, “אילת”."
+        },
+        {
+          "number": 17,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין המטבחים הבאים?",
+          "options": [
+            "מטבחים אסייתיים",
+            "המטבח האיטלקי"
+          ],
+          "correct": "המטבח האיטלקי",
+          "explanation": "4 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “לזניה”, “פסטה”. 2 אנשים בחרו מאכלים שמזוהים עם מטבחים אסייתיים: “סושי”."
+        },
+        {
+          "number": 18,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "מבין מי שבחרו תחביבים שקשורים לספורט, איזה סגנון מוזיקה הכי נפוץ?",
+          "options": [
+            "מזרחית",
+            "פולק",
+            "ים תיכונית",
+            "פופ"
+          ],
+          "correct": "מזרחית",
+          "explanation": "4 אנשים בחרו תחביבים שקשורים לספורט: “כדורגל”, “גלישת גלים”, “ריצה”, “פילאטיס”. 2 אנשים בחרו מוזיקה בסגנון מזרחית: “מוזיקה מזרחית”."
+        },
+        {
+          "number": 19,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "כמה אנשים בחרו גם מאכלים שמזוהים עם המטבח האיטלקי וגם תחביבים שקשורים לאמנות ויצירה?",
+          "options": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר מאכל שמזוהה עם המטבח האיטלקי: “פיצה”. אדם אחד בחר תחביב שקשור לאמנות ויצירה: “ציור”."
+        },
+        {
+          "number": 20,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "מבין המשתתפים שמגיעים מהמרכז, איזה מטבח הכי נפוץ?",
+          "options": [
+            "המטבח הצרפתי",
+            "המטבח הספרדי",
+            "המטבח היווני",
+            "המטבח האיטלקי"
+          ],
+          "correct": "המטבח האיטלקי",
+          "explanation": "4 אנשים מגיעים מהמרכז: “תל אביב יפו”, “רחובות”, “ראשון לציון”, “רמת גן”. 2 אנשים בחרו מאכלים שמזוהים עם המטבח האיטלקי: “פיצה”, “לזניה”."
+        }
+      ]
+    },
+    {
+      "group": "mixed_interests",
+      "language": "en",
+      "seed": 43,
+      "profiles": [
+        {
+          "city": "תל אביב",
+          "favorite_food": "פיצה",
+          "hobby": "כדורגל",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "המסור",
+          "age": 19
+        },
+        {
+          "city": "רחובות",
+          "favorite_food": "סושי",
+          "hobby": "גלישה",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "לזמן את הרוע",
+          "age": 20
+        },
+        {
+          "city": "ראשון לציון",
+          "favorite_food": "לזניה",
+          "hobby": "ריצה",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 21
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פלאפל",
+          "hobby": "גיטרה",
+          "favorite_music": "Pop",
+          "favorite_movie": "מוצאים את נמו",
+          "age": 22
+        },
+        {
+          "city": "באר שבע",
+          "favorite_food": "המבורגר",
+          "hobby": "גיימינג",
+          "favorite_music": "Jazz",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 23
+        },
+        {
+          "city": "אילת",
+          "favorite_food": "פסטה",
+          "hobby": "פילאטיס",
+          "favorite_music": "Trance",
+          "favorite_movie": "שרק 2",
+          "age": 24
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "צילום",
+          "favorite_music": "Rock",
+          "favorite_movie": "צעצוע של סיפור",
+          "age": 25
+        },
+        {
+          "city": "קריית שמונה",
+          "favorite_food": "פיצה",
+          "hobby": "ציור",
+          "favorite_music": "Pop",
+          "favorite_movie": "סרט מקומי שלא נמצא במאגר",
+          "age": 26
+        }
+      ],
+      "rules": {
+        "group_mode": 2,
+        "group_unique": 1,
+        "locality_extreme": 1,
+        "age_ranking": 1,
+        "group_count": 4,
+        "group_comparison": 1,
+        "geographic_outlier": 1,
+        "group_diversity": 2,
+        "group_comparison_semantic": 3,
+        "locality_distance_pair": 1,
+        "group_filtered_mode": 2,
+        "group_intersection_count": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which activity family is most common in our group?",
+          "options": [
+            "Nature activities",
+            "Digital activities",
+            "Arts and crafts",
+            "Sport"
+          ],
+          "correct": "Sport",
+          "explanation": "4 people chose hobbies related to Sport: “Association football”, “Surfing”, “Running”, “Pilates”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "Only one person in our group chose Electronic music. Who?",
+          "options": [
+            "רוני",
+            "ליאור",
+            "איתי",
+            "יעל"
+          ],
+          "correct": "יעל",
+          "explanation": "יעל: One person chose Electronic music: “Trance music”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "Whose town is furthest north in the group?",
+          "options": [
+            "נועה",
+            "יעל",
+            "עמית",
+            "רוני"
+          ],
+          "correct": "רוני",
+          "explanation": "Qiryat Shmona, chosen by רוני, has the northernmost reference point among these towns."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which cuisine is most popular in our group’s food choices?",
+          "options": [
+            "Italian cuisine",
+            "Greek cuisine",
+            "Spanish cuisine",
+            "French cuisine"
+          ],
+          "correct": "Italian cuisine",
+          "explanation": "4 people chose foods associated with Italian cuisine: “Pizza”, “Lasagna”, “Pasta”."
+        },
+        {
+          "number": 5,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "Who is oldest among the players who shared their age?",
+          "options": [
+            "עמית",
+            "עומר",
+            "דנה",
+            "רוני"
+          ],
+          "correct": "רוני",
+          "explanation": ""
+        },
+        {
+          "number": 6,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Jazz music?",
+          "options": [
+            "2",
+            "3",
+            "0",
+            "1"
+          ],
+          "correct": "1",
+          "explanation": "One person chose Jazz music: “Jazz”."
+        },
+        {
+          "number": 7,
+          "rule": "group_comparison",
+          "difficulty": "EASY",
+          "text": "Which of these two favorite food choices was shared by more players?",
+          "options": [
+            "לזניה",
+            "סושי"
+          ],
+          "correct": "סושי",
+          "explanation": ""
+        },
+        {
+          "number": 8,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose hobbies involving Physical activity?",
+          "options": [
+            "2",
+            "5",
+            "3",
+            "4"
+          ],
+          "correct": "4",
+          "explanation": "4 people chose hobbies involving Physical activity: “Association football”, “Surfing”, “Running”, “Pilates”."
+        },
+        {
+          "number": 9,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Mizrahi music?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "correct": "2",
+          "explanation": "2 people chose Mizrahi music: “Mizrahi music”."
+        },
+        {
+          "number": 10,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Pop music?",
+          "options": [
+            "2",
+            "1",
+            "0",
+            "3"
+          ],
+          "correct": "2",
+          "explanation": "2 people chose Pop music: “Pop music”."
+        },
+        {
+          "number": 11,
+          "rule": "geographic_outlier",
+          "difficulty": "MEDIUM",
+          "text": "Who lives furthest from the rest of our group, on average?",
+          "options": [
+            "עמית",
+            "נועה",
+            "יעל",
+            "איתי"
+          ],
+          "correct": "יעל",
+          "explanation": "יעל, from Eilat: an average of about 293 km to the other towns, by air."
+        },
+        {
+          "number": 12,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many activity families are represented in our group?",
+          "options": [
+            "2",
+            "4",
+            "1",
+            "3"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Sport, Arts and crafts, Digital activities. A choice can belong to more than one family."
+        },
+        {
+          "number": 13,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these cuisines is more common in our group?",
+          "options": [
+            "Asian cuisines",
+            "Italian cuisine"
+          ],
+          "correct": "Italian cuisine",
+          "explanation": "4 people chose foods associated with Italian cuisine: “Pizza”, “Lasagna”, “Pasta”. 2 people chose foods associated with Asian cuisines: “Sushi”."
+        },
+        {
+          "number": 14,
+          "rule": "locality_distance_pair",
+          "difficulty": "MEDIUM",
+          "text": "Which pair chose the towns that are closest by air distance?",
+          "options": [
+            "דנה + יעל",
+            "עמית + איתי",
+            "דנה + עמית",
+            "דנה + עומר"
+          ],
+          "correct": "דנה + עמית",
+          "explanation": "Tel Aviv and Ramat Gan are about 3 km apart by air, comparing locality reference points, not homes or roads."
+        },
+        {
+          "number": 15,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many music styles are represented in our group?",
+          "options": [
+            "4",
+            "3",
+            "6",
+            "5"
+          ],
+          "correct": "5",
+          "explanation": "5 chosen styles: Mizrahi music, Rock music, Pop music, Jazz, Trance music. Alternate spellings count once."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "What is more common in our group: outdoor hobbies or indoor hobbies?",
+          "options": [
+            "Outdoors",
+            "Indoors"
+          ],
+          "correct": "Outdoors",
+          "explanation": "2 people chose hobbies usually done Outdoors: “Association football”, “Surfing”. This describes the usual setting of the activity, not where anyone actually does it. One person chose a hobby usually done Indoors: “Video game”. This describes the usual setting of the activity, not where anyone actually does it."
+        },
+        {
+          "number": 17,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these activity families is more common in our group?",
+          "options": [
+            "Sport",
+            "Arts and crafts"
+          ],
+          "correct": "Sport",
+          "explanation": "4 people chose hobbies related to Sport: “Association football”, “Surfing”, “Running”, “Pilates”. 3 people chose hobbies related to Arts and crafts: “Guitar”, “Photography”, “Painting”."
+        },
+        {
+          "number": 18,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "Among people from Central Israel, which cuisine is most common?",
+          "options": [
+            "French cuisine",
+            "Spanish cuisine",
+            "Greek cuisine",
+            "Italian cuisine"
+          ],
+          "correct": "Italian cuisine",
+          "explanation": "4 people are from Central Israel: “Tel Aviv”, “Reẖovot”, “Rishon LeTsiyyon”, “Ramat Gan”. 2 people chose foods associated with Italian cuisine: “Pizza”, “Lasagna”."
+        },
+        {
+          "number": 19,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "How many people chose both Mizrahi music and foods associated with Asian cuisines?",
+          "options": [
+            "3",
+            "2",
+            "1",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "One person chose Mizrahi music: “Mizrahi music”. One person chose a food associated with Asian cuisines: “Sushi”."
+        },
+        {
+          "number": 20,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "Among people who chose foods associated with Italian cuisine, which region is most common?",
+          "options": [
+            "Central Israel",
+            "Jerusalem area",
+            "Northern Israel",
+            "Southern Israel"
+          ],
+          "correct": "Central Israel",
+          "explanation": "4 people chose foods associated with Italian cuisine: “Pizza”, “Lasagna”, “Pasta”. 2 people are from Central Israel: “Tel Aviv”, “Rishon LeTsiyyon”."
+        }
+      ]
+    },
+    {
+      "group": "music_circle",
+      "language": "he",
+      "seed": 44,
+      "profiles": [
+        {
+          "city": "תל אביב",
+          "favorite_food": "פיצה",
+          "hobby": "ריצה",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "המסור",
+          "age": 20,
+          "favorite_artist": "עומר אדם",
+          "favorite_song": "Shake It Off - Taylor Swift"
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פסטה",
+          "hobby": "כדורגל",
+          "favorite_music": "Pop",
+          "favorite_movie": "לזמן את הרוע",
+          "age": 22,
+          "favorite_artist": "עדן בן זקן",
+          "favorite_song": "Blank Space"
+        },
+        {
+          "city": "ראשון לציון",
+          "favorite_food": "לזניה",
+          "hobby": "גלישה",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 24,
+          "favorite_artist": "Taylor Swift",
+          "favorite_song": "Enter Sandman"
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "גיימינג",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 21,
+          "favorite_artist": "Metallica",
+          "favorite_song": "Yellow - Coldplay"
+        },
+        {
+          "city": "באר שבע",
+          "favorite_food": "פלאפל",
+          "hobby": "גינון",
+          "favorite_music": "Trance",
+          "favorite_movie": "שרק 2",
+          "age": 23,
+          "favorite_artist": "Coldplay",
+          "favorite_song": "Paradise - Coldplay"
+        }
+      ],
+      "rules": {
+        "group_mode": 3,
+        "group_unique": 2,
+        "locality_extreme": 1,
+        "group_count": 3,
+        "age_ranking": 1,
+        "group_diversity": 2,
+        "locality_distance_pair": 1,
+        "group_comparison_semantic": 3,
+        "category_coverage": 1,
+        "group_filtered_mode": 1,
+        "group_intersection_count": 2
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "איזה סגנון מוזיקה הכי נפוץ בקבוצה?",
+          "options": [
+            "פופ",
+            "פולק",
+            "מזרחית",
+            "ים תיכונית"
+          ],
+          "correct": "מזרחית",
+          "explanation": "2 אנשים בחרו מוזיקה בסגנון מזרחית: “מוזיקה מזרחית”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "רק אחד בקבוצה בחר אמן שמזוהה עם ים תיכונית. מי זה?",
+          "options": [
+            "ליאור",
+            "נועה",
+            "עמית",
+            "דנה"
+          ],
+          "correct": "דנה",
+          "explanation": "דנה: אדם אחד בחר אמן שמזוהה עם ים תיכונית: “עומר אדם”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "מי בקבוצה גר הכי דרומה?",
+          "options": [
+            "ליאור",
+            "עמית",
+            "עומר",
+            "נועה"
+          ],
+          "correct": "ליאור",
+          "explanation": "באר שבע, היישוב של ליאור, הוא היישוב הדרומי ביותר לפי נקודות הייחוס של היישובים שנבחרו."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי השירים שבחרתם, איזה סגנון מוזיקה הכי נפוץ בקבוצה?",
+          "options": [
+            "רוק",
+            "פופ",
+            "אר אנד בי",
+            "אלקטרונית"
+          ],
+          "correct": "פופ",
+          "explanation": "4 אנשים בחרו שירים בסגנון פופ: “Shake It Off”, “Blank Space”, “Yellow (שיר)”, “Paradise (שיר של קולדפליי)”."
+        },
+        {
+          "number": 5,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו סרטים בז׳אנר אימה?",
+          "options": [
+            "0",
+            "1",
+            "3",
+            "2"
+          ],
+          "correct": "2",
+          "explanation": "2 אנשים בחרו סרטים בז׳אנר אימה: “המסור”, “לזמן את הרוע”."
+        },
+        {
+          "number": 6,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "מי המבוגר ביותר מבין המשתתפים ששיתפו את הגיל שלהם?",
+          "options": [
+            "עמית",
+            "ליאור",
+            "נועה",
+            "דנה"
+          ],
+          "correct": "נועה",
+          "explanation": ""
+        },
+        {
+          "number": 7,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "רק אחד בקבוצה בחר מאכל שמזוהה עם המטבח היפני. מי זה?",
+          "options": [
+            "דנה",
+            "עמית",
+            "עומר",
+            "נועה"
+          ],
+          "correct": "עמית",
+          "explanation": "עמית: אדם אחד בחר מאכל שמזוהה עם המטבח היפני: “סושי”."
+        },
+        {
+          "number": 8,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו אמנים שמזוהים עם מזרחית?",
+          "options": [
+            "3",
+            "0",
+            "1",
+            "2"
+          ],
+          "correct": "2",
+          "explanation": "2 אנשים בחרו אמנים שמזוהים עם מזרחית: “עומר אדם”, “עדן בן זקן”."
+        },
+        {
+          "number": 9,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "כמה אנשים בקבוצה בחרו סרטים בז׳אנר אנימציה?",
+          "options": [
+            "2",
+            "0",
+            "1",
+            "3"
+          ],
+          "correct": "2",
+          "explanation": "2 אנשים בחרו סרטים בז׳אנר אנימציה: “שרק”, “שרק 2”."
+        },
+        {
+          "number": 10,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "לפי האמנים שבחרתם, איזה סגנון מוזיקה הכי נפוץ בקבוצה?",
+          "options": [
+            "אלקטרונית",
+            "רוק",
+            "אר אנד בי",
+            "פופ"
+          ],
+          "correct": "פופ",
+          "explanation": "4 אנשים בחרו אמנים שמזוהים עם פופ: “עומר אדם”, “עדן בן זקן”, “טיילור סוויפט”, “קולדפליי”."
+        },
+        {
+          "number": 11,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה תחומים שונים יש בתחביבים של הקבוצה?",
+          "options": [
+            "4",
+            "2",
+            "1",
+            "3"
+          ],
+          "correct": "3",
+          "explanation": "3 תחומים: ספורט, פעילות דיגיטלית, פעילות בטבע. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 12,
+          "rule": "locality_distance_pair",
+          "difficulty": "MEDIUM",
+          "text": "אילו שני אנשים בקבוצה גרים ביישובים הקרובים ביותר זה לזה בקו אווירי?",
+          "options": [
+            "עומר + נועה",
+            "דנה + עמית",
+            "דנה + עומר",
+            "עמית + ליאור"
+          ],
+          "correct": "דנה + עומר",
+          "explanation": "בין תל אביב יפו לרמת גן יש כ־3 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
+        },
+        {
+          "number": 13,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "לפי האמנים שבחרתם, איזה משני סגנונות המוזיקה האלה נפוץ יותר?",
+          "options": [
+            "מזרחית",
+            "ים תיכונית"
+          ],
+          "correct": "מזרחית",
+          "explanation": "אדם אחד בחר אמן שמזוהה עם ים תיכונית: “עומר אדם”. 2 אנשים בחרו אמנים שמזוהים עם מזרחית: “עומר אדם”, “עדן בן זקן”."
+        },
+        {
+          "number": 14,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "כמה סגנונות מוזיקה יש בין השירים שבחרתם?",
+          "options": [
+            "5",
+            "3",
+            "6",
+            "4"
+          ],
+          "correct": "5",
+          "explanation": "5 תחומים: פופ, אלקטרונית, מטאל, רוק, אר אנד בי. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
+        },
+        {
+          "number": 15,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "לפי השירים שבחרתם, איזה משני סגנונות המוזיקה האלה נפוץ יותר?",
+          "options": [
+            "אלקטרונית",
+            "פופ"
+          ],
+          "correct": "פופ",
+          "explanation": "4 אנשים בחרו שירים בסגנון פופ: “Shake It Off”, “Blank Space”, “Yellow (שיר)”, “Paradise (שיר של קולדפליי)”. אדם אחד בחר שיר בסגנון אלקטרונית: “Blank Space”."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "מה נפוץ יותר בקבוצה מבין אזורי המגורים הבאים?",
+          "options": [
+            "המרכז",
+            "הצפון"
+          ],
+          "correct": "המרכז",
+          "explanation": "3 אנשים מגיעים מהמרכז: “תל אביב יפו”, “רמת גן”, “ראשון לציון”. אדם אחד מגיע מהצפון: “חיפה”."
+        },
+        {
+          "number": 17,
+          "rule": "category_coverage",
+          "difficulty": "HARD",
+          "text": "אצל חובבי איזה סגנון מוזיקה יש בקבוצה את המגוון הכי רחב של מאכלים אהובים?",
+          "options": [
+            "מוזיקת רוק",
+            "מוזיקת פופ",
+            "מוזיקת טראנס",
+            "מוזיקה מזרחית"
+          ],
+          "correct": "מוזיקה מזרחית",
+          "explanation": ""
+        },
+        {
+          "number": 18,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "מבין מי שבחרו תחביבים שקשורים לספורט, איזה ז׳אנר קולנוע הכי נפוץ?",
+          "options": [
+            "מתח",
+            "פשע",
+            "מסתורין",
+            "אימה"
+          ],
+          "correct": "אימה",
+          "explanation": "3 אנשים בחרו תחביבים שקשורים לספורט: “ריצה”, “כדורגל”, “גלישת גלים”. 2 אנשים בחרו סרטים בז׳אנר אימה: “המסור”, “לזמן את הרוע”."
+        },
+        {
+          "number": 19,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "כמה אנשים בחרו גם מוזיקה בסגנון מזרחית וגם מאכלים שמזוהים עם המטבח האיטלקי?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר מוזיקה בסגנון מזרחית: “מוזיקה מזרחית”. אדם אחד בחר מאכל שמזוהה עם המטבח האיטלקי: “פיצה”."
+        },
+        {
+          "number": 20,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "כמה אנשים בחרו גם סרטים בז׳אנר אנימציה וגם תחביבים שקשורים לספורט?",
+          "options": [
+            "0",
+            "3",
+            "2",
+            "1"
+          ],
+          "correct": "1",
+          "explanation": "אדם אחד בחר סרט בז׳אנר אנימציה: “שרק”. אדם אחד בחר תחביב שקשור לספורט: “גלישת גלים”."
+        }
+      ]
+    },
+    {
+      "group": "music_circle",
+      "language": "en",
+      "seed": 44,
+      "profiles": [
+        {
+          "city": "תל אביב",
+          "favorite_food": "פיצה",
+          "hobby": "ריצה",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "המסור",
+          "age": 20,
+          "favorite_artist": "עומר אדם",
+          "favorite_song": "Shake It Off - Taylor Swift"
+        },
+        {
+          "city": "רמת גן",
+          "favorite_food": "פסטה",
+          "hobby": "כדורגל",
+          "favorite_music": "Pop",
+          "favorite_movie": "לזמן את הרוע",
+          "age": 22,
+          "favorite_artist": "עדן בן זקן",
+          "favorite_song": "Blank Space"
+        },
+        {
+          "city": "ראשון לציון",
+          "favorite_food": "לזניה",
+          "hobby": "גלישה",
+          "favorite_music": "Rock",
+          "favorite_movie": "שרק",
+          "age": 24,
+          "favorite_artist": "Taylor Swift",
+          "favorite_song": "Enter Sandman"
+        },
+        {
+          "city": "חיפה",
+          "favorite_food": "סושי",
+          "hobby": "גיימינג",
+          "favorite_music": "Mizrahi",
+          "favorite_movie": "טיטניק (סרט, 1997)",
+          "age": 21,
+          "favorite_artist": "Metallica",
+          "favorite_song": "Yellow - Coldplay"
+        },
+        {
+          "city": "באר שבע",
+          "favorite_food": "פלאפל",
+          "hobby": "גינון",
+          "favorite_music": "Trance",
+          "favorite_movie": "שרק 2",
+          "age": 23,
+          "favorite_artist": "Coldplay",
+          "favorite_song": "Paradise - Coldplay"
+        }
+      ],
+      "rules": {
+        "group_mode": 3,
+        "group_unique": 2,
+        "locality_extreme": 1,
+        "group_count": 3,
+        "age_ranking": 1,
+        "region_majority": 1,
+        "group_diversity": 2,
+        "locality_distance_pair": 1,
+        "group_comparison_semantic": 3,
+        "category_coverage": 1,
+        "group_filtered_mode": 1,
+        "group_intersection_count": 1
+      },
+      "questions": [
+        {
+          "number": 1,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Looking at our chosen artists, which music style is most common?",
+          "options": [
+            "Electronic",
+            "Rock",
+            "R&B",
+            "Pop"
+          ],
+          "correct": "Pop",
+          "explanation": "4 people chose artists associated with Pop: “Omer Adam”, “Eden Ben Zaken”, “Taylor Swift”, “Coldplay”."
+        },
+        {
+          "number": 2,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "Only one person in our group chose Electronic music. Who?",
+          "options": [
+            "עמית",
+            "עומר",
+            "ליאור",
+            "נועה"
+          ],
+          "correct": "ליאור",
+          "explanation": "ליאור: One person chose Electronic music: “Trance music”."
+        },
+        {
+          "number": 3,
+          "rule": "locality_extreme",
+          "difficulty": "EASY",
+          "text": "Whose town is furthest north in the group?",
+          "options": [
+            "ליאור",
+            "עמית",
+            "עומר",
+            "נועה"
+          ],
+          "correct": "עמית",
+          "explanation": "Haifa, chosen by עמית, has the northernmost reference point among these towns."
+        },
+        {
+          "number": 4,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Looking at our chosen songs, which music style is most common?",
+          "options": [
+            "Rock",
+            "Pop",
+            "R&B",
+            "Electronic"
+          ],
+          "correct": "Pop",
+          "explanation": "4 people chose Pop songs: “Shake It Off”, “Blank Space”, “Yellow (Coldplay song)”, “Paradise (Coldplay song)”."
+        },
+        {
+          "number": 5,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Action movies?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "One person chose an Action movie: “Shrek 2”."
+        },
+        {
+          "number": 6,
+          "rule": "age_ranking",
+          "difficulty": "EASY",
+          "text": "Who is oldest among the players who shared their age?",
+          "options": [
+            "עמית",
+            "ליאור",
+            "נועה",
+            "דנה"
+          ],
+          "correct": "נועה",
+          "explanation": ""
+        },
+        {
+          "number": 7,
+          "rule": "group_unique",
+          "difficulty": "EASY",
+          "text": "Only one person in our group chose a Crime movie. Who?",
+          "options": [
+            "ליאור",
+            "עומר",
+            "נועה",
+            "דנה"
+          ],
+          "correct": "דנה",
+          "explanation": "דנה: One person chose a Crime movie: “Saw (film)”."
+        },
+        {
+          "number": 8,
+          "rule": "region_majority",
+          "difficulty": "EASY",
+          "text": "Which region is home to the majority of our group?",
+          "options": [
+            "Jerusalem area",
+            "Southern Israel",
+            "Central Israel",
+            "Northern Israel"
+          ],
+          "correct": "Central Israel",
+          "explanation": "3 people are from Central Israel: “Tel Aviv”, “Ramat Gan”, “Rishon LeTsiyyon”."
+        },
+        {
+          "number": 9,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Electronic songs?",
+          "options": [
+            "2",
+            "0",
+            "1",
+            "3"
+          ],
+          "correct": "1",
+          "explanation": "One person chose an Electronic song: “Blank Space”."
+        },
+        {
+          "number": 10,
+          "rule": "group_count",
+          "difficulty": "EASY",
+          "text": "How many people in our group chose Metal songs?",
+          "options": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "correct": "1",
+          "explanation": "One person chose a Metal song: “Enter Sandman”."
+        },
+        {
+          "number": 11,
+          "rule": "group_mode",
+          "difficulty": "EASY",
+          "text": "Which activity family is most common in our group?",
+          "options": [
+            "Collecting",
+            "Nature activities",
+            "Digital activities",
+            "Sport"
+          ],
+          "correct": "Sport",
+          "explanation": "3 people chose hobbies related to Sport: “Running”, “Association football”, “Surfing”."
+        },
+        {
+          "number": 12,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many activity families are represented in our group?",
+          "options": [
+            "4",
+            "2",
+            "1",
+            "3"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Sport, Digital activities, Nature activities. A choice can belong to more than one family."
+        },
+        {
+          "number": 13,
+          "rule": "locality_distance_pair",
+          "difficulty": "MEDIUM",
+          "text": "Which pair chose the towns that are closest by air distance?",
+          "options": [
+            "עומר + נועה",
+            "דנה + עמית",
+            "דנה + עומר",
+            "עמית + ליאור"
+          ],
+          "correct": "דנה + עומר",
+          "explanation": "Tel Aviv and Ramat Gan are about 3 km apart by air, comparing locality reference points, not homes or roads."
+        },
+        {
+          "number": 14,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Looking at our chosen artists, which of these two music styles is more common?",
+          "options": [
+            "Mizrahi",
+            "Mediterranean"
+          ],
+          "correct": "Mizrahi",
+          "explanation": "One person chose an artist associated with Mediterranean: “Omer Adam”. 2 people chose artists associated with Mizrahi: “Omer Adam”, “Eden Ben Zaken”."
+        },
+        {
+          "number": 15,
+          "rule": "group_diversity",
+          "difficulty": "MEDIUM",
+          "text": "How many cuisines are behind our group’s food choices?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "correct": "3",
+          "explanation": "3 families: Italian cuisine, Japanese cuisine, Middle Eastern cuisines. A choice can belong to more than one family."
+        },
+        {
+          "number": 16,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "What is more common in our group: outdoor hobbies or indoor hobbies?",
+          "options": [
+            "Indoors",
+            "Outdoors"
+          ],
+          "correct": "Outdoors",
+          "explanation": "3 people chose hobbies usually done Outdoors: “Association football”, “Surfing”, “Gardening”. This describes the usual setting of the activity, not where anyone actually does it. One person chose a hobby usually done Indoors: “Video game”. This describes the usual setting of the activity, not where anyone actually does it."
+        },
+        {
+          "number": 17,
+          "rule": "group_comparison_semantic",
+          "difficulty": "MEDIUM",
+          "text": "Which of these cuisines is more common in our group?",
+          "options": [
+            "Asian cuisines",
+            "Italian cuisine"
+          ],
+          "correct": "Italian cuisine",
+          "explanation": "3 people chose foods associated with Italian cuisine: “Pizza”, “Pasta”, “Lasagna”. One person chose a food associated with Asian cuisines: “Sushi”."
+        },
+        {
+          "number": 18,
+          "rule": "category_coverage",
+          "difficulty": "HARD",
+          "text": "Which shared music style connects the widest variety of favorite food choices?",
+          "options": [
+            "Rock",
+            "Pop",
+            "Trance",
+            "Mizrahi"
+          ],
+          "correct": "Mizrahi",
+          "explanation": ""
+        },
+        {
+          "number": 19,
+          "rule": "group_filtered_mode",
+          "difficulty": "HARD",
+          "text": "Among people who chose hobbies related to Sport, which film genre is most common?",
+          "options": [
+            "Thriller",
+            "Crime",
+            "Mystery",
+            "Horror"
+          ],
+          "correct": "Horror",
+          "explanation": "3 people chose hobbies related to Sport: “Running”, “Association football”, “Surfing”. 2 people chose Horror movies: “Saw (film)”, “The Conjuring”."
+        },
+        {
+          "number": 20,
+          "rule": "group_intersection_count",
+          "difficulty": "HARD",
+          "text": "How many people chose both Mizrahi music and foods associated with Italian cuisine?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "correct": "1",
+          "explanation": "One person chose Mizrahi music: “Mizrahi music”. One person chose a food associated with Italian cuisine: “Pizza”."
+        }
+      ]
+    }
+  ]
+}
