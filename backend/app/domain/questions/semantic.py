@@ -17,6 +17,11 @@ DIMENSIONS = {
     'food.cuisine': ('favorite_food', 'foods', 'cuisines', 'מטבחים', 'foods', 'מאכלים'),
     'food.format': ('favorite_food', 'foods', 'food families', 'משפחות מאכלים', 'foods', 'מאכלים'),
     'hobby.family': ('hobby', 'hobbies', 'activity families', 'משפחות תחביבים', 'hobbies', 'תחביבים'),
+    'artist.genre': ('favorite_artist', 'artists', 'music styles', 'סגנונות מוזיקה', 'artists', 'אמנים'),
+    'song.genre': ('favorite_song', 'songs', 'music styles', 'סגנונות מוזיקה', 'songs', 'שירים'),
+    'hobby.setting': ('hobby', 'hobbies', 'activity settings', 'מקומות פעילות', 'hobbies', 'תחביבים'),
+    'hobby.physical': ('hobby', 'hobbies', 'activity types', 'סוגי פעילות', 'hobbies', 'תחביבים'),
+    'place.region': ('city', 'localities', 'regions', 'אזורים בארץ', 'towns', 'יישובים'),
     'place.district': ('city', 'localities', 'districts', 'מחוזות', 'towns', 'יישובים'),
 }
 
@@ -32,8 +37,8 @@ class SemanticView:
             rows[field] = MappingProxyType({pid: result.entity for pid,value in dataset.values_for(field)
                                           if (result := knowledge.resolve(kind,value)).entity is not None})
         self.rows = MappingProxyType(rows)
-        self.memberships = MappingProxyType({dim: MappingProxyType({p: knowledge.facts(e,dim)
-            for p,e in rows[field].items() if knowledge.facts(e,dim)})
+        self.memberships = MappingProxyType({dim: MappingProxyType({p: knowledge.facts(e, 'music.genre' if dim in ('artist.genre','song.genre') else dim)
+            for p,e in rows[field].items() if knowledge.facts(e, 'music.genre' if dim in ('artist.genre','song.genre') else dim)})
             for dim,(field,*_) in DIMENSIONS.items()})
 
     def complete(self, *dimensions):
@@ -73,6 +78,19 @@ class SemanticView:
         names = ', '.join('“'+e.label(self.dataset.language)+'”' for e in list(entities)[:4])
         suffix = ' ועוד' if self.dataset.language == 'he' else ' and others'
         return names + (suffix if len(entities)>4 else '')
+
+    @cached_property
+    def raw_alias_collisions(self):
+        """Legacy literal grouping must not split a known bilingual synonym."""
+        from app.domain.questions.language import normalize
+        collisions=set()
+        for field,entities in self.rows.items():
+            spellings={}
+            for pid,value in self.dataset.values_for(field):
+                if pid in entities:
+                    spellings.setdefault(entities[pid].canonical_id,set()).add(normalize(value))
+            if any(len(names)>1 for names in spellings.values()): collisions.add(field)
+        return frozenset(collisions)
 
     @cached_property
     def distances(self):

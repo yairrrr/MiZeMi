@@ -1,75 +1,158 @@
 {
   "python": "3.14.0",
   "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
-  "dataset_version": "2026-09-11.1",
+  "dataset_version": "2026-09-14.1",
   "entity_counts": {
-    "movies": 467,
+    "movies": 11228,
     "music": 66,
-    "artists": 282,
-    "foods": 182,
-    "hobbies": 212,
-    "localities": 1225
+    "artists": 6655,
+    "songs": 9700,
+    "foods": 3279,
+    "hobbies": 1679,
+    "localities": 1224
   },
   "aliases": {
-    "movies": 422,
+    "movies": 25856,
     "music": 46,
-    "artists": 38,
-    "foods": 18,
-    "hobbies": 51,
-    "localities": 627
+    "artists": 1015,
+    "songs": 40737,
+    "foods": 282,
+    "hobbies": 59,
+    "localities": 630
   },
   "normalized_lookup_keys": {
-    "movies": 1335,
+    "movies": 43081,
     "music": 173,
-    "artists": 581,
-    "foods": 381,
-    "hobbies": 475,
-    "localities": 2811
+    "artists": 13141,
+    "songs": 51439,
+    "foods": 4778,
+    "hobbies": 2756,
+    "localities": 2813
   },
   "ambiguous_keys_rejected": {
-    "movies": 10,
+    "movies": 655,
     "music": 0,
-    "artists": 2,
-    "foods": 0,
-    "hobbies": 0,
+    "artists": 30,
+    "songs": 668,
+    "foods": 32,
+    "hobbies": 8,
     "localities": 22
   },
-  "categories": 93,
-  "raw_bundle_bytes": 262152,
-  "gzip_bundle_bytes": 76874,
+  "categories": 103,
+  "raw_bundle_bytes": 5914597,
+  "gzip_bundle_bytes": 1332588,
   "raw_files_bytes": {
-    "artists.json": 30029,
-    "categories.json": 6355,
-    "foods.json": 17306,
-    "hobbies.json": 18714,
-    "localities.json": 108425,
-    "manifest.json": 2991,
-    "movies.json": 71980,
-    "music.json": 6352
+    "artists.json": 723864,
+    "categories.json": 7115,
+    "foods.json": 334260,
+    "hobbies.json": 242231,
+    "localities.json": 154180,
+    "manifest.json": 4393,
+    "movies.json": 2167757,
+    "music.json": 6352,
+    "songs.json": 2274445
   },
-  "build_curation_bytes": 60281,
-  "load_with_tracemalloc_ms": 186.83,
+  "build_curation_bytes": 71914,
+  "hebrew_names": {
+    "movies": 7457,
+    "music": 66,
+    "artists": 5875,
+    "songs": 5422,
+    "foods": 1292,
+    "hobbies": 1300,
+    "localities": 1167
+  },
+  "load_with_tracemalloc_ms": 4541.925,
   "load_uninstrumented": {
-    "median_ms": 25.046,
-    "max_ms": 27.966,
+    "median_ms": 591.022,
+    "max_ms": 595.43,
     "runs": 10
   },
-  "knowledge_retained_python_bytes": 3972703,
-  "knowledge_peak_python_bytes": 5612526,
-  "process_max_rss_bytes": 54018048,
-  "lookup_average_microseconds": 6.243,
+  "knowledge_retained_python_bytes": 39517152,
+  "knowledge_peak_python_bytes": 49801918,
+  "process_max_rss_bytes": 262422528,
+  "lookup_average_microseconds": 6.438,
   "lookups": 100000,
-  "cold_app_import_median_ms": 256.523,
-  "cold_app_import_median_rss_bytes": 87949312,
+  "cold_app_import_median_ms": 807.955,
+  "cold_app_import_median_rss_bytes": 155893760,
   "30_players_20_questions": {
-    "median_ms": 60.085,
-    "max_ms": 62.281,
+    "median_ms": 16.916,
+    "max_ms": 21.768,
     "runs": 20
   },
-  "25_rooms_30_players_20_questions_total_ms": 1504.301,
+  "25_rooms_30_players_20_questions_total_ms": 423.557,
   "30_players_one_unknown_movie": {
-    "median_ms": 65.613,
-    "max_ms": 66.061,
+    "median_ms": 15.672,
+    "max_ms": 16.006,
     "runs": 10
-  }
+  },
+  "synthetic_group_recognition": {
+    "city": {
+      "recognized": 24,
+      "entered": 24
+    },
+    "favorite_food": {
+      "recognized": 24,
+      "entered": 24
+    },
+    "hobby": {
+      "recognized": 24,
+      "entered": 24
+    },
+    "favorite_music": {
+      "recognized": 24,
+      "entered": 24
+    },
+    "favorite_movie": {
+      "recognized": 23,
+      "entered": 24
+    },
+    "favorite_artist": {
+      "recognized": 5,
+      "entered": 5
+    },
+    "favorite_song": {
+      "recognized": 5,
+      "entered": 5
+    }
+  },
+  "synthetic_group_usable_dimensions": {
+    "movie.genre": {
+      "known": 23,
+      "participants": 24
+    },
+    "music.genre": {
+      "known": 24,
+      "participants": 24
+    },
+    "food.cuisine": {
+      "known": 24,
+      "participants": 24
+    },
+    "food.format": {
+      "known": 21,
+      "participants": 24
+    },
+    "hobby.family": {
+      "known": 24,
+      "participants": 24
+    },
+    "hobby.setting": {
+      "known": 24,
+      "participants": 24
+    },
+    "hobby.physical": {
+      "known": 21,
+      "participants": 24
+    },
+    "place.region": {
+      "known": 24,
+      "participants": 24
+    },
+    "place.district": {
+      "known": 24,
+      "participants": 24
+    }
+  },
+  "note": "Recognition describes these published synthetic fixtures, not a population estimate. RSS includes Python and benchmark instrumentation."
 }

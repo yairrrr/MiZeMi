@@ -8,7 +8,7 @@ ROWS = [
     ('Tel Aviv','Sushi','Football','Mizrahi','The Conjuring',22),
     ('Rehovot','Spaghetti','Surfing','Rock','Toy Story',24),
     ('Rishon LeZion','Lasagna','Guitar','Pop','Finding Nemo',26),
-    ('Beersheba','Falafel','Photography','Jazz','Titanic',28),
+    ('Beersheba','Falafel','Photography','Jazz','Titanic (1997 film)',28),
 ]
 NAMES = ('Dana','Omer','Noa','Amit','Lior')
 HE_NAMES = ('דנה','עומר','נועה','עמית','ליאור')

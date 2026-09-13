@@ -2,9 +2,9 @@
 
 Verified locally on 2026-09-11. This report covers the bilingual/configuration/Question Engine/logo enhancement. The earlier completion mission is recorded separately in [COMPLETION_REPORT.md](COMPLETION_REPORT.md).
 
-## Offline knowledge follow-up (2026-09-11)
+## Group-intelligence follow-up (2026-09-14)
 
-The subsequent implementation is documented in [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md). It preserves this enhancement and adds 18 knowledge rule families (47 production rules total), 2,434 offline reference entities, 93 taxonomy labels, explicit partial-knowledge scopes, private-until-ended explanations, a tenth additive persistence table, reference attribution and 20 music choices. The original 29 rules remain; their Hebrew wording now uses human concepts instead of field/value terminology. The catalog below records the earlier 29-rule implementation; the linked report contains the current complete verification and new rule catalog. Render/Neon configuration and the unrelated lockfile metadata are preserved.
+The current revision is documented in [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md). It expands the local catalog and replaces the former 47-rule production composition with 27 social/group families. Artist/song inputs are optional and independently consented. Existing multiplayer, scoring, persistence, bilingual UI, security and deployment architecture remain intact. The earlier 29-rule catalog below is historical; similarity/fingerprint puzzles and the v4 artist-trivia bridge are no longer selected in production. See the current report for measured counts, complete verification, rejected styles and source limitations.
 
 ## 1. Branch and recovery
 
@@ -35,9 +35,9 @@ Before start, `total_questions` is requested count; after generation, it is actu
 
 Finished-game persistence adds cascading `game_configurations` and `question_details` tables, preserving requested count, language, difficulty and source rule. Existing columns are untouched. Legacy records without detail rows remain readable with English/EASY defaults and their recorded actual length. SQLite legacy-schema compatibility and real PostgreSQL creation, upsert, rollback and retention were tested.
 
-## 4. Every production question rule
+## 4. Historical v3 question rule catalog
 
-There are **29 production rules: the three original rules plus 26 additions**. Examples below are illustrative template instances, not hardcoded people or answers. Every rule has a deterministic Hebrew counterpart and a dedicated truth fixture in `backend/tests/unit/test_question_engine_v2.py`.
+The v3 implementation introduced **29 rules: the three original rules plus 26 additions**. Examples below are illustrative template instances, not hardcoded people or answers. Every rule has a deterministic Hebrew counterpart and a dedicated truth fixture in `backend/tests/unit/test_question_engine_v2.py`.
 
 Universal conditions: only consented schema fields; exactly one proven answer; 2–4 distinct options; question at most 600 characters and options at most 160; no unresolved tie, invalid reference, duplicate normalized option or literal answer reveal. Actual people/categories/pairs and neighboring bounded integers provide distractors. All new rules require at least three participants; stricter conditions appear below.
 

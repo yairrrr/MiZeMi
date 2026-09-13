@@ -37,11 +37,13 @@ class QuestionGenerator:
     ) -> None:
         self._rules = tuple(rules) if rules is not None else default_rules()
         if knowledge is not None:
-            from app.domain.questions.semantic_rules import semantic_rules
-            self._rules += semantic_rules(knowledge)
+            from app.domain.questions.group_rules import group_rules, social_legacy_rules
+            if rules is None:
+                self._rules = social_legacy_rules(self._rules, knowledge)
+            self._rules += group_rules(knowledge)
         self._validator = validator if validator is not None else QuestionValidator()
         self._scorer = scorer if scorer is not None else QuestionQualityScorer()
-        self._selector = selector if selector is not None else QuestionSelector()
+        self._selector = selector if selector is not None else QuestionSelector(group_first=knowledge is not None)
 
     def generate(
         self,

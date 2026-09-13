@@ -114,7 +114,7 @@ def test_no_stereotypes_or_unsupported_diet_claims(kb):
 
 
 def test_bundle_coverage_provenance_and_schema(kb):
-    minimum={'movies':450,'artists':270,'music':60,'foods':175,'hobbies':200,'localities':1200}
+    minimum={'movies':9500,'songs':7000,'artists':5000,'music':60,'foods':2500,'hobbies':1000,'localities':1200}
     for kind,n in minimum.items(): assert len(kb.in_kind(kind))>=n
     manifest=json.loads((BUNDLE_DIR/'manifest.json').read_text())
     assert {s['license'] for s in manifest['sources']}=={'CC0-1.0','CC-BY-4.0'}
@@ -124,10 +124,14 @@ def test_bundle_coverage_provenance_and_schema(kb):
         assert meta['sha256']==hashlib.sha256(raw).hexdigest()
         assert meta['rows']==len(json.loads(raw))
     for entity in kb.entities.values():
-        if entity.canonical_id.startswith('Q'): assert entity.source_revision>0
+        # Reviewed v1 seeds keep their revisions; the expansion is a dated
+        # query snapshot with file/source hashes rather than invented revisions.
+        assert entity.source_revision>=0
         assert len(entity.category_ids)<20
         assert all(c in kb.categories for c in entity.category_ids)
-    assert sum(p.stat().st_size for p in BUNDLE_DIR.iterdir() if p.suffix=='.json')<750_000
+    assert manifest['schema']==2
+    assert any('expansion' in source['name'] for source in manifest['sources'])
+    assert sum(p.stat().st_size for p in BUNDLE_DIR.iterdir() if p.suffix=='.json')<20_000_000
 
 
 def test_load_once_with_no_network(monkeypatch):
@@ -164,7 +168,9 @@ def test_corrupt_build_inputs_fail_closed(bundle,mutation,tmp_path):
     elif mutation=='hash': (bundle/name).write_text('[]')
     elif mutation=='duplicate_json_key': (bundle/'manifest.json').write_text('{"schema":1,"schema":1}')
     elif mutation=='invalid_json': (bundle/name).write_text('{bad')
-    elif mutation=='oversized': (bundle/name).write_text(' '*4_000_001)
+    elif mutation=='oversized':
+        from app.infrastructure.knowledge import MAX_BUNDLE_BYTES
+        with (bundle/name).open('wb') as oversized: oversized.truncate(MAX_BUNDLE_BYTES+1)
     elif mutation=='symlink':
         (bundle/name).unlink(); (bundle/name).symlink_to(BUNDLE_DIR/name)
     elif mutation=='unknown_file':
@@ -193,4 +199,23 @@ def test_invalid_provenance_is_rejected(bundle,change):
     if change=='unapproved_license': manifest['sources'][0]['license']='unknown'
     if change=='unsafe_url': manifest['sources'][0]['url']='javascript:alert(1)'
     path.write_text(json.dumps(manifest))
+    with pytest.raises(KnowledgeDataError): load_knowledge(bundle)
+
+
+@pytest.mark.parametrize('mutation',['boolean_year','invalid_year','bad_reference','duplicate_reference','bad_type','artist_on_movie','row_count'])
+def test_expanded_metadata_corruption_is_rejected(bundle,mutation):
+    name='songs.json'; rows=json.loads((bundle/name).read_text())
+    rows[0]=[*rows[0][:7],[2001,[],[],[],'']]
+    if mutation=='boolean_year': rows[0][7][0]=True
+    if mutation=='invalid_year': rows[0][7][0]=1700
+    if mutation=='bad_reference': rows[0][7][1]=['file:///secret']
+    if mutation=='duplicate_reference': rows[0][7][1]=['Q1','Q1']
+    if mutation=='bad_type': rows[0][7][4]='PPL'
+    if mutation=='artist_on_movie':
+        name='movies.json'; rows=json.loads((bundle/name).read_text())
+        rows[0]=[*rows[0][:7],[2001,[],[],['Q1'],'']]
+    write_checked(bundle,name,rows)
+    if mutation=='row_count':
+        path=bundle/'manifest.json'; manifest=json.loads(path.read_text())
+        manifest['files'][name]['rows']+=1; path.write_text(json.dumps(manifest))
     with pytest.raises(KnowledgeDataError): load_knowledge(bundle)

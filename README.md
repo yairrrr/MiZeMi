@@ -2,7 +2,7 @@
 
 A working classroom icebreaker: the host creates a room, players join from phones, share consented profile facts, and play a live quiz through to a final leaderboard. Question generation is deterministic Python. No runtime AI, accounts, paid APIs, or hosted realtime dependency.
 
-The offline knowledge engine connects different films, foods, hobbies, music styles and towns using 2,434 compact local reference entries. It adds semantic grouping, geographic reasoning and cross-domain questions, then explains discoveries after each question. See [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md) for sources, licenses, all 47 rules and verification.
+The offline knowledge engine understands films, songs, artists, foods, hobbies, music styles and towns using tens of thousands of compact local entries. Its 27 production rule families discover patterns about the group: shared tastes, counts, majorities, regions and cross-domain connections. Explanations appear after each question. See [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md) for measured coverage, sources, licenses, the question-style audit and verification.
 
 ## Run locally
 

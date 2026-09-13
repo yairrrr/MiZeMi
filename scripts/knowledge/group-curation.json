@@ -1,0 +1,558 @@
+{
+  "schema": 1,
+  "categories": [
+    [
+      "movie.animation",
+      "movie.genre",
+      "Animation",
+      "אנימציה"
+    ],
+    [
+      "region.north",
+      "place.region",
+      "Northern Israel",
+      "הצפון"
+    ],
+    [
+      "region.central",
+      "place.region",
+      "Central Israel",
+      "המרכז"
+    ],
+    [
+      "region.south",
+      "place.region",
+      "Southern Israel",
+      "הדרום"
+    ],
+    [
+      "region.jerusalem",
+      "place.region",
+      "Jerusalem area",
+      "אזור ירושלים"
+    ],
+    [
+      "setting.outdoor",
+      "hobby.setting",
+      "Outdoors",
+      "בחוץ"
+    ],
+    [
+      "setting.indoor",
+      "hobby.setting",
+      "Indoors",
+      "בבית או בחלל סגור"
+    ],
+    [
+      "setting.flexible",
+      "hobby.setting",
+      "Flexible setting",
+      "מקום גמיש"
+    ],
+    [
+      "activity.physical",
+      "hobby.physical",
+      "Physical activity",
+      "פעילות גופנית"
+    ],
+    [
+      "activity.nonphysical",
+      "hobby.physical",
+      "Non-physical recreation",
+      "עיסוק שאינו פעילות גופנית"
+    ]
+  ],
+  "activity_roots": {
+    "hobby.sport": [
+      "Q105674",
+      "Q108429",
+      "Q1096878",
+      "Q10980",
+      "Q11417",
+      "Q11419",
+      "Q11420",
+      "Q114397581",
+      "Q1154336",
+      "Q12014035",
+      "Q120931",
+      "Q12100",
+      "Q124100",
+      "Q130949",
+      "Q131471",
+      "Q1354480",
+      "Q14085739",
+      "Q1425378",
+      "Q1455",
+      "Q159354",
+      "Q159992",
+      "Q167987",
+      "Q1707432",
+      "Q171038",
+      "Q171401",
+      "Q1734",
+      "Q178131",
+      "Q178678",
+      "Q179226",
+      "Q188818",
+      "Q189317",
+      "Q189336",
+      "Q191051",
+      "Q2035123",
+      "Q206091",
+      "Q207238",
+      "Q20856109",
+      "Q208607",
+      "Q2093999",
+      "Q2094083",
+      "Q213796",
+      "Q215184",
+      "Q231200",
+      "Q2471422",
+      "Q2471790",
+      "Q2736",
+      "Q29358",
+      "Q3177899",
+      "Q32112",
+      "Q36389",
+      "Q36908",
+      "Q392409",
+      "Q3930",
+      "Q40244",
+      "Q41323",
+      "Q41466",
+      "Q42486",
+      "Q43450",
+      "Q4543",
+      "Q465014",
+      "Q472827",
+      "Q483693",
+      "Q520611",
+      "Q53121",
+      "Q5369",
+      "Q5372",
+      "Q5375",
+      "Q5377",
+      "Q5849",
+      "Q6034982",
+      "Q61465",
+      "Q6388",
+      "Q6537379",
+      "Q7291",
+      "Q7339484",
+      "Q7707",
+      "Q7735",
+      "Q779272",
+      "Q816261",
+      "Q8418",
+      "Q842284",
+      "Q847",
+      "Q852989",
+      "Q866224",
+      "Q876737"
+    ],
+    "hobby.wellbeing": [
+      "Q108458",
+      "Q341045"
+    ],
+    "hobby.creative": [
+      "Q1085001",
+      "Q11405",
+      "Q11425",
+      "Q11629",
+      "Q11633",
+      "Q11634",
+      "Q11639",
+      "Q11642",
+      "Q11802861",
+      "Q1186844",
+      "Q12681",
+      "Q128309",
+      "Q130857",
+      "Q131186",
+      "Q1343007",
+      "Q13464614",
+      "Q142554",
+      "Q145806",
+      "Q148442",
+      "Q161439",
+      "Q169737",
+      "Q170484",
+      "Q18281",
+      "Q185925",
+      "Q189825",
+      "Q1920065",
+      "Q193188",
+      "Q194326",
+      "Q201022",
+      "Q208386",
+      "Q213608",
+      "Q218998",
+      "Q222749",
+      "Q244475",
+      "Q266177",
+      "Q27939",
+      "Q2915129",
+      "Q29583",
+      "Q41425",
+      "Q455695",
+      "Q46185",
+      "Q47369",
+      "Q47928",
+      "Q482",
+      "Q51290",
+      "Q586060",
+      "Q5994",
+      "Q60055387",
+      "Q6010",
+      "Q61285",
+      "Q6189617",
+      "Q652122",
+      "Q6578522",
+      "Q6607",
+      "Q79838",
+      "Q816871",
+      "Q83357",
+      "Q8338",
+      "Q8343",
+      "Q8355",
+      "Q8371",
+      "Q860372",
+      "Q917912",
+      "Q93184",
+      "Q953045",
+      "Q9798"
+    ],
+    "hobby.water": [
+      "Q1096878",
+      "Q14085739",
+      "Q159354",
+      "Q159992",
+      "Q191051",
+      "Q2035123",
+      "Q206091",
+      "Q207238",
+      "Q20856109",
+      "Q2094083",
+      "Q2471422",
+      "Q392409",
+      "Q472827",
+      "Q6388",
+      "Q7707",
+      "Q7735"
+    ],
+    "hobby.music": [
+      "Q11405",
+      "Q128309",
+      "Q130857",
+      "Q131186",
+      "Q1343007",
+      "Q213608",
+      "Q27939",
+      "Q46185",
+      "Q47369",
+      "Q51290",
+      "Q5994",
+      "Q6010",
+      "Q61285",
+      "Q6607",
+      "Q79838",
+      "Q8338",
+      "Q8343",
+      "Q8355",
+      "Q8371",
+      "Q9798",
+      "Q34379"
+    ],
+    "hobby.table_games": [
+      "Q11411",
+      "Q11413",
+      "Q131375",
+      "Q131436",
+      "Q1375",
+      "Q142714",
+      "Q1637219",
+      "Q1643932",
+      "Q181008",
+      "Q44914",
+      "Q47043",
+      "Q718",
+      "Q80131",
+      "Q83207",
+      "Q131436",
+      "Q142714"
+    ],
+    "hobby.digital": [
+      "Q11425",
+      "Q11650",
+      "Q170978",
+      "Q185727",
+      "Q20899",
+      "Q229367",
+      "Q300920",
+      "Q7889",
+      "Q80006",
+      "Q860372"
+    ],
+    "hobby.fitness": [
+      "Q114397581",
+      "Q124100",
+      "Q1425378",
+      "Q213796",
+      "Q215641",
+      "Q229680",
+      "Q2471790",
+      "Q272460",
+      "Q309252",
+      "Q4676574",
+      "Q65091595"
+    ],
+    "hobby.cooking": [
+      "Q1189351",
+      "Q2090758",
+      "Q2166448",
+      "Q3063799",
+      "Q3625361",
+      "Q38695",
+      "Q461696",
+      "Q720398"
+    ],
+    "hobby.nature": [
+      "Q12014035",
+      "Q12014173",
+      "Q124946",
+      "Q14373",
+      "Q14930",
+      "Q176353",
+      "Q2093999",
+      "Q29358",
+      "Q455550",
+      "Q64365",
+      "Q685629"
+    ],
+    "hobby.collecting": [
+      "Q128391",
+      "Q1437510",
+      "Q1955101",
+      "Q208165",
+      "Q856075"
+    ],
+    "hobby.learning": [
+      "Q150352",
+      "Q199657",
+      "Q309",
+      "Q333",
+      "Q336",
+      "Q395",
+      "Q5891"
+    ],
+    "hobby.social": [
+      "Q188844"
+    ],
+    "hobby.travel": [
+      "Q49389",
+      "Q61509"
+    ]
+  },
+  "settings": {
+    "outdoor": [
+      "Q159992",
+      "Q130949",
+      "Q178131",
+      "Q12014035",
+      "Q12014173",
+      "Q124946",
+      "Q685629",
+      "Q455550",
+      "Q14930",
+      "Q29358",
+      "Q36908",
+      "Q520611",
+      "Q7339484",
+      "Q40244",
+      "Q2093999",
+      "Q4543",
+      "Q191051",
+      "Q207238",
+      "Q472827",
+      "Q2035123",
+      "Q14373",
+      "Q176353",
+      "Q5377",
+      "Q876737",
+      "Q206091",
+      "Q2736",
+      "Q5369",
+      "Q5375",
+      "Q41323",
+      "Q171038",
+      "Q1455"
+    ],
+    "indoor": [
+      "Q7889",
+      "Q80006",
+      "Q300920",
+      "Q11425",
+      "Q185925",
+      "Q860372",
+      "Q170978",
+      "Q720398",
+      "Q3063799",
+      "Q38695",
+      "Q11642",
+      "Q13464614",
+      "Q652122",
+      "Q193188",
+      "Q208386",
+      "Q18281",
+      "Q11802861",
+      "Q83357",
+      "Q266177",
+      "Q2915129",
+      "Q1425378",
+      "Q114397581",
+      "Q213796",
+      "Q3177899",
+      "Q3930",
+      "Q41466",
+      "Q171401",
+      "Q131436",
+      "Q718",
+      "Q11411",
+      "Q44914",
+      "Q83207"
+    ],
+    "flexible": [
+      "Q105674",
+      "Q816261",
+      "Q11633",
+      "Q53121",
+      "Q6537379",
+      "Q6388",
+      "Q6607",
+      "Q5994",
+      "Q11405",
+      "Q8355",
+      "Q27939",
+      "Q65091595",
+      "Q309252",
+      "Q11639",
+      "Q5372",
+      "Q847",
+      "Q1734",
+      "Q11417",
+      "Q108429",
+      "Q108458",
+      "Q341045",
+      "Q49389",
+      "Q61509",
+      "Q11629",
+      "Q93184",
+      "Q199657",
+      "Q272460"
+    ]
+  },
+  "policy": {
+    "setting": "Conventional setting of the named activity, not a prediction of where the person does it. Flexible activities are counted in neither indoor nor outdoor totals. No setting is assigned without an explicit approved root.",
+    "physical": "Only approved physical-sport/fitness/water/dance roots count as physical. Mind sports are not physical sports. Musical instruments mean playing that instrument in the hobby context.",
+    "region": "Authored broad grouping of administrative districts: North+Haifa=Northern; Central+Tel Aviv=Central; Southern=Southern; Jerusalem remains distinct. Unmapped districts remain unknown.",
+    "activity_aliases": "Keep activity disambiguation qualifiers unless an alias is explicitly reviewed. A narrower track-running discipline must not claim the unqualified Hebrew name of general running. This is alias-input curation, not canonical-name priority at runtime."
+  },
+  "exclude_types": [
+    "Q5",
+    "Q4167410",
+    "Q13406463",
+    "Q185529",
+    "Q138020407"
+  ],
+  "extra_aliases": {
+    "Q105674": [
+      "ריצות",
+      "לרוץ"
+    ],
+    "Q11629": [
+      "לצייר"
+    ],
+    "Q7889": [
+      "משחקי מחשב",
+      "משחקי וידאו",
+      "גיימינג"
+    ],
+    "Q2736": [
+      "לשחק כדורגל"
+    ],
+    "Q6607": [
+      "לנגן בגיטרה",
+      "נגינה בגיטרה"
+    ],
+    "Q199657": [
+      "קריאת ספרים"
+    ],
+    "Q6537379": [
+      "הליכה",
+      "הליכות"
+    ],
+    "Q93184": [
+      "רישום בעיפרון"
+    ],
+    "Q272460": [
+      "פילטיס"
+    ]
+  },
+  "hebrew_labels": {
+    "Q6537379": "הליכה",
+    "Q199657": "קריאת ספרים",
+    "Q7889": "משחקי מחשב"
+  },
+  "region_from_district": {
+    "place.north": "region.north",
+    "place.haifa": "region.north",
+    "place.central": "region.central",
+    "place.tel_aviv": "region.central",
+    "place.south": "region.south",
+    "place.jerusalem": "region.jerusalem"
+  },
+  "fact_overrides": {
+    "Q28053146": [
+      "music.mizrahi",
+      "music.pop"
+    ]
+  },
+  "review_notes": [
+    {
+      "entity": "Q28053146",
+      "retrieved": "2026-09-13",
+      "decision": "Retain only Mizrahi and pop for Eden Ben Zaken. The unreferenced classical/folk/soul claims in the earlier Wikidata seed were insufficiently corroborated for this game. This is an inclusion allowlist, not a claim that other genres are impossible.",
+      "sources": [
+        "https://www.wikidata.org/wiki/Q28053146",
+        "https://music.apple.com/us/curator/apple-mizrahi/1106112453"
+      ],
+      "license_note": "No Apple catalog or prose imported. Independent factual review of one CC0 entity; authored inclusion policy is CC0."
+    },
+    {
+      "entity": "Q846544",
+      "retrieved": "2026-09-13",
+      "decision": "Do not use the general disaster-film → thriller-film parent edge as sufficient evidence for a scored thriller classification. A disaster theme alone is not a narrow thriller classification. Direct thriller statements and other supported genre paths remain eligible. This keeps Titanic drama/romance without inferring thriller solely from its disaster theme.",
+      "sources": [
+        "https://www.wikidata.org/wiki/Q846544",
+        "https://www.wikidata.org/wiki/Q44578"
+      ],
+      "license_note": "CC0 factual graph; authored conservative inclusion policy."
+    },
+    {
+      "entity": "Q10572883",
+      "retrieved": "2026-09-14",
+      "decision": "Keep the narrower running-discipline title qualified. General ריצה continues to name Q105674. Automatic hobby qualifier stripping caused an avoidable alias collision; it is disabled for activities. Runtime still rejects every remaining cross-entity name collision.",
+      "sources": [
+        "https://www.wikidata.org/wiki/Q10572883",
+        "https://www.wikidata.org/wiki/Q105674"
+      ],
+      "license_note": "CC0 factual names and activity scopes; authored conservative alias policy."
+    }
+  ],
+  "excluded_genre_parent_edges": [
+    [
+      "Q846544",
+      "Q2484376"
+    ]
+  ]
+}

@@ -11,8 +11,8 @@ import re
 from app.domain.questions.knowledge import Category, KINDS, KnownEntity, KnowledgeBase
 
 BUNDLE_DIR = Path(__file__).resolve().parents[1] / 'data' / 'knowledge'
-MAX_BUNDLE_BYTES = 4_000_000
-MAX_ENTITIES = 10_000
+MAX_BUNDLE_BYTES = 30_000_000
+MAX_ENTITIES = 45_000
 
 
 class KnowledgeDataError(ValueError):
@@ -51,9 +51,10 @@ def load_knowledge(directory: Path = BUNDLE_DIR) -> KnowledgeBase:
     """Uncached entry point for build checks/corruption tests. Fixed filenames."""
     _require(directory.is_dir() and not directory.is_symlink())
     manifest, raw = _read(directory / 'manifest.json', MAX_BUNDLE_BYTES)
-    _require(isinstance(manifest, dict) and type(manifest.get('schema')) is int and manifest.get('schema') == 1)
+    _require(isinstance(manifest, dict) and type(manifest.get('schema')) is int and manifest.get('schema') in (1, 2))
     _require(isinstance(manifest.get('files'), dict))
-    expected = {'categories.json', *(f'{kind}.json' for kind in KINDS)}
+    kinds = tuple(k for k in KINDS if k != 'songs' or manifest['schema'] == 2)
+    expected = {'categories.json', *(f'{kind}.json' for kind in kinds)}
     _require(set(manifest['files']) == expected)
     _require(_text(manifest.get('version'), maximum=64))
     _require(isinstance(manifest.get('sources'), list) and bool(manifest['sources']))
@@ -75,6 +76,7 @@ def load_knowledge(directory: Path = BUNDLE_DIR) -> KnowledgeBase:
         _require(isinstance(description, dict) and description.get('sha256') == hashlib.sha256(content).hexdigest())
         _require(description.get('bytes') == len(content))
         _require(isinstance(document, list))
+        _require(type(description.get('rows')) is int and description['rows'] == len(document))
         documents[name] = document
 
     categories = []
@@ -85,22 +87,34 @@ def load_knowledge(directory: Path = BUNDLE_DIR) -> KnowledgeBase:
         key, dimension, english, hebrew = row
         _require(all(_text(t, maximum=100) for t in row))
         _require(bool(re.fullmatch('[a-z][a-z0-9_.]+', key)))
-        _require(dimension in ('movie.genre', 'music.genre', 'food.cuisine', 'food.format', 'hobby.family', 'place.district'))
+        _require(dimension in ('movie.genre', 'music.genre', 'food.cuisine', 'food.format', 'hobby.family', 'hobby.setting', 'hobby.physical', 'hobby.participation', 'place.district', 'place.region'))
         _require(key not in seen_categories)
         seen_categories.add(key)
         categories.append(Category(key, dimension, english, hebrew))
     _require(1 <= len(categories) <= 300)
     by_category = {c.category_id: c for c in categories}
     allowed_dimensions = {
-        'movies': {'movie.genre'}, 'music': {'music.genre'}, 'artists': {'music.genre'},
-        'foods': {'food.cuisine', 'food.format'}, 'hobbies': {'hobby.family'}, 'localities': {'place.district'},
+        'movies': {'movie.genre'}, 'music': {'music.genre'}, 'artists': {'music.genre'}, 'songs': {'music.genre'},
+        'foods': {'food.cuisine', 'food.format'}, 'hobbies': {'hobby.family', 'hobby.setting', 'hobby.physical', 'hobby.participation'}, 'localities': {'place.district', 'place.region'},
     }
     entities = []
-    for kind in KINDS:
+    fact_pool = {}
+    for kind in kinds:
         seen = set()
         for row in documents[f'{kind}.json']:
-            _require(isinstance(row, list) and len(row) == 7)
-            eid, english, hebrew, aliases, facts, coordinates, revision = row
+            _require(isinstance(row, list) and len(row) in ((7, 8) if manifest['schema'] == 2 else (7,)))
+            eid, english, hebrew, aliases, facts, coordinates, revision = row[:7]
+            details = row[7] if len(row) == 8 else [None, [], [], [], '']
+            _require(isinstance(details, list) and len(details) == 5)
+            year, countries, series, performers, place_type = details
+            _require(year is None or (type(year) is int and 1800 <= year <= 2100))
+            _require(year is None or kind in ('movies', 'songs'))
+            for ids in (countries, series, performers):
+                _require(isinstance(ids, list) and len(ids) <= 12 and all(isinstance(q, str) and re.fullmatch(r'Q[1-9]\d{0,11}', q) for q in ids))
+                _require(len(ids) == len(set(ids)))
+            _require(place_type in ('', 'PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLC'))
+            _require(not place_type or kind == 'localities')
+            _require(not performers or kind == 'songs')
             _require(_text(eid, maximum=64) and bool(re.fullmatch(r'(?:Q[1-9]\d*|G[1-9]\d*|local_[a-z0-9_]+)', eid)))
             _require(eid not in seen)
             seen.add(eid)
@@ -115,14 +129,16 @@ def load_knowledge(directory: Path = BUNDLE_DIR) -> KnowledgeBase:
                 _require(isinstance(coordinates, list) and len(coordinates) == 2
                          and all(type(v) in (float, int) and math.isfinite(v) for v in coordinates))
                 _require(28.5 <= coordinates[0] <= 34.5 and 33.5 <= coordinates[1] <= 36.5)
-                _require(len(facts) <= 1)
+                _require(len(facts) <= 2 and len({by_category[f].dimension for f in facts}) == len(facts))
             else:
                 _require(coordinates is None and bool(facts))
             _require(len(entities) < MAX_ENTITIES)
-            entities.append(KnownEntity(eid, kind, english, hebrew, tuple(aliases), frozenset(facts),
-                                        tuple(coordinates) if coordinates is not None else None, revision))
+            entities.append(KnownEntity(eid, kind, english, hebrew, tuple(aliases), fact_pool.setdefault(tuple(sorted(facts)), frozenset(facts)),
+                                        tuple(coordinates) if coordinates is not None else None, revision,
+                                        year, tuple(countries), tuple(series), tuple(performers), place_type))
         _require(bool(seen))
     _require(len(entities) <= MAX_ENTITIES)
+    documents.clear()  # Release parsed row containers before constructing indexes.
     return KnowledgeBase(entities, categories, manifest['version'])
 
 

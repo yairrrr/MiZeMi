@@ -91,7 +91,7 @@ Display names are trimmed, 1–20 characters, and unique per room under case-fol
 
 ### 9.2 PlayerProfile contract
 
-Submission is exactly `{player_id, fields}`, where each field is `{field_key, value, allow_question_usage}`. Values are strictly strings or integers (not booleans); consent is a strict boolean. Up to seven fields; unknown/duplicate keys and missing required fields are rejected.
+Submission is exactly `{player_id, fields}`, where each field is `{field_key, value, allow_question_usage}`. Values are strictly strings or integers (not booleans); consent is a strict boolean. Up to nine fields; unknown/duplicate keys and missing required fields are rejected.
 
 | Key | Type / constraints | Required | Initial UI consent |
 |---|---|---|---|
@@ -101,6 +101,8 @@ Submission is exactly `{player_id, fields}`, where each field is `{field_key, va
 | favorite_music | Listed choice | Yes | Checked |
 | age | Integer, 5–120 | No | Checked |
 | favorite_movie | Text, 1–60 | No | Checked |
+| favorite_artist | Text, 1–60 | No | Checked |
+| favorite_song | Text, 1–60 | No | Checked |
 | personal_fact | Text, 1–120 | No | **Unchecked** |
 
 Music choices: Pop, Rock, Hip-Hop / Rap, Electronic, Mizrahi, Classical, Jazz, Metal, Mediterranean, Israeli Pop, House, Techno, Trance, Indie, R&B, Reggae, Folk, Country, Blues, Other. Text is trimmed and whitespace collapsed. Contact-like emails, URLs and runs of seven or more digits are rejected. This heuristic does not claim to detect all sensitive content; the UI explicitly asks players not to enter private details. Use nicknames and light facts for class.
@@ -172,9 +174,9 @@ Only a verified host starts or advances. Generation occurs at host start from RE
 
 Pure pipeline: `ProfileDataset → QuestionRule[] → QuestionValidator → QuestionQualityScorer → QuestionSelector → Question[]`. Seed is a stable SHA-256-derived integer from game id; identical dataset/config/seed yields identical questions. Randomness is local seeded Python Random, never global or an external service.
 
-The original unique-value, strict-most-common and value-count rules remain. New families cover minimal two/three-attribute identification, similarity/pairs, reference intersections, objective odd-one-out/exclusion, filtered modes and ages, group size/minority/rank, clue chains, cross-person similarity, commonality counts, pair matching, equality plus inequality, distinct-category coverage, universal connections and two-step elimination. Original additional families cover closest-age pairs, balanced partitions and a uniquely least-overlapping profile. The 29 original rules are cataloged in ENHANCEMENT_REPORT.md. The production composition root adds 18 offline semantic families, for 47 rules; their conditions/examples are in KNOWLEDGE_BASE_REPORT.md. Pure callers can still use the original rules without a knowledge dependency.
+The historical catalog contains 29 direct/profile rules and 18 v4 semantic rules. The current production composition uses **27 families: 11 clear legacy group families and 16 group-semantic/geographic families**, described in §12.2 and KNOWLEDGE_BASE_REPORT.md. The other historical algorithms remain available to pure callers and regression tests, but the deployed composition does not select them.
 
-Difficulty is explicit EASY/MEDIUM/HARD metadata on candidates and final questions. Selection targets the first 25% easy, the next 45% medium, the last 30% hard (20 questions: 5/9/6), preferring the nearest available level when data is sparse. Within each band a greedy selector balances rule, field and subject diversity and recent-use penalties. When those signals tie, demonstrated semantic reasoning depth takes precedence over basic lookup, then coverage and stable text order apply; scoring of player answers is unchanged. It suppresses normalized text duplicates and semantic signatures across equivalent families; it does not fabricate or repeat questions to fill a quota.
+Difficulty is explicit EASY/MEDIUM/HARD metadata on candidates and final questions. Legacy selection targets 25% easy, 45% medium and 30% hard. The current group-first selector prioritizes the mix in §12.2, uses these difficulty bands as a secondary preference, then orders selected questions EASY → MEDIUM → HARD. Data availability determines the actual difficulty proportions. Within each band a greedy selector balances rule, field and subject diversity and recent-use penalties. When those signals tie, demonstrated semantic reasoning depth takes precedence over basic lookup, then coverage and stable text order apply; scoring of player answers is unchanged. It suppresses normalized text duplicates and semantic signatures across equivalent families; it does not fabricate or repeat questions to fill a quota.
 
 Comparison normalization is Unicode NFC, collapsed whitespace and casefold; displayed user text keeps its original spelling. Fixed bilingual field labels/templates are selected from an allowlist, never dynamic paths. Similarity counts equal shared values once per field among city, favorite food, hobby, music and movie; age and personal facts are excluded. Similarity families require at least two preference fields shared by every compared participant and use that same field set, explicitly named in the question. Ties are rejected. Inequality/exclusion/age rules require consented data for every field actually tested; missing values are never treated as a different value. Minimal fingerprints require every smaller clue subset to remain ambiguous.
 
@@ -188,9 +190,27 @@ Only player-consented facts, deterministic mathematics and trusted local classif
 
 Semantic candidates carry a concise localized `explanation` and a private knowledge version. `question.ended` adds `explanation` (empty for legacy questions); it is NEVER included in active events because it can reveal the answer. Reconnect during QUESTION_RESULTS repeats the explanation. LEADERBOARD and FINISHED retain their existing stage-specific replay, without sending unnecessary historical question data. Finished records preserve it in an additive cascading `question_explanations` table, so no existing column migration is needed. Public reference attribution is available in the UI; source manifests document licenses, retrieval dates and transformations. Scoring, envelopes, host authorization and game configuration remain unchanged.
 
-The music dropdown retains existing wire choices and adds the supported styles Mediterranean, Israeli Pop, House, Techno, Trance, Indie, R&B, Reggae, Folk, Country and Blues. These remain explicit player selections; artist metadata supports objective artist-to-genre questions, never inferred listening behavior. Human question templates in both languages describe movies, food, hobbies and places without database/field/value terminology.
+The music dropdown retains existing wire choices and adds the supported styles Mediterranean, Israeli Pop, House, Techno, Trance, Indie, R&B, Reggae, Folk, Country and Blues. These remain explicit player selections. In v5, artist/song metadata supports group counts and patterns only when players actually select artists/songs; the former genre-to-artist trivia bridge is disabled. Human question templates in both languages describe movies, food, hobbies and places without database/field/value terminology.
 
 `KNOWLEDGE_BASE_REPORT.md` records actual coverage, sources, all new rules, demonstrations, benchmarks, limitations and final verification. Dataset refresh is deliberate development work with validation/review; production uses the committed version unchanged.
+
+### 12.2 Group intelligence revision (v5)
+
+MiZeMi is a social group-discovery game. Production questions use knowledge to understand consented answers, then compare the group. Entity trivia, artist guessing, person-to-person similarity puzzles and opaque profile fingerprints are disabled in the production composition. Historical rule implementations remain available for regression/replay compatibility. Direct identification is a limited EASY fallback.
+
+Selection aims at 30% simple group questions, 35% semantic group questions, 20% geographic/cross-domain group questions and 15% clear existing questions, redistributing when suitable candidates are unavailable. It caps direct identifications, repeated pairs, repeated families and person-answer questions; equivalent membership facts are not asked once as a count and again as a unique-person clue. The selected questions progress from EASY through MEDIUM to HARD. Reasoning creates difficulty; the wording stays conversational.
+
+Canonical artists and songs are resolvable independently of music genres. Optional `favorite_artist` and `favorite_song` text fields (1–60 characters) each retain their own consent flag and existing contact-detail filtering. Empty optional answers are omitted. The seven previous wire fields and music choices stay valid; the submission envelope allows at most nine fields. A song's genre comes from the song's own supported facts, never its performer's usual genre. Style choices never prove a playlist.
+
+The expanded bundle uses schema 2, adds songs and optional compact release/country/series/performer/locality-type details, and remains version-controlled backend data. Those details support resolution/provenance; no per-entity trivia rule consumes them. Lookup uses cached in-memory indexes and shared classification sets. Targets: assets ≤20 MB (review at 30 MB), retained knowledge memory ≤60 MB (review at 80 MB), uninstrumented load ≤1 second (acceptable ≤2), 30-player/20-question generation ≤200 ms (review at 500).
+
+Broad regions are an explicitly documented grouping of districts: Northern+Haifa, Central+Tel Aviv, Southern, and Jerusalem separately. Unknown regions stay unknown. Region plurality wording says “most”; “majority” requires strictly more than half. Geographic outlier means the greatest average great-circle distance to every other participant's locality reference point, with a 1 km margin over the runner-up. Closest/farthest pairs reject equal/near ties and same-town answers. No score tie-break creates a supposedly unique question answer.
+
+Activity families describe activities, never people’s personalities. Indoor/outdoor classifications refer to supported conventional activity settings; explicitly flexible activities belong to neither side of the two-way comparison. Questions/explanations do not claim where anyone actually practises the hobby. Derived fields inherit their source's consent absolutely. Group comparisons require complete relevant knowledge; partial counts explicitly name the known participants. Unknown is never a negative membership.
+
+Legacy literal group rules reject fields containing different recognized aliases for the same entity. This prevents alternate spellings from becoming false separate favorites. Semantic diversity questions are limited to 2–6 represented families. Selection caps person-answer questions at five in a 20-question game and suppresses repeated count/unique discoveries about the same source field and membership set.
+
+The updated KNOWLEDGE_BASE_REPORT.md and committed sample-game audit record measured coverage, source/alias ambiguity, actual performance, the production registry, and GOOD/ACCEPTABLE/BAD wording reviews. No Render/Neon changes, deployment, external accounts, credentials or push are part of this revision.
 
 ## 13. REST / API Conventions
 

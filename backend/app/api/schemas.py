@@ -65,7 +65,7 @@ class PlayerProfileSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     player_id: str
-    fields: list[ProfileFieldSchema] = Field(max_length=7)
+    fields: list[ProfileFieldSchema] = Field(max_length=9)
 
     @classmethod
     def from_domain(cls, profile: PlayerProfile) -> "PlayerProfileSchema":

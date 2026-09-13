@@ -12,7 +12,7 @@ from types import MappingProxyType
 from collections.abc import Iterable
 import unicodedata
 
-KINDS = ('movies', 'music', 'artists', 'foods', 'hobbies', 'localities')
+KINDS = ('movies', 'music', 'artists', 'songs', 'foods', 'hobbies', 'localities')
 
 
 class Match(str, Enum):
@@ -51,6 +51,11 @@ class KnownEntity:
     category_ids: frozenset[str]
     coordinates: tuple[float, float] | None = None
     source_revision: int = 0
+    year: int | None = None
+    country_ids: tuple[str, ...] = ()
+    series_ids: tuple[str, ...] = ()
+    performer_ids: tuple[str, ...] = ()
+    locality_type: str = ""
 
     def label(self, language: str) -> str:
         return (self.hebrew or self.english) if language == 'he' else self.english
@@ -78,26 +83,33 @@ class KnowledgeBase:
         self.categories = MappingProxyType({c.category_id: c for c in categories})
         all_entities = tuple(entities)
         self.entities = MappingProxyType({(e.kind, e.canonical_id): e for e in all_entities})
-        indexes = {}
-        ambiguous = {}
-        for kind in KINDS:
-            matches: dict[str, set[str]] = {}
-            for e in all_entities:
-                if e.kind != kind:
+        indexes = {kind: {} for kind in KINDS}
+        ambiguous = {kind: set() for kind in KINDS}
+        for entity in all_entities:
+            index, collisions = indexes[entity.kind], ambiguous[entity.kind]
+            for name in (entity.english, entity.hebrew, *entity.aliases):
+                key = normalize_name(name)
+                if not key or key in collisions:
                     continue
-                for name in (e.english, e.hebrew, *e.aliases):
-                    key = normalize_name(name)
-                    if key:
-                        matches.setdefault(key, set()).add(e.canonical_id)
-            indexes[kind] = MappingProxyType({key: self.entities[kind, next(iter(ids))]
-                                            for key, ids in matches.items() if len(ids) == 1})
-            ambiguous[kind] = frozenset(key for key, ids in matches.items() if len(ids) > 1)
-        self._indexes = MappingProxyType(indexes)
-        self.ambiguous_names = MappingProxyType(ambiguous)
-        self._facets = MappingProxyType({(e.kind, e.canonical_id): MappingProxyType({
-            dim: frozenset(c for c in e.category_ids if self.categories[c].dimension == dim)
-            for dim in {self.categories[c].dimension for c in e.category_ids}
-        }) for e in all_entities})
+                previous = index.get(key)
+                if previous is None:
+                    index[key] = entity
+                elif previous.canonical_id != entity.canonical_id:
+                    del index[key]
+                    collisions.add(key)
+        self._indexes = MappingProxyType({k: MappingProxyType(v) for k, v in indexes.items()})
+        self.ambiguous_names = MappingProxyType({k: frozenset(v) for k, v in ambiguous.items()})
+        # Thousands of works share a small number of classification combinations.
+        # Cache one facet map per combination, not per entity.
+        facets = {}
+        for entity in all_entities:
+            facts = entity.category_ids
+            if facts not in facets:
+                facets[facts] = MappingProxyType({
+                    dim: frozenset(c for c in facts if self.categories[c].dimension == dim)
+                    for dim in {self.categories[c].dimension for c in facts}
+                })
+        self._facets = MappingProxyType(facets)
 
     def resolve(self, kind: str, text: str) -> Resolution:
         if kind not in self._indexes or not isinstance(text, str) or len(text) > 200:
@@ -123,11 +135,14 @@ class KnowledgeBase:
     def resolve_artist(self, text: str) -> Resolution:
         return self.resolve('artists', text)
 
+    def resolve_song(self, text: str) -> Resolution:
+        return self.resolve('songs', text)
+
     def resolve_israeli_locality(self, text: str) -> Resolution:
         return self.resolve('localities', text)
 
     def facts(self, entity: KnownEntity, dimension: str) -> frozenset[str]:
-        return self._facets.get((entity.kind, entity.canonical_id), {}).get(dimension, frozenset())
+        return self._facets.get(entity.category_ids, {}).get(dimension, frozenset())
 
     def in_kind(self, kind: str) -> tuple[KnownEntity, ...]:
         return tuple(e for e in self.entities.values() if e.kind == kind)
