@@ -21,50 +21,59 @@ class QuestionValidator:
         candidate: QuestionCandidate,
         dataset: ProfileDataset,
     ) -> bool:
+        return self.rejection_reason(candidate, dataset) is None
+
+    def rejection_reason(self, candidate: QuestionCandidate, dataset: ProfileDataset) -> str | None:
+        """The first failed check, or ``None`` for a valid candidate."""
         if not isinstance(candidate.difficulty, Difficulty):
-            return False
+            return "difficulty"
         if not 2 <= len(candidate.options) <= 4:
-            return False
+            return "option_count"
         if len(candidate.text) > 600 or any(len(o.text) > 160 for o in candidate.options):
-            return False
+            return "text_length"
         if len(candidate.explanation) > 1200 or len(candidate.knowledge_version) > 64:
-            return False
+            return "explanation_length"
         if not candidate.text.strip():
-            return False
+            return "empty_text"
 
         option_ids = tuple(option.option_id for option in candidate.options)
         if any(not option_id.strip() for option_id in option_ids):
-            return False
+            return "empty_option_id"
         if len(option_ids) != len(set(option_ids)):
-            return False
+            return "duplicate_option_id"
         if option_ids.count(candidate.correct_option_id) != 1:
-            return False
+            return "correct_option_id"
 
         normalized_texts = tuple(
             self._normalize(option.text) for option in candidate.options
         )
         if any(not text for text in normalized_texts):
-            return False
+            return "empty_option_text"
         if len(normalized_texts) != len(set(normalized_texts)):
-            return False
+            return "duplicate_option_text"
 
         answer = next(o.text for o in candidate.options if o.option_id == candidate.correct_option_id)
         answer_key = self._normalize(answer)
+        question_key = self._normalize(candidate.text)
         # Avoid clues accidentally naming their own answer. Short tokens and
         # numbers can coincide with grammatical words/counts without a reveal.
-        if len(answer_key) >= 3 and not answer_key.isdecimal() and re.search(
-            r"(?<!\w)" + re.escape(answer_key) + r"(?!\w)", self._normalize(candidate.text)
-        ):
-            return False
+        # An either/or question that names every option reveals nothing.
+        if (len(answer_key) >= 3 and not answer_key.isdecimal() and self._names(question_key, answer_key)
+                and not all(self._names(question_key, text) for text in normalized_texts)):
+            return "answer_named_in_question"
         if not set(candidate.focus_player_ids).issubset(dataset.player_ids):
-            return False
+            return "unknown_focus_player"
 
         if not set(candidate.involved_player_ids).issubset(dataset.player_ids):
-            return False
+            return "unknown_involved_player"
         if not set(candidate.source_field_keys).issubset(dataset.field_keys):
-            return False
+            return "unknown_field"
 
-        return True
+        return None
+
+    @staticmethod
+    def _names(text: str, phrase: str) -> bool:
+        return re.search(r"(?<!\w)" + re.escape(phrase) + r"(?!\w)", text) is not None
 
     @staticmethod
     def _normalize(value: str) -> str:

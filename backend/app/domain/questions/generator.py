@@ -2,6 +2,10 @@
 
 dataset → rules → validate → score → select → final ordered Questions.
 
+With a knowledge base, rules read a category-first group summary built once
+per generation (``group_summary.py``): consented answers are classified into
+comparable categories before any question is considered.
+
 Deterministic given (dataset, question_count, time_limit_seconds, seed):
 question ids are minted from the seeded RNG, never from global state.
 ``question_count`` and ``time_limit_seconds`` come from validated game settings.
@@ -9,6 +13,7 @@ The domain engine neither reads environment variables nor decides room defaults.
 """
 
 from collections.abc import Sequence
+from dataclasses import dataclass
 from random import Random
 
 from app.domain.questions.candidate import QuestionCandidate
@@ -17,11 +22,23 @@ from app.domain.questions.dataset import ProfileDataset
 from app.domain.questions.question import Question, QuestionType
 from app.domain.questions.rule import QuestionRule
 from app.domain.questions.rules import default_rules
-from app.domain.questions.scorer import QuestionQualityScorer
+from app.domain.questions.scorer import DiscoveryValueScorer, QuestionQualityScorer
 from app.domain.questions.selector import QuestionSelector
 from app.domain.questions.validator import QuestionValidator
 
 _QUESTION_ID_BITS = 128
+
+
+@dataclass(frozen=True)
+class GenerationTrace:
+    """Every stage of one generation, for diagnostics and pipeline tests."""
+
+    raw: tuple[QuestionCandidate, ...]
+    valid: tuple[QuestionCandidate, ...]
+    rejected: tuple[tuple[QuestionCandidate, str], ...]
+    scored: tuple[tuple[QuestionCandidate, float], ...]
+    selected: tuple[QuestionCandidate, ...]
+    questions: tuple[Question, ...]
 
 
 class QuestionGenerator:
@@ -37,12 +54,12 @@ class QuestionGenerator:
     ) -> None:
         self._rules = tuple(rules) if rules is not None else default_rules()
         if knowledge is not None:
-            from app.domain.questions.group_rules import group_rules, social_legacy_rules
-            if rules is None:
-                self._rules = social_legacy_rules(self._rules, knowledge)
-            self._rules += group_rules(knowledge)
+            from app.domain.questions.discovery_rules import discovery_rules, production_rules
+            self._rules = production_rules(knowledge) if rules is None else (*self._rules, *discovery_rules(knowledge))
         self._validator = validator if validator is not None else QuestionValidator()
-        self._scorer = scorer if scorer is not None else QuestionQualityScorer()
+        if scorer is None:
+            scorer = DiscoveryValueScorer() if knowledge is not None else QuestionQualityScorer()
+        self._scorer = scorer
         self._selector = selector if selector is not None else QuestionSelector(group_first=knowledge is not None)
 
     def generate(
@@ -59,6 +76,19 @@ class QuestionGenerator:
         Returns fewer (possibly zero) when the dataset supports fewer valid,
         selectable candidates — questions are never fabricated.
         """
+        return self.trace(dataset, question_count=question_count, time_limit_seconds=time_limit_seconds,
+                          seed=seed, language=language).questions
+
+    def trace(
+        self,
+        dataset: ProfileDataset,
+        *,
+        question_count: int,
+        time_limit_seconds: int,
+        seed: int,
+        language: str | None = None,
+    ) -> GenerationTrace:
+        """Run the pipeline and keep every intermediate stage."""
         if question_count < 1:
             raise ValueError("question_count must be at least 1")
         if time_limit_seconds < 1:
@@ -66,15 +96,26 @@ class QuestionGenerator:
 
         dataset = dataset.with_language(language or dataset.language)
         rng = Random(seed)
-        candidates: list[QuestionCandidate] = []
+        raw: list[QuestionCandidate] = []
         for rule in self._rules:
-            candidates.extend(rule.generate(dataset, rng))
-        valid = [c for c in candidates if self._validator.is_valid(c, dataset)]
+            raw.extend(rule.generate(dataset, rng))
+        valid: list[QuestionCandidate] = []
+        rejected: list[tuple[QuestionCandidate, str]] = []
+        explain = getattr(self._validator, "rejection_reason", None)
+        for candidate in raw:
+            if explain is not None:
+                reason = explain(candidate, dataset)
+            else:
+                reason = None if self._validator.is_valid(candidate, dataset) else "invalid"
+            if reason is None:
+                valid.append(candidate)
+            else:
+                rejected.append((candidate, reason))
         scored = [(c, self._scorer.score(c, dataset)) for c in valid]
         selected = self._selector.select(scored, question_count=question_count)
 
         total = len(selected)
-        return tuple(
+        questions = tuple(
             Question(
                 question_id=f"{rng.getrandbits(_QUESTION_ID_BITS):032x}",
                 index=index,
@@ -92,3 +133,4 @@ class QuestionGenerator:
             )
             for index, candidate in enumerate(selected)
         )
+        return GenerationTrace(tuple(raw), tuple(valid), tuple(rejected), tuple(scored), selected, questions)
