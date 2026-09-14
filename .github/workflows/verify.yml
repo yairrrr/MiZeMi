@@ -48,6 +48,8 @@ jobs:
           PYTHONUNBUFFERED: '1'
         run: .venv/bin/python -m pytest backend/tests -q
       - name: Repeat database shutdown regression
+        env:
+          MIZEMI_TEST_POSTGRES_URL: postgresql://postgres@localhost:5432/mizemi_test
         run: |
           for attempt in 1 2 3 4 5; do
             .venv/bin/python -X faulthandler -m pytest backend/tests/integration/test_database_lifecycle.py -q || exit $?
