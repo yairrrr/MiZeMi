@@ -739,4 +739,8 @@ def test_most_of_the_group_means_most_of_the_room_even_when_towns_are_withheld()
     assert 'רוב' not in majority.text  # 7 of the 14 visible players is not most of the group.
     few_shared = dataset([base_row(i, favorite_movie=m) if i < 6 else base_row(i)
                           for i, m in enumerate(HORROR_ONLY[:4] + ('Challengers (film)', 'Greyhound (film)') + ('',) * 8)], 'en')
-    assert not [c for c in produced(GroupMajorityRule, few_shared) if 'favorite_movie' in c.source_field_keys]
+    # Optional media may describe the choices actually shared, without claiming
+    # that those six answers establish the taste of all fourteen people.
+    movie = next(c for c in produced(GroupMajorityRule, few_shared) if c.source_field_keys == ('favorite_movie',))
+    assert 'movies you chose' in movie.text
+    assert 'group' not in movie.text and '4 people' in movie.explanation

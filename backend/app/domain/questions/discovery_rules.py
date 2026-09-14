@@ -25,7 +25,8 @@ answered by one shown before it: "which hobby type is most common?" is not
 followed by "sport or reading?".
 """
 
-from itertools import combinations, islice
+from collections import deque
+from itertools import combinations
 from random import Random
 
 from app.domain.questions.candidate import QuestionCandidate
@@ -40,6 +41,7 @@ from app.domain.questions.discovery_language import (
 )
 from app.domain.questions.group_summary import (
     DIMENSIONS_BY_KEY,
+    MEDIA_DIMENSIONS,
     POLICY,
     decisive_leader,
     meaningful_leader,
@@ -193,8 +195,24 @@ class DiscoveryRule(QuestionRule):
             return ()
         summary = summarize(dataset, self.knowledge)
         words = Wording(dataset.language, self.knowledge)
-        found = (c for c in self.candidates(summary, words, rng) if c is not None)
-        return tuple(islice(found, MAX_CANDIDATES))
+        # Do not spend the entire family budget on earlier dimensions and drop
+        # artist/song candidates solely because they are generated last. Each
+        # finite rule already bounds its categories/pairs; retain at most the
+        # family budget per field scope, then round-robin those scopes.
+        buckets = {}
+        for candidate in self.candidates(summary, words, rng):
+            if candidate is not None:
+                bucket = buckets.setdefault(candidate.source_field_keys, deque())
+                if len(bucket) < MAX_CANDIDATES:
+                    bucket.append(candidate)
+        found = []
+        active = deque(buckets.values())
+        while active and len(found) < MAX_CANDIDATES:
+            bucket = active.popleft()
+            found.append(bucket.popleft())
+            if bucket:
+                active.append(bucket)
+        return tuple(found)
 
     def candidates(self, summary, words: Wording, rng: Random):
         raise NotImplementedError
@@ -210,7 +228,7 @@ class DiscoveryRule(QuestionRule):
             if not pool:
                 return None
             options, correct = _build_options(answer, rng.sample(pool, min(3, len(pool))), rng)
-        domains = tuple(dict.fromkeys(DIMENSIONS_BY_KEY[d].domain for d in dimensions))
+        domains = tuple(dict.fromkeys(DIMENSIONS_BY_KEY[d].selection_domain for d in dimensions))
         # A fact about a listed choice that no grouping changed is a simple, direct
         # question; all such facts share one family so they cannot crowd a game.
         kind, family, hops = self.kind, self.family, self.hops
@@ -259,8 +277,8 @@ def chose(words: Wording, key: str, category: str, n: int) -> str:
         return words.text('chose an artist associated with {items}' if one else 'chose artists associated with {items}',
                           'בחר אמן שמזוהה עם {items}' if one else 'בחרו אמנים שמזוהים עם {items}', **forms)
     if key == 'song.genre':
-        return words.text('chose a song in the {label} style' if one else 'chose songs in the {label} style',
-                          'בחר שיר בסגנון {label}' if one else 'בחרו שירים בסגנון {label}', **forms)
+        return words.text('chose a song in the {style} style' if one else 'chose songs in the {style} style',
+                          'בחר שיר בסגנון {style}' if one else 'בחרו שירים בסגנון {style}', **forms)
     if key == 'music.genre':
         return words.text('chose {items}', 'בחר {items}' if one else 'בחרו {items}', **forms)
     return words.text('chose {item}' if one else 'chose {items}', 'בחר {item}' if one else 'בחרו {items}', **forms)
@@ -289,6 +307,9 @@ def leader_explanation(words: Wording, summary, winner: str, counts: dict[str, i
     if runner is not None:
         text += ' ' + words.text('Second: {label} ({n}).', 'במקום השני: {label} ({n}).',
                                  label=words.forms(runner, summary.dimension.domain)['label'], n=counts[runner])
+    if key in MEDIA_DIMENSIONS:
+        text += ' ' + words.text('Choices included: {evidence}.', 'בין הבחירות: {evidence}.',
+                                  evidence=words.evidence(summary, summary.members[winner]))
     return text + words.coverage_note(summary)
 
 
@@ -333,7 +354,8 @@ class GroupCountRule(DiscoveryRule):
                     continue
                 fact = (key, category)
                 n = len(members)
-                text = words.question('count', key, fact, (category,), **words.forms(category, s.dimension.domain))
+                operation = 'recognized_count' if key in MEDIA_DIMENSIONS and not s.complete else 'count'
+                text = words.question(operation, key, fact, (category,), **words.forms(category, s.dimension.domain))
                 yield self.candidate(
                     rng, text=text, answer=str(n), fact=fact, dimensions=(key,),
                     distractors=number_choices(n, uncertain=len(s.unknown), maximum=len(s.consented)),
@@ -361,7 +383,8 @@ class GroupMajorityRule(DiscoveryRule):
     def candidates(self, summary, words, rng):
         for key in self.dimensions:
             s = summary.get(key)
-            if s is None or not s.eligible_for_strong_claim():
+            if s is None or not (s.eligible_for_media_leader() if key in MEDIA_DIMENSIONS
+                                 else s.eligible_for_strong_claim()):
                 continue
             counts = {c: s.count(c) for c in s.categories}
             leader = meaningful_leader(s, counts)
@@ -469,6 +492,44 @@ class GroupUniqueRule(DiscoveryRule):
                                      reveals=(*counts_of(key, (category,)), *ones_of(key, (category,))))
 
 
+class MediaGenreOutlierRule(DiscoveryRule):
+    """One person has any unshared media genre; reject multiple such people.
+
+    Several exclusive genres can identify the same person. Different people
+    with different exclusive genres are not a unique answer to this question.
+    """
+
+    rule_id = 'group_genre_outlier'
+    family = 'SEMANTIC_UNIQUE'
+    hops = 3
+
+    def candidates(self, summary, words, rng):
+        for key in MEDIA_DIMENSIONS:
+            s = summary.get(key)
+            if (s is None or not s.complete or len(s.recognized) < POLICY.min_answers
+                    or len(s.entities) != len(s.consented)):
+                # A colliding title may share some genres across its versions,
+                # but their intersection cannot prove other genres absent.
+                continue
+            exclusive = tuple(c for c in s.represented() if s.count(c) == 1)
+            holders = {s.members[c][0] for c in exclusive}
+            if len(holders) != 1:
+                continue
+            player = next(iter(holders))
+            labels = words.join(words.forms(c, s.dimension.domain)['label'] for c in exclusive)
+            explanation = words.text(
+                '{name} chose {choice}. Only their choice represents these genres: {genres}.',
+                '{name} בחר/ה {choice}. רק הבחירה הזאת מייצגת את הסגנונות האלה: {genres}.',
+                name=summary.name(player), choice=s.evidence_label(player, words.language), genres=labels)
+            yield self.candidate(rng, text=words.question('genre_outlier', key, (key,)),
+                                 answer=summary.name(player), dimensions=(key,), explanation=explanation,
+                                 fact=(key, 'exclusive_genres'), involved=s.recognized, answer_key=player,
+                                 distractors=[summary.name(p) for p in s.recognized if p != player],
+                                 focus=(player,), person=True, interest=clarity(s, (player,)),
+                                 membership=(s.dimension.field, (player,)),
+                                 reveals=(*counts_of(key, exclusive), *ones_of(key, exclusive)))
+
+
 class GroupDiversityRule(DiscoveryRule):
     """How many different categories the group's answers cover — only when every answer is recognized."""
 
@@ -478,7 +539,7 @@ class GroupDiversityRule(DiscoveryRule):
     family = 'SEMANTIC_DIVERSITY'
     difficulty = Difficulty.MEDIUM
     hops = 3
-    dimensions = ('food.cuisine', 'hobby.family', 'music.genre')
+    dimensions = ('food.cuisine', 'hobby.family', 'music.genre', *MEDIA_DIMENSIONS)
     maximum = 6
 
     def candidates(self, summary, words, rng):
@@ -486,6 +547,8 @@ class GroupDiversityRule(DiscoveryRule):
             s = summary.get(key)
             if s is None or not s.complete or len(s.consented) < POLICY.min_answers:
                 continue
+            if key in MEDIA_DIMENSIONS and len(s.entities) != len(s.consented):
+                continue  # Shared genres of ambiguous titles are not a complete genre inventory.
             represented = s.represented()
             n = len(represented)
             if not 2 <= n <= self.maximum:
@@ -494,6 +557,9 @@ class GroupDiversityRule(DiscoveryRule):
             labels = [words.forms(c, s.dimension.domain)[form] for c in represented]
             explanation = words.text('{n} {kinds}: {labels}.', '{n} {kinds}: {labels}.', n=n,
                                      kinds=words.kind(key, plural=True), labels=words.join(labels))
+            if key in MEDIA_DIMENSIONS:
+                explanation += ' ' + words.text('One choice can belong to several genres; each genre counts once.',
+                                                'בחירה אחת יכולה להשתייך לכמה סגנונות; כל סגנון נספר פעם אחת.')
             yield self.candidate(rng, text=words.question('diversity', key, (key,)), answer=str(n),
                                  distractors=number_choices(n, uncertain=0, maximum=len(s.categories), minimum=1),
                                  fact=(key,), dimensions=(key,), explanation=explanation, involved=s.recognized,
@@ -796,11 +862,16 @@ class SubgroupMajorityRule(DiscoveryRule):
     hops = 4
     pairs = (('movie.genre', 'hobby.family'), ('hobby.family', 'movie.genre'), ('food.cuisine', 'place.region'),
              ('place.region', 'food.cuisine'), ('music.genre', 'hobby.family'), ('place.region', 'hobby.family'),
-             ('place.region', 'music.genre'), ('hobby.family', 'music.genre'))
+             ('place.region', 'music.genre'), ('hobby.family', 'music.genre'),
+             ('artist.genre', 'hobby.family'), ('hobby.family', 'artist.genre'),
+             ('song.genre', 'movie.genre'), ('movie.genre', 'song.genre'),
+             ('movie.genre', 'artist.genre'), ('artist.genre', 'movie.genre'))
 
     def candidates(self, summary, words, rng):
         for condition_key, target_key in self.pairs:
             for condition, category, members in subgroups(summary, condition_key):
+                if (condition_key in MEDIA_DIMENSIONS or target_key in MEDIA_DIMENSIONS) and not condition.complete:
+                    continue  # An unresolved condition must not silently exclude a potential subgroup member.
                 scoped = subgroup_target(summary, target_key, members)
                 if scoped is None:
                     continue
@@ -843,11 +914,14 @@ class SubgroupComparisonRule(DiscoveryRule):
     difficulty = Difficulty.HARD
     hops = 4
     pairs = (('music.genre', 'hobby.family'), ('movie.genre', 'hobby.family'), ('place.region', 'food.cuisine'),
-             ('food.cuisine', 'hobby.family'), ('hobby.family', 'movie.genre'), ('place.region', 'hobby.setting'))
+             ('food.cuisine', 'hobby.family'), ('hobby.family', 'movie.genre'), ('place.region', 'hobby.setting'),
+             ('hobby.family', 'artist.genre'), ('movie.genre', 'song.genre'), ('artist.genre', 'movie.genre'))
 
     def candidates(self, summary, words, rng):
         for condition_key, target_key in self.pairs:
             for condition, category, members in subgroups(summary, condition_key):
+                if (condition_key in MEDIA_DIMENSIONS or target_key in MEDIA_DIMENSIONS) and not condition.complete:
+                    continue
                 scoped = subgroup_target(summary, target_key, members)
                 if scoped is None:
                     continue
@@ -947,7 +1021,7 @@ class IntersectionCountRule(DiscoveryRule):
 def discovery_rules(knowledge) -> tuple[DiscoveryRule, ...]:
     """Category-first families, in a stable order (the order candidates are generated)."""
     return tuple(rule(knowledge) for rule in (
-        GroupCountRule, GroupMajorityRule, GroupComparisonRule, GroupUniqueRule, GroupDiversityRule,
+        GroupCountRule, GroupMajorityRule, GroupComparisonRule, GroupUniqueRule, MediaGenreOutlierRule, GroupDiversityRule,
         GroupMinorityRule, GroupDistributionRule,
         RegionMajorityRule, RegionComparisonRule, RegionCountRule, RegionUniqueRule, RegionDiversityRule,
         LocalityExtremeRule, ClosestPairRule, GeographicOutlierRule,

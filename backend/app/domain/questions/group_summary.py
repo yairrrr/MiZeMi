@@ -68,6 +68,8 @@ class CoveragePolicy:
 
 
 POLICY = CoveragePolicy()
+MEDIA_DIMENSIONS = ('movie.genre', 'artist.genre', 'song.genre')
+MEDIA_DOMAINS = ('movie', 'artist', 'song')
 
 MOVIE_MAX_GENRES = 5
 CUISINES = ('food.italian', 'food.asian', 'food.middle_eastern', 'food.american', 'food.mexican',
@@ -102,6 +104,11 @@ class SemanticDimension:
     neutral: frozenset[str] = frozenset()
     neutral_values: frozenset[str] = frozenset()
     max_labels: int = 0
+
+    @property
+    def selection_domain(self) -> str:
+        """Artists and songs share a taxonomy, but represent independent player choices."""
+        return self.key.split('.')[0] if self.key in MEDIA_DIMENSIONS else self.domain
 
 
 DIMENSIONS = (
@@ -237,6 +244,17 @@ class DimensionSummary:
         return (len(self.recognized) >= policy.strong_min_recognized
                 and self.coverage >= policy.strong_coverage
                 and len(self.consented) >= policy.strong_min_participation * self.group_size)
+
+    def eligible_for_media_leader(self, policy: CoveragePolicy = POLICY) -> bool:
+        """A leader among shared media choices, not a claim about everyone's taste.
+
+        Three recognized choices can support this even when other participants
+        skip the optional field. A decisive lead is still proved separately;
+        neither an unknown nor a withheld answer becomes a negative membership.
+        """
+        return (self.dimension.key in MEDIA_DIMENSIONS
+                and len(self.recognized) >= policy.min_answers
+                and self.coverage >= policy.strong_coverage)
 
     @property
     def complete(self) -> bool:

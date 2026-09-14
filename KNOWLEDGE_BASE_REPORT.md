@@ -6,6 +6,8 @@ Verified locally on **2026-09-14**, bundle **2026-09-14.1**. The production engi
 
 ## Recovery and preserved architecture
 
+**Media follow-up:** [MEDIA_QUESTIONS_REPORT.md](MEDIA_QUESTIONS_REPORT.md) and MASTER_SPEC.md §12.4 document the focused movie/song/artist generation and selection improvements after the category-first revision. Reference assets, licenses and resolution behavior remain unchanged. Current media samples and regression results are in that follow-up report.
+
 Started from deployed `main` at `a3d4570` and created local branch `codex/group-intelligence`. The repository already contained the working multiplayer product, 29 historical profile rules and the 18-rule v4 knowledge extension. It did not match the much older interrupted-frontend handoff, so completed product work was preserved. Baseline: 1,038 backend tests passed, two optional PostgreSQL tests skipped; the only local modification was twelve removed `peer: true` metadata flags in `frontend/package-lock.json`. That diff remains untouched and unstaged.
 
 FastAPI/native WebSockets, pure Python domain logic, React/TypeScript/Vite, SQLAlchemy, authoritative timing/scoring, host credentials, reconnect, consent and finished-game persistence remain intact. Default length remains 20 questions, with the existing 20-second timeout and existing scoring/tie policy. No schema migration or new environment variable is required. The nine-field profile envelope extends the previous seven fields with independently consented optional favorite artist and song answers; old submissions remain valid.
