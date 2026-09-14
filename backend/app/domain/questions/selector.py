@@ -21,8 +21,8 @@ subgroups — and fills it with the most varied, most informative facts:
   what they disclose (``reveals``) and what would already answer them
   (``needs``); games are shown easy to hard, so "which hobby type is most
   common?" (easy) rules out a later "sport or reading?" (medium), while an easy
-  count may still precede a medium comparison it does not settle. Only when
-  nothing else can fill the game is this relaxed.
+  count may still precede a medium comparison it does not settle. This is
+  never relaxed: when too few unsettled facts exist the game is shorter.
 * Ties break on language-independent fact keys, so a seeded game selects the
   same facts in Hebrew and English.
 
@@ -225,18 +225,19 @@ class QuestionSelector:
         pool: dict[object, _Entry] = {}
         for entry in entries:
             pool.setdefault(entry.fact, entry)
-        # Prefer facts that settle others; if that leaves a game only a repeated
-        # answer can fill, a second pass without the preference may avoid it.
-        selected, repeats = self._fill(list(pool.values()), question_count, prefer_settling=True)
-        if repeats:
-            retry, retry_repeats = self._fill(list(pool.values()), question_count, prefer_settling=False)
-            if retry_repeats < repeats and len(retry) >= len(selected):
+        # Prefer facts that settle others; if that leaves a shorter game, a second
+        # pass without the preference may find more unsettled facts. Neither pass
+        # ever admits a settled question: fewer questions beat a repeated answer.
+        selected = self._fill(list(pool.values()), question_count, prefer_settling=True)
+        if len(selected) < question_count:
+            retry = self._fill(list(pool.values()), question_count, prefer_settling=False)
+            if len(retry) > len(selected):
                 selected = retry
         return tuple(entry.candidate for entry in _presentation_order(selected))
 
     @staticmethod
-    def _fill(remaining: list[_Entry], question_count: int, *, prefer_settling: bool) -> tuple[list[_Entry], int]:
-        """Greedy staged fill; returns the selection and how many picks repeat an earlier answer."""
+    def _fill(remaining: list[_Entry], question_count: int, *, prefer_settling: bool) -> list[_Entry]:
+        """Greedy staged fill of up to ``question_count`` facts, none settled by another."""
         supply = Counter(entry.kind for entry in remaining)
         quotas = plan_quotas(min(question_count, len(remaining)), dict(supply))
         preference = {kind: index for index, (kind, _) in enumerate(KIND_SHARES)}
@@ -270,7 +271,7 @@ class QuestionSelector:
                 other is not entry and other.hops >= entry.hops and _settled(entry.needs, entry.level, [other])
                 for topic in entry.topics for other in sharing[topic])
         }
-        people = repeats = 0
+        people = 0
         selected: list[_Entry] = []
 
         def answered(entry: _Entry) -> bool:
@@ -286,10 +287,10 @@ class QuestionSelector:
                        and _settled(other.needs, other.level, [e for e in related if e is not other], entry.reveals)
                        for other in related)
 
-        def allowed(entry: _Entry, relaxed: bool, repeat_ok: bool = False) -> bool:
+        def allowed(entry: _Entry, relaxed: bool) -> bool:
             if entry.text_key in seen_texts or (entry.membership is not None and entry.membership in seen_memberships):
                 return False
-            if not repeat_ok and answered(entry):
+            if answered(entry):
                 return False
             if entry.person and people >= caps['person']:
                 return False
@@ -325,7 +326,7 @@ class QuestionSelector:
         # Kinds still under quota first; then any kind within the caps; only when
         # nothing else fits do family and domain caps relax, and then the most
         # varied remaining fact wins regardless of kind. A question an earlier
-        # one already answers is the very last resort.
+        # one already answers is never selected.
         while remaining and len(selected) < question_count:
             kinds = sorted(supply, key=lambda k: (-(quotas.get(k, 0) - picked[k]), preference.get(k, 99), k))
             choice = None
@@ -339,13 +340,10 @@ class QuestionSelector:
                         break
                 if choice is not None:
                     break
-            for repeat_ok in (False, True):
-                if choice is not None:
-                    break
-                options = [e for e in remaining if allowed(e, True, repeat_ok)]
+            if choice is None:
+                options = [e for e in remaining if allowed(e, True)]
                 if options:
                     choice = min(options, key=lambda e: (rank(e), kinds.index(e.kind)))
-                    repeats += repeat_ok
             if choice is None:
                 break
             remaining.remove(choice)
@@ -367,7 +365,7 @@ class QuestionSelector:
             for p in choice.players:
                 players[p] += 1
 
-        return selected, repeats
+        return selected
 
 
 def _presentation_order(selected: list[_Entry]) -> list[_Entry]:

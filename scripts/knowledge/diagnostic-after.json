@@ -516,7 +516,7 @@
       "room": "he_rich",
       "language": "en",
       "players": 20,
-      "generation_ms": 13.8,
+      "generation_ms": 14.1,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -1025,7 +1025,7 @@
       "room": "en_rich",
       "language": "en",
       "players": 20,
-      "generation_ms": 13.5,
+      "generation_ms": 13.2,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -2043,7 +2043,7 @@
       "room": "curated_complete",
       "language": "he",
       "players": 20,
-      "generation_ms": 15.4,
+      "generation_ms": 15.2,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -2565,7 +2565,7 @@
       "room": "curated_complete",
       "language": "en",
       "players": 20,
-      "generation_ms": 15.0,
+      "generation_ms": 15.5,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -3087,7 +3087,7 @@
       "room": "unknown_heavy",
       "language": "he",
       "players": 20,
-      "generation_ms": 9.5,
+      "generation_ms": 9.8,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -3164,7 +3164,7 @@
         "music": 7,
         "place": 12
       },
-      "semantic_only_selectable": 14,
+      "semantic_only_selectable": 10,
       "rules": [
         {
           "rule_id": "geographic_outlier",
@@ -3534,7 +3534,7 @@
       "room": "unknown_heavy",
       "language": "en",
       "players": 20,
-      "generation_ms": 9.5,
+      "generation_ms": 9.7,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -3611,7 +3611,7 @@
         "music": 7,
         "place": 12
       },
-      "semantic_only_selectable": 14,
+      "semantic_only_selectable": 10,
       "rules": [
         {
           "rule_id": "geographic_outlier",
@@ -3981,7 +3981,7 @@
       "room": "sparse",
       "language": "he",
       "players": 6,
-      "generation_ms": 3.2,
+      "generation_ms": 3.4,
       "final_count": 20,
       "coverage": {
         "food.cuisine": {
@@ -4055,7 +4055,7 @@
         "music": 5,
         "place": 8
       },
-      "semantic_only_selectable": 20,
+      "semantic_only_selectable": 16,
       "rules": [
         {
           "rule_id": "geographic_outlier",
@@ -4475,7 +4475,7 @@
       "room": "sparse",
       "language": "en",
       "players": 6,
-      "generation_ms": 3.2,
+      "generation_ms": 3.3,
       "final_count": 20,
       "coverage": {
         "food.cuisine": {
@@ -4549,7 +4549,7 @@
         "music": 5,
         "place": 8
       },
-      "semantic_only_selectable": 20,
+      "semantic_only_selectable": 16,
       "rules": [
         {
           "rule_id": "geographic_outlier",
@@ -4969,7 +4969,7 @@
       "room": "audit_new_class",
       "language": "he",
       "players": 5,
-      "generation_ms": 4.1,
+      "generation_ms": 4.3,
       "final_count": 20,
       "coverage": {
         "movie.genre": {
@@ -5482,7 +5482,7 @@
       "room": "audit_new_class",
       "language": "en",
       "players": 5,
-      "generation_ms": 4.0,
+      "generation_ms": 4.2,
       "final_count": 20,
       "coverage": {
         "movie.genre": {

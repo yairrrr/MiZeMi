@@ -68,11 +68,14 @@ def test_public_config_controls_full_game_and_survives_results_and_persistence(l
             peers.append((player,socket))
         wait_for_snapshot(host, lambda snapshot: snapshot['state'] == 'READY')
         host.send_json(envelope('game.start', {}, room.game_id))
+        # The engine may return fewer questions than requested rather than repeat an answer.
+        actual = receive_until(host, 'game.started')['payload']['total_questions']
         game = app.state.room_registry.get(room.room_code).game
-        for index in range(count):
+        assert 0 < actual <= count and actual == len(game.questions)
+        for index in range(actual):
             question = receive_until(host, 'question.started')['payload']
             assert question['index'] == index
-            assert question['total_questions'] == count
+            assert question['total_questions'] == actual
             assert question['language'] == language
             assert 'correct_option_id' not in question
             for player, socket in peers:
@@ -91,7 +94,7 @@ def test_public_config_controls_full_game_and_survives_results_and_persistence(l
         with app.state.database.session_factory() as session:
             record=SqlAlchemyGameRepository(session).get(room.game_id)
             assert record.config == GameConfig(count,language)
-            assert len(record.questions) == count
+            assert len(record.questions) == actual
             assert {q.language for q in record.questions} == {language}
             assert [q.difficulty for q in record.questions] == [q.difficulty.value for q in game.questions]
             assert all(q.source_rule_id for q in record.questions)
@@ -113,3 +116,59 @@ def test_additive_schema_preserves_old_records_without_configuration():
         session.commit()
         assert all(session.scalar(select(func.count()).select_from(t)) == 0 for t in Base.metadata.sorted_tables)
     engine.dispose()
+
+
+def test_a_room_with_too_few_unsettled_facts_plays_a_shorter_game_through_finished():
+    """Three players cannot support 20 questions without repeating an answer, so they get fewer."""
+    app = _app()
+    count = 20
+    with TestClient(app) as client, contextlib.ExitStack() as stack:
+        body = client.post('/api/v1/rooms', json={'question_count': count, 'language': 'en'}).json()
+        room = CreatedRoom(body['room_code'], body['game_id'], body['host_token'])
+        host = stack.enter_context(host_ws(client, room))
+        names = ['Dana', 'Omer', 'Noa']
+        profiles = distinct_profiles(names)
+        peers = []
+        for name in names:
+            player = join(client, room.room_code, name)
+            socket = stack.enter_context(player_ws(client, room.room_code, player))
+            submit_profile_and_ready(socket, room.game_id, player, **profiles[name])
+            peers.append((player, socket))
+        wait_for_snapshot(host, lambda snapshot: snapshot['state'] == 'READY')
+        host.send_json(envelope('game.start', {}, room.game_id))
+        actual = receive_until(host, 'game.started')['payload']['total_questions']
+        game = app.state.room_registry.get(room.room_code).game
+        assert 0 < actual < count and len(game.questions) == actual
+        assert all(q.total_questions == actual for q in game.questions)
+        assert [q.index for q in game.questions] == list(range(actual))
+        for index in range(actual):
+            question = receive_until(host, 'question.started')['payload']
+            assert (question['index'], question['total_questions']) == (index, actual)
+            for _, socket in peers:
+                assert receive_until(socket, 'question.started')['payload']['total_questions'] == actual
+                socket.send_json(envelope('answer.submit', {'question_id': question['question_id'],
+                                                            'option_id': question['options'][0]['option_id']}, room.game_id))
+            receive_until(host, 'question.ended')
+            if index in (0, actual - 1):
+                # Reconnecting host and player see the actual total, not the requested count.
+                with host_ws(client, room) as restored:
+                    snapshot = receive_until(restored, 'room.updated')['payload']
+                    assert (snapshot['total_questions'], snapshot['config']['question_count']) == (actual, count)
+                    assert snapshot['current_question_index'] == index
+                    assert receive_until(restored, 'question.ended')['payload']['question_id'] == question['question_id']
+                player, _ = peers[0]
+                with player_ws(client, room.room_code, player) as restored:
+                    assert receive_until(restored, 'room.updated')['payload']['total_questions'] == actual
+            host.send_json(envelope('game.next', {}, room.game_id))
+            receive_until(host, 'leaderboard.updated')
+            host.send_json(envelope('game.next', {}, room.game_id))
+        receive_until(host, 'game.finished')
+        with host_ws(client, room) as restored:
+            snapshot = wait_for_snapshot(restored, lambda s: s['state'] == 'FINISHED')['payload']
+            assert snapshot['total_questions'] == actual
+        app.state.game_hub.flush_persistence()
+        with app.state.database.session_factory() as session:
+            record = SqlAlchemyGameRepository(session).get(room.game_id)
+            assert record.state == 'FINISHED'
+            assert len(record.questions) == actual
+            assert {q.total_questions for q in record.questions} == {actual}

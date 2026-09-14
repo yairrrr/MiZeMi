@@ -600,8 +600,35 @@ def test_no_question_is_answered_by_one_shown_before_it(room):
     ds = room.dataset()
     for seed in (11, 12):
         t = trace(ds, seed=seed)
-        assert len(t.questions) == 20
+        # Rich rooms fill the game; thin ones may legitimately return fewer questions.
+        if room.name in ('sparse', 'unknown_heavy', 'audit_new_class'):
+            assert 0 < len(t.questions) <= 20
+        else:
+            assert len(t.questions) == 20
         assert answered_by_earlier_questions(t, ds) == []
+
+
+def test_a_limited_pool_returns_fewer_questions_instead_of_a_settled_one():
+    rows = [{'city': c, 'favorite_food': f, 'hobby': h, 'favorite_music': m} for c, f, h, m in
+            (('Haifa', 'pizza', 'chess', 'Rock'), ('Tel Aviv', 'sushi', 'running', 'Pop'), ('Haifa', 'pizza', 'guitar', 'Rock'))]
+    ds = dataset(rows, 'en')
+    t = trace(ds)
+    assert 0 < len(t.questions) < 20  # Three players cannot support 20 unsettled facts.
+    assert answered_by_earlier_questions(t, ds) == []
+    assert [q.index for q in t.questions] == list(range(len(t.questions)))
+    assert {q.total_questions for q in t.questions} == {len(t.questions)}
+    assert len({c.semantic_key or (c.source_rule_id, c.text) for c in t.selected}) == len(t.selected)  # Nothing duplicated.
+    assert trace(ds, seed=12).questions[0].total_questions == len(t.questions)  # Seed-independent length.
+
+    import app.domain.questions.selector as selector
+    original = selector._settled
+    selector._settled = lambda *args, **kwargs: False
+    try:
+        filled = QuestionGenerator(knowledge=KB).trace(ds, question_count=20, time_limit_seconds=20, seed=11)
+    finally:
+        selector._settled = original
+    # Only settled questions could have filled the rest.
+    assert len(filled.questions) > len(t.questions) and answered_by_earlier_questions(filled, ds)
 
 
 def test_selector_prefers_the_fact_that_settles_others_and_respects_presentation_order():
@@ -642,6 +669,9 @@ def test_selector_prefers_the_fact_that_settles_others_and_respects_presentation
     # explanation later repeats that count.
     chosen = selector.select([sport_or_art, art_count], question_count=2)
     assert [c.text for c in chosen] == ['How many chose art?', 'Sport or art?']
+    # Nothing else can fill the game: fewer questions, never a settled one.
+    chosen = selector.select([leader, sport_or_art, sport_count], question_count=3)
+    assert [c.text for c in chosen] == ['Which type leads?']
 
 
 def test_production_registry_asks_about_players_never_general_knowledge():
