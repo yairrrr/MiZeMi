@@ -62,97 +62,81 @@
     "hobbies": 1300,
     "localities": 1167
   },
-  "load_with_tracemalloc_ms": 4541.925,
+  "load_with_tracemalloc_ms": 4246.688,
   "load_uninstrumented": {
-    "median_ms": 591.022,
-    "max_ms": 595.43,
+    "median_ms": 582.602,
+    "max_ms": 585.527,
     "runs": 10
   },
-  "knowledge_retained_python_bytes": 39517152,
-  "knowledge_peak_python_bytes": 49801918,
-  "process_max_rss_bytes": 262422528,
-  "lookup_average_microseconds": 6.438,
+  "knowledge_retained_python_bytes": 40838679,
+  "knowledge_peak_python_bytes": 51358461,
+  "process_max_rss_bytes": 267468800,
+  "lookup_average_microseconds": 4.672,
   "lookups": 100000,
-  "cold_app_import_median_ms": 807.955,
-  "cold_app_import_median_rss_bytes": 155893760,
+  "cold_app_import_median_ms": 779.128,
+  "cold_app_import_median_rss_bytes": 158220288,
   "30_players_20_questions": {
-    "median_ms": 16.916,
-    "max_ms": 21.768,
+    "median_ms": 12.182,
+    "max_ms": 18.111,
     "runs": 20
   },
-  "25_rooms_30_players_20_questions_total_ms": 423.557,
+  "25_rooms_30_players_20_questions_total_ms": 305.871,
+  "realistic_20_player_room_20_questions": {
+    "median_ms": 13.164,
+    "max_ms": 14.514,
+    "runs": 20
+  },
   "30_players_one_unknown_movie": {
-    "median_ms": 15.672,
-    "max_ms": 16.006,
+    "median_ms": 12.57,
+    "max_ms": 12.87,
     "runs": 10
   },
-  "synthetic_group_recognition": {
-    "city": {
-      "recognized": 24,
-      "entered": 24
-    },
-    "favorite_food": {
-      "recognized": 24,
-      "entered": 24
-    },
-    "hobby": {
-      "recognized": 24,
-      "entered": 24
-    },
-    "favorite_music": {
-      "recognized": 24,
-      "entered": 24
-    },
-    "favorite_movie": {
-      "recognized": 23,
-      "entered": 24
-    },
-    "favorite_artist": {
-      "recognized": 5,
-      "entered": 5
-    },
-    "favorite_song": {
-      "recognized": 5,
-      "entered": 5
-    }
-  },
-  "synthetic_group_usable_dimensions": {
-    "movie.genre": {
-      "known": 23,
-      "participants": 24
-    },
-    "music.genre": {
-      "known": 24,
-      "participants": 24
+  "audit_room_recognition": {
+    "artist.genre": {
+      "shared_answers": 17,
+      "recognized": 14,
+      "unknown": 3
     },
     "food.cuisine": {
-      "known": 24,
-      "participants": 24
-    },
-    "food.format": {
-      "known": 21,
-      "participants": 24
+      "shared_answers": 156,
+      "recognized": 125,
+      "unknown": 31
     },
     "hobby.family": {
-      "known": 24,
-      "participants": 24
-    },
-    "hobby.setting": {
-      "known": 24,
-      "participants": 24
+      "shared_answers": 156,
+      "recognized": 146,
+      "unknown": 10
     },
     "hobby.physical": {
-      "known": 21,
-      "participants": 24
+      "shared_answers": 156,
+      "recognized": 135,
+      "unknown": 21
+    },
+    "hobby.setting": {
+      "shared_answers": 156,
+      "recognized": 146,
+      "unknown": 10
+    },
+    "movie.genre": {
+      "shared_answers": 108,
+      "recognized": 87,
+      "unknown": 21
+    },
+    "music.genre": {
+      "shared_answers": 157,
+      "recognized": 157,
+      "unknown": 0
     },
     "place.region": {
-      "known": 24,
-      "participants": 24
+      "shared_answers": 154,
+      "recognized": 154,
+      "unknown": 0
     },
-    "place.district": {
-      "known": 24,
-      "participants": 24
+    "song.genre": {
+      "shared_answers": 3,
+      "recognized": 3,
+      "unknown": 0
     }
   },
-  "note": "Recognition describes these published synthetic fixtures, not a population estimate. RSS includes Python and benchmark instrumentation."
+  "note": "Recognition describes the published synthetic audit rooms, not a population estimate. RSS includes Python and benchmark instrumentation."
 }

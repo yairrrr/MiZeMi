@@ -46,65 +46,7 @@
     "en": [
       {
         "rule": "group_count",
-        "question": "How many people in our group chose hobbies involving Physical activity?",
-        "options": [
-          "4",
-          "2",
-          "1",
-          "3"
-        ],
-        "correct": "3",
-        "explanation": "3 people chose hobbies involving Physical activity: “Running”, “Association football”, “Surfing”."
-      },
-      {
-        "rule": "group_scoped_count",
-        "question": "Among Dana, Omer, Noa, Lior, how many chose foods from the Baked goods and pastries family?",
-        "options": [
-          "2",
-          "0",
-          "3",
-          "1"
-        ],
-        "correct": "1",
-        "explanation": "One person chose a food from the Baked goods and pastries family: “Pizza”."
-      },
-      {
-        "rule": "group_mode",
-        "question": "Which activity family is most common in our group?",
-        "options": [
-          "Arts and crafts",
-          "Nature activities",
-          "Collecting",
-          "Sport"
-        ],
-        "correct": "Sport",
-        "explanation": "3 people chose hobbies related to Sport: “Running”, “Association football”, “Surfing”."
-      },
-      {
-        "rule": "group_unique",
-        "question": "Only one person in our group chose a Crime movie. Who?",
-        "options": [
-          "Lior",
-          "Noa",
-          "Amit",
-          "Dana"
-        ],
-        "correct": "Dana",
-        "explanation": "Dana: One person chose a Crime movie: “Saw (film)”."
-      },
-      {
-        "rule": "group_comparison_semantic",
-        "question": "Which of these film genres is more common in our group?",
-        "options": [
-          "Horror",
-          "Crime"
-        ],
-        "correct": "Horror",
-        "explanation": "One person chose a Crime movie: “Saw (film)”. 2 people chose Horror movies: “Saw (film)”, “The Conjuring”."
-      },
-      {
-        "rule": "group_diversity",
-        "question": "How many activity families are represented in our group?",
+        "question": "How many adventure movies are there among the movies you chose?",
         "options": [
           "3",
           "1",
@@ -112,35 +54,33 @@
           "2"
         ],
         "correct": "2",
-        "explanation": "2 families: Sport, Arts and crafts. A choice can belong to more than one family."
+        "explanation": "2 people chose adventure movies: Toy Story, Finding Nemo."
       },
       {
-        "rule": "group_different_pair",
-        "question": "Which two people chose different hobbies, both in Arts and crafts?",
+        "rule": "group_mode",
+        "question": "Based on your food choices, which cuisine is the most popular in our group?",
         "options": [
-          "Omer + Amit",
-          "Omer + Lior",
-          "Omer + Noa",
-          "Amit + Lior"
+          "Middle Eastern",
+          "Asian",
+          "French",
+          "Italian"
         ],
-        "correct": "Amit + Lior",
-        "explanation": "2 people chose hobbies related to Arts and crafts: “Guitar”, “Photography”."
+        "correct": "Italian",
+        "explanation": "3 people chose Italian food — more than any other cuisine."
       },
       {
-        "rule": "region_majority",
-        "question": "Which region is home to the majority of our group?",
+        "rule": "group_comparison_semantic",
+        "question": "Looking at your movie picks, which side wins — Adventure or Crime?",
         "options": [
-          "Southern Israel",
-          "Northern Israel",
-          "Jerusalem area",
-          "Central Israel"
+          "Adventure",
+          "Crime"
         ],
-        "correct": "Central Israel",
-        "explanation": "3 people are from Central Israel: “Tel Aviv”, “Reẖovot”, “Rishon LeTsiyyon”."
+        "correct": "Adventure",
+        "explanation": "2 people chose adventure movies, compared with one person who chose a crime movie."
       },
       {
-        "rule": "geographic_outlier",
-        "question": "Who lives furthest from the rest of our group, on average?",
+        "rule": "group_unique",
+        "question": "Only one person in our group chose a crime movie. Who?",
         "options": [
           "Lior",
           "Noa",
@@ -148,72 +88,11 @@
           "Dana"
         ],
         "correct": "Dana",
-        "explanation": "Dana, from Haifa: an average of about 115 km to the other towns, by air."
+        "explanation": "Dana: Saw."
       },
       {
-        "rule": "group_filtered_mode",
-        "question": "Among people who chose hobbies related to Sport, which film genre is most common?",
-        "options": [
-          "Mystery",
-          "Thriller",
-          "Crime",
-          "Horror"
-        ],
-        "correct": "Horror",
-        "explanation": "3 people chose hobbies related to Sport: “Running”, “Association football”, “Surfing”. 2 people chose Horror movies: “Saw (film)”, “The Conjuring”."
-      },
-      {
-        "rule": "group_intersection_count",
-        "question": "How many people chose both Adventure movies and hobbies related to Sport?",
-        "options": [
-          "2",
-          "0",
-          "3",
-          "1"
-        ],
-        "correct": "1",
-        "explanation": "One person chose an Adventure movie: “Toy Story”. One person chose a hobby related to Sport: “Surfing”."
-      },
-      {
-        "rule": "region_hobby_diversity",
-        "question": "Which region brings the widest range of hobbies to our group?",
-        "options": [
-          "Southern Israel",
-          "Central Israel",
-          "Northern Israel"
-        ],
-        "correct": "Central Israel",
-        "explanation": "People from Central Israel chose hobbies in Arts and crafts, Sport."
-      },
-      {
-        "rule": "locality_distance_pair",
-        "question": "Which pair chose the towns that are closest by air distance?",
-        "options": [
-          "Omer + Amit",
-          "Omer + Lior",
-          "Omer + Noa",
-          "Noa + Amit"
-        ],
-        "correct": "Noa + Amit",
-        "explanation": "Reẖovot and Rishon LeTsiyyon are about 9 km apart by air, comparing locality reference points, not homes or roads."
-      },
-      {
-        "rule": "locality_extreme",
-        "question": "Whose town is furthest north in the group?",
-        "options": [
-          "Lior",
-          "Noa",
-          "Amit",
-          "Dana"
-        ],
-        "correct": "Dana",
-        "explanation": "Haifa, chosen by Dana, has the northernmost reference point among these towns."
-      }
-    ],
-    "he": [
-      {
-        "rule": "group_count",
-        "question": "כמה אנשים בקבוצה בחרו תחביבים שכוללים פעילות גופנית?",
+        "rule": "group_diversity",
+        "question": "How many cuisines are represented in your favorite foods?",
         "options": [
           "4",
           "2",
@@ -221,11 +100,33 @@
           "3"
         ],
         "correct": "3",
-        "explanation": "3 אנשים בחרו תחביבים שכוללים פעילות גופנית: “ריצה”, “כדורגל”, “גלישת גלים”."
+        "explanation": "3 cuisines: Italian, Asian and Middle Eastern."
       },
       {
-        "rule": "group_scoped_count",
-        "question": "מבין דנה, עומר, נועה, ליאור, כמה בחרו מאכלים ממשפחת מאפים?",
+        "rule": "region_majority",
+        "question": "Most of our group lives in one region. Which one?",
+        "options": [
+          "The south",
+          "The north",
+          "The Jerusalem area",
+          "The center"
+        ],
+        "correct": "The center",
+        "explanation": "3 people live in the center of the country — more than half the group."
+      },
+      {
+        "rule": "region_comparison",
+        "question": "Are there more people from the north or from the center of the country in our group?",
+        "options": [
+          "The north",
+          "The center"
+        ],
+        "correct": "The center",
+        "explanation": "3 people live in the center of the country, compared with one person who lives in the north."
+      },
+      {
+        "rule": "region_count",
+        "question": "How many of you come from the north?",
         "options": [
           "2",
           "0",
@@ -233,23 +134,141 @@
           "1"
         ],
         "correct": "1",
-        "explanation": "אדם אחד בחר מאכל ממשפחת מאפים: “פיצה”."
+        "explanation": "One person lives in the north: Haifa."
+      },
+      {
+        "rule": "region_unique",
+        "question": "Who is the only one here from the north?",
+        "options": [
+          "Lior",
+          "Noa",
+          "Amit",
+          "Dana"
+        ],
+        "correct": "Dana",
+        "explanation": "Dana: Haifa."
+      },
+      {
+        "rule": "region_diversity",
+        "question": "From how many regions of Israel does our group come?",
+        "options": [
+          "4",
+          "2",
+          "1",
+          "3"
+        ],
+        "correct": "3",
+        "explanation": "3 regions: the north, the center of the country and the south."
+      },
+      {
+        "rule": "locality_extreme",
+        "question": "Which of you lives in the northernmost town?",
+        "options": [
+          "Lior",
+          "Amit",
+          "Noa",
+          "Dana"
+        ],
+        "correct": "Dana",
+        "explanation": "Haifa, where Dana lives, is the northernmost town in the group."
+      },
+      {
+        "rule": "locality_distance_pair",
+        "question": "Which pair of you lives the shortest distance apart?",
+        "options": [
+          "Noa + Lior",
+          "Omer + Lior",
+          "Dana + Omer",
+          "Noa + Amit"
+        ],
+        "correct": "Noa + Amit",
+        "explanation": "Noa and Amit live in Rehovot and Rishon LeZion, about 9 km apart as the crow flies."
+      },
+      {
+        "rule": "geographic_outlier",
+        "question": "Who lives furthest from the rest of the group?",
+        "options": [
+          "Amit",
+          "Omer",
+          "Noa",
+          "Dana"
+        ],
+        "correct": "Dana",
+        "explanation": "Dana lives in Haifa, on average about 115 km from the other towns in the group, as the crow flies."
+      },
+      {
+        "rule": "group_filtered_mode",
+        "question": "Among people with a sports hobby, which movie genre is the most common?",
+        "options": [
+          "Animation",
+          "Adventure",
+          "Comedy",
+          "Horror"
+        ],
+        "correct": "Horror",
+        "explanation": "3 people chose sports hobbies. Of them, 2 chose horror movies — more than any other genre."
+      },
+      {
+        "rule": "group_subgroup_comparison",
+        "question": "Among people who live in the center of the country, which is more popular — Italian or Asian food?",
+        "options": [
+          "Italian",
+          "Asian"
+        ],
+        "correct": "Italian",
+        "explanation": "3 people live in the center of the country. Of them, 2 chose Italian food and 1 chose an Asian dish."
+      },
+      {
+        "rule": "group_intersection_count",
+        "question": "How many people chose both an adventure movie and a sports hobby?",
+        "options": [
+          "2",
+          "0",
+          "3",
+          "1"
+        ],
+        "correct": "1",
+        "explanation": "One person chose both an adventure movie and a sports hobby: Toy Story + Surfing."
+      }
+    ],
+    "he": [
+      {
+        "rule": "group_count",
+        "question": "כמה סרטי הרפתקאות יש בין הסרטים שבחרתם?",
+        "options": [
+          "3",
+          "1",
+          "0",
+          "2"
+        ],
+        "correct": "2",
+        "explanation": "2 אנשים בחרו סרטי הרפתקאות: צעצוע של סיפור, מוצאים את נמו."
       },
       {
         "rule": "group_mode",
-        "question": "לפי התחביבים שבחרתם, איזה תחום הכי נפוץ בקבוצה?",
+        "question": "לפי המאכלים שבחרתם, איזה מטבח הכי פופולרי בקבוצה?",
         "options": [
-          "אמנות ויצירה",
-          "פעילות בטבע",
-          "אספנות",
-          "ספורט"
+          "מזרח תיכוני",
+          "אסייתי",
+          "צרפתי",
+          "איטלקי"
         ],
-        "correct": "ספורט",
-        "explanation": "3 אנשים בחרו תחביבים שקשורים לספורט: “ריצה”, “כדורגל”, “גלישת גלים”."
+        "correct": "איטלקי",
+        "explanation": "3 אנשים בחרו אוכל איטלקי — יותר מכל מטבח אחר."
+      },
+      {
+        "rule": "group_comparison_semantic",
+        "question": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — הרפתקאות או פשע?",
+        "options": [
+          "הרפתקאות",
+          "פשע"
+        ],
+        "correct": "הרפתקאות",
+        "explanation": "2 אנשים בחרו סרטי הרפתקאות, לעומת אדם אחד שבחר סרט פשע."
       },
       {
         "rule": "group_unique",
-        "question": "רק אחד בקבוצה בחר סרט בז׳אנר פשע. מי זה?",
+        "question": "רק אדם אחד בקבוצה בחר סרט פשע. מי זה?",
         "options": [
           "ליאור",
           "נועה",
@@ -257,45 +276,23 @@
           "דנה"
         ],
         "correct": "דנה",
-        "explanation": "דנה: אדם אחד בחר סרט בז׳אנר פשע: “המסור”."
-      },
-      {
-        "rule": "group_comparison_semantic",
-        "question": "מה נפוץ יותר בקבוצה מבין ז׳אנרי הסרטים הבאים?",
-        "options": [
-          "אימה",
-          "פשע"
-        ],
-        "correct": "אימה",
-        "explanation": "אדם אחד בחר סרט בז׳אנר פשע: “המסור”. 2 אנשים בחרו סרטים בז׳אנר אימה: “המסור”, “לזמן את הרוע”."
+        "explanation": "דנה: המסור."
       },
       {
         "rule": "group_diversity",
-        "question": "כמה תחומים שונים יש בתחביבים של הקבוצה?",
+        "question": "כמה מטבחים שונים מיוצגים בבחירות האוכל שלכם?",
         "options": [
-          "3",
+          "4",
+          "2",
           "1",
-          "0",
-          "2"
+          "3"
         ],
-        "correct": "2",
-        "explanation": "2 תחומים: ספורט, אמנות ויצירה. בחירה אחת יכולה להשתייך ליותר מתחום אחד."
-      },
-      {
-        "rule": "group_different_pair",
-        "question": "איזה שני אנשים בחרו תחביבים שונים שמתחברים דרך אמנות ויצירה?",
-        "options": [
-          "עומר + עמית",
-          "עומר + ליאור",
-          "עומר + נועה",
-          "עמית + ליאור"
-        ],
-        "correct": "עמית + ליאור",
-        "explanation": "2 אנשים בחרו תחביבים שקשורים לאמנות ויצירה: “גיטרה”, “צילום”."
+        "correct": "3",
+        "explanation": "3 מטבחים: איטלקי, אסייתי ומזרח תיכוני."
       },
       {
         "rule": "region_majority",
-        "question": "מאיזה אזור בארץ מגיע רוב הקבוצה?",
+        "question": "רוב הקבוצה גרה באותו אזור. באיזה?",
         "options": [
           "הדרום",
           "הצפון",
@@ -303,35 +300,21 @@
           "המרכז"
         ],
         "correct": "המרכז",
-        "explanation": "3 אנשים מגיעים מהמרכז: “תל אביב יפו”, “רחובות”, “ראשון לציון”."
+        "explanation": "3 אנשים גרים במרכז — יותר ממחצית הקבוצה."
       },
       {
-        "rule": "geographic_outlier",
-        "question": "מי גר הכי רחוק משאר הקבוצה, בממוצע?",
+        "rule": "region_comparison",
+        "question": "מה יש יותר בקבוצה — אנשים מהצפון או מהמרכז?",
         "options": [
-          "ליאור",
-          "נועה",
-          "עמית",
-          "דנה"
+          "הצפון",
+          "המרכז"
         ],
-        "correct": "דנה",
-        "explanation": "דנה, מחיפה: בממוצע כ־115 ק״מ בקו אווירי לשאר היישובים בקבוצה."
+        "correct": "המרכז",
+        "explanation": "3 אנשים גרים במרכז, לעומת אדם אחד שגר בצפון."
       },
       {
-        "rule": "group_filtered_mode",
-        "question": "מבין מי שבחרו תחביבים שקשורים לספורט, איזה ז׳אנר קולנוע הכי נפוץ?",
-        "options": [
-          "מסתורין",
-          "מתח",
-          "פשע",
-          "אימה"
-        ],
-        "correct": "אימה",
-        "explanation": "3 אנשים בחרו תחביבים שקשורים לספורט: “ריצה”, “כדורגל”, “גלישת גלים”. 2 אנשים בחרו סרטים בז׳אנר אימה: “המסור”, “לזמן את הרוע”."
-      },
-      {
-        "rule": "group_intersection_count",
-        "question": "כמה אנשים בחרו גם סרטים בז׳אנר הרפתקאות וגם תחביבים שקשורים לספורט?",
+        "rule": "region_count",
+        "question": "כמה מכם מגיעים מהצפון?",
         "options": [
           "2",
           "0",
@@ -339,34 +322,11 @@
           "1"
         ],
         "correct": "1",
-        "explanation": "אדם אחד בחר סרט בז׳אנר הרפתקאות: “צעצוע של סיפור”. אדם אחד בחר תחביב שקשור לספורט: “גלישת גלים”."
+        "explanation": "אדם אחד גר בצפון: חיפה."
       },
       {
-        "rule": "region_hobby_diversity",
-        "question": "מאיזה אזור מגיע המגוון הכי רחב של תחומי תחביבים בקבוצה?",
-        "options": [
-          "הדרום",
-          "המרכז",
-          "הצפון"
-        ],
-        "correct": "המרכז",
-        "explanation": "המשתתפים מהמרכז בחרו תחביבים בתחומים אמנות ויצירה, ספורט."
-      },
-      {
-        "rule": "locality_distance_pair",
-        "question": "אילו שני אנשים בקבוצה גרים ביישובים הקרובים ביותר זה לזה בקו אווירי?",
-        "options": [
-          "עומר + עמית",
-          "עומר + ליאור",
-          "עומר + נועה",
-          "נועה + עמית"
-        ],
-        "correct": "נועה + עמית",
-        "explanation": "בין רחובות לראשון לציון יש כ־9 ק״מ בקו אווירי, לפי נקודות הייחוס של היישובים ולא לפי כתובות מגורים או כבישים."
-      },
-      {
-        "rule": "locality_extreme",
-        "question": "מי בקבוצה גר הכי צפונה?",
+        "rule": "region_unique",
+        "question": "מי היחיד/ה בקבוצה שמגיע/ה מהצפון?",
         "options": [
           "ליאור",
           "נועה",
@@ -374,7 +334,89 @@
           "דנה"
         ],
         "correct": "דנה",
-        "explanation": "חיפה, היישוב של דנה, הוא היישוב הצפוני ביותר לפי נקודות הייחוס של היישובים שנבחרו."
+        "explanation": "דנה: חיפה."
+      },
+      {
+        "rule": "region_diversity",
+        "question": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+        "options": [
+          "4",
+          "2",
+          "1",
+          "3"
+        ],
+        "correct": "3",
+        "explanation": "3 אזורים: הצפון, המרכז והדרום."
+      },
+      {
+        "rule": "locality_extreme",
+        "question": "מי מכם גר/ה ביישוב הכי צפוני?",
+        "options": [
+          "ליאור",
+          "עמית",
+          "נועה",
+          "דנה"
+        ],
+        "correct": "דנה",
+        "explanation": "חיפה, היישוב של דנה, הוא הצפוני ביותר בקבוצה."
+      },
+      {
+        "rule": "locality_distance_pair",
+        "question": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+        "options": [
+          "נועה + ליאור",
+          "עומר + ליאור",
+          "דנה + עומר",
+          "נועה + עמית"
+        ],
+        "correct": "נועה + עמית",
+        "explanation": "נועה ועמית גרים ברחובות ובראשון לציון, כ־9 ק״מ זה מזה בקו אווירי."
+      },
+      {
+        "rule": "geographic_outlier",
+        "question": "מי גר/ה הכי רחוק משאר הקבוצה?",
+        "options": [
+          "עמית",
+          "עומר",
+          "נועה",
+          "דנה"
+        ],
+        "correct": "דנה",
+        "explanation": "דנה גר/ה בחיפה, בממוצע כ־115 ק״מ בקו אווירי משאר היישובים בקבוצה."
+      },
+      {
+        "rule": "group_filtered_mode",
+        "question": "מבין מי שבחרו תחביב ספורטיבי, איזה ז׳אנר סרטים הכי נפוץ?",
+        "options": [
+          "אנימציה",
+          "הרפתקאות",
+          "קומדיה",
+          "אימה"
+        ],
+        "correct": "אימה",
+        "explanation": "3 אנשים בחרו תחביבי ספורט. מתוכם, 2 בחרו סרטי אימה — יותר מכל ז׳אנר אחר."
+      },
+      {
+        "rule": "group_subgroup_comparison",
+        "question": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אסייתי?",
+        "options": [
+          "איטלקי",
+          "אסייתי"
+        ],
+        "correct": "איטלקי",
+        "explanation": "3 אנשים גרים במרכז. מתוכם, 2 בחרו אוכל איטלקי ו־1 בחר מאכל אסייתי."
+      },
+      {
+        "rule": "group_intersection_count",
+        "question": "כמה אנשים בחרו גם סרט הרפתקאות וגם תחביב ספורטיבי?",
+        "options": [
+          "2",
+          "0",
+          "3",
+          "1"
+        ],
+        "correct": "1",
+        "explanation": "אדם אחד בחר גם סרט הרפתקאות וגם תחביב ספורטיבי: צעצוע של סיפור + גלישת גלים."
       }
     ]
   }

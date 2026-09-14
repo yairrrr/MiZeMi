@@ -7,7 +7,7 @@ const { language, count, knowledge } = scenario
 const playerCount = knowledge ? 5 : 3
 const prefix = knowledge ? 'knowledge-he' : language
 const t = (key: MessageKey, values?: Values) => translate(language, key, values)
-test(`${prefix}: host and ${playerCount} mobile players complete ${count} rounds with reconnects and visual QA`, async ({ browser, baseURL }) => {
+test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-question game with reconnects and visual QA`, async ({ browser, baseURL }) => {
   const contexts = await Promise.all(Array.from({ length: playerCount + 1 }, (_, i) => browser.newContext({
     viewport: i === 0 ? { width: 1440, height: 1000 } : { width: 390, height: 844 },
     isMobile: i !== 0, hasTouch: i !== 0,
@@ -98,17 +98,23 @@ test(`${prefix}: host and ${playerCount} mobile players complete ${count} rounds
     await host.reload()
     await expect(host.getByText(t('{count} questions · {language}', { count, language: t(language === 'he' ? 'Hebrew' : 'English') }))).toBeVisible()
     await host.getByRole('button', { name: t('Start game'), exact: true }).click()
+    // The engine returns fewer questions than requested rather than one an earlier question already answers.
+    await expect.poll(() => latest<{ total_questions: number }>(host, 'game.started')?.total_questions ?? 0).toBeGreaterThan(0)
+    const rounds = latest<{ total_questions: number }>(host, 'game.started')!.total_questions
+    expect(rounds).toBeLessThanOrEqual(count)
+    if (knowledge) expect(rounds).toBe(count)
+    if (rounds < count) await expect(host.getByText(t('Only {actual} of {requested} questions could be made from the shared profiles.', { actual: rounds, requested: count }))).toBeVisible()
     const totals = Array<number>(playerCount).fill(0)
-    for (let round = 0; round < count; round += 1) {
-      await expect(host.getByText(t('Question {current} of {total}', { current: round + 1, total: count }), { exact: true })).toBeVisible()
+    for (let round = 0; round < rounds; round += 1) {
+      await expect(host.getByText(t('Question {current} of {total}', { current: round + 1, total: rounds }), { exact: true })).toBeVisible()
       await noOverflow(host)
       expect(Number(await host.locator('.timer-seconds').textContent())).toBeLessThanOrEqual(20)
       const q = latest<Question>(host, 'question.started')!
       expect(q.time_limit_seconds).toBe(20)
       expect(q.language).toBe(language)
-      expect(q.total_questions).toBe(count)
+      expect(q.total_questions).toBe(rounds)
       expect(/[א-ת]/.test(q.text)).toBe(language === 'he')
-      if (round === 0 || round === count - 1) await host.screenshot({ path: `test-results/${prefix}-question-${round}.png`, fullPage: true })
+      if (round === 0 || round === rounds - 1) await host.screenshot({ path: `test-results/${prefix}-question-${round}.png`, fullPage: true })
       expect(q).not.toHaveProperty('correct_option_id')
       expect(q).not.toHaveProperty('explanation')
       expect(q).not.toHaveProperty('knowledge_version')
@@ -120,9 +126,9 @@ test(`${prefix}: host and ${playerCount} mobile players complete ${count} rounds
       }
       const chosen: (string | null)[] = []
       for (const [i, page] of players.entries()) {
-        await expect(page.getByText(t('Question {current} of {total}', { current: round + 1, total: count }), { exact: true })).toBeVisible()
+        await expect(page.getByText(t('Question {current} of {total}', { current: round + 1, total: rounds }), { exact: true })).toBeVisible()
         await noOverflow(page)
-        if (round === 0 || round === count - 1) await page.screenshot({ path: `test-results/${prefix}-player-${i}-question-${round}.png`, fullPage: true })
+        if (round === 0 || round === rounds - 1) await page.screenshot({ path: `test-results/${prefix}-player-${i}-question-${round}.png`, fullPage: true })
         if (language === 'en' && round === 0 && i === 2) { chosen.push(null); continue }
         const index = i % q.options.length
         chosen.push(q.options[index].option_id)
@@ -183,7 +189,7 @@ test(`${prefix}: host and ${playerCount} mobile players complete ${count} rounds
         await expect(host.getByRole('list', { name: t('Leaderboard') }).getByRole('listitem')).toHaveCount(playerCount)
         await expect(players[0].getByRole('list', { name: t('Leaderboard') }).getByRole('listitem')).toHaveCount(playerCount)
       }
-      await host.getByRole('button', { name: t(round === count - 1 ? 'Show final results' : 'Next question') }).click()
+      await host.getByRole('button', { name: t(round === rounds - 1 ? 'Show final results' : 'Next question') }).click()
     }
     await expect(host.getByRole('heading', { name: t('Final leaderboard') })).toBeVisible()
     for (const [i, page] of players.entries()) {

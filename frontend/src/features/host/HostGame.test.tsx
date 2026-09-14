@@ -147,6 +147,20 @@ describe('HostGameView', () => {
     expect(screen.getByRole('button', { name: 'Show final results' })).toBeVisible()
   })
 
+  test('a shorter game than requested shows and ends at its actual total', () => {
+    // 20 requested; the engine made 2 rather than repeat an answer.
+    const last: Question = { ...question, question_id: 'q2', index: 1 }
+    renderView({ room: room('QUESTION_ACTIVE', [player('p1', 'Dana')], 1), question: last })
+    expect(screen.getByText('Question 2 of 2')).toBeVisible()
+    expect(screen.getByText('Only 2 of 20 questions could be made from the shared profiles.')).toBeVisible()
+    cleanup()
+
+    const entries = [{ rank: 1, player_id: 'p1', display_name: 'Dana', total_score: 900 }]
+    renderView({ room: room('LEADERBOARD', [player('p1', 'Dana')], 1), leaderboard: entries })
+    expect(screen.getByText('After question 2 of 2')).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Show final results' })).toBeVisible()
+  })
+
   test('celebrates co-winners on a tie', () => {
     const entries = [
       { rank: 1, player_id: 'p1', display_name: 'Dana', total_score: 900 },

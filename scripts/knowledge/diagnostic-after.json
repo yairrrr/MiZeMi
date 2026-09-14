@@ -1,0 +1,5995 @@
+{
+  "engine": "after",
+  "knowledge_version": "2026-09-14.1",
+  "question_count": 20,
+  "rooms": [
+    {
+      "room": "he_rich",
+      "language": "he",
+      "players": 20,
+      "generation_ms": 14.4,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 17,
+          "players": 20,
+          "recognized": 15,
+          "unknown": 2,
+          "coverage": 0.882
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 17,
+          "unknown": 3,
+          "coverage": 0.85
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 18,
+          "unknown": 2,
+          "coverage": 0.9
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "artist.genre": {
+          "shared": 3,
+          "players": 20,
+          "recognized": 3,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 19,
+          "players": 20,
+          "recognized": 19,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 57,
+          "valid": 57,
+          "selected": 2
+        },
+        "direct": {
+          "raw": 106,
+          "valid": 106,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 13,
+          "valid": 13,
+          "selected": 4
+        },
+        "semantic": {
+          "raw": 72,
+          "valid": 72,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "food": 5,
+        "hobby": 5,
+        "movie": 2,
+        "music": 5,
+        "place": 5
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.865
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 64,
+          "valid": 64,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.441
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.659
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.567
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 37,
+          "valid": 37,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.607
+        },
+        {
+          "rule_id": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 16,
+          "valid": 16,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.743
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 24,
+          "valid": 24,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.752
+        },
+        {
+          "rule_id": "group_minority",
+          "kind": "semantic",
+          "family": "SEMANTIC_MINORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.847
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 17,
+          "valid": 17,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.697
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 11,
+          "valid": 11,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.663
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.805
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.691
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.705
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.825
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.852
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 32,
+          "valid": 32,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "איזה סוג תחביב יש להכי הרבה אנשים כאן?",
+          "correct": "ספורט"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח האיטלקי?",
+          "correct": "6"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "לכמה מכם יש תחביב שעושים בחוץ?",
+          "correct": "4"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה מכם בחרו מוזיקת רוק כסגנון האהוב?",
+          "correct": "3"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "מי היחיד/ה שהתחביב שלו/ה הוא \"קריאה\"?",
+          "correct": "תמר"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "food",
+          "text": "איזה משני המאכלים האלה נבחר יותר בקבוצה?",
+          "correct": "פיצה"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "food",
+          "text": "כמה משתתפים בחרו \"סושי\" כאוכל האהוב עליהם?",
+          "correct": "2"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "כמה סרטי הרפתקאות יש בין הסרטים שבחרתם?",
+          "correct": "7"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "food",
+          "text": "מי היחיד/ה שבחר/ה \"שקשוקה\" כאוכל אהוב?",
+          "correct": "דניאל"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "correct": "יונתן"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — הרפתקאות או פשע?",
+          "correct": "הרפתקאות"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "רק אדם אחד בחר אמן שמזוהה עם מוזיקת רוק. מי זה?",
+          "correct": "מאיה"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל איטלקי או אמריקאי?",
+          "correct": "איטלקי"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים כאן?",
+          "correct": "5"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מאיפה מגיעים יותר מכם — מהצפון או מאזור ירושלים?",
+          "correct": "הצפון"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "רק אדם אחד בקבוצה בחר תחביב של הרפיה. מי זה?",
+          "correct": "נדב"
+        },
+        {
+          "index": 18,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "correct": "4"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "מבין מי שגרים במרכז, איזה סגנון מוזיקה הכי נפוץ?",
+          "correct": "פופ"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "כמה אנשים בחרו גם מוזיקה אלקטרונית וגם תחביב ספורטיבי?",
+          "correct": "2"
+        }
+      ]
+    },
+    {
+      "room": "he_rich",
+      "language": "en",
+      "players": 20,
+      "generation_ms": 14.1,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 17,
+          "players": 20,
+          "recognized": 15,
+          "unknown": 2,
+          "coverage": 0.882
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 17,
+          "unknown": 3,
+          "coverage": 0.85
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 18,
+          "unknown": 2,
+          "coverage": 0.9
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "artist.genre": {
+          "shared": 3,
+          "players": 20,
+          "recognized": 3,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 19,
+          "players": 20,
+          "recognized": 19,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 57,
+          "valid": 57,
+          "selected": 2
+        },
+        "direct": {
+          "raw": 106,
+          "valid": 106,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 13,
+          "valid": 13,
+          "selected": 4
+        },
+        "semantic": {
+          "raw": 72,
+          "valid": 72,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "food": 5,
+        "hobby": 5,
+        "movie": 2,
+        "music": 5,
+        "place": 5
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.865
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 64,
+          "valid": 64,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.441
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.659
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.567
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 37,
+          "valid": 37,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.607
+        },
+        {
+          "rule_id": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 16,
+          "valid": 16,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.743
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 24,
+          "valid": 24,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.752
+        },
+        {
+          "rule_id": "group_minority",
+          "kind": "semantic",
+          "family": "SEMANTIC_MINORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.847
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 17,
+          "valid": 17,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.697
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 11,
+          "valid": 11,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.663
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.805
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.691
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.705
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.825
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.852
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 32,
+          "valid": 32,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Which type of hobby do the most people here have?",
+          "correct": "Sport"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "How many of the dishes you chose are Italian?",
+          "correct": "6"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "How many of you picked an outdoor hobby?",
+          "correct": "4"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many of you picked rock music as your favorite style?",
+          "correct": "3"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "Who is the only player whose hobby is \"קריאה\"?",
+          "correct": "תמר"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "food",
+          "text": "Which of these two favorite food choices was shared by more players?",
+          "correct": "פיצה"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "In which region of Israel do the most of you live?",
+          "correct": "The center"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "food",
+          "text": "How many players have \"סושי\" as their favorite food?",
+          "correct": "2"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "How many adventure movies are there among the movies you chose?",
+          "correct": "7"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "food",
+          "text": "Who is the only player whose favorite food is \"שקשוקה\"?",
+          "correct": "דניאל"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which of you lives in the southernmost town?",
+          "correct": "יונתן"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "Looking at your movie picks, which side wins — Adventure or Crime?",
+          "correct": "Adventure"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "Only one person chose an artist associated with rock music. Who?",
+          "correct": "מאיה"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "Based on your food choices, which leads — Italian or American food?",
+          "correct": "Italian"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "How many different music styles are represented here?",
+          "correct": "5"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Where do more of you come from — the north or the Jerusalem area?",
+          "correct": "The north"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Only one person in our group chose a relaxation hobby. Who?",
+          "correct": "נדב"
+        },
+        {
+          "index": 18,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "From how many regions of Israel does our group come?",
+          "correct": "4"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "Among people who live in the center of the country, which music style is the most common?",
+          "correct": "Pop"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "How many people chose both electronic music and a sports hobby?",
+          "correct": "2"
+        }
+      ]
+    },
+    {
+      "room": "en_rich",
+      "language": "en",
+      "players": 20,
+      "generation_ms": 13.2,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 17,
+          "players": 20,
+          "recognized": 16,
+          "unknown": 1,
+          "coverage": 0.941
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 16,
+          "unknown": 4,
+          "coverage": 0.8
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 18,
+          "unknown": 2,
+          "coverage": 0.9
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "artist.genre": {
+          "shared": 3,
+          "players": 20,
+          "recognized": 3,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 19,
+          "players": 20,
+          "recognized": 19,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 56,
+          "valid": 56,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 112,
+          "valid": 112,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 14,
+          "valid": 14,
+          "selected": 3
+        },
+        "semantic": {
+          "raw": 67,
+          "valid": 67,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "food": 5,
+        "hobby": 5,
+        "movie": 4,
+        "music": 4,
+        "place": 5
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.865
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 63,
+          "valid": 63,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.439
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 20,
+          "valid": 20,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.654
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 6,
+          "valid": 6,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.553
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 35,
+          "valid": 35,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.614
+        },
+        {
+          "rule_id": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 14,
+          "valid": 14,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.753
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 24,
+          "valid": 24,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.748
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.58
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.819
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.695
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.7
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 8,
+          "valid": 8,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.727
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.805
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.704
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.705
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.825
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.821
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 30,
+          "valid": 30,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Which type of hobby do the most people here have?",
+          "correct": "Sport"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "How many of you picked electronic music as your favorite style?",
+          "correct": "3"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "How many people in our group chose an Asian dish?",
+          "correct": "5"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "Which music style is the most popular here?",
+          "correct": "Pop"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "Which genre shows up most in the movies you chose?",
+          "correct": "Adventure"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "food",
+          "text": "Who is the only player whose favorite food is \"Spaghetti\"?",
+          "correct": "Jonathan"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "How many players have \"Football\" as their hobby?",
+          "correct": "2"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "food",
+          "text": "Which of these two favorite food choices was shared by more players?",
+          "correct": "Pizza"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "In which region of Israel do the most of you live?",
+          "correct": "The center"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "How many people in our group chose a comedy?",
+          "correct": "6"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "Who is the only player whose hobby is \"Cooking\"?",
+          "correct": "Shira"
+        },
+        {
+          "index": 12,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which of you lives in the southernmost town?",
+          "correct": "Jonathan"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "Are there more comedy fans or crime fans in our group?",
+          "correct": "Comedy"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Only one person in our group chose a digital hobby. Who?",
+          "correct": "Lior"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "correct": "The south"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Are there more physically active hobbies or hobbies without physical effort in our group?",
+          "correct": "Physically active hobbies"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "Only one person chose an artist associated with country music. Who?",
+          "correct": "Omer"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "movie,food",
+          "text": "How many people chose both an action movie and an Asian dish?",
+          "correct": "3"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "Among people who live in the north, which music style is the most common?",
+          "correct": "Pop"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "food,place",
+          "text": "Among people who chose Asian food, which region do the most come from?",
+          "correct": "The center"
+        }
+      ]
+    },
+    {
+      "room": "en_rich",
+      "language": "he",
+      "players": 20,
+      "generation_ms": 13.4,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 17,
+          "players": 20,
+          "recognized": 16,
+          "unknown": 1,
+          "coverage": 0.941
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 16,
+          "unknown": 4,
+          "coverage": 0.8
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 18,
+          "unknown": 2,
+          "coverage": 0.9
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "artist.genre": {
+          "shared": 3,
+          "players": 20,
+          "recognized": 3,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 19,
+          "players": 20,
+          "recognized": 19,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 56,
+          "valid": 56,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 112,
+          "valid": 112,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 14,
+          "valid": 14,
+          "selected": 3
+        },
+        "semantic": {
+          "raw": 67,
+          "valid": 67,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "food": 5,
+        "hobby": 5,
+        "movie": 4,
+        "music": 4,
+        "place": 5
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.865
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 63,
+          "valid": 63,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.439
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 20,
+          "valid": 20,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.654
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 6,
+          "valid": 6,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.553
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 35,
+          "valid": 35,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.614
+        },
+        {
+          "rule_id": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 14,
+          "valid": 14,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.753
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 24,
+          "valid": 24,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.748
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.58
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.819
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.695
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.7
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 8,
+          "valid": 8,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.727
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.805
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.704
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.705
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.825
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.821
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 30,
+          "valid": 30,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "איזה סוג תחביב יש להכי הרבה אנשים כאן?",
+          "correct": "ספורט"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "כמה מכם בחרו מוזיקה אלקטרונית כסגנון האהוב?",
+          "correct": "3"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "כמה אנשים בקבוצה בחרו מאכל אסייתי?",
+          "correct": "5"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "correct": "פופ"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "correct": "הרפתקאות"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "food",
+          "text": "מי היחיד/ה שבחר/ה \"Spaghetti\" כאוכל אהוב?",
+          "correct": "Jonathan"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "כמה משתתפים בחרו \"Football\" כתחביב?",
+          "correct": "2"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "food",
+          "text": "איזה משני המאכלים האלה נבחר יותר בקבוצה?",
+          "correct": "Pizza"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "כמה אנשים בקבוצה בחרו קומדיה?",
+          "correct": "6"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "מי היחיד/ה שהתחביב שלו/ה הוא \"Cooking\"?",
+          "correct": "Shira"
+        },
+        {
+          "index": 12,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "correct": "Jonathan"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "מה יש יותר בקבוצה — חובבי קומדיה או פשע?",
+          "correct": "קומדיה"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "רק אדם אחד בקבוצה בחר תחביב דיגיטלי. מי זה?",
+          "correct": "Lior"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "correct": "הדרום"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "מה יש יותר בקבוצה — תחביבים עם פעילות גופנית או תחביבים בלי מאמץ גופני?",
+          "correct": "תחביבים עם פעילות גופנית"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "רק אדם אחד בחר אמן שמזוהה עם מוזיקת קאנטרי. מי זה?",
+          "correct": "Omer"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "movie,food",
+          "text": "כמה אנשים בחרו גם סרט פעולה וגם מאכל אסייתי?",
+          "correct": "3"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "מבין מי שגרים בצפון, איזה סגנון מוזיקה הכי נפוץ?",
+          "correct": "פופ"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "food,place",
+          "text": "מבין מי שבחרו אוכל אסייתי, מאיזה אזור בארץ מגיעים הכי הרבה?",
+          "correct": "המרכז"
+        }
+      ]
+    },
+    {
+      "room": "curated_complete",
+      "language": "he",
+      "players": 20,
+      "generation_ms": 15.2,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 65,
+          "valid": 65,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 162,
+          "valid": 162,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 14,
+          "valid": 14,
+          "selected": 3
+        },
+        "semantic": {
+          "raw": 73,
+          "valid": 73,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "food": 5,
+        "hobby": 5,
+        "movie": 4,
+        "music": 4,
+        "place": 5
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 78,
+          "valid": 78,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.533
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 23,
+          "valid": 23,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.695
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.613
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 33,
+          "valid": 33,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.68
+        },
+        {
+          "rule_id": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 23,
+          "valid": 23,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.753
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 24,
+          "valid": 24,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.777
+        },
+        {
+          "rule_id": "group_minority",
+          "kind": "semantic",
+          "family": "SEMANTIC_MINORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.58
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.838
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.725
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 9,
+          "valid": 9,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.791
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.705
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.85
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 70,
+          "valid": 70,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "איזה סוג תחביב יש להכי הרבה אנשים כאן?",
+          "correct": "ספורט"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "כמה אנשים בקבוצה בחרו קומדיה?",
+          "correct": "8"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "לפי המאכלים שבחרתם, איזה מטבח הכי פופולרי בקבוצה?",
+          "correct": "איטלקי"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "מי היחיד/ה שגר/ה ב\"נתניה\"?",
+          "correct": "תמר"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה מכם בחרו מוזיקת רוק כסגנון האהוב?",
+          "correct": "4"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "most_common_value",
+          "family": "DIRECT_MAJORITY",
+          "kind": "direct",
+          "domain": "place",
+          "text": "איזו עיר מופיעה הכי הרבה בקבוצה?",
+          "correct": "ירושלים"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "כמה אנשים בקבוצה בחרו מאכל אסייתי?",
+          "correct": "4"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "כמה משתתפים בחרו \"ריצה\" כתחביב?",
+          "correct": "2"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "food",
+          "text": "איזה משני המאכלים האלה נבחר יותר בקבוצה?",
+          "correct": "פיצה"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי מכם גר/ה ביישוב הכי צפוני?",
+          "correct": "ליאור"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "מי היחיד/ה בקבוצה שבחר/ה מאכל צרפתי?",
+          "correct": "נדב"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "מה יש יותר בקבוצה — חובבי רוק או אלקטרונית?",
+          "correct": "רוק"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "רק אדם אחד בקבוצה בחר תחביב של משחקי שולחן או חידות. מי זה?",
+          "correct": "שירה"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים כאן?",
+          "correct": "4"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "correct": "הדרום"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_distribution",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "מבין הז׳אנרים האלה, איזה מופיע הכי הרבה בסרטים שבחרתם?",
+          "correct": "דרמה"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "movie,food",
+          "text": "כמה אנשים בחרו גם סרט הרפתקאות וגם מאכל איטלקי?",
+          "correct": "3"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_subgroup_comparison",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "kind": "cross_domain",
+          "domain": "hobby,movie",
+          "text": "מבין מי שבחרו תחביב ספורטיבי, איזה ז׳אנר יותר נפוץ — פעולה או הרפתקאות?",
+          "correct": "הרפתקאות"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "מבין מי שבחרו מוזיקת פופ, איזה סוג תחביב הכי נפוץ?",
+          "correct": "ספורט"
+        }
+      ]
+    },
+    {
+      "room": "curated_complete",
+      "language": "en",
+      "players": 20,
+      "generation_ms": 15.5,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 65,
+          "valid": 65,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 162,
+          "valid": 162,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 14,
+          "valid": 14,
+          "selected": 3
+        },
+        "semantic": {
+          "raw": 73,
+          "valid": 73,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "food": 5,
+        "hobby": 5,
+        "movie": 4,
+        "music": 4,
+        "place": 5
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 78,
+          "valid": 78,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.533
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 23,
+          "valid": 23,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.695
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.613
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 33,
+          "valid": 33,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.68
+        },
+        {
+          "rule_id": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 23,
+          "valid": 23,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.753
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 24,
+          "valid": 24,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.777
+        },
+        {
+          "rule_id": "group_minority",
+          "kind": "semantic",
+          "family": "SEMANTIC_MINORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.58
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.838
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.725
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 9,
+          "valid": 9,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.791
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.705
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.85
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 70,
+          "valid": 70,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 5,
+          "valid": 5,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Which type of hobby do the most people here have?",
+          "correct": "Sport"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "How many people in our group chose a comedy?",
+          "correct": "8"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "Based on your food choices, which cuisine is the most popular in our group?",
+          "correct": "Italian"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "Who is the only player whose city is \"נתניה\"?",
+          "correct": "תמר"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many of you picked rock music as your favorite style?",
+          "correct": "4"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "most_common_value",
+          "family": "DIRECT_MAJORITY",
+          "kind": "direct",
+          "domain": "place",
+          "text": "What is the most common city in this group?",
+          "correct": "ירושלים"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "How many people in our group chose an Asian dish?",
+          "correct": "4"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "How many players have \"ריצה\" as their hobby?",
+          "correct": "2"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "In which region of Israel do the most of you live?",
+          "correct": "The center"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "food",
+          "text": "Which of these two favorite food choices was shared by more players?",
+          "correct": "פיצה"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which of you lives in the northernmost town?",
+          "correct": "ליאור"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "Who is the only one here who picked a French dish?",
+          "correct": "נדב"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "Are there more Rock fans or Electronic fans in our group?",
+          "correct": "Rock"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Only one person in our group chose a board game or puzzle hobby. Who?",
+          "correct": "שירה"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "music",
+          "text": "How many different music styles are represented here?",
+          "correct": "4"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "correct": "The south"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_distribution",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "Of these genres, which appears most in the movies you chose?",
+          "correct": "Drama"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "movie,food",
+          "text": "How many people chose both an adventure movie and an Italian dish?",
+          "correct": "3"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_subgroup_comparison",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "kind": "cross_domain",
+          "domain": "hobby,movie",
+          "text": "Among people with a sports hobby, which genre is more common — Action or Adventure?",
+          "correct": "Adventure"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "Among people who chose pop music, which type of hobby is the most common?",
+          "correct": "Sport"
+        }
+      ]
+    },
+    {
+      "room": "unknown_heavy",
+      "language": "he",
+      "players": 20,
+      "generation_ms": 9.8,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 4,
+          "unknown": 16,
+          "coverage": 0.2
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 0,
+          "unknown": 20,
+          "coverage": 0.0
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 10,
+          "unknown": 10,
+          "coverage": 0.5
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 10,
+          "unknown": 10,
+          "coverage": 0.5
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 10,
+          "unknown": 10,
+          "coverage": 0.5
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 3,
+          "valid": 3,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 104,
+          "valid": 104,
+          "selected": 10
+        },
+        "geographic": {
+          "raw": 13,
+          "valid": 13,
+          "selected": 7
+        }
+      },
+      "domains_selected": {
+        "food": 1,
+        "hobby": 2,
+        "movie": 1,
+        "music": 7,
+        "place": 12
+      },
+      "semantic_only_selectable": 10,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 36,
+          "valid": 36,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.518
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.613
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.752
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.64
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.752
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.87
+        },
+        {
+          "rule_id": "region_unique",
+          "kind": "geographic",
+          "family": "GEO_REGION_UNIQUE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 40,
+          "valid": 40,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 20,
+          "valid": 20,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקת פופ?",
+          "correct": "9"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "מי היחיד/ה שגר/ה ב\"תל אביב\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "איזה משני התחביבים האלה נפוץ יותר בקבוצה?",
+          "correct": "ריצה"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "food",
+          "text": "כמה משתתפים בחרו \"אורז\" כאוכל האהוב עליהם?",
+          "correct": "2"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "most_common_value",
+          "family": "DIRECT_MAJORITY",
+          "kind": "direct",
+          "domain": "place",
+          "text": "איזו עיר מופיעה הכי הרבה בקבוצה?",
+          "correct": "חיפה"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "movie",
+          "text": "מי היחיד/ה שהסרט האהוב עליו/ה הוא \"מטריקס\"?",
+          "correct": "עמית"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "כמה משתתפים בחרו \"אופניים\" כתחביב?",
+          "correct": "2"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "correct": "רוני"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "כמה מכם מגיעים מהצפון?",
+          "correct": "5"
+        },
+        {
+          "index": 10,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "איזה סגנון מוזיקה מנצח כאן — פופ או מזרחית?",
+          "correct": "פופ"
+        },
+        {
+          "index": 11,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מה יש יותר בקבוצה — אנשים מהצפון או מהמרכז?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "איזה סגנון מוזיקה מנצח כאן — פופ או רוק?",
+          "correct": "פופ"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "geographic_outlier",
+          "family": "GEO_OUTLIER",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי גר/ה הכי רחוק משאר הקבוצה?",
+          "correct": "רוני"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים כאן?",
+          "correct": "3"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "correct": "4"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_unique",
+          "family": "GEO_REGION_UNIQUE",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי היחיד/ה בקבוצה שמגיע/ה מאזור ירושלים?",
+          "correct": "שירה"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מאיפה מגיעים יותר מכם — מהצפון או מהדרום?",
+          "correct": "הצפון"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "מבין מי שגרים במרכז, איזה סגנון מוזיקה הכי נפוץ?",
+          "correct": "פופ"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "מבין מי שגרים בדרום, איזה סגנון מוזיקה הכי נפוץ?",
+          "correct": "מזרחית"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "מבין מי שגרים בצפון, איזה סגנון מוזיקה הכי נפוץ?",
+          "correct": "רוק"
+        }
+      ]
+    },
+    {
+      "room": "unknown_heavy",
+      "language": "en",
+      "players": 20,
+      "generation_ms": 9.7,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 4,
+          "unknown": 16,
+          "coverage": 0.2
+        },
+        "food.cuisine": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 0,
+          "unknown": 20,
+          "coverage": 0.0
+        },
+        "hobby.family": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 10,
+          "unknown": 10,
+          "coverage": 0.5
+        },
+        "hobby.physical": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 10,
+          "unknown": 10,
+          "coverage": 0.5
+        },
+        "hobby.setting": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 10,
+          "unknown": 10,
+          "coverage": 0.5
+        },
+        "music.genre": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 20,
+          "players": 20,
+          "recognized": 20,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 3,
+          "valid": 3,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 104,
+          "valid": 104,
+          "selected": 10
+        },
+        "geographic": {
+          "raw": 13,
+          "valid": 13,
+          "selected": 7
+        }
+      },
+      "domains_selected": {
+        "food": 1,
+        "hobby": 2,
+        "movie": 1,
+        "music": 7,
+        "place": 12
+      },
+      "semantic_only_selectable": 10,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "raw": 36,
+          "valid": 36,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.345
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.518
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.613
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.752
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.64
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.33
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.752
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.87
+        },
+        {
+          "rule_id": "region_unique",
+          "kind": "geographic",
+          "family": "GEO_REGION_UNIQUE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 40,
+          "valid": 40,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.36
+        },
+        {
+          "rule_id": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "raw": 20,
+          "valid": 20,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.33
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many people in our group chose pop music?",
+          "correct": "9"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "Who is the only player whose city is \"תל אביב\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_comparison",
+          "family": "DIRECT_COMPARISON",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "Which of these two hobby choices was shared by more players?",
+          "correct": "ריצה"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "food",
+          "text": "How many players have \"אורז\" as their favorite food?",
+          "correct": "2"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "most_common_value",
+          "family": "DIRECT_MAJORITY",
+          "kind": "direct",
+          "domain": "place",
+          "text": "What is the most common city in this group?",
+          "correct": "חיפה"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "movie",
+          "text": "Who is the only player whose favorite movie is \"מטריקס\"?",
+          "correct": "עמית"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "value_count",
+          "family": "DIRECT_COUNT",
+          "kind": "direct",
+          "domain": "hobby",
+          "text": "How many players have \"אופניים\" as their hobby?",
+          "correct": "2"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which of you lives in the southernmost town?",
+          "correct": "רוני"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "How many of you come from the north?",
+          "correct": "5"
+        },
+        {
+          "index": 10,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "Which music style wins here — Pop or Mizrahi?",
+          "correct": "Pop"
+        },
+        {
+          "index": 11,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Are there more people from the north or from the center of the country in our group?",
+          "correct": "The center"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "Which music style wins here — Pop or Rock?",
+          "correct": "Pop"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "geographic_outlier",
+          "family": "GEO_OUTLIER",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Who lives furthest from the rest of the group?",
+          "correct": "רוני"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many different music styles are represented here?",
+          "correct": "3"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "From how many regions of Israel does our group come?",
+          "correct": "4"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_unique",
+          "family": "GEO_REGION_UNIQUE",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Who is the only one here from the Jerusalem area?",
+          "correct": "שירה"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Where do more of you come from — the north or the south?",
+          "correct": "The north"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "Among people who live in the center of the country, which music style is the most common?",
+          "correct": "Pop"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "Among people who live in the south, which music style is the most common?",
+          "correct": "Mizrahi"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,music",
+          "text": "Among people who live in the north, which music style is the most common?",
+          "correct": "Rock"
+        }
+      ]
+    },
+    {
+      "room": "sparse",
+      "language": "he",
+      "players": 6,
+      "generation_ms": 3.4,
+      "final_count": 20,
+      "coverage": {
+        "food.cuisine": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 4,
+          "unknown": 2,
+          "coverage": 0.667
+        },
+        "hobby.family": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.setting": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 4,
+          "valid": 4,
+          "selected": 2
+        },
+        "direct": {
+          "raw": 27,
+          "valid": 27,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 15,
+          "valid": 15,
+          "selected": 7
+        },
+        "semantic": {
+          "raw": 14,
+          "valid": 14,
+          "selected": 6
+        }
+      },
+      "domains_selected": {
+        "food": 1,
+        "hobby": 8,
+        "music": 5,
+        "place": 8
+      },
+      "semantic_only_selectable": 16,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.5
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.611
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 6,
+          "valid": 6,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.731
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.85
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.853
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.667
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.887
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.783
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.7
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.703
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_unique",
+          "kind": "geographic",
+          "family": "GEO_REGION_UNIQUE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.5
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "איזה סוג תחביב יש להכי הרבה אנשים כאן?",
+          "correct": "ספורט"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקה מזרחית?",
+          "correct": "1"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "לכמה אנשים כאן יש תחביב יצירתי?",
+          "correct": "1"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "מי היחיד/ה שגר/ה ב\"תל אביב\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "food",
+          "text": "מי היחיד/ה שבחר/ה \"סושי\" כאוכל אהוב?",
+          "correct": "עומר"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "correct": "נועה"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה מכם בחרו מוזיקת רוק כסגנון האהוב?",
+          "correct": "1"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "כמה משתתפים כאן גרים במרכז?",
+          "correct": "2"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "כמה אנשים בקבוצה בחרו תחביב של למידה או קריאה?",
+          "correct": "1"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "כמה מכם מגיעים מהצפון?",
+          "correct": "2"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "לכמה מכם יש תחביב שעושים בחוץ?",
+          "correct": "1"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "locality_distance_pair",
+          "family": "GEO_CLOSEST_PAIR",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "correct": "דנה + יעל"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "רק אדם אחד בקבוצה בחר תחביב דיגיטלי. מי זה?",
+          "correct": "ליאור"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מאיפה מגיעים יותר מכם — מהמרכז או מאזור ירושלים?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "correct": "4"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "correct": "4"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "איזה סגנון מוזיקה מנצח כאן — פופ או מזרחית?",
+          "correct": "פופ"
+        },
+        {
+          "index": 18,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מאיפה מגיעים יותר מכם — מהמרכז או מהדרום?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "hobby,music",
+          "text": "מבין מי שבחרו תחביב ספורטיבי, איזה סגנון מוזיקה הכי נפוץ?",
+          "correct": "פופ"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_subgroup_comparison",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "מבין מי שבחרו מוזיקת פופ, מה יותר נפוץ — תחביבי ספורט או תחביבים דיגיטליים?",
+          "correct": "תחביבי ספורט"
+        }
+      ]
+    },
+    {
+      "room": "sparse",
+      "language": "en",
+      "players": 6,
+      "generation_ms": 3.3,
+      "final_count": 20,
+      "coverage": {
+        "food.cuisine": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 4,
+          "unknown": 2,
+          "coverage": 0.667
+        },
+        "hobby.family": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.setting": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 6,
+          "players": 6,
+          "recognized": 6,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 4,
+          "valid": 4,
+          "selected": 2
+        },
+        "direct": {
+          "raw": 27,
+          "valid": 27,
+          "selected": 5
+        },
+        "geographic": {
+          "raw": 15,
+          "valid": 15,
+          "selected": 7
+        },
+        "semantic": {
+          "raw": 14,
+          "valid": 14,
+          "selected": 6
+        }
+      },
+      "domains_selected": {
+        "food": 1,
+        "hobby": 8,
+        "music": 5,
+        "place": 8
+      },
+      "semantic_only_selectable": 16,
+      "rules": [
+        {
+          "rule_id": "geographic_outlier",
+          "kind": "geographic",
+          "family": "GEO_OUTLIER",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.5
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.611
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 6,
+          "valid": 6,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.731
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.85
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.853
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.667
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.887
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.783
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.7
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.703
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.72
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_unique",
+          "kind": "geographic",
+          "family": "GEO_REGION_UNIQUE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 18,
+          "valid": 18,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.5
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Which type of hobby do the most people here have?",
+          "correct": "Sport"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many people in our group chose Mizrahi music?",
+          "correct": "1"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "How many people here have a creative hobby?",
+          "correct": "1"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "Who is the only player whose city is \"תל אביב\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "food",
+          "text": "Who is the only player whose favorite food is \"סושי\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "locality_extreme",
+          "family": "GEO_EXTREME",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which of you lives in the southernmost town?",
+          "correct": "נועה"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many of you picked rock music as your favorite style?",
+          "correct": "1"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "How many people here live in the center of the country?",
+          "correct": "2"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "How many people in our group chose a learning or reading hobby?",
+          "correct": "1"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "How many of you come from the north?",
+          "correct": "2"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "How many of you picked an outdoor hobby?",
+          "correct": "1"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "locality_distance_pair",
+          "family": "GEO_CLOSEST_PAIR",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which pair of you lives the shortest distance apart?",
+          "correct": "דנה + יעל"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Only one person in our group chose a digital hobby. Who?",
+          "correct": "ליאור"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Where do more of you come from — the center of the country or the Jerusalem area?",
+          "correct": "The center"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "How many different types of hobbies are there in our group?",
+          "correct": "4"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "From how many regions of Israel does our group come?",
+          "correct": "4"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "Which music style wins here — Pop or Mizrahi?",
+          "correct": "Pop"
+        },
+        {
+          "index": 18,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_comparison",
+          "family": "GEO_REGION_COMPARISON",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Where do more of you come from — the center of the country or the south?",
+          "correct": "The center"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "hobby,music",
+          "text": "Among people with a sports hobby, which music style is the most common?",
+          "correct": "Pop"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_subgroup_comparison",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "Among people who chose pop music, which is more common — sports hobbies or digital hobbies?",
+          "correct": "Sports hobbies"
+        }
+      ]
+    },
+    {
+      "room": "audit_new_class",
+      "language": "he",
+      "players": 5,
+      "generation_ms": 4.3,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 4,
+          "unknown": 1,
+          "coverage": 0.8
+        },
+        "food.cuisine": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.family": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 4,
+          "unknown": 1,
+          "coverage": 0.8
+        },
+        "hobby.setting": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 7,
+          "valid": 7,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 33,
+          "valid": 33,
+          "selected": 4
+        },
+        "geographic": {
+          "raw": 12,
+          "valid": 12,
+          "selected": 4
+        },
+        "semantic": {
+          "raw": 30,
+          "valid": 30,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "age": 1,
+        "food": 5,
+        "hobby": 6,
+        "movie": 2,
+        "music": 3,
+        "place": 6
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "age_ranking",
+          "kind": "direct",
+          "family": "DIRECT_AGE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.6
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.513
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 6,
+          "valid": 6,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.757
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.6
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 16,
+          "valid": 16,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.663
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.8
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.813
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.7
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.76
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.727
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "region_unique",
+          "kind": "geographic",
+          "family": "GEO_REGION_UNIQUE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 20,
+          "valid": 20,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.54
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "לפי המאכלים שבחרתם, איזה מטבח הכי פופולרי בקבוצה?",
+          "correct": "איטלקי"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "לכמה מכם יש תחביב שעושים בחוץ?",
+          "correct": "3"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "כמה אנשים בקבוצה בחרו סרט אימה?",
+          "correct": "2"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "correct": "מזרחית"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "age_ranking",
+          "family": "DIRECT_AGE",
+          "kind": "direct",
+          "domain": "age",
+          "text": "מי המבוגר ביותר מבין המשתתפים ששיתפו את הגיל שלהם?",
+          "correct": "נועה"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "מי היחיד/ה שגר/ה ב\"רמת גן\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "איזה סוג תחביב יש להכי הרבה אנשים כאן?",
+          "correct": "ספורט"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "רוב הקבוצה גרה באותו אזור. באיזה?",
+          "correct": "המרכז"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "correct": "1"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "כמה מכם בחרו מוזיקה אלקטרונית כסגנון האהוב?",
+          "correct": "1"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "כמה מכם מגיעים מהצפון?",
+          "correct": "1"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "מי היחיד/ה בקבוצה שבחר/ה מאכל אסייתי?",
+          "correct": "עמית"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "מה יש יותר בקבוצה — תחביבים עם פעילות גופנית או תחביבים בלי מאמץ גופני?",
+          "correct": "תחביבים עם פעילות גופנית"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "כמה מטבחים שונים מיוצגים בבחירות האוכל שלכם?",
+          "correct": "3"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "רק אדם אחד בקבוצה בחר תחביב בטבע. מי זה?",
+          "correct": "ליאור"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "locality_distance_pair",
+          "family": "GEO_CLOSEST_PAIR",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "correct": "דנה + עומר"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "correct": "3"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "hobby,movie",
+          "text": "מבין מי שבחרו תחביב ספורטיבי, איזה ז׳אנר סרטים הכי נפוץ?",
+          "correct": "אימה"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,food",
+          "text": "מבין מי שגרים במרכז, איזה מטבח הכי אהוב?",
+          "correct": "איטלקי"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב ספורטיבי?",
+          "correct": "1"
+        }
+      ]
+    },
+    {
+      "room": "audit_new_class",
+      "language": "en",
+      "players": 5,
+      "generation_ms": 4.2,
+      "final_count": 20,
+      "coverage": {
+        "movie.genre": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 4,
+          "unknown": 1,
+          "coverage": 0.8
+        },
+        "food.cuisine": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.family": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "hobby.physical": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 4,
+          "unknown": 1,
+          "coverage": 0.8
+        },
+        "hobby.setting": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "music.genre": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        },
+        "place.region": {
+          "shared": 5,
+          "players": 5,
+          "recognized": 5,
+          "unknown": 0,
+          "coverage": 1.0
+        }
+      },
+      "kinds": {
+        "cross_domain": {
+          "raw": 7,
+          "valid": 7,
+          "selected": 3
+        },
+        "direct": {
+          "raw": 33,
+          "valid": 33,
+          "selected": 4
+        },
+        "geographic": {
+          "raw": 12,
+          "valid": 12,
+          "selected": 4
+        },
+        "semantic": {
+          "raw": 30,
+          "valid": 30,
+          "selected": 9
+        }
+      },
+      "domains_selected": {
+        "age": 1,
+        "food": 5,
+        "hobby": 6,
+        "movie": 2,
+        "music": 3,
+        "place": 6
+      },
+      "semantic_only_selectable": 20,
+      "rules": [
+        {
+          "rule_id": "age_ranking",
+          "kind": "direct",
+          "family": "DIRECT_AGE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.6
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.513
+        },
+        {
+          "rule_id": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "raw": 6,
+          "valid": 6,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.757
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.6
+        },
+        {
+          "rule_id": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "raw": 16,
+          "valid": 16,
+          "rejected": {},
+          "selected": 3,
+          "mean_score": 0.663
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.88
+        },
+        {
+          "rule_id": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.8
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.62
+        },
+        {
+          "rule_id": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.813
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.7
+        },
+        {
+          "rule_id": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "raw": 4,
+          "valid": 4,
+          "rejected": {},
+          "selected": 2,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.76
+        },
+        {
+          "rule_id": "region_count",
+          "kind": "geographic",
+          "family": "GEO_REGION_COUNT",
+          "raw": 3,
+          "valid": 3,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.727
+        },
+        {
+          "rule_id": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.84
+        },
+        {
+          "rule_id": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "raw": 1,
+          "valid": 1,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.92
+        },
+        {
+          "rule_id": "region_unique",
+          "kind": "geographic",
+          "family": "GEO_REGION_UNIQUE",
+          "raw": 2,
+          "valid": 2,
+          "rejected": {},
+          "selected": 0,
+          "mean_score": 0.82
+        },
+        {
+          "rule_id": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "raw": 20,
+          "valid": 20,
+          "rejected": {},
+          "selected": 1,
+          "mean_score": 0.54
+        }
+      ],
+      "final": [
+        {
+          "index": 1,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "Based on your food choices, which cuisine is the most popular in our group?",
+          "correct": "Italian"
+        },
+        {
+          "index": 2,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "How many of you picked an outdoor hobby?",
+          "correct": "3"
+        },
+        {
+          "index": 3,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "movie",
+          "text": "How many people in our group chose a horror movie?",
+          "correct": "2"
+        },
+        {
+          "index": 4,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "Which music style is the most popular here?",
+          "correct": "Mizrahi"
+        },
+        {
+          "index": 5,
+          "difficulty": "EASY",
+          "rule_id": "age_ranking",
+          "family": "DIRECT_AGE",
+          "kind": "direct",
+          "domain": "age",
+          "text": "Who is oldest among the players who shared their age?",
+          "correct": "נועה"
+        },
+        {
+          "index": 6,
+          "difficulty": "EASY",
+          "rule_id": "unique_value",
+          "family": "DIRECT_UNIQUE",
+          "kind": "direct",
+          "domain": "place",
+          "text": "Who is the only player whose city is \"רמת גן\"?",
+          "correct": "עומר"
+        },
+        {
+          "index": 7,
+          "difficulty": "EASY",
+          "rule_id": "group_mode",
+          "family": "SEMANTIC_MAJORITY",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Which type of hobby do the most people here have?",
+          "correct": "Sport"
+        },
+        {
+          "index": 8,
+          "difficulty": "EASY",
+          "rule_id": "region_majority",
+          "family": "GEO_REGION_MAJORITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Most of our group lives in one region. Which one?",
+          "correct": "The center"
+        },
+        {
+          "index": 9,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "SEMANTIC_COUNT",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "correct": "1"
+        },
+        {
+          "index": 10,
+          "difficulty": "EASY",
+          "rule_id": "group_count",
+          "family": "DIRECT_CHOICE",
+          "kind": "direct",
+          "domain": "music",
+          "text": "How many of you picked electronic music as your favorite style?",
+          "correct": "1"
+        },
+        {
+          "index": 11,
+          "difficulty": "EASY",
+          "rule_id": "region_count",
+          "family": "GEO_REGION_COUNT",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "How many of you come from the north?",
+          "correct": "1"
+        },
+        {
+          "index": 12,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "Who is the only one here who picked an Asian dish?",
+          "correct": "עמית"
+        },
+        {
+          "index": 13,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_comparison_semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Are there more physically active hobbies or hobbies without physical effort in our group?",
+          "correct": "Physically active hobbies"
+        },
+        {
+          "index": 14,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_diversity",
+          "family": "SEMANTIC_DIVERSITY",
+          "kind": "semantic",
+          "domain": "food",
+          "text": "How many cuisines are represented in your favorite foods?",
+          "correct": "3"
+        },
+        {
+          "index": 15,
+          "difficulty": "MEDIUM",
+          "rule_id": "group_unique",
+          "family": "SEMANTIC_UNIQUE",
+          "kind": "semantic",
+          "domain": "hobby",
+          "text": "Only one person in our group chose a nature hobby. Who?",
+          "correct": "ליאור"
+        },
+        {
+          "index": 16,
+          "difficulty": "MEDIUM",
+          "rule_id": "locality_distance_pair",
+          "family": "GEO_CLOSEST_PAIR",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "Which pair of you lives the shortest distance apart?",
+          "correct": "דנה + עומר"
+        },
+        {
+          "index": 17,
+          "difficulty": "MEDIUM",
+          "rule_id": "region_diversity",
+          "family": "GEO_REGION_DIVERSITY",
+          "kind": "geographic",
+          "domain": "place",
+          "text": "From how many regions of Israel does our group come?",
+          "correct": "3"
+        },
+        {
+          "index": 18,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "hobby,movie",
+          "text": "Among people with a sports hobby, which movie genre is the most common?",
+          "correct": "Horror"
+        },
+        {
+          "index": 19,
+          "difficulty": "HARD",
+          "rule_id": "group_filtered_mode",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "kind": "cross_domain",
+          "domain": "place,food",
+          "text": "Among people who live in the center of the country, which cuisine is the favorite?",
+          "correct": "Italian"
+        },
+        {
+          "index": 20,
+          "difficulty": "HARD",
+          "rule_id": "group_intersection_count",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "kind": "cross_domain",
+          "domain": "music,hobby",
+          "text": "How many people chose both Mizrahi music and a sports hobby?",
+          "correct": "1"
+        }
+      ]
+    }
+  ]
+}

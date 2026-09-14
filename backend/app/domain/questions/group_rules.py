@@ -1,13 +1,16 @@
-"""Production social discovery rules: player input → facts → group → question.
+"""Previous group-first families, plus the production wrapper for simple social questions.
 
-No entity trivia or inferred personal behavior. Global comparisons need complete
-consented knowledge; a scoped count names the known participants explicitly.
-Classification membership can overlap. People count once per named family.
+The group families below required complete consented knowledge for a dimension,
+which realistic rooms rarely have; production now uses the category-first
+families in ``discovery_rules.py`` (see QUESTION_ENGINE_DIAGNOSTIC.md). They stay
+as a regression-tested catalog. ``SocialLegacyRule`` remains the production
+wrapper for literal social questions.
 """
 from dataclasses import replace
 from itertools import combinations, islice
 
 from app.domain.questions.advanced_rules import unique_extreme
+from app.domain.questions.language import normalize, say
 from app.domain.questions.question import Difficulty
 from app.domain.questions.semantic import DIMENSIONS
 from app.domain.questions.semantic_rules import (
@@ -433,33 +436,75 @@ def group_rules(knowledge):
                     (LocalityDistanceRule,LocalityExtremeRule,LocalityDistinctRule)))
 
 
+DIRECT_FAMILIES = {'unique_value': 'DIRECT_UNIQUE', 'most_common_value': 'DIRECT_MAJORITY', 'value_count': 'DIRECT_COUNT',
+                   'group_comparison': 'DIRECT_COMPARISON', 'age_ranking': 'DIRECT_AGE'}
+FIELD_DOMAINS = {'city': 'place', 'favorite_food': 'food', 'hobby': 'hobby', 'favorite_movie': 'movie',
+                 'favorite_music': 'music', 'favorite_artist': 'music', 'favorite_song': 'music', 'age': 'age',
+                 'personal_fact': 'social'}
+
+
+def raw_disclosure(rule_id, q, dataset):
+    """What a raw-answer question settles, in the selector's ``reveals``/``needs`` terms (discovery_rules.py).
+
+    These questions have no explanation, so only the answer itself is disclosed:
+    "what is the most common food?" (pizza) settles "pizza or sushi?".
+    """
+    field = q.source_field_keys[0]
+    value_of = {pid: str(normalize(value)) for pid, value in dataset.values_for(field)}
+    values = tuple(dict.fromkeys(value_of[p] for p in q.involved_player_ids if p in value_of))
+    if rule_id == 'value_count' and len(values) == 1:
+        majority = 2 * len(q.involved_player_ids) >= len(value_of)  # Tied races are never asked.
+        return ((('count', field, values[0]), *((('rank', field, values[0]),) if majority else ())),
+                ((('count', field, values[0]),),))
+    if rule_id == 'most_common_value' and len(values) == 1:
+        return ((('rank', field, values[0]),), ((('rank', field, values[0]),),))
+    if rule_id == 'group_comparison' and len(values) == 2:
+        a, b = values
+        return ((), ((('rank', field, a),), (('rank', field, b),), (('count', field, a), ('count', field, b))))
+    return (), ()
+
+
 class SocialLegacyRule:
-    """Preserved algorithms, limited to clear group questions in production."""
+    """Simple social questions about literal answers ("who is the only one who chose couscous?").
+
+    Production keeps these as the direct share of a group-first game. Group
+    facts about music choices come from the music families instead, which
+    also render the fixed English choice values in the game language.
+    """
     def __init__(self,rule,knowledge): self.rule=rule; self.rule_id=rule.rule_id; self.knowledge=knowledge
     def generate(self,dataset,rng):
         from app.domain.questions.semantic import enrich
         alias_collisions=enrich(dataset,self.knowledge).raw_alias_collisions
-        simple=self.rule_id in ('unique_value','value_count','most_common_value','group_comparison','age_ranking','group_exception')
-        person=self.rule_id in ('unique_value','age_ranking','group_exception')
+        person=self.rule_id in ('unique_value','age_ranking')
         for q in self.rule.generate(dataset,rng):
             if alias_collisions.intersection(q.source_field_keys): continue
             if self.rule_id in ('value_count','unique_value') and 'age' in q.source_field_keys:
                 continue
-            if q.source_field_keys == ('favorite_music',) and self.rule_id in ('value_count','most_common_value','group_comparison'):
-                if all(self.knowledge.resolve_music_genre(v).entity is not None for _,v in dataset.values_for('favorite_music')):
-                    continue
+            if 'favorite_music' in q.source_field_keys:
+                continue
+            if 'personal_fact' in q.source_field_keys and self.rule_id!='unique_value':
+                continue
+            if self.rule_id=='value_count' and len(q.involved_player_ids)==1:
+                continue  # "How many live in Herzliya?" (1) only restates who is unique.
             # Do not pretend an unshared raw answer is a different answer.
             if any(len(dataset.values_for(f)) != dataset.player_count for f in q.source_field_keys):
                 continue
-            if dataset.language=='he' and q.source_field_keys[0]=='favorite_music' and self.rule_id in (
-                'category_coverage','second_largest_group','least_common_value','most_common_value','group_comparison'):
-                options=tuple(replace(o,text=e.label('he')) if (e:=self.knowledge.resolve_music_genre(o.text).entity) else o for o in q.options)
-                if len({o.text for o in options})!=len(options): continue
-                q=replace(q,options=options)
-            yield replace(q,metadata=(*q.metadata,('mix','simple' if simple else 'other'),('person_answer',person)))
+            if q.source_field_keys==('personal_fact',):
+                value=dict(dataset.values_for('personal_fact'))[q.involved_player_ids[0]]
+                q=replace(q,text=say(dataset.language,'Who wrote this about themselves: "{value}"?',
+                                     'מי כתב/ה את זה על עצמו/ה: "{value}"?',value=value))
+            metadata=(*q.metadata,('mix','simple'),('person_answer',person),('kind','direct'),
+                ('family',DIRECT_FAMILIES[self.rule_id]),('domain',FIELD_DOMAINS.get(q.source_field_keys[0],'social')),
+                ('reasoning_hops',1))
+            if self.rule_id in ('unique_value','value_count','most_common_value'):
+                # "Who is the only one in Rehovot?" and "how many live in Rehovot?" (1) are one fact.
+                holders=q.involved_player_ids[:1] if self.rule_id=='unique_value' else q.involved_player_ids
+                metadata+=(('membership_signature',(q.source_field_keys[0],tuple(holders))),)
+            reveals,needs=raw_disclosure(self.rule_id,q,dataset)
+            if reveals or needs:
+                metadata+=(('reveals',reveals),('needs',needs))
+            yield replace(q,metadata=metadata)
 
 
 def social_legacy_rules(rules,knowledge):
-    allowed={'unique_value','most_common_value','value_count','group_comparison','age_ranking',
-             'second_largest_group','filtered_mode','category_coverage','balanced_split','group_exception','least_common_value'}
-    return tuple(SocialLegacyRule(r,knowledge) for r in rules if r.rule_id in allowed)
+    return tuple(SocialLegacyRule(r,knowledge) for r in rules if r.rule_id in DIRECT_FAMILIES)
