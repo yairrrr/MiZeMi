@@ -21,6 +21,8 @@ jobs:
           --health-retries 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.14'
@@ -42,7 +44,14 @@ jobs:
       - name: Backend including PostgreSQL
         env:
           MIZEMI_TEST_POSTGRES_URL: postgresql://postgres@localhost:5432/mizemi_test
+          PYTHONFAULTHANDLER: '1'
+          PYTHONUNBUFFERED: '1'
         run: .venv/bin/python -m pytest backend/tests -q
+      - name: Repeat database shutdown regression
+        run: |
+          for attempt in 1 2 3 4 5; do
+            .venv/bin/python -X faulthandler -m pytest backend/tests/integration/test_database_lifecycle.py -q || exit $?
+          done
       - name: Frontend typecheck, unit tests and production build
         working-directory: frontend
         run: |
@@ -57,5 +66,7 @@ jobs:
       - name: Secrets and dependency audits
         run: |
           .venv/bin/python scripts/check_secrets.py
+          .venv/bin/python scripts/check_secrets.py --history
           npm --prefix frontend audit --audit-level=low
           .venv/bin/python -m pip_audit --progress-spinner off
+          .venv/bin/python -m pip check

@@ -197,7 +197,13 @@ class SqlAlchemyGameRepository(GameRepository):
     def delete_older_than(self, cutoff: datetime) -> int:
         # ORM deletes (not a bulk DELETE) so the delete-orphan cascade removes
         # child rows on every backend, including SQLite without FK pragmas.
-        rows = self._session.scalars(select(GameRow).where(GameRow.updated_at < cutoff)).all()
+        # Bound each maintenance transaction and never purge an active record.
+        rows = self._session.scalars(
+            select(GameRow)
+            .where(GameRow.state == "FINISHED", GameRow.updated_at < cutoff)
+            .order_by(GameRow.updated_at, GameRow.game_id)
+            .limit(100)
+        ).all()
         for row in rows:
             self._session.delete(row)
         self._session.flush()
