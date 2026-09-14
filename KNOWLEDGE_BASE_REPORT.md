@@ -2,6 +2,8 @@
 
 Verified locally on **2026-09-14**, bundle **2026-09-14.1**. The production engine has **27 group-first rule families** over **33,831 offline reference entities**. It discovers patterns in consented participant choices. No runtime AI, reference-provider request, paid API, new dependency, deployment, push, Render change or Neon change was introduced.
 
+> **Update (category-first revision).** The question selection described below was diagnosed as not reaching realistic rooms: its group families required every player's answer to be recognized. Production now uses the category-first engine documented in [QUESTION_ENGINE_DIAGNOSTIC.md](QUESTION_ENGINE_DIAGNOSTIC.md) and MASTER_SPEC.md §12.3, with the current audit in [QUESTION_STYLE_AUDIT.md](QUESTION_STYLE_AUDIT.md). The knowledge bundle, sources and licenses in this report are unchanged; the rule catalog, selection targets, audit counts and measurements below describe the previous revision (current measurements are in the diagnostic's Performance section; `benchmark-results.json` now holds them).
+
 ## Recovery and preserved architecture
 
 Started from deployed `main` at `a3d4570` and created local branch `codex/group-intelligence`. The repository already contained the working multiplayer product, 29 historical profile rules and the 18-rule v4 knowledge extension. It did not match the much older interrupted-frontend handoff, so completed product work was preserved. Baseline: 1,038 backend tests passed, two optional PostgreSQL tests skipped; the only local modification was twelve removed `peer: true` metadata flags in `frontend/package-lock.json`. That diff remains untouched and unstaged.
@@ -60,7 +62,9 @@ The [build guide](scripts/knowledge/README.md) documents finite queries, source 
 
 Factual review caught and corrected an inherited overbroad Eden Ben Zaken classification, excludes disaster-film → thriller as sufficient genre evidence by itself, and preserves general running when a narrower discipline has a qualified name. These decisions and source links are in `group-curation.json.review_notes`. Apple Music was used only to spot-check one artist association; no Apple catalog or prose was imported. Saw remains supported as horror/crime; a thriller label was not invented from the prompt.
 
-## Production rule catalog
+## Previous production rule catalog (superseded)
+
+Kept for the record; the families below remain under regression tests but are no longer the production registry.
 
 | Rule | Difficulty | Group discovery / eligibility |
 |---|---|---|
