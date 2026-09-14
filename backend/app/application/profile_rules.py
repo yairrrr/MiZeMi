@@ -113,6 +113,9 @@ def _validated_value(spec: ProfileFieldSpec, value: object) -> str | int:
         raise ProfileValidationError(f"{spec.label} must be text.")
     text = _normalize_text(value)
 
+    if not text.isprintable():
+        raise ProfileValidationError(f"{spec.label} must contain visible text only.")
+
     if spec.kind == "choice":
         if text not in spec.choices:
             raise ProfileValidationError(f"Choose one of the listed options for {spec.label}.")

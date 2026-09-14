@@ -43,15 +43,19 @@ async def player_websocket(websocket: WebSocket, room_code: str, player_id: str)
         await websocket.close(code=UNRESOLVED_CLOSE_CODE)
         return
 
-    if websocket.app.state.room_connections.player_connection_count(room.room_code, player_id) >= 4:
+    connections = websocket.app.state.room_connections
+    if not connections.acquire_slot(room.room_code, "player", player_id):
         await websocket.close(code=4429)
         return
 
-    await websocket.accept(subprotocol=PLAYER_PROTOCOL)
-    handle = ConnectionHandle(websocket, role="player", player_id=player_id)
-    hub.connect(room, handle)
+    handle = None
     try:
+        await websocket.accept(subprotocol=PLAYER_PROTOCOL)
+        handle = ConnectionHandle(websocket, role="player", player_id=player_id)
+        hub.connect(room, handle)
         await receive_loop(websocket, hub, room, handle)
     finally:
-        hub.disconnect(room, handle)
-        await handle.shutdown()
+        connections.release_slot(room.room_code, "player", player_id)
+        if handle is not None:
+            hub.disconnect(room, handle)
+            await handle.shutdown()

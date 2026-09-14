@@ -49,7 +49,9 @@ class ClassroomHttpGuard:
                 return
             times.append(now)
             length = Headers(scope=scope).get('content-length')
-            if length is not None and (not length.isdigit() or int(length) > MAX_BODY_BYTES):
+            if length is not None and (not length.isascii() or not length.isdigit()
+                                       or len(length.lstrip('0')) > len(str(MAX_BODY_BYTES))
+                                       or int(length.lstrip('0') or '0') > MAX_BODY_BYTES):
                 await reject(413, 'The request is too large.')
                 return
             body = bytearray()

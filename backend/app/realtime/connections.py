@@ -130,6 +130,24 @@ class RoomConnectionRegistry:
 
     def __init__(self) -> None:
         self._connections: dict[str, list[MessageSink]] = {}
+        self._slots: dict[tuple[str, Role, str | None], int] = {}
+
+    def acquire_slot(self, room_code: str, role: Role, player_id: str | None = None) -> bool:
+        """Reserve before awaiting the handshake; called on the serving loop."""
+        key = (self._canonical(room_code), role, player_id)
+        count = self._slots.get(key, 0)
+        if count >= 4:
+            return False
+        self._slots[key] = count + 1
+        return True
+
+    def release_slot(self, room_code: str, role: Role, player_id: str | None = None) -> None:
+        key = (self._canonical(room_code), role, player_id)
+        count = self._slots.get(key, 0)
+        if count <= 1:
+            self._slots.pop(key, None)
+        else:
+            self._slots[key] = count - 1
 
     @staticmethod
     def _canonical(room_code: str) -> str:

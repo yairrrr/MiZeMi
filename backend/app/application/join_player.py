@@ -7,6 +7,7 @@ the registry's RoomNotFoundError) happens at the API boundary.
 
 from collections.abc import Callable
 from dataclasses import dataclass
+import unicodedata
 from uuid import uuid4
 
 from app.domain.game import GameState, Player
@@ -81,15 +82,20 @@ class JoinPlayerService:
             raise RoomNotJoinableError(game.state)
 
         name = display_name.strip()
-        if not name or len(name) > MAX_DISPLAY_NAME_LENGTH:
+        if not name or len(name) > MAX_DISPLAY_NAME_LENGTH or not name.isprintable():
             raise InvalidDisplayNameError(
                 f"display_name must be 1-{MAX_DISPLAY_NAME_LENGTH} characters after trimming"
             )
         if self._max_players is not None and len(game.players) >= self._max_players:
             raise RoomFullError()
-        normalized = name.casefold()
+        # Canonically equivalent names and invisible formatting must not let a
+        # second participant visually impersonate someone in the classroom.
+        def name_key(value: str) -> str:
+            return unicodedata.normalize("NFC", " ".join(value.split())).casefold()
+
+        normalized = name_key(name)
         if any(
-            player.display_name.strip().casefold() == normalized
+            name_key(player.display_name) == normalized
             for player in game.players
         ):
             raise NameTakenError(name)
