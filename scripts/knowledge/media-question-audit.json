@@ -1,0 +1,3984 @@
+{
+  "label": "media-improved",
+  "knowledge": "2026-09-14.1",
+  "synthetic": true,
+  "games": [
+    {
+      "room": "media_rich",
+      "language": "he",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "נתניה",
+            "favorite_food": "פסטה",
+            "hobby": "שחייה",
+            "favorite_music": "Electronic",
+            "favorite_movie": "המסור",
+            "favorite_artist": "זהבה בן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רמת גן",
+            "favorite_food": "פלאפל",
+            "hobby": "צילום",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון: ארס",
+            "favorite_artist": "עדן בן זקן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "קריאה",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתיד",
+            "favorite_artist": "Metallica",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "אילת",
+            "favorite_food": "לזניה",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metallica",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רחובות",
+            "favorite_food": "טאקו",
+            "hobby": "פילאטיס",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldplay",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חולון",
+            "favorite_food": "שווארמה",
+            "hobby": "בישול",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בבית",
+            "favorite_artist": "Eminem",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 5,
+            "group_mode": 1,
+            "group_comparison_semantic": 1,
+            "group_unique": 2,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 2,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 5,
+            "group_mode": 1,
+            "group_comparison_semantic": 1,
+            "group_unique": 2,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 2,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1,
+            "group_count": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_genre_outlier": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "options": [
+            "היפ הופ",
+            "רוק",
+            "מזרחית",
+            "פופ"
+          ],
+          "answer": "מזרחית",
+          "explanation": "6 אנשים בחרו אמנים שמזוהים עם מוזיקה מזרחית — יותר מכל סגנון אחר. בין הבחירות: עומר אדם, אייל גולן, שרית חדד ועוד 3."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "options": [
+            "אלקטרונית",
+            "רוק",
+            "פופ",
+            "אר אנד בי"
+          ],
+          "answer": "פופ",
+          "explanation": "6 אנשים בחרו שירים בסגנון פופ — יותר מכל סגנון אחר. במקום השני: רוק (5). בין הבחירות: Blank Space, Shake It Off, Paradise ועוד 1."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "options": [
+            "הרפתקאות",
+            "קומדיה",
+            "פשע",
+            "אימה"
+          ],
+          "answer": "אימה",
+          "explanation": "5 אנשים בחרו סרטי אימה — יותר מכל ז׳אנר אחר. בין הבחירות: המסור, לזמן את הרוע."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "options": [
+            "4",
+            "6",
+            "3",
+            "2"
+          ],
+          "answer": "4",
+          "explanation": "4 אנשים בחרו תחביבים עם פעילות גופנית: ריצה, כדורגל, שחייה ועוד 1. זוהו 9 מתוך 10 תחביבים."
+        },
+        {
+          "index": 4,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "options": [
+            "פופ",
+            "מזרחית",
+            "אלקטרונית",
+            "רוק"
+          ],
+          "answer": "פופ",
+          "explanation": "4 אנשים בחרו מוזיקת פופ — יותר מכל סגנון אחר."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "מי היחיד/ה שגר/ה ב\"תל אביב\"?",
+          "options": [
+            "יונתן",
+            "ליאור",
+            "דנה",
+            "מאיה"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "most_common_value",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "direct",
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "options": [
+            "Enter Sandman",
+            "Blank Space",
+            "Paradise - Coldplay",
+            "Shake It Off - Taylor Swift"
+          ],
+          "answer": "Enter Sandman",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "כמה משתתפים בחרו \"המסור\" כסרט האהוב עליהם?",
+          "options": [
+            "4",
+            "3",
+            "1",
+            "2"
+          ],
+          "answer": "3",
+          "explanation": ""
+        },
+        {
+          "index": 8,
+          "rule": "region_majority",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "options": [
+            "הצפון",
+            "אזור ירושלים",
+            "הדרום",
+            "המרכז"
+          ],
+          "answer": "המרכז",
+          "explanation": "5 אנשים גרים במרכז — יותר מכל אזור אחר."
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "כמה אנשים בחרו אמן שמזוהה עם מוזיקת רוק?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "5"
+          ],
+          "answer": "4",
+          "explanation": "4 אנשים בחרו אמנים שמזוהים עם מוזיקת רוק: מטאליקה, קולדפליי, אמינם."
+        },
+        {
+          "index": 10,
+          "rule": "group_comparison",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "options": [
+            "לזמן את הרוע",
+            "המסור"
+          ],
+          "answer": "המסור",
+          "explanation": ""
+        },
+        {
+          "index": 11,
+          "rule": "locality_extreme",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "options": [
+            "נועה",
+            "מאיה",
+            "רוני",
+            "ליאור"
+          ],
+          "answer": "רוני",
+          "explanation": "אילת, היישוב של רוני, הוא הדרומי ביותר בקבוצה."
+        },
+        {
+          "index": 12,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "רק אדם אחד בקבוצה בחר מאכל מקסיקני. מי זה?",
+          "options": [
+            "מאיה",
+            "יעל",
+            "דנה",
+            "נועה"
+          ],
+          "answer": "מאיה",
+          "explanation": "מאיה: טאקו."
+        },
+        {
+          "index": 13,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "מי בחר שיר מסגנון שאף אחד אחר בקבוצה לא בחר?",
+          "options": [
+            "איתי",
+            "עומר",
+            "יונתן",
+            "נועה"
+          ],
+          "answer": "נועה",
+          "explanation": "נועה בחר/ה Paradise. רק הבחירה הזאת מייצגת את הסגנונות האלה: אר אנד בי."
+        },
+        {
+          "index": 14,
+          "rule": "group_comparison_semantic",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל אסייתי או מזרח תיכוני?",
+          "options": [
+            "אסייתי",
+            "מזרח תיכוני"
+          ],
+          "answer": "מזרח תיכוני",
+          "explanation": "3 אנשים בחרו אוכל מזרח תיכוני, לעומת 2 אנשים שבחרו אוכל אסייתי."
+        },
+        {
+          "index": 15,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "options": [
+            "ליאור + יעל",
+            "דנה + יעל",
+            "יעל + יונתן",
+            "יעל + מאיה"
+          ],
+          "answer": "דנה + יעל",
+          "explanation": "דנה ויעל גרים בתל אביב וברמת גן, כ־3 ק״מ זה מזה בקו אווירי."
+        },
+        {
+          "index": 16,
+          "rule": "group_diversity",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "options": [
+            "4",
+            "6",
+            "3",
+            "5"
+          ],
+          "answer": "5",
+          "explanation": "5 סוגי תחביבים: ספורט, אמנות ויצירה, דיגיטל ומחשבים, למידה וקריאה ובישול ואפייה."
+        },
+        {
+          "index": 17,
+          "rule": "group_filtered_mode",
+          "fields": [
+            "favorite_artist",
+            "favorite_movie"
+          ],
+          "kind": "cross_domain",
+          "text": "מבין מי שבחרו אמנים שמזוהים עם מוזיקה מזרחית, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "options": [
+            "פשע",
+            "מתח",
+            "מדע בדיוני",
+            "אימה"
+          ],
+          "answer": "אימה",
+          "explanation": "6 אנשים בחרו אמנים שמזוהים עם מוזיקה מזרחית. מתוכם, 5 בחרו סרטי אימה — יותר מכל ז׳אנר אחר."
+        },
+        {
+          "index": 18,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_food",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "כמה אנשים בחרו גם מאכל אסייתי וגם תחביב יצירתי?",
+          "options": [
+            "3",
+            "0",
+            "1",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר גם מאכל אסייתי וגם תחביב יצירתי: סושי + ציור."
+        },
+        {
+          "index": 19,
+          "rule": "group_subgroup_comparison",
+          "fields": [
+            "hobby",
+            "favorite_artist"
+          ],
+          "kind": "cross_domain",
+          "text": "מבין מי שבחרו תחביב יצירתי, איזה סגנון מופיע יותר באמנים שבחרו — פופ או רוק?",
+          "options": [
+            "פופ",
+            "רוק"
+          ],
+          "answer": "פופ",
+          "explanation": "3 אנשים בחרו תחביבי יצירה. מתוכם, 2 בחרו אמנים שמזוהים עם מוזיקת פופ ו־1 בחר אמן שמזוהה עם מוזיקת רוק."
+        }
+      ]
+    },
+    {
+      "room": "media_rich",
+      "language": "en",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "נתניה",
+            "favorite_food": "פסטה",
+            "hobby": "שחייה",
+            "favorite_music": "Electronic",
+            "favorite_movie": "המסור",
+            "favorite_artist": "זהבה בן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רמת גן",
+            "favorite_food": "פלאפל",
+            "hobby": "צילום",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון: ארס",
+            "favorite_artist": "עדן בן זקן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "קריאה",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתיד",
+            "favorite_artist": "Metallica",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "אילת",
+            "favorite_food": "לזניה",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metallica",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רחובות",
+            "favorite_food": "טאקו",
+            "hobby": "פילאטיס",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldplay",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חולון",
+            "favorite_food": "שווארמה",
+            "hobby": "בישול",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בבית",
+            "favorite_artist": "Eminem",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 5,
+            "group_mode": 1,
+            "group_comparison_semantic": 1,
+            "group_unique": 2,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 2,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 5,
+            "group_mode": 1,
+            "group_comparison_semantic": 1,
+            "group_unique": 2,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 2,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1,
+            "group_count": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_genre_outlier": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "options": [
+            "Hip-hop",
+            "Rock",
+            "Mizrahi",
+            "Pop"
+          ],
+          "answer": "Mizrahi",
+          "explanation": "6 people chose artists associated with Mizrahi music — more than any other style. Choices included: Omer Adam, Eyal Golan, Sarit Hadad and 3 more."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "Looking at your favorite songs, which style leads?",
+          "options": [
+            "Electronic",
+            "Rock",
+            "Pop",
+            "R&B"
+          ],
+          "answer": "Pop",
+          "explanation": "6 people chose songs in the Pop style — more than any other style. Second: Rock (5). Choices included: Blank Space, Shake It Off - Taylor Swift, Paradise - Coldplay and 1 more."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "Which genre shows up most in the movies you chose?",
+          "options": [
+            "Adventure",
+            "Comedy",
+            "Crime",
+            "Horror"
+          ],
+          "answer": "Horror",
+          "explanation": "5 people chose horror movies — more than any other genre. Choices included: Saw, The Conjuring."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "How many of you picked a physically active hobby?",
+          "options": [
+            "4",
+            "6",
+            "3",
+            "2"
+          ],
+          "answer": "4",
+          "explanation": "4 people chose physically active hobbies: Running, Association football, Swimming and 1 more. 9 of the 10 hobbies chosen were recognized."
+        },
+        {
+          "index": 4,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "Which music style is the most popular here?",
+          "options": [
+            "Pop",
+            "Mizrahi",
+            "Electronic",
+            "Rock"
+          ],
+          "answer": "Pop",
+          "explanation": "4 people chose pop music — more than any other style."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose city is \"תל אביב\"?",
+          "options": [
+            "יונתן",
+            "ליאור",
+            "דנה",
+            "מאיה"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "most_common_value",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "direct",
+          "text": "What is the most common favorite song in this group?",
+          "options": [
+            "Enter Sandman",
+            "Blank Space",
+            "Paradise - Coldplay",
+            "Shake It Off - Taylor Swift"
+          ],
+          "answer": "Enter Sandman",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "How many players have \"המסור\" as their favorite movie?",
+          "options": [
+            "4",
+            "3",
+            "1",
+            "2"
+          ],
+          "answer": "3",
+          "explanation": ""
+        },
+        {
+          "index": 8,
+          "rule": "region_majority",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "In which region of Israel do the most of you live?",
+          "options": [
+            "The north",
+            "The Jerusalem area",
+            "The south",
+            "The center"
+          ],
+          "answer": "The center",
+          "explanation": "5 people live in the center of the country — more than any other region."
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "How many people chose an artist associated with rock music?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "5"
+          ],
+          "answer": "4",
+          "explanation": "4 people chose artists associated with rock music: Metallica, Coldplay, Eminem."
+        },
+        {
+          "index": 10,
+          "rule": "group_comparison",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "options": [
+            "לזמן את הרוע",
+            "המסור"
+          ],
+          "answer": "המסור",
+          "explanation": ""
+        },
+        {
+          "index": 11,
+          "rule": "locality_extreme",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "Which of you lives in the southernmost town?",
+          "options": [
+            "נועה",
+            "מאיה",
+            "רוני",
+            "ליאור"
+          ],
+          "answer": "רוני",
+          "explanation": "Eilat, where רוני lives, is the southernmost town in the group."
+        },
+        {
+          "index": 12,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Only one person in our group chose a Mexican dish. Who?",
+          "options": [
+            "מאיה",
+            "יעל",
+            "דנה",
+            "נועה"
+          ],
+          "answer": "מאיה",
+          "explanation": "מאיה: Taco."
+        },
+        {
+          "index": 13,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "Who chose a song with a genre nobody else’s song represents?",
+          "options": [
+            "איתי",
+            "עומר",
+            "יונתן",
+            "נועה"
+          ],
+          "answer": "נועה",
+          "explanation": "נועה chose Paradise - Coldplay. Only their choice represents these genres: R&B."
+        },
+        {
+          "index": 14,
+          "rule": "group_comparison_semantic",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Based on your food choices, which leads — Asian or Middle Eastern food?",
+          "options": [
+            "Asian",
+            "Middle Eastern"
+          ],
+          "answer": "Middle Eastern",
+          "explanation": "3 people chose Middle Eastern food, compared with 2 people who chose Asian food."
+        },
+        {
+          "index": 15,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "Which pair of you lives the shortest distance apart?",
+          "options": [
+            "ליאור + יעל",
+            "דנה + יעל",
+            "יעל + יונתן",
+            "יעל + מאיה"
+          ],
+          "answer": "דנה + יעל",
+          "explanation": "דנה and יעל live in Tel Aviv and Ramat Gan, about 3 km apart as the crow flies."
+        },
+        {
+          "index": 16,
+          "rule": "group_diversity",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "How many different types of hobbies are there in our group?",
+          "options": [
+            "4",
+            "6",
+            "3",
+            "5"
+          ],
+          "answer": "5",
+          "explanation": "5 types of hobbies: Sport, Arts and crafts, Digital, Learning and reading and Cooking and baking."
+        },
+        {
+          "index": 17,
+          "rule": "group_filtered_mode",
+          "fields": [
+            "favorite_artist",
+            "favorite_movie"
+          ],
+          "kind": "cross_domain",
+          "text": "Among people who chose artists associated with Mizrahi music, which genre leads their movie choices?",
+          "options": [
+            "Crime",
+            "Thriller",
+            "Science fiction",
+            "Horror"
+          ],
+          "answer": "Horror",
+          "explanation": "6 people chose artists associated with Mizrahi music. Of them, 5 chose horror movies — more than any other genre."
+        },
+        {
+          "index": 18,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_food",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "How many people chose both an Asian dish and a creative hobby?",
+          "options": [
+            "3",
+            "0",
+            "1",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "One person chose both an Asian dish and a creative hobby: Sushi + Painting."
+        },
+        {
+          "index": 19,
+          "rule": "group_subgroup_comparison",
+          "fields": [
+            "hobby",
+            "favorite_artist"
+          ],
+          "kind": "cross_domain",
+          "text": "Among people with a creative hobby, which style appears more in their chosen artists — Pop or Rock?",
+          "options": [
+            "Pop",
+            "Rock"
+          ],
+          "answer": "Pop",
+          "explanation": "3 people chose creative hobbies. Of them, 2 chose artists associated with pop music and 1 chose an artist associated with rock music."
+        }
+      ]
+    },
+    {
+      "room": "media_small",
+      "language": "he",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_diversity": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_diversity": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1,
+            "group_count": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_count": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "options": [
+            "מזרחית",
+            "ים תיכונית",
+            "פולק",
+            "פופ"
+          ],
+          "answer": "מזרחית",
+          "explanation": "4 אנשים בחרו אמנים שמזוהים עם מוזיקה מזרחית — יותר מכל סגנון אחר. במקום השני: פופ (2). בין הבחירות: עומר אדם, אייל גולן, שרית חדד ועוד 1."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "options": [
+            "אר אנד בי",
+            "רוק",
+            "אלקטרונית",
+            "פופ"
+          ],
+          "answer": "פופ",
+          "explanation": "4 אנשים בחרו שירים בסגנון פופ — יותר מכל סגנון אחר. בין הבחירות: Blank Space, Shake It Off, Paradise ועוד 1."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "options": [
+            "מתח",
+            "אימה",
+            "מסתורין",
+            "פשע"
+          ],
+          "answer": "אימה",
+          "explanation": "4 אנשים בחרו סרטי אימה — יותר מכל ז׳אנר אחר. בין הבחירות: המסור, לזמן את הרוע."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "לכמה אנשים כאן יש תחביב ספורטיבי?",
+          "options": [
+            "2",
+            "1",
+            "0",
+            "3"
+          ],
+          "answer": "2",
+          "explanation": "2 אנשים בחרו תחביבי ספורט: ריצה, כדורגל."
+        },
+        {
+          "index": 4,
+          "rule": "group_count",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקת פופ?",
+          "options": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "answer": "2",
+          "explanation": "2 אנשים בחרו מוזיקת פופ."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "מי היחיד/ה שגר/ה ב\"תל אביב\"?",
+          "options": [
+            "עמית",
+            "עומר",
+            "דנה",
+            "נועה"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "כמה משתתפים בחרו \"המסור\" כסרט האהוב עליהם?",
+          "options": [
+            "3",
+            "2",
+            "1",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "group_count",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "כמה אנשים בחרו שיר אהוב בסגנון אלקטרוני?",
+          "options": [
+            "1",
+            "0",
+            "3",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר שיר בסגנון אלקטרוני: Blank Space."
+        },
+        {
+          "index": 8,
+          "rule": "unique_value",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "direct",
+          "text": "מי בחר/ה באמן \"אייל גולן\"?",
+          "options": [
+            "נועה",
+            "עמית",
+            "עומר",
+            "דנה"
+          ],
+          "answer": "עומר",
+          "explanation": ""
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "כמה אנשים בקבוצה בחרו סרט מתח?",
+          "options": [
+            "2",
+            "3",
+            "0",
+            "1"
+          ],
+          "answer": "2",
+          "explanation": "2 אנשים בחרו סרטי מתח: לזמן את הרוע."
+        },
+        {
+          "index": 10,
+          "rule": "group_count",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "כמה אנשים בקבוצה בחרו מאכל אסייתי?",
+          "options": [
+            "3",
+            "0",
+            "2",
+            "1"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר מאכל אסייתי: סושי."
+        },
+        {
+          "index": 11,
+          "rule": "region_count",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "כמה אנשים בקבוצה גרים באזור ירושלים?",
+          "options": [
+            "2",
+            "0",
+            "3",
+            "1"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד גר באזור ירושלים: ירושלים."
+        },
+        {
+          "index": 12,
+          "rule": "group_count",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקה מזרחית?",
+          "options": [
+            "3",
+            "0",
+            "1",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר מוזיקה מזרחית."
+        },
+        {
+          "index": 13,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "מי היחיד/ה בקבוצה שבחר/ה מאכל אמריקאי?",
+          "options": [
+            "נועה",
+            "עמית",
+            "עומר",
+            "דנה"
+          ],
+          "answer": "עמית",
+          "explanation": "עמית: המבורגר."
+        },
+        {
+          "index": 14,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "מי בחר אמן מסגנון שאף אחד אחר בקבוצה לא בחר?",
+          "options": [
+            "נועה",
+            "דנה",
+            "עומר",
+            "עמית"
+          ],
+          "answer": "דנה",
+          "explanation": "דנה בחר/ה עומר אדם. רק הבחירה הזאת מייצגת את הסגנונות האלה: ים תיכונית."
+        },
+        {
+          "index": 15,
+          "rule": "group_diversity",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "כמה מטבחים שונים מיוצגים בבחירות האוכל שלכם?",
+          "options": [
+            "5",
+            "3",
+            "2",
+            "4"
+          ],
+          "answer": "4",
+          "explanation": "4 מטבחים: איטלקי, אסייתי, מזרח תיכוני ואמריקאי."
+        },
+        {
+          "index": 16,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "options": [
+            "דנה + עומר",
+            "דנה + נועה",
+            "עומר + עמית",
+            "דנה + עמית"
+          ],
+          "answer": "דנה + נועה",
+          "explanation": "דנה ונועה גרים בתל אביב ובירושלים, כ־54 ק״מ זה מזה בקו אווירי."
+        },
+        {
+          "index": 17,
+          "rule": "group_diversity",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים באמנים שבחרתם?",
+          "options": [
+            "2",
+            "3",
+            "4",
+            "1"
+          ],
+          "answer": "3",
+          "explanation": "3 סגנונות: פופ, מזרחית וים תיכונית. בחירה אחת יכולה להשתייך לכמה סגנונות; כל סגנון נספר פעם אחת."
+        },
+        {
+          "index": 18,
+          "rule": "region_diversity",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "options": [
+            "4",
+            "1",
+            "3",
+            "2"
+          ],
+          "answer": "4",
+          "explanation": "4 אזורים: הצפון, המרכז, הדרום ואזור ירושלים."
+        },
+        {
+          "index": 19,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_music",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "כמה אנשים בחרו גם מוזיקת פופ וגם תחביב ספורטיבי?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "0"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר גם מוזיקת פופ וגם תחביב ספורטיבי: ריצה."
+        }
+      ]
+    },
+    {
+      "room": "media_small",
+      "language": "en",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_diversity": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_diversity": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1,
+            "group_count": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_count": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "options": [
+            "Mizrahi",
+            "Mediterranean",
+            "Folk",
+            "Pop"
+          ],
+          "answer": "Mizrahi",
+          "explanation": "4 people chose artists associated with Mizrahi music — more than any other style. Second: Pop (2). Choices included: Omer Adam, Eyal Golan, Sarit Hadad and 1 more."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "Looking at your favorite songs, which style leads?",
+          "options": [
+            "R&B",
+            "Rock",
+            "Electronic",
+            "Pop"
+          ],
+          "answer": "Pop",
+          "explanation": "4 people chose songs in the Pop style — more than any other style. Choices included: Blank Space, Shake It Off - Taylor Swift, Paradise - Coldplay and 1 more."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "Which genre shows up most in the movies you chose?",
+          "options": [
+            "Thriller",
+            "Horror",
+            "Mystery",
+            "Crime"
+          ],
+          "answer": "Horror",
+          "explanation": "4 people chose horror movies — more than any other genre. Choices included: Saw, The Conjuring."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "How many people here have a sports hobby?",
+          "options": [
+            "2",
+            "1",
+            "0",
+            "3"
+          ],
+          "answer": "2",
+          "explanation": "2 people chose sports hobbies: Running, Association football."
+        },
+        {
+          "index": 4,
+          "rule": "group_count",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "How many people in our group chose pop music?",
+          "options": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "answer": "2",
+          "explanation": "2 people chose pop music."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose city is \"תל אביב\"?",
+          "options": [
+            "עמית",
+            "עומר",
+            "דנה",
+            "נועה"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "How many players have \"המסור\" as their favorite movie?",
+          "options": [
+            "3",
+            "2",
+            "1",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "group_count",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "How many people chose a favorite song in the Electronic style?",
+          "options": [
+            "1",
+            "0",
+            "3",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "One person chose a song in the Electronic style: Blank Space."
+        },
+        {
+          "index": 8,
+          "rule": "unique_value",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose favorite artist is \"אייל גולן\"?",
+          "options": [
+            "נועה",
+            "עמית",
+            "עומר",
+            "דנה"
+          ],
+          "answer": "עומר",
+          "explanation": ""
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "How many people in our group chose a thriller?",
+          "options": [
+            "2",
+            "3",
+            "0",
+            "1"
+          ],
+          "answer": "2",
+          "explanation": "2 people chose thrillers: The Conjuring."
+        },
+        {
+          "index": 10,
+          "rule": "group_count",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "How many people in our group chose an Asian dish?",
+          "options": [
+            "3",
+            "0",
+            "2",
+            "1"
+          ],
+          "answer": "1",
+          "explanation": "One person chose an Asian dish: Sushi."
+        },
+        {
+          "index": 11,
+          "rule": "region_count",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "How many people in our group live in the Jerusalem area?",
+          "options": [
+            "2",
+            "0",
+            "3",
+            "1"
+          ],
+          "answer": "1",
+          "explanation": "One person lives in the Jerusalem area: Jerusalem."
+        },
+        {
+          "index": 12,
+          "rule": "group_count",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "How many people in our group chose Mizrahi music?",
+          "options": [
+            "3",
+            "0",
+            "1",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "One person chose Mizrahi music."
+        },
+        {
+          "index": 13,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Who is the only one here who picked an American dish?",
+          "options": [
+            "נועה",
+            "עמית",
+            "עומר",
+            "דנה"
+          ],
+          "answer": "עמית",
+          "explanation": "עמית: Hamburger."
+        },
+        {
+          "index": 14,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "Who chose an artist with a genre nobody else’s artist represents?",
+          "options": [
+            "נועה",
+            "דנה",
+            "עומר",
+            "עמית"
+          ],
+          "answer": "דנה",
+          "explanation": "דנה chose Omer Adam. Only their choice represents these genres: Mediterranean."
+        },
+        {
+          "index": 15,
+          "rule": "group_diversity",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "How many cuisines are represented in your favorite foods?",
+          "options": [
+            "5",
+            "3",
+            "2",
+            "4"
+          ],
+          "answer": "4",
+          "explanation": "4 cuisines: Italian, Asian, Middle Eastern and American."
+        },
+        {
+          "index": 16,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "Which pair of you lives the shortest distance apart?",
+          "options": [
+            "דנה + עומר",
+            "דנה + נועה",
+            "עומר + עמית",
+            "דנה + עמית"
+          ],
+          "answer": "דנה + נועה",
+          "explanation": "דנה and נועה live in Tel Aviv and Jerusalem, about 54 km apart as the crow flies."
+        },
+        {
+          "index": 17,
+          "rule": "group_diversity",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "How many music genres are represented by your chosen artists?",
+          "options": [
+            "2",
+            "3",
+            "4",
+            "1"
+          ],
+          "answer": "3",
+          "explanation": "3 styles: Pop, Mizrahi and Mediterranean. One choice can belong to several genres; each genre counts once."
+        },
+        {
+          "index": 18,
+          "rule": "region_diversity",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "From how many regions of Israel does our group come?",
+          "options": [
+            "4",
+            "1",
+            "3",
+            "2"
+          ],
+          "answer": "4",
+          "explanation": "4 regions: the north, the center of the country, the south and the Jerusalem area."
+        },
+        {
+          "index": 19,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_music",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "How many people chose both pop music and a sports hobby?",
+          "options": [
+            "2",
+            "1",
+            "3",
+            "0"
+          ],
+          "answer": "1",
+          "explanation": "One person chose both pop music and a sports hobby: Running."
+        }
+      ]
+    },
+    {
+      "room": "media_optional",
+      "language": "he",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "נתניה",
+            "favorite_food": "פסטה",
+            "hobby": "שחייה",
+            "favorite_music": "Electronic",
+            "favorite_movie": "המסור"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רמת גן",
+            "favorite_food": "פלאפל",
+            "hobby": "צילום",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון: ארס"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "קריאה",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתיד"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "אילת",
+            "favorite_food": "לזניה",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רחובות",
+            "favorite_food": "טאקו",
+            "hobby": "פילאטיס",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חולון",
+            "favorite_food": "שווארמה",
+            "hobby": "בישול",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בבית"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1,
+            "group_genre_outlier": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_count": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "options": [
+            "הרפתקאות",
+            "פשע",
+            "קומדיה",
+            "אימה"
+          ],
+          "answer": "אימה",
+          "explanation": "5 אנשים בחרו סרטי אימה — יותר מכל ז׳אנר אחר. בין הבחירות: המסור, לזמן את הרוע."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "options": [
+            "פופ",
+            "פולק",
+            "מזרחית",
+            "ים תיכונית"
+          ],
+          "answer": "מזרחית",
+          "explanation": "4 אנשים בחרו אמנים שמזוהים עם מוזיקה מזרחית — יותר מכל סגנון אחר. במקום השני: פופ (2). בין הבחירות: עומר אדם, אייל גולן, שרית חדד ועוד 1."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "options": [
+            "אר אנד בי",
+            "פופ",
+            "רוק",
+            "אלקטרונית"
+          ],
+          "answer": "פופ",
+          "explanation": "4 אנשים בחרו שירים בסגנון פופ — יותר מכל סגנון אחר. בין הבחירות: Blank Space, Shake It Off, Paradise ועוד 1."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "6"
+          ],
+          "answer": "4",
+          "explanation": "4 אנשים בחרו תחביבים עם פעילות גופנית: ריצה, כדורגל, שחייה ועוד 1. זוהו 9 מתוך 10 תחביבים."
+        },
+        {
+          "index": 4,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "options": [
+            "פופ",
+            "אלקטרונית",
+            "רוק",
+            "מזרחית"
+          ],
+          "answer": "פופ",
+          "explanation": "4 אנשים בחרו מוזיקת פופ — יותר מכל סגנון אחר."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "מי היחיד/ה שגר/ה ב\"אילת\"?",
+          "options": [
+            "רוני",
+            "איתי",
+            "יעל",
+            "ליאור"
+          ],
+          "answer": "רוני",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "most_common_value",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "איזה סרט אהוב נבחר הכי הרבה בקבוצה?",
+          "options": [
+            "היומן",
+            "בחזרה לעתיד",
+            "המסור",
+            "לזמן את הרוע"
+          ],
+          "answer": "המסור",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "region_majority",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "options": [
+            "הצפון",
+            "אזור ירושלים",
+            "המרכז",
+            "הדרום"
+          ],
+          "answer": "המרכז",
+          "explanation": "5 אנשים גרים במרכז — יותר מכל אזור אחר."
+        },
+        {
+          "index": 8,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "כמה משתתפים בחרו \"לזמן את הרוע\" כסרט האהוב עליהם?",
+          "options": [
+            "3",
+            "1",
+            "2",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": ""
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "כמה אנשים בחרו שיר אהוב בסגנון אלקטרוני?",
+          "options": [
+            "3",
+            "1",
+            "0",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר שיר בסגנון אלקטרוני: Blank Space."
+        },
+        {
+          "index": 10,
+          "rule": "unique_value",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "direct",
+          "text": "מי היחיד/ה שבחר/ה \"פסטה\" כאוכל אהוב?",
+          "options": [
+            "יונתן",
+            "ליאור",
+            "עומר",
+            "מאיה"
+          ],
+          "answer": "ליאור",
+          "explanation": ""
+        },
+        {
+          "index": 11,
+          "rule": "group_diversity",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "options": [
+            "4",
+            "3",
+            "5",
+            "6"
+          ],
+          "answer": "5",
+          "explanation": "5 סוגי תחביבים: ספורט, אמנות ויצירה, דיגיטל ומחשבים, למידה וקריאה ובישול ואפייה."
+        },
+        {
+          "index": 12,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "רק אדם אחד בקבוצה בחר מאכל מקסיקני. מי זה?",
+          "options": [
+            "יונתן",
+            "רוני",
+            "מאיה",
+            "יעל"
+          ],
+          "answer": "מאיה",
+          "explanation": "מאיה: טאקו."
+        },
+        {
+          "index": 13,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "options": [
+            "דנה + מאיה",
+            "יעל + יונתן",
+            "דנה + יעל",
+            "מאיה + יונתן"
+          ],
+          "answer": "דנה + יעל",
+          "explanation": "דנה ויעל גרים בתל אביב וברמת גן, כ־3 ק״מ זה מזה בקו אווירי."
+        },
+        {
+          "index": 14,
+          "rule": "group_comparison_semantic",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל אסייתי או מזרח תיכוני?",
+          "options": [
+            "אסייתי",
+            "מזרח תיכוני"
+          ],
+          "answer": "מזרח תיכוני",
+          "explanation": "3 אנשים בחרו אוכל מזרח תיכוני, לעומת 2 אנשים שבחרו אוכל אסייתי."
+        },
+        {
+          "index": 15,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "מי בחר אמן מסגנון שאף אחד אחר בקבוצה לא בחר?",
+          "options": [
+            "נועה",
+            "דנה",
+            "עמית",
+            "עומר"
+          ],
+          "answer": "דנה",
+          "explanation": "דנה בחר/ה עומר אדם. רק הבחירה הזאת מייצגת את הסגנונות האלה: ים תיכונית."
+        },
+        {
+          "index": 16,
+          "rule": "region_diversity",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "options": [
+            "4",
+            "1",
+            "3",
+            "2"
+          ],
+          "answer": "4",
+          "explanation": "4 אזורים: הצפון, המרכז, הדרום ואזור ירושלים."
+        },
+        {
+          "index": 17,
+          "rule": "group_filtered_mode",
+          "fields": [
+            "city",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "מבין מי שגרים במרכז, איזה סוג תחביב הכי נפוץ?",
+          "options": [
+            "ספורט",
+            "אמנות ויצירה",
+            "דיגיטל ומחשבים",
+            "בישול ואפייה"
+          ],
+          "answer": "ספורט",
+          "explanation": "5 אנשים גרים במרכז. מתוכם, 3 בחרו תחביבי ספורט — יותר מכל סוג תחביב אחר."
+        },
+        {
+          "index": 18,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_movie",
+            "favorite_food"
+          ],
+          "kind": "cross_domain",
+          "text": "כמה אנשים בחרו גם סרט פשע וגם מאכל איטלקי?",
+          "options": [
+            "3",
+            "1",
+            "2",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": "2 אנשים בחרו גם סרט פשע וגם מאכל איטלקי: המסור + פיצה, המסור + פסטה."
+        },
+        {
+          "index": 19,
+          "rule": "group_subgroup_comparison",
+          "fields": [
+            "favorite_food",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "מבין מי שבחרו אוכל איטלקי, מה יותר נפוץ — תחביבי ספורט או תחביבי יצירה?",
+          "options": [
+            "תחביבי ספורט",
+            "תחביבי יצירה"
+          ],
+          "answer": "תחביבי ספורט",
+          "explanation": "3 אנשים בחרו אוכל איטלקי. מתוכם, 2 בחרו תחביבי ספורט ו־1 בחר תחביב יצירתי."
+        }
+      ]
+    },
+    {
+      "room": "media_optional",
+      "language": "en",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "נתניה",
+            "favorite_food": "פסטה",
+            "hobby": "שחייה",
+            "favorite_music": "Electronic",
+            "favorite_movie": "המסור"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רמת גן",
+            "favorite_food": "פלאפל",
+            "hobby": "צילום",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון: ארס"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "קריאה",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתיד"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "אילת",
+            "favorite_food": "לזניה",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רחובות",
+            "favorite_food": "טאקו",
+            "hobby": "פילאטיס",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חולון",
+            "favorite_food": "שווארמה",
+            "hobby": "בישול",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בבית"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 11,
+            "group_mode": 1,
+            "group_comparison_semantic": 7,
+            "group_unique": 5
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 3,
+            "group_mode": 1,
+            "group_unique": 3,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1,
+            "group_genre_outlier": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_count": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "Which genre shows up most in the movies you chose?",
+          "options": [
+            "Adventure",
+            "Crime",
+            "Comedy",
+            "Horror"
+          ],
+          "answer": "Horror",
+          "explanation": "5 people chose horror movies — more than any other genre. Choices included: Saw, The Conjuring."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "options": [
+            "Pop",
+            "Folk",
+            "Mizrahi",
+            "Mediterranean"
+          ],
+          "answer": "Mizrahi",
+          "explanation": "4 people chose artists associated with Mizrahi music — more than any other style. Second: Pop (2). Choices included: Omer Adam, Eyal Golan, Sarit Hadad and 1 more."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "Looking at your favorite songs, which style leads?",
+          "options": [
+            "R&B",
+            "Pop",
+            "Rock",
+            "Electronic"
+          ],
+          "answer": "Pop",
+          "explanation": "4 people chose songs in the Pop style — more than any other style. Choices included: Blank Space, Shake It Off - Taylor Swift, Paradise - Coldplay and 1 more."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "How many of you picked a physically active hobby?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "6"
+          ],
+          "answer": "4",
+          "explanation": "4 people chose physically active hobbies: Running, Association football, Swimming and 1 more. 9 of the 10 hobbies chosen were recognized."
+        },
+        {
+          "index": 4,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "Which music style is the most popular here?",
+          "options": [
+            "Pop",
+            "Electronic",
+            "Rock",
+            "Mizrahi"
+          ],
+          "answer": "Pop",
+          "explanation": "4 people chose pop music — more than any other style."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose city is \"אילת\"?",
+          "options": [
+            "רוני",
+            "איתי",
+            "יעל",
+            "ליאור"
+          ],
+          "answer": "רוני",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "most_common_value",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "What is the most common favorite movie in this group?",
+          "options": [
+            "היומן",
+            "בחזרה לעתיד",
+            "המסור",
+            "לזמן את הרוע"
+          ],
+          "answer": "המסור",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "region_majority",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "In which region of Israel do the most of you live?",
+          "options": [
+            "The north",
+            "The Jerusalem area",
+            "The center",
+            "The south"
+          ],
+          "answer": "The center",
+          "explanation": "5 people live in the center of the country — more than any other region."
+        },
+        {
+          "index": 8,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "How many players have \"לזמן את הרוע\" as their favorite movie?",
+          "options": [
+            "3",
+            "1",
+            "2",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": ""
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "How many people chose a favorite song in the Electronic style?",
+          "options": [
+            "3",
+            "1",
+            "0",
+            "2"
+          ],
+          "answer": "1",
+          "explanation": "One person chose a song in the Electronic style: Blank Space."
+        },
+        {
+          "index": 10,
+          "rule": "unique_value",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose favorite food is \"פסטה\"?",
+          "options": [
+            "יונתן",
+            "ליאור",
+            "עומר",
+            "מאיה"
+          ],
+          "answer": "ליאור",
+          "explanation": ""
+        },
+        {
+          "index": 11,
+          "rule": "group_diversity",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "How many different types of hobbies are there in our group?",
+          "options": [
+            "4",
+            "3",
+            "5",
+            "6"
+          ],
+          "answer": "5",
+          "explanation": "5 types of hobbies: Sport, Arts and crafts, Digital, Learning and reading and Cooking and baking."
+        },
+        {
+          "index": 12,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Only one person in our group chose a Mexican dish. Who?",
+          "options": [
+            "יונתן",
+            "רוני",
+            "מאיה",
+            "יעל"
+          ],
+          "answer": "מאיה",
+          "explanation": "מאיה: Taco."
+        },
+        {
+          "index": 13,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "Which pair of you lives the shortest distance apart?",
+          "options": [
+            "דנה + מאיה",
+            "יעל + יונתן",
+            "דנה + יעל",
+            "מאיה + יונתן"
+          ],
+          "answer": "דנה + יעל",
+          "explanation": "דנה and יעל live in Tel Aviv and Ramat Gan, about 3 km apart as the crow flies."
+        },
+        {
+          "index": 14,
+          "rule": "group_comparison_semantic",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Based on your food choices, which leads — Asian or Middle Eastern food?",
+          "options": [
+            "Asian",
+            "Middle Eastern"
+          ],
+          "answer": "Middle Eastern",
+          "explanation": "3 people chose Middle Eastern food, compared with 2 people who chose Asian food."
+        },
+        {
+          "index": 15,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "Who chose an artist with a genre nobody else’s artist represents?",
+          "options": [
+            "נועה",
+            "דנה",
+            "עמית",
+            "עומר"
+          ],
+          "answer": "דנה",
+          "explanation": "דנה chose Omer Adam. Only their choice represents these genres: Mediterranean."
+        },
+        {
+          "index": 16,
+          "rule": "region_diversity",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "From how many regions of Israel does our group come?",
+          "options": [
+            "4",
+            "1",
+            "3",
+            "2"
+          ],
+          "answer": "4",
+          "explanation": "4 regions: the north, the center of the country, the south and the Jerusalem area."
+        },
+        {
+          "index": 17,
+          "rule": "group_filtered_mode",
+          "fields": [
+            "city",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "Among people who live in the center of the country, which type of hobby is the most common?",
+          "options": [
+            "Sport",
+            "Arts and crafts",
+            "Digital",
+            "Cooking and baking"
+          ],
+          "answer": "Sport",
+          "explanation": "5 people live in the center of the country. Of them, 3 chose sports hobbies — more than any other type of hobby."
+        },
+        {
+          "index": 18,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_movie",
+            "favorite_food"
+          ],
+          "kind": "cross_domain",
+          "text": "How many people chose both a crime movie and an Italian dish?",
+          "options": [
+            "3",
+            "1",
+            "2",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": "2 people chose both a crime movie and an Italian dish: Saw + Pizza, Saw + Pasta."
+        },
+        {
+          "index": 19,
+          "rule": "group_subgroup_comparison",
+          "fields": [
+            "favorite_food",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "Among people who chose Italian food, which is more common — sports hobbies or creative hobbies?",
+          "options": [
+            "Sports hobbies",
+            "Creative hobbies"
+          ],
+          "answer": "Sports hobbies",
+          "explanation": "3 people chose Italian food. Of them, 2 chose sports hobbies and 1 chose a creative hobby."
+        }
+      ]
+    },
+    {
+      "room": "media_movie_outlier",
+      "language": "he",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "המסור",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "נתניה",
+            "favorite_food": "פסטה",
+            "hobby": "שחייה",
+            "favorite_music": "Electronic",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "זהבה בן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רמת גן",
+            "favorite_food": "פלאפל",
+            "hobby": "צילום",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון: ארס",
+            "favorite_artist": "עדן בן זקן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1,
+            "group_minority": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 2,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1,
+            "group_minority": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 2,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1,
+            "group_genre_outlier": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_count": 1,
+            "group_diversity": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "options": [
+            "מזרחית",
+            "ים תיכונית",
+            "פופ",
+            "פולק"
+          ],
+          "answer": "מזרחית",
+          "explanation": "6 אנשים בחרו אמנים שמזוהים עם מוזיקה מזרחית — יותר מכל סגנון אחר. במקום השני: פופ (3). בין הבחירות: עומר אדם, אייל גולן, שרית חדד ועוד 3."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "options": [
+            "מתח",
+            "מדע בדיוני",
+            "אימה",
+            "פשע"
+          ],
+          "answer": "אימה",
+          "explanation": "5 אנשים בחרו סרטי אימה — יותר מכל ז׳אנר אחר. במקום השני: פשע (3). בין הבחירות: המסור, לזמן את הרוע."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "options": [
+            "אר אנד בי",
+            "אלקטרונית",
+            "פופ",
+            "רוק"
+          ],
+          "answer": "פופ",
+          "explanation": "4 אנשים בחרו שירים בסגנון פופ — יותר מכל סגנון אחר. במקום השני: רוק (3). בין הבחירות: Blank Space, Shake It Off, Paradise ועוד 1."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "options": [
+            "3",
+            "4",
+            "2",
+            "1"
+          ],
+          "answer": "3",
+          "explanation": "3 אנשים בחרו תחביבים עם פעילות גופנית: ריצה, כדורגל, שחייה."
+        },
+        {
+          "index": 4,
+          "rule": "group_count",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "כמה אנשים בקבוצה בחרו מוזיקת פופ?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": "2 אנשים בחרו מוזיקת פופ."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "מי היחיד/ה שגר/ה ב\"תל אביב\"?",
+          "options": [
+            "יעל",
+            "נועה",
+            "דנה",
+            "ליאור"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "most_common_value",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "direct",
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "options": [
+            "Blank Space",
+            "Enter Sandman",
+            "Shake It Off - Taylor Swift",
+            "Paradise - Coldplay"
+          ],
+          "answer": "Enter Sandman",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "כמה משתתפים בחרו \"המסור\" כסרט האהוב עליהם?",
+          "options": [
+            "3",
+            "2",
+            "4",
+            "1"
+          ],
+          "answer": "3",
+          "explanation": ""
+        },
+        {
+          "index": 8,
+          "rule": "region_majority",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "options": [
+            "המרכז",
+            "הצפון",
+            "הדרום",
+            "אזור ירושלים"
+          ],
+          "answer": "המרכז",
+          "explanation": "3 אנשים גרים במרכז — יותר מכל אזור אחר."
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "כמה אנשים בחרו שיר אהוב בסגנון אלקטרוני?",
+          "options": [
+            "1",
+            "0",
+            "2",
+            "3"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר שיר בסגנון אלקטרוני: Blank Space."
+        },
+        {
+          "index": 10,
+          "rule": "unique_value",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "direct",
+          "text": "מי בחר/ה באמן \"עומר אדם\"?",
+          "options": [
+            "עמית",
+            "דנה",
+            "ליאור",
+            "עומר"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 11,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "מי היחיד/ה בקבוצה שבחר/ה מאכל אמריקאי?",
+          "options": [
+            "עומר",
+            "ליאור",
+            "נועה",
+            "עמית"
+          ],
+          "answer": "עמית",
+          "explanation": "עמית: המבורגר."
+        },
+        {
+          "index": 12,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "מי בחר סרט מז׳אנר שאף אחד אחר בקבוצה לא בחר?",
+          "options": [
+            "עמית",
+            "נועה",
+            "יעל",
+            "עומר"
+          ],
+          "answer": "יעל",
+          "explanation": "יעל בחר/ה טרון: ארס. רק הבחירה הזאת מייצגת את הסגנונות האלה: מדע בדיוני."
+        },
+        {
+          "index": 13,
+          "rule": "group_comparison_semantic",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל אסייתי או מזרח תיכוני?",
+          "options": [
+            "אסייתי",
+            "מזרח תיכוני"
+          ],
+          "answer": "מזרח תיכוני",
+          "explanation": "2 אנשים בחרו אוכל מזרח תיכוני, לעומת אדם אחד שבחר מאכל אסייתי."
+        },
+        {
+          "index": 14,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "options": [
+            "ליאור + יעל",
+            "דנה + ליאור",
+            "נועה + ליאור",
+            "דנה + יעל"
+          ],
+          "answer": "דנה + יעל",
+          "explanation": "דנה ויעל גרים בתל אביב וברמת גן, כ־3 ק״מ זה מזה בקו אווירי."
+        },
+        {
+          "index": 15,
+          "rule": "group_diversity",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים בשירים שבחרתם?",
+          "options": [
+            "2",
+            "3",
+            "5",
+            "4"
+          ],
+          "answer": "4",
+          "explanation": "4 סגנונות: פופ, רוק, אלקטרונית ואר אנד בי. בחירה אחת יכולה להשתייך לכמה סגנונות; כל סגנון נספר פעם אחת."
+        },
+        {
+          "index": 16,
+          "rule": "region_diversity",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "1"
+          ],
+          "answer": "4",
+          "explanation": "4 אזורים: הצפון, המרכז, הדרום ואזור ירושלים."
+        },
+        {
+          "index": 17,
+          "rule": "group_filtered_mode",
+          "fields": [
+            "hobby",
+            "favorite_artist"
+          ],
+          "kind": "cross_domain",
+          "text": "מבין מי שבחרו תחביב ספורטיבי, איזה סגנון הכי נפוץ באמנים שבחרו?",
+          "options": [
+            "פופ",
+            "ים תיכונית",
+            "מזרחית",
+            "פולק"
+          ],
+          "answer": "מזרחית",
+          "explanation": "3 אנשים בחרו תחביבי ספורט. מתוכם, 3 בחרו אמנים שמזוהים עם מוזיקה מזרחית — יותר מכל סגנון אחר."
+        },
+        {
+          "index": 18,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_food",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "כמה אנשים בחרו גם מאכל מזרח תיכוני וגם תחביב יצירתי?",
+          "options": [
+            "2",
+            "0",
+            "1",
+            "3"
+          ],
+          "answer": "1",
+          "explanation": "אדם אחד בחר גם מאכל מזרח תיכוני וגם תחביב יצירתי: פלאפל + צילום."
+        },
+        {
+          "index": 19,
+          "rule": "group_subgroup_comparison",
+          "fields": [
+            "favorite_movie",
+            "favorite_song"
+          ],
+          "kind": "cross_domain",
+          "text": "מבין מי שבחרו סרטי אימה, איזה סגנון מופיע יותר בשירים שבחרו — רוק או אלקטרונית?",
+          "options": [
+            "רוק",
+            "אלקטרונית"
+          ],
+          "answer": "רוק",
+          "explanation": "5 אנשים בחרו סרטי אימה. מתוכם, 2 בחרו שירים בסגנון רוק ו־1 בחר שיר בסגנון אלקטרוני."
+        }
+      ]
+    },
+    {
+      "room": "media_movie_outlier",
+      "language": "en",
+      "seed": 11,
+      "players": [
+        {
+          "values": {
+            "city": "תל אביב",
+            "favorite_food": "פיצה",
+            "hobby": "ריצה",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסור",
+            "favorite_artist": "עומר אדם",
+            "favorite_song": "Blank Space"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "חיפה",
+            "favorite_food": "סושי",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "המסור",
+            "favorite_artist": "אייל גולן",
+            "favorite_song": "Shake It Off - Taylor Swift"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "ירושלים",
+            "favorite_food": "חומוס",
+            "hobby": "כדורגל",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסור",
+            "favorite_artist": "שרית חדד",
+            "favorite_song": "Paradise - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "באר שבע",
+            "favorite_food": "המבורגר",
+            "hobby": "גיימינג",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "משה פרץ",
+            "favorite_song": "Yellow - Coldplay"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "נתניה",
+            "favorite_food": "פסטה",
+            "hobby": "שחייה",
+            "favorite_music": "Electronic",
+            "favorite_movie": "לזמן את הרוע",
+            "favorite_artist": "זהבה בן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        },
+        {
+          "values": {
+            "city": "רמת גן",
+            "favorite_food": "פלאפל",
+            "hobby": "צילום",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון: ארס",
+            "favorite_artist": "עדן בן זקן",
+            "favorite_song": "Enter Sandman"
+          },
+          "hide": []
+        }
+      ],
+      "stages": {
+        "raw": {
+          "favorite_movie": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1,
+            "group_minority": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 2,
+            "group_diversity": 1
+          }
+        },
+        "valid": {
+          "favorite_movie": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1,
+            "group_minority": 1
+          },
+          "favorite_artist": {
+            "group_count": 2,
+            "group_mode": 1,
+            "group_unique": 1,
+            "group_genre_outlier": 1,
+            "group_diversity": 1
+          },
+          "favorite_song": {
+            "group_count": 4,
+            "group_mode": 1,
+            "group_comparison_semantic": 3,
+            "group_unique": 2,
+            "group_diversity": 1
+          }
+        },
+        "selected": {
+          "favorite_movie": {
+            "group_mode": 1,
+            "group_genre_outlier": 1
+          },
+          "favorite_artist": {
+            "group_mode": 1
+          },
+          "favorite_song": {
+            "group_mode": 1,
+            "group_count": 1,
+            "group_diversity": 1
+          }
+        }
+      },
+      "final_count": 20,
+      "questions": [
+        {
+          "index": 0,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "semantic",
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "options": [
+            "Mizrahi",
+            "Mediterranean",
+            "Pop",
+            "Folk"
+          ],
+          "answer": "Mizrahi",
+          "explanation": "6 people chose artists associated with Mizrahi music — more than any other style. Second: Pop (3). Choices included: Omer Adam, Eyal Golan, Sarit Hadad and 3 more."
+        },
+        {
+          "index": 1,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "Which genre shows up most in the movies you chose?",
+          "options": [
+            "Thriller",
+            "Science fiction",
+            "Horror",
+            "Crime"
+          ],
+          "answer": "Horror",
+          "explanation": "5 people chose horror movies — more than any other genre. Second: Crime (3). Choices included: Saw, The Conjuring."
+        },
+        {
+          "index": 2,
+          "rule": "group_mode",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "Looking at your favorite songs, which style leads?",
+          "options": [
+            "R&B",
+            "Electronic",
+            "Pop",
+            "Rock"
+          ],
+          "answer": "Pop",
+          "explanation": "4 people chose songs in the Pop style — more than any other style. Second: Rock (3). Choices included: Blank Space, Shake It Off - Taylor Swift, Paradise - Coldplay and 1 more."
+        },
+        {
+          "index": 3,
+          "rule": "group_count",
+          "fields": [
+            "hobby"
+          ],
+          "kind": "semantic",
+          "text": "How many of you picked a physically active hobby?",
+          "options": [
+            "3",
+            "4",
+            "2",
+            "1"
+          ],
+          "answer": "3",
+          "explanation": "3 people chose physically active hobbies: Running, Association football, Swimming."
+        },
+        {
+          "index": 4,
+          "rule": "group_count",
+          "fields": [
+            "favorite_music"
+          ],
+          "kind": "direct",
+          "text": "How many people in our group chose pop music?",
+          "options": [
+            "2",
+            "3",
+            "1",
+            "0"
+          ],
+          "answer": "2",
+          "explanation": "2 people chose pop music."
+        },
+        {
+          "index": 5,
+          "rule": "unique_value",
+          "fields": [
+            "city"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose city is \"תל אביב\"?",
+          "options": [
+            "יעל",
+            "נועה",
+            "דנה",
+            "ליאור"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 6,
+          "rule": "most_common_value",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "direct",
+          "text": "What is the most common favorite song in this group?",
+          "options": [
+            "Blank Space",
+            "Enter Sandman",
+            "Shake It Off - Taylor Swift",
+            "Paradise - Coldplay"
+          ],
+          "answer": "Enter Sandman",
+          "explanation": ""
+        },
+        {
+          "index": 7,
+          "rule": "value_count",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "direct",
+          "text": "How many players have \"המסור\" as their favorite movie?",
+          "options": [
+            "3",
+            "2",
+            "4",
+            "1"
+          ],
+          "answer": "3",
+          "explanation": ""
+        },
+        {
+          "index": 8,
+          "rule": "region_majority",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "In which region of Israel do the most of you live?",
+          "options": [
+            "The center",
+            "The north",
+            "The south",
+            "The Jerusalem area"
+          ],
+          "answer": "The center",
+          "explanation": "3 people live in the center of the country — more than any other region."
+        },
+        {
+          "index": 9,
+          "rule": "group_count",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "How many people chose a favorite song in the Electronic style?",
+          "options": [
+            "1",
+            "0",
+            "2",
+            "3"
+          ],
+          "answer": "1",
+          "explanation": "One person chose a song in the Electronic style: Blank Space."
+        },
+        {
+          "index": 10,
+          "rule": "unique_value",
+          "fields": [
+            "favorite_artist"
+          ],
+          "kind": "direct",
+          "text": "Who is the only player whose favorite artist is \"עומר אדם\"?",
+          "options": [
+            "עמית",
+            "דנה",
+            "ליאור",
+            "עומר"
+          ],
+          "answer": "דנה",
+          "explanation": ""
+        },
+        {
+          "index": 11,
+          "rule": "group_unique",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Who is the only one here who picked an American dish?",
+          "options": [
+            "עומר",
+            "ליאור",
+            "נועה",
+            "עמית"
+          ],
+          "answer": "עמית",
+          "explanation": "עמית: Hamburger."
+        },
+        {
+          "index": 12,
+          "rule": "group_genre_outlier",
+          "fields": [
+            "favorite_movie"
+          ],
+          "kind": "semantic",
+          "text": "Who chose a movie with a genre nobody else’s movie represents?",
+          "options": [
+            "עמית",
+            "נועה",
+            "יעל",
+            "עומר"
+          ],
+          "answer": "יעל",
+          "explanation": "יעל chose Tron: Ares. Only their choice represents these genres: Science fiction."
+        },
+        {
+          "index": 13,
+          "rule": "group_comparison_semantic",
+          "fields": [
+            "favorite_food"
+          ],
+          "kind": "semantic",
+          "text": "Based on your food choices, which leads — Asian or Middle Eastern food?",
+          "options": [
+            "Asian",
+            "Middle Eastern"
+          ],
+          "answer": "Middle Eastern",
+          "explanation": "2 people chose Middle Eastern food, compared with one person who chose an Asian dish."
+        },
+        {
+          "index": 14,
+          "rule": "locality_distance_pair",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "Which pair of you lives the shortest distance apart?",
+          "options": [
+            "ליאור + יעל",
+            "דנה + ליאור",
+            "נועה + ליאור",
+            "דנה + יעל"
+          ],
+          "answer": "דנה + יעל",
+          "explanation": "דנה and יעל live in Tel Aviv and Ramat Gan, about 3 km apart as the crow flies."
+        },
+        {
+          "index": 15,
+          "rule": "group_diversity",
+          "fields": [
+            "favorite_song"
+          ],
+          "kind": "semantic",
+          "text": "How many music genres are represented by the songs you chose?",
+          "options": [
+            "2",
+            "3",
+            "5",
+            "4"
+          ],
+          "answer": "4",
+          "explanation": "4 styles: Pop, Rock, Electronic and R&B. One choice can belong to several genres; each genre counts once."
+        },
+        {
+          "index": 16,
+          "rule": "region_diversity",
+          "fields": [
+            "city"
+          ],
+          "kind": "geographic",
+          "text": "From how many regions of Israel does our group come?",
+          "options": [
+            "4",
+            "2",
+            "3",
+            "1"
+          ],
+          "answer": "4",
+          "explanation": "4 regions: the north, the center of the country, the south and the Jerusalem area."
+        },
+        {
+          "index": 17,
+          "rule": "group_filtered_mode",
+          "fields": [
+            "hobby",
+            "favorite_artist"
+          ],
+          "kind": "cross_domain",
+          "text": "Among people with a sports hobby, which genre leads their artist choices?",
+          "options": [
+            "Pop",
+            "Mediterranean",
+            "Mizrahi",
+            "Folk"
+          ],
+          "answer": "Mizrahi",
+          "explanation": "3 people chose sports hobbies. Of them, 3 chose artists associated with Mizrahi music — more than any other style."
+        },
+        {
+          "index": 18,
+          "rule": "group_intersection_count",
+          "fields": [
+            "favorite_food",
+            "hobby"
+          ],
+          "kind": "cross_domain",
+          "text": "How many people chose both a Middle Eastern dish and a creative hobby?",
+          "options": [
+            "2",
+            "0",
+            "1",
+            "3"
+          ],
+          "answer": "1",
+          "explanation": "One person chose both a Middle Eastern dish and a creative hobby: Falafel + Photography."
+        },
+        {
+          "index": 19,
+          "rule": "group_subgroup_comparison",
+          "fields": [
+            "favorite_movie",
+            "favorite_song"
+          ],
+          "kind": "cross_domain",
+          "text": "Among people who chose horror movies, which style appears more in their chosen songs — Rock or Electronic?",
+          "options": [
+            "Rock",
+            "Electronic"
+          ],
+          "answer": "Rock",
+          "explanation": "5 people chose horror movies. Of them, 2 chose songs in the Rock style and 1 chose a song in the Electronic style."
+        }
+      ]
+    }
+  ],
+  "performance": {
+    "players": 30,
+    "questions": 20,
+    "runs": 20,
+    "median_ms": 18.77,
+    "maximum_ms": 22.656
+  }
+}

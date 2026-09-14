@@ -226,6 +226,16 @@ Diagnosis (QUESTION_ENGINE_DIAGNOSTIC.md): v5 group families required every play
 
 **Language and determinism.** Every template is an English/Hebrew pair; variants are chosen by a stable hash of the fact, so the same seed selects the same facts, answers and option order in both languages. No template uses storage or engine vocabulary. Generation stays pure, offline and seeded; questions are still generated once at start and replayed, persisted and scored exactly as before. Wire contracts, schema and scoring are unchanged.
 
+### 12.4 Media discoveries (v6.1)
+
+Movies, artists and songs retain their own selection domains. An artist and a song may share the music taxonomy, but neither competes for the music-style dropdown's single domain/family allowance. Within the semantic share, the selector first represents each supported media source with a genre discovery, preferring a decisive genre leader, then comparison/outlier/diversity over a simple count. This preference never bypasses validation, question capacity, person limits or the prohibition on questions already answered by earlier results. A source with no supported discovery receives no reserved slot. Family candidate limits interleave field scopes so earlier dimensions cannot exhaust the budget before artist/song candidates are seen.
+
+Media leaders describe **the choices shared**, not the taste of every person in the room. They need at least three recognized, consented choices, 80% recognition and a meaningful lead that unknown choices cannot tie; they do not require five choices or half the room to answer an optional field. Other whole-group claims retain §12.3's thresholds. Media counts count participants' choices, including repeated titles/artists; when recognition is incomplete their wording explicitly limits the count to recognized choices. Genre diversity includes movies, artists and songs, with complete recognition and 2–6 represented genres.
+
+The generic media outlier asks who chose a work/artist representing a genre nobody else's choice represents. Every shared answer must be classified, and all singleton genres must belong to exactly one person; several singleton genres belonging to different people reject the question. Generic outlier and media diversity also require uniquely resolved works/artists: genres shared by ambiguous title matches cannot prove other genres absent. Named-genre unique questions remain available and share the same membership deduplication. Artist/hobby, artist/movie, song/movie and movie/song subgroup discoveries use actual independent submitted choices. Media subgroup conditions must be completely recognized; target-side unknowns must not be able to change the winner. A song's genre is never inferred from its artist.
+
+No reference facts, resolution policy, wire contract, scoring, persistence or frontend behavior change in this revision. [MEDIA_QUESTIONS_REPORT.md](MEDIA_QUESTIONS_REPORT.md) records the measured before/after pipeline and final-quiz regressions; the reproducible fixture audit is `scripts/knowledge/media-question-audit.json`.
+
 ## 13. REST / API Conventions
 
 Base `/api/v1`, JSON objects, snake_case, UTC ISO-8601 `Z`. Public endpoints:

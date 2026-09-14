@@ -13,7 +13,11 @@ subgroups — and fills it with the most varied, most informative facts:
   capped, so a rule that emits hundreds of lookups competes like any other.
 * A kind's share is limited to its supply and never padded with weak
   questions; unused share flows to the kinds that have more to offer.
-* Within a kind: fewest questions from the same family and domain first, then
+* Within the semantic kind, give each supported movie/artist/song source a first
+  genre discovery before repeating other sources; prefer its decisive leader,
+  then a comparison or unique outlier. Artists, songs and selected music styles
+  have independent budgets. Unsupported sources create no reserved slots.
+* After source coverage: fewest questions from the same family and domain first, then
   difficulty spread, then information value (the quality score). Supporting
   families (diversity, minority, distribution, region counts) rank as if
   already used once, so they add variety rather than displace core discoveries.
@@ -35,6 +39,7 @@ from dataclasses import dataclass, field
 from math import ceil
 
 from app.domain.questions.candidate import QuestionCandidate
+from app.domain.questions.group_summary import MEDIA_DOMAINS
 from app.domain.questions.language import normalize
 from app.domain.questions.question import Difficulty
 
@@ -43,6 +48,8 @@ DIRECT_RULE_CAP = 2
 AGE_CAP = 1
 _LEVELS = {Difficulty.EASY: 0, Difficulty.MEDIUM: 1, Difficulty.HARD: 2}
 _MIX_KINDS = {'semantic': 'semantic', 'geographic': 'geographic', 'simple': 'direct', 'other': 'direct'}
+_MEDIA_DISCOVERY_ORDER = {'group_mode': 0, 'group_comparison_semantic': 1, 'group_genre_outlier': 2,
+                          'group_diversity': 3, 'group_count': 4, 'group_unique': 5}
 
 
 @dataclass
@@ -251,6 +258,7 @@ class QuestionSelector:
         picked: Counter = Counter()
         families: Counter = Counter()
         domains: Counter = Counter()
+        media_discoveries: Counter = Counter()
         domain_families: Counter = Counter()
         rules: Counter = Counter()
         players: Counter = Counter()
@@ -311,7 +319,14 @@ class QuestionSelector:
 
         def rank(entry: _Entry):
             target = 0 if len(selected) < question_count * 0.3 else 1 if len(selected) < question_count * 0.75 else 2
+            unseen_media = (entry.kind == 'semantic' and entry.domain in MEDIA_DOMAINS
+                            and not media_discoveries[entry.domain])
             return (
+                # A valid genre discovery from each shared media field gets a
+                # chance before repeats elsewhere. Raw lookups do not satisfy
+                # this coverage. There is no slot for unsupported media data.
+                not unseen_media,
+                _MEDIA_DISCOVERY_ORDER.get(entry.candidate.source_rule_id, 6) if unseen_media else 0,
                 families[entry.family] + entry.tier,
                 max(domains[d] for d in entry.domains),
                 domain_families[(entry.domain, entry.family)],
@@ -353,6 +368,8 @@ class QuestionSelector:
             domain_families[(choice.domain, choice.family)] += 1
             for d in choice.domains:
                 domains[d] += 1
+            if choice.kind == 'semantic' and choice.domain in MEDIA_DOMAINS:
+                media_discoveries[choice.domain] += 1
             rules[choice.candidate.source_rule_id] += 1
             if 'age' in choice.candidate.source_field_keys:
                 rules['age'] += 1

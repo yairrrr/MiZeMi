@@ -153,8 +153,8 @@ def _fallback(category, domain: str) -> Term:
 TEMPLATES = {
     ('count', 'movie.genre'): [
         ('How many people in our group chose {item}?', 'כמה אנשים בקבוצה בחרו {item}?'),
-        ('How many of the movies you chose are {items}?', 'כמה מהסרטים שבחרתם הם {items}?'),
-        ('How many {items} are there among the movies you chose?', 'כמה {items} יש בין הסרטים שבחרתם?'),
+        ('How many people picked {item} as their favorite movie?', 'כמה אנשים בחרו {item} כסרט האהוב?'),
+        ('How many of you chose {item}?', 'כמה מכם בחרו {item}?'),
     ],
     ('count', 'food.cuisine'): [
         ('How many people in our group chose {item}?', 'כמה אנשים בקבוצה בחרו {item}?'),
@@ -182,14 +182,23 @@ TEMPLATES = {
         ('How many {fans} are there in our group?', 'כמה {fans} יש בקבוצה?'),
     ],
     ('count', 'artist.genre'): [
-        ('How many of the artists you chose are associated with {items}?', 'כמה מהאמנים שבחרתם מזוהים עם {items}?'),
+        ('How many people chose an artist associated with {items}?', 'כמה אנשים בחרו אמן שמזוהה עם {items}?'),
         ('How many people chose an artist known for {items}?', 'כמה אנשים בחרו אמן שמזוהה עם {items}?'),
-        ('Among your favorite artists, how many are associated with {items}?', 'בין האמנים האהובים עליכם, כמה מזוהים עם {items}?'),
+        ('How many of you picked a favorite artist associated with {items}?', 'כמה מכם בחרו אמן אהוב שמזוהה עם {items}?'),
     ],
     ('count', 'song.genre'): [
-        ('How many of the songs you chose are in the {label} style?', 'כמה מהשירים שבחרתם הם בסגנון {label}?'),
-        ('How many people chose a song in the {label} style?', 'כמה אנשים בחרו שיר בסגנון {label}?'),
-        ('Among your favorite songs, how many are in the {label} style?', 'בין השירים האהובים עליכם, כמה הם בסגנון {label}?'),
+        ('How many people chose a favorite song in the {style} style?', 'כמה אנשים בחרו שיר אהוב בסגנון {style}?'),
+        ('How many people chose a song in the {style} style?', 'כמה אנשים בחרו שיר בסגנון {style}?'),
+        ('How many of you picked a song in the {style} style?', 'כמה מכם בחרו שיר בסגנון {style}?'),
+    ],
+    ('recognized_count', 'movie.genre'): [
+        ('Among the movie choices we recognized, how many people chose {item}?', 'מבין בחירות הסרטים שזוהו, כמה אנשים בחרו {item}?'),
+    ],
+    ('recognized_count', 'artist.genre'): [
+        ('Among the artist choices we recognized, how many people chose an artist associated with {items}?', 'מבין בחירות האמנים שזוהו, כמה אנשים בחרו אמן שמזוהה עם {items}?'),
+    ],
+    ('recognized_count', 'song.genre'): [
+        ('Among the song choices we recognized, how many people chose a song in the {style} style?', 'מבין בחירות השירים שזוהו, כמה אנשים בחרו שיר בסגנון {style}?'),
     ],
     ('count', 'place.region'): [
         ('How many people in our group live in {in}?', 'כמה אנשים בקבוצה גרים {in}?'),
@@ -197,8 +206,8 @@ TEMPLATES = {
         ('How many people here live in {in}?', 'כמה משתתפים כאן גרים {in}?'),
     ],
     ('majority', 'movie.genre'): [
-        ('Which movie genre is the most popular in our group?', 'איזה ז׳אנר סרטים הכי פופולרי בקבוצה?'),
-        ('Based on the movies you chose, which genre leads the group?', 'לפי הסרטים שבחרתם, איזה ז׳אנר מוביל בקבוצה?'),
+        ('Which genre is most common among the favorite movies you chose?', 'איזה ז׳אנר הכי נפוץ בין הסרטים האהובים שבחרתם?'),
+        ('Based on the movies you chose, which genre leads?', 'לפי הסרטים שבחרתם, איזה ז׳אנר מוביל?'),
         ('Which genre shows up most in the movies you chose?', 'איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?'),
     ],
     ('majority', 'food.cuisine'): [
@@ -217,12 +226,12 @@ TEMPLATES = {
         ('Based on your choices, which music leads the group?', 'לפי הבחירות שלכם, איזו מוזיקה מובילה בקבוצה?'),
     ],
     ('majority', 'artist.genre'): [
-        ('Based on the artists you chose, which music style is the most common?', 'לפי האמנים שבחרתם, איזה סגנון מוזיקה הכי נפוץ בקבוצה?'),
+        ('Which genre is most common among the favorite artists you chose?', 'איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?'),
         ('Which style connects the most of your favorite artists?', 'איזה סגנון מחבר בין הכי הרבה מהאמנים שבחרתם?'),
         ('Looking at your favorite artists, which style leads?', 'אם מסתכלים על האמנים האהובים עליכם, איזה סגנון מוביל?'),
     ],
     ('majority', 'song.genre'): [
-        ('Based on the songs you chose, which music style is the most common?', 'לפי השירים שבחרתם, איזה סגנון מוזיקה הכי נפוץ בקבוצה?'),
+        ('Which music style appears most often among the songs you chose?', 'איזה סגנון מוזיקלי חוזר הכי הרבה בין השירים שנבחרו?'),
         ('Which style connects the most of your favorite songs?', 'איזה סגנון מחבר בין הכי הרבה מהשירים שבחרתם?'),
         ('Looking at your favorite songs, which style leads?', 'אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?'),
     ],
@@ -236,7 +245,7 @@ TEMPLATES = {
         ('Which music defines our group — {a}, {b} or {c}?', 'איזו מוזיקה הכי מאפיינת את הקבוצה — {a}, {b} או {c}?'),
     ],
     ('comparison', 'movie.genre'): [
-        ('Are there more {fans_a} or {fans_b} in our group?', 'מה יש יותר בקבוצה — חובבי {a} או {b}?'),
+        ('Among your chosen movies, which genre appears more — {a} or {b}?', 'בין הסרטים שבחרתם, איזה ז׳אנר מופיע יותר — {a} או {b}?'),
         ('Based on the movies you chose, which leads — {a} or {b}?', 'לפי הסרטים שבחרתם, מה מוביל — {a} או {b}?'),
         ('Looking at your movie picks, which side wins — {a} or {b}?', 'אם מסתכלים על בחירות הסרטים, איזה צד מנצח — {a} או {b}?'),
     ],
@@ -313,11 +322,29 @@ TEMPLATES = {
         ('Only one person chose an artist associated with {items}. Who?', 'רק אדם אחד בחר אמן שמזוהה עם {items}. מי זה?'),
     ],
     ('unique', 'song.genre'): [
-        ('Only one person chose a song in the {label} style. Who?', 'רק אדם אחד בחר שיר בסגנון {label}. מי זה?'),
+        ('Only one person chose a song in the {style} style. Who?', 'רק אדם אחד בחר שיר בסגנון {style}. מי זה?'),
     ],
     ('unique', 'place.region'): [
         ('Only one person in our group lives in {in}. Who?', 'רק אדם אחד בקבוצה גר {in}. מי זה?'),
         ('Who is the only one here from {from}?', 'מי היחיד/ה בקבוצה שמגיע/ה {from}?'),
+    ],
+    ('genre_outlier', 'movie.genre'): [
+        ('Who chose a movie with a genre nobody else’s movie represents?', 'מי בחר סרט מז׳אנר שאף אחד אחר בקבוצה לא בחר?'),
+    ],
+    ('genre_outlier', 'artist.genre'): [
+        ('Who chose an artist with a genre nobody else’s artist represents?', 'מי בחר אמן מסגנון שאף אחד אחר בקבוצה לא בחר?'),
+    ],
+    ('genre_outlier', 'song.genre'): [
+        ('Who chose a song with a genre nobody else’s song represents?', 'מי בחר שיר מסגנון שאף אחד אחר בקבוצה לא בחר?'),
+    ],
+    ('diversity', 'movie.genre'): [
+        ('How many genres are represented by the movies you chose?', 'כמה ז׳אנרים שונים מיוצגים בסרטים שבחרתם?'),
+    ],
+    ('diversity', 'artist.genre'): [
+        ('How many music genres are represented by your chosen artists?', 'כמה סגנונות מוזיקה שונים מיוצגים באמנים שבחרתם?'),
+    ],
+    ('diversity', 'song.genre'): [
+        ('How many music genres are represented by the songs you chose?', 'כמה סגנונות מוזיקה שונים מיוצגים בשירים שבחרתם?'),
     ],
     ('diversity', 'food.cuisine'): [
         ('How many different cuisines are behind your food choices?', 'כמה מטבחים שונים מסתתרים מאחורי המאכלים שבחרתם?'),
@@ -399,11 +426,15 @@ SUBGROUP_CONDITIONS = {
     'food.cuisine': ('Among people who chose {items}', 'מבין מי שבחרו {items}'),
     'hobby.family': ('Among people with {item}', 'מבין מי שבחרו {item}'),
     'music.genre': ('Among people who chose {items}', 'מבין מי שבחרו {items}'),
+    'artist.genre': ('Among people who chose artists associated with {items}', 'מבין מי שבחרו אמנים שמזוהים עם {items}'),
+    'song.genre': ('Among people who chose songs in the {style} style', 'מבין מי שבחרו שירים בסגנון {style}'),
     'place.region': ('Among people who live in {in}', 'מבין מי שגרים {in}'),
 }
 SUBGROUP_QUESTIONS = {
     'hobby.family': ('which type of hobby is the most common?', 'איזה סוג תחביב הכי נפוץ?'),
-    'movie.genre': ('which movie genre is the most common?', 'איזה ז׳אנר סרטים הכי נפוץ?'),
+    'movie.genre': ('which genre leads their movie choices?', 'איזה ז׳אנר הכי נפוץ בסרטים שבחרו?'),
+    'artist.genre': ('which genre leads their artist choices?', 'איזה סגנון הכי נפוץ באמנים שבחרו?'),
+    'song.genre': ('which genre leads their song choices?', 'איזה סגנון הכי נפוץ בשירים שבחרו?'),
     'food.cuisine': ('which cuisine is the favorite?', 'איזה מטבח הכי אהוב?'),
     'place.region': ('which region do the most come from?', 'מאיזה אזור בארץ מגיעים הכי הרבה?'),
     'music.genre': ('which music style is the most common?', 'איזה סגנון מוזיקה הכי נפוץ?'),
@@ -411,6 +442,8 @@ SUBGROUP_QUESTIONS = {
 SUBGROUP_COMPARISONS = {
     'hobby.family': ('which is more common — {items_a} or {items_b}?', 'מה יותר נפוץ — {items_a} או {items_b}?'),
     'movie.genre': ('which genre is more common — {a} or {b}?', 'איזה ז׳אנר יותר נפוץ — {a} או {b}?'),
+    'artist.genre': ('which style appears more in their chosen artists — {a} or {b}?', 'איזה סגנון מופיע יותר באמנים שבחרו — {a} או {b}?'),
+    'song.genre': ('which style appears more in their chosen songs — {a} or {b}?', 'איזה סגנון מופיע יותר בשירים שבחרו — {a} או {b}?'),
     'food.cuisine': ('which is more popular — {a} or {b} food?', 'מה יותר אהוב — אוכל {a} או {b}?'),
     'place.region': ('where do more of them come from — {from_a} or {from_b}?', 'מאיפה מגיעים יותר — {from_a} או {from_b}?'),
     'hobby.setting': ('which is more common — outdoor hobbies or indoor hobbies?', 'מה יותר נפוץ — תחביבי חוץ או תחביבי בית?'),
@@ -461,6 +494,9 @@ class Wording:
         pick = (lambda en, he: he if self.he else en)
         forms = {
             'label': pick(term.en, term.he), 'items': pick(term.en_items, term.he_items),
+            'style': pick(term.en, {'music.electronic': 'אלקטרוני', 'music.classical': 'קלאסי',
+                                   'music.mizrahi': 'מזרחי', 'music.mediterranean': 'ים תיכוני',
+                                   'music.latin': 'לטיני'}.get(category, term.he)),
             'item': pick(term.en_item, term.he_item), 'fans': pick(term.en_fans, term.he_fans),
             'fan': pick(term.en_fans[:-1] if term.en_fans.endswith('s') else term.en_fans, term.he_fans),
             'def': term.he_def or term.he, 'topic': pick(term.en_topic, term.he_topic),
