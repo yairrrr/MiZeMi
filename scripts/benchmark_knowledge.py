@@ -22,10 +22,16 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'backend'))
 from app.domain.questions import QuestionGenerator, QuestionValidator
 from app.domain.questions.knowledge import KINDS
-from app.domain.questions.group_rules import group_rules
+from app.domain.questions.discovery_rules import discovery_rules
+from app.domain.questions.group_summary import summarize
 from app.infrastructure.knowledge import BUNDLE_DIR, load_knowledge
 from tests.fixtures.knowledge import dataset, ROWS, correct
-from audit_group_questions import GROUPS, FIELDS, ARTISTS, SONGS, profile_values
+from tests.fixtures.rooms import AUDIT_ROOMS, HE_RICH
+
+# The 30-player benchmark profile set, unchanged so timings stay comparable across revisions.
+FIELDS = ('city', 'favorite_food', 'hobby', 'favorite_music', 'favorite_movie', 'age')
+ARTISTS = ('עומר אדם', 'עדן בן זקן', 'Taylor Swift', 'Metallica', 'Coldplay')
+SONGS = ('Shake It Off - Taylor Swift', 'Blank Space', 'Enter Sandman', 'Yellow - Coldplay', 'Paradise - Coldplay')
 
 
 def timed(function, repeats):
@@ -78,6 +84,7 @@ def main():
         'cold_app_import_median_rss_bytes':statistics.median(r['rss'] for r in cold),
         '30_players_20_questions':generation_times,
         '25_rooms_30_players_20_questions_total_ms':round(rooms_ms,3),
+        'realistic_20_player_room_20_questions':timed(lambda: generation.generate(HE_RICH.dataset(),question_count=20,time_limit_seconds=20,seed=5),20),
     }
     target=ROOT/'scripts/knowledge/benchmark-results.json'
     target.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
@@ -89,7 +96,7 @@ def main():
     specialized={}
     for language in ('en','he'):
         examples[language]=[]
-        for rule in group_rules(kb):
+        for rule in discovery_rules(kb):
             ds=dataset(specialized.get(rule.rule_id,ROWS),language=language)
             candidates=[c for c in rule.generate(ds,Random(5)) if QuestionValidator().is_valid(c,ds)]
             if not candidates: continue
@@ -97,18 +104,13 @@ def main():
             examples[language].append({'rule':rule.rule_id,'question':c.text,'options':[o.text for o in c.options],
                                        'correct':correct(c),'explanation':c.explanation})
     (ROOT/'scripts/knowledge/demo-results.json').write_text(json.dumps({'synthetic_profiles':ROWS,'specialized_profiles':specialized,'examples':examples},ensure_ascii=False,indent=2)+'\n')
-    field_kinds={'city':'localities','favorite_food':'foods','hobby':'hobbies','favorite_music':'music','favorite_movie':'movies','favorite_artist':'artists','favorite_song':'songs'}
-    coverage={}
-    for field,kind in field_kinds.items():
-        values=[values[field] for rows in GROUPS.values() for row in rows if field in (values:=profile_values(row))]
-        coverage[field]={'recognized':sum(kb.resolve(kind,v).entity is not None for v in values),'entered':len(values)}
-    data['synthetic_group_recognition']=coverage
-    from app.domain.questions.semantic import DIMENSIONS, enrich
-    from audit_group_questions import profiles
-    views=[enrich(profiles(rows,'he'),kb) for rows in GROUPS.values()]
-    data['synthetic_group_usable_dimensions']={dim:{'known':sum(len(v.memberships[dim]) for v in views),
-        'participants':sum(len(v.ids) for v in views)} for dim in DIMENSIONS if dim not in ('artist.genre','song.genre')}
-    data['note']='Recognition describes these published synthetic fixtures, not a population estimate. RSS includes Python and benchmark instrumentation.'
+    summaries=[summarize(room.dataset(),kb) for room in AUDIT_ROOMS]
+    dimensions=sorted({key for s in summaries for key in s.dimensions})
+    data['audit_room_recognition']={key:{
+        'shared_answers':sum(len(s.dimensions[key].consented) for s in summaries if key in s.dimensions),
+        'recognized':sum(len(s.dimensions[key].recognized) for s in summaries if key in s.dimensions),
+        'unknown':sum(len(s.dimensions[key].unknown) for s in summaries if key in s.dimensions)} for key in dimensions}
+    data['note']='Recognition describes the published synthetic audit rooms, not a population estimate. RSS includes Python and benchmark instrumentation.'
     target.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(data,ensure_ascii=False,indent=2))
 
