@@ -1,11 +1,115 @@
 """Deterministic reproduction of the CI cleanup/connection-close race."""
 import asyncio
+import os
 import threading
+from uuid import uuid4
 
 import pytest
 
 from app.main import create_app
 from app.infrastructure.settings import Settings
+
+
+@pytest.fixture(params=['sqlite-memory', 'sqlite-file', 'postgres'])
+def lifecycle_app(request, tmp_path):
+    """Exercise native connections, with a disposable schema for PostgreSQL."""
+    from sqlalchemy.schema import CreateSchema, DropSchema
+    from app.infrastructure.database import create_database_engine, create_session_factory
+
+    if request.param == 'postgres' and not os.environ.get('MIZEMI_TEST_POSTGRES_URL'):
+        pytest.skip('Set MIZEMI_TEST_POSTGRES_URL for a disposable PostgreSQL database')
+    url = f'sqlite:///{tmp_path / "lifecycle.db"}' if request.param == 'sqlite-file' else 'sqlite://'
+    app = create_app(Settings(database_url=url, _env_file=None))
+    parent, schema = None, None
+    try:
+        if request.param == 'postgres':
+            parent = create_database_engine(os.environ['MIZEMI_TEST_POSTGRES_URL'])
+            schema = f'mizemi_lifecycle_{uuid4().hex}'
+            with parent.begin() as connection:
+                connection.execute(CreateSchema(schema))
+            scoped = parent.execution_options(schema_translate_map={None: schema})
+            app.state.database.engine.dispose()
+            app.state.database.engine = scoped
+            app.state.database.session_factory = create_session_factory(scoped)
+        yield app
+    finally:
+        app.state.game_hub.shutdown()
+        app.state.database.engine.dispose()
+        if parent is not None:
+            try:
+                with parent.begin() as connection:
+                    connection.execute(DropSchema(schema, cascade=True))
+            finally:
+                parent.dispose()
+
+
+def test_shutdown_joins_live_retention_and_queued_persistence(lifecycle_app, monkeypatch):
+    """Hold a real checked-out connection while shutdown and two writes start."""
+    from sqlalchemy import event
+    from app.infrastructure.repositories import SqlAlchemyGameRepository
+    from tests.integration.test_game_repository import _finished_game
+
+    app = lifecycle_app
+    database, hub = app.state.database, app.state.game_hub
+    entered, release, retained, saving = (threading.Event() for _ in range(4))
+    order = []
+    purge, save, dispose = database.purge_expired, database.save_finished_game, database.engine.dispose
+    game = _finished_game('shutdown-game', question_count=1)
+
+    def before_query(connection, cursor, statement, parameters, context, executemany):
+        # PostgreSQL also SELECTs its catalog during startup. Pause the actual
+        # retention query only, after the application has initialized.
+        if statement.lstrip().upper().startswith('SELECT') and 'games.game_id' in statement and not entered.is_set():
+            entered.set()
+            assert release.wait(5), 'test must release the checked-out connection'
+
+    def observed_purge(retention):
+        result = purge(retention)
+        retained.set()
+        return result
+
+    def observed_save(finished_game):
+        saving.set()
+        save(finished_game)
+        order.append('committed')
+
+    def observed_dispose(*args, **kwargs):
+        assert retained.is_set(), 'engine disposed while retention still owned a connection'
+        assert order == ['committed', 'committed'], 'queued persistence was not joined'
+        assert not any(t.name.startswith('mizemi-persist') for t in threading.enumerate())
+        with database.session_factory() as session:
+            assert SqlAlchemyGameRepository(session).get(game.game_id).state == 'FINISHED'
+        order.append('disposed')
+        return dispose(*args, **kwargs)
+
+    monkeypatch.setattr(database, 'purge_expired', observed_purge)
+    # GameHub captured the bound method at construction.
+    monkeypatch.setattr(hub, '_persist', observed_save)
+    event.listen(database.engine, 'before_cursor_execute', before_query)
+
+    async def check():
+        async with app.router.lifespan_context(app):
+            assert await asyncio.to_thread(entered.wait, 5)
+            hub._persist_finished(game)
+            hub._persist_finished(game)
+            assert await asyncio.to_thread(saving.wait, 5)
+
+            async def release_after_shutdown_starts():
+                await asyncio.sleep(0.1)
+                assert order == []
+                release.set()
+
+            releaser = asyncio.create_task(release_after_shutdown_starts())
+        await releaser
+        assert order == ['committed', 'committed', 'disposed']
+
+    try:
+        with monkeypatch.context() as patch:
+            patch.setattr(database.engine, 'dispose', observed_dispose)
+            asyncio.run(check())
+    finally:
+        release.set()
+        event.remove(database.engine, 'before_cursor_execute', before_query)
 
 
 @pytest.mark.parametrize("cleanup_fails", [False, True])

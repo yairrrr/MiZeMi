@@ -1,0 +1,21 @@
+{
+  "description": "Fictional five-person classroom. Facts are independently reviewed expected group classifications, not read from the generator.",
+  "profiles": [
+    ["דנה", "חיפה", "פיצה", "ריצה", "Mizrahi", "20", "המסור", "עומר אדם", "Shake It Off - Taylor Swift"],
+    ["עומר", "תל אביב", "סושי", "כדורגל", "Mizrahi", "22", "לזמן את הרוע", "עדן בן זקן", "Blank Space"],
+    ["נועה", "רחובות", "ספגטי", "גלישה", "Rock", "24", "צעצוע של סיפור", "Taylor Swift", "Enter Sandman"],
+    ["עמית", "ראשון לציון", "לזניה", "גיטרה", "Pop", "26", "מוצאים את נמו", "Metallica", "Yellow - Coldplay"],
+    ["ליאור", "באר שבע", "פלאפל", "צילום", "Jazz", "28", "טיטניק (סרט, 1997)", "Coldplay", "Paradise - Coldplay"]
+  ],
+  "facts": {
+    "movie.genre": [["movie.crime", "movie.horror"], ["movie.horror", "movie.thriller"], ["movie.adventure", "movie.animation", "movie.comedy", "movie.fantasy"], ["movie.adventure", "movie.animation", "movie.comedy", "movie.family"], ["movie.drama", "movie.romance"]],
+    "artist.genre": [["music.mediterranean", "music.mizrahi", "music.pop"], ["music.mizrahi", "music.pop"], ["music.country", "music.pop"], ["music.rock"], ["music.pop", "music.rock"]],
+    "song.genre": [["music.pop"], ["music.electronic", "music.pop"], ["music.rock"], ["music.pop", "music.rock"], ["music.pop", "music.rnb"]],
+    "hobby.family": [["hobby.sport"], ["hobby.sport"], ["hobby.sport"], ["hobby.creative"], ["hobby.creative"]],
+    "hobby.physical": [["activity.physical"], ["activity.physical"], ["activity.physical"], ["activity.nonphysical"], ["activity.nonphysical"]],
+    "hobby.setting": [[], ["setting.outdoor"], ["setting.outdoor"], [], []],
+    "food.cuisine": [["food.italian"], ["food.asian"], ["food.italian"], ["food.italian"], ["food.middle_eastern"]],
+    "music.genre": [["music.mizrahi"], ["music.mizrahi"], ["music.rock"], ["music.pop"], ["music.jazz"]],
+    "place.region": [["region.north"], ["region.central"], ["region.central"], ["region.central"], ["region.south"]]
+  }
+}
