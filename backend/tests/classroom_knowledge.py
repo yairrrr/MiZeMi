@@ -119,9 +119,28 @@ def verify_trace(trace, players):
         leaders = [(q, c) for q, c in semantic if dict(c.metadata)['domain'] == domain
                    and c.source_rule_id == 'group_mode']
         assert len(leaders) == 1 and dict(leaders[0][1].metadata)['answer_key'] == 'music.pop'
-        assert next(o.text for o in leaders[0][0].options if o.option_id == leaders[0][0].correct_option_id) == 'פופ'
-        assert re.search(r'4\s+אנשים', leaders[0][0].explanation)
-        assert re.search(r'יותר|מוביל|נפוץ', leaders[0][0].explanation)
+        question, candidate = leaders[0]
+        field_key = f'favorite_{domain}'
+        assert candidate.source_field_keys == (field_key,)
+        assert next(o.text for o in question.options if o.option_id == question.correct_option_id) == 'פופ'
+        winners = members[f'{domain}.genre']['music.pop']
+        assert re.search(rf'\b{len(winners)}\s+אנשים\b', question.explanation)
+        assert re.search(r'יותר|מוביל|נפוץ', question.explanation)
+        assert kb.categories['music.pop'].label('he') in question.explanation
+        # A plausible Hebrew sentence, or the other media field's explanation,
+        # is not evidence for this question. Require a supporting choice from
+        # this field's winning group. Accept submitted or canonical wording;
+        # no particular artist/song name or pair is mandated.
+        evidence = set()
+        for player in players:
+            if player.player_id not in winners:
+                continue
+            value = next(f.value for f in player.profile.consented_fields() if f.field_key == field_key)
+            evidence.add(str(value))
+            entity = kb.classify(f'{domain}s', str(value)).entity
+            if entity is not None:
+                evidence.add(entity.label('he'))
+        assert any(choice in question.explanation for choice in evidence), 'Explanation must support the selected media fact'
     return dict(kinds=dict(kinds), semantic_rounds=len(semantic), questions=rows)
 
 

@@ -24,7 +24,8 @@ def test_browser_fixture_has_correct_final_media_and_group_questions_across_seed
 
 
 @pytest.mark.parametrize('mutation', ['no_movie', 'no_artist', 'no_song', 'no_hobby',
-                                    'wrong_answer', 'wrong_fact', 'empty_explanation', 'technical_explanation'])
+                                    'wrong_answer', 'wrong_fact', 'empty_explanation', 'technical_explanation',
+                                    'swapped_media_explanation', 'wrong_genre_explanation', 'unrelated_hebrew_explanation'])
 def test_browser_oracle_rejects_lost_semantics_and_wrong_answers(mutation):
     trace, players = generate()
     questions, selected = list(trace.questions), list(trace.selected)
@@ -41,6 +42,41 @@ def test_browser_oracle_rejects_lost_semantics_and_wrong_answers(mutation):
         elif mutation == 'wrong_fact':
             selected[index] = replace(c, metadata=tuple({**dict(c.metadata), 'answer_key': 'music.rock'}.items()))
         else:
-            questions[index] = replace(q, explanation='' if mutation == 'empty_explanation' else 'SQL מאגר נתונים')
+            if mutation == 'swapped_media_explanation':
+                explanation = next(q.explanation for q, candidate in zip(questions, selected)
+                                   if candidate.source_rule_id == 'group_mode' and dict(candidate.metadata)['domain'] == 'song')
+            elif mutation == 'wrong_genre_explanation':
+                explanation = q.explanation.replace('פופ', 'רוק')
+            elif mutation == 'unrelated_hebrew_explanation':
+                explanation = '4 אנשים העדיפו לבלות יותר זמן יחד.'
+            else:
+                explanation = '' if mutation == 'empty_explanation' else 'SQL מאגר נתונים'
+            # Model a faulty rule, not merely a mismatch between its candidate
+            # and serialized question: both carry the same wrong explanation.
+            questions[index] = replace(q, explanation=explanation)
+            selected[index] = replace(c, explanation=explanation)
     with pytest.raises(AssertionError):
         verify_trace(replace(trace, questions=tuple(questions), selected=tuple(selected)), players)
+
+
+@pytest.mark.parametrize('omitted', [('favorite_movie',), ('favorite_artist',), ('favorite_song',),
+                                   ('favorite_movie', 'favorite_artist', 'favorite_song')])
+def test_oracle_fails_when_the_pipeline_stops_generating_media(omitted):
+    players = fixture_players()
+    generator = QuestionGenerator(knowledge=get_knowledge())
+    original_rules = generator._rules
+
+    class DropMediaCandidates:
+        def generate(self, dataset, rng):
+            for rule in original_rules:
+                for candidate in rule.generate(dataset, rng):
+                    if not set(omitted).intersection(candidate.source_field_keys):
+                        yield candidate
+
+    # Test-only fault injection: unchanged profiles, real validation/scoring/
+    # final selection, but a media source stops supplying candidates entirely.
+    generator._rules = (DropMediaCandidates(),)
+    trace = generator.trace(ProfileDataset(players, 'he'), question_count=20,
+                            time_limit_seconds=20, seed=11)
+    with pytest.raises(AssertionError):
+        verify_trace(trace, players)
