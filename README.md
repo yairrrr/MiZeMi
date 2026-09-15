@@ -1,5 +1,12 @@
 # MiZeMi
 
+## Visit MiZeMi
+
+- **Project / landing page:** [MiZeMi Project Page](https://yairrrr.github.io/MiZeMi/) — what the game is and how it works.
+- **Live application:** [Play MiZeMi](https://mizemi-frontend.onrender.com) — create a room or join your group on Render.
+
+The static project page lives in `docs/`. See [GitHub Pages setup](GITHUB_PAGES.md) for the manual publication steps. The multiplayer application continues to run on Render.
+
 A working classroom icebreaker: the host creates a room, players join from phones, share consented profile facts, and play a live quiz through to a final leaderboard. Question generation is deterministic Python. No runtime AI, accounts, paid APIs, or hosted realtime dependency.
 
 The offline knowledge engine understands films, songs, artists, foods, hobbies, music styles and towns using tens of thousands of compact local entries. A category-first stage turns the group's answers into shared facts — horror films, Italian food, sports hobbies, the north — and 18 discovery families ask about them (counts, majorities, comparisons, regions, cross-domain subgroups), alongside a small share of simple social questions. Explanations appear after each question. See [QUESTION_ENGINE_DIAGNOSTIC.md](QUESTION_ENGINE_DIAGNOSTIC.md) for how questions are chosen and [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md) for measured coverage, sources and licenses.
@@ -67,9 +74,9 @@ Playwright starts its own isolated backend and production frontend preview. It r
 
 The PostgreSQL integration tests run when `MIZEMI_TEST_POSTGRES_URL` points to a disposable PostgreSQL database whose role can create schemas. They create and remove unique schemas for English and Hebrew games; do not point them at production. Without that variable, the two live PostgreSQL cases are explicitly skipped; SQL dialect tests still run.
 
-## Deploy later
+## Deployment
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) and [render.yaml](render.yaml). No deployment has been performed. Production uses Neon PostgreSQL and one Render Free web service plus one free static site.
+See [DEPLOYMENT.md](DEPLOYMENT.md) and [render.yaml](render.yaml) for the application deployment configuration. The live game uses Render, with Neon PostgreSQL for persistence. GitHub Pages serves only the separate project presentation in `docs/`.
 
 Active games live in a single backend process. Refresh/network reconnect works while that process survives; a restart, redeploy or service sleep ends active rooms. Completed game records are stored in the database and retained for seven days, then purged during maintenance. This is a classroom demo, with no horizontal scaling or durable active-game recovery.
 
