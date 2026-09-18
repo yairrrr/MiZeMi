@@ -10,6 +10,11 @@ export default defineConfig({
   use: { actionTimeout: 10_000, baseURL: 'http://127.0.0.1:4173', headless: true, trace: 'off' },
   webServer: [
     {
+      command: '../.venv/bin/python -m http.server 8770 --bind 127.0.0.1 --directory ../docs',
+      url: 'http://127.0.0.1:8770',
+      reuseExistingServer: false,
+    },
+    {
       command: '../.venv/bin/python -m uvicorn app.main:app --app-dir ../backend --host 127.0.0.1 --port 8765 --ws-max-size 65536',
       url: 'http://127.0.0.1:8765/api/v1/health',
       reuseExistingServer: false,

@@ -6,6 +6,8 @@ export const LANGUAGE_STORAGE_KEY = 'mizemi.language'
 export const direction = (language: Language) => language === 'he' ? 'rtl' : 'ltr'
 
 export function loadLanguage(): Language {
+  const requested = new URLSearchParams(window.location.search).get('lang')
+  if (requested === 'en' || requested === 'he') return requested
   try { return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'he' ? 'he' : 'en' }
   catch { return 'en' }
 }
@@ -44,6 +46,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setSelected] = useState<Language>(loadLanguage)
   function setLanguage(next: Language) {
     setSelected(next)
+    const url = new URL(window.location.href)
+    if (url.searchParams.has('lang')) {
+      url.searchParams.set('lang', next)
+      window.history.replaceState(null, '', url)
+    }
     try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next) } catch { /* page still works */ }
   }
   useEffect(() => {

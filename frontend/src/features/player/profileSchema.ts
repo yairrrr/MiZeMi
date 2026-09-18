@@ -73,13 +73,13 @@ export function buildProfileFields(
   values: ProfileFormValues,
   consent: ProfileConsent,
   t: Translate = (key, values) => translate('en', key, values),
-): { fields: ProfileField[] } | { error: string } {
+): { fields: ProfileField[] } | { error: string; fieldKey: string } {
   const fields: ProfileField[] = []
   for (const spec of PROFILE_FIELDS) {
     const raw = (values[spec.key] ?? '').trim().replace(/\s+/g, ' ')
     if (raw === '') {
       if (spec.required) {
-        return { error: t('{field} is required.', { field: t(spec.label) }) }
+        return { fieldKey: spec.key, error: t('{field} is required.', { field: t(spec.label) }) }
       }
       continue
     }
@@ -87,22 +87,22 @@ export function buildProfileFields(
     let value: string | number = raw
     if (spec.kind === 'int') {
       if (!/^\d+$/.test(raw)) {
-        return { error: t('{field} must be a whole number.', { field: t(spec.label) }) }
+        return { fieldKey: spec.key, error: t('{field} must be a whole number.', { field: t(spec.label) }) }
       }
       value = Number(raw)
       if (value < (spec.min ?? 0) || value > (spec.max ?? Number.MAX_SAFE_INTEGER)) {
-        return { error: t('{field} must be between {min} and {max}.', { field: t(spec.label), min: spec.min!, max: spec.max! }) }
+        return { fieldKey: spec.key, error: t('{field} must be between {min} and {max}.', { field: t(spec.label), min: spec.min!, max: spec.max! }) }
       }
     } else if (spec.kind === 'choice') {
       if (!spec.choices?.some((choice) => choice === raw)) {
-        return { error: t('Choose one of the listed options for {field}.', { field: t(spec.label) }) }
+        return { fieldKey: spec.key, error: t('Choose one of the listed options for {field}.', { field: t(spec.label) }) }
       }
     } else {
       if (raw.length > (spec.maxLength ?? Infinity)) {
-        return { error: t('{field} must be at most {max} characters.', { field: t(spec.label), max: spec.maxLength! }) }
+        return { fieldKey: spec.key, error: t('{field} must be at most {max} characters.', { field: t(spec.label), max: spec.maxLength! }) }
       }
       if (EMAIL.test(raw) || LINK.test(raw) || LONG_NUMBER.test(raw)) {
-        return { error: t(PRIVACY_MESSAGE) }
+        return { fieldKey: spec.key, error: t(PRIVACY_MESSAGE) }
       }
     }
 

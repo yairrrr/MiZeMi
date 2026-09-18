@@ -143,7 +143,7 @@ test('Hebrew profile labels, validation, consent and music choices keep stable w
   await user.type(screen.getByLabelText('אוכל אהוב',{exact:true}),'Pizza')
   await user.type(screen.getByLabelText('תחביב',{exact:true}),'שחמט')
   await user.selectOptions(screen.getByLabelText('סגנון מוזיקה אהוב',{exact:true}),'Rock')
-  await user.click(screen.getByLabelText('אפשר להשתמש בשדה עיר בשאלות'))
+  await user.click(screen.getByLabelText('לאפשר שימוש בתשובה לשדה עיר ליצירת שאלות במשחק'))
   await user.click(screen.getByRole('button',{name:'שמירת הפרופיל שלי'}))
   const fields=(send.mock.calls[0][1] as PlayerProfile).fields
   expect(fields).toContainEqual({field_key:'city',value:'תל אביב',allow_question_usage:false})
@@ -159,3 +159,9 @@ test.each(['<script>alert(1)</script>','<img src=x onerror=alert(1)>',`O'Reilly 
   expect(container.querySelector('script,img')).toBeNull()
   expect(container.textContent).toContain(unsafe)
 })
+
+vi.mock('../legal/privacyInfo', () => ({ usePrivacyInfo: () => ({
+  info: { policy_version: '2026-09-18', retention_days: 7, room_idle_ttl_minutes: 120,
+    maintenance_interval_seconds: 300, raw_profiles_persisted: false },
+  status: 'ready', retry: () => {},
+}) }))

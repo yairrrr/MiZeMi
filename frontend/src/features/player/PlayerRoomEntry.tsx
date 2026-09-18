@@ -20,6 +20,13 @@ export function PlayerRoomEntry({
   const [errorMessage, setErrorMessage] = useState<MessageKey | ErrorResponse['error'] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const isPending = useRef(false)
+  const [invalidField, setInvalidField] = useState<'room-code' | 'display-name' | null>(null)
+
+  function invalid(field: 'room-code' | 'display-name', message: MessageKey) {
+    setInvalidField(field)
+    setErrorMessage(message)
+    document.getElementById(field)?.focus()
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -30,21 +37,22 @@ export function PlayerRoomEntry({
 
     const trimmedDisplayName = displayName.trim()
     if (roomCode.trim().length === 0) {
-      setErrorMessage('Enter a room code to continue.')
+      invalid('room-code', 'Enter a room code to continue.')
       return
     }
     if (trimmedDisplayName.length === 0) {
-      setErrorMessage('Enter a display name to continue.')
+      invalid('display-name', 'Enter a display name to continue.')
       return
     }
     if (trimmedDisplayName.length > 20) {
-      setErrorMessage('Display name must be 20 characters or fewer.')
+      invalid('display-name', 'Display name must be 20 characters or fewer.')
       return
     }
 
     isPending.current = true
     setIsLoading(true)
     setErrorMessage(null)
+    setInvalidField(null)
 
     try {
       const response = await joinRoom(roomCode, { display_name: displayName })
@@ -76,6 +84,9 @@ export function PlayerRoomEntry({
         <label htmlFor="room-code">{t("Room Code")}</label>
         <input
           id="room-code"
+          required aria-required="true"
+          aria-invalid={invalidField === 'room-code' || undefined}
+          aria-describedby={invalidField === 'room-code' ? 'join-entry-error' : undefined}
           dir="ltr"
           name="room_code"
           value={roomCode}
@@ -91,6 +102,9 @@ export function PlayerRoomEntry({
         <label htmlFor="display-name">{t("Display Name")}</label>
         <input
           id="display-name"
+          required aria-required="true"
+          aria-invalid={invalidField === 'display-name' || undefined}
+          aria-describedby={invalidField === 'display-name' ? 'join-entry-error' : undefined}
           dir={displayName ? 'auto' : direction(language)}
           name="display_name"
           value={displayName}
@@ -107,7 +121,7 @@ export function PlayerRoomEntry({
       </form>
 
       {errorMessage !== null && (
-        <p className="status-message error-message" role="alert">
+        <p id="join-entry-error" className="status-message error-message" role="alert">
           {typeof errorMessage === 'string' ? t(errorMessage) : publicError(language, errorMessage)}
         </p>
       )}

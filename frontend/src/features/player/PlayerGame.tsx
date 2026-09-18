@@ -1,4 +1,5 @@
 import { useI18n, direction } from '../../i18n/I18n'
+import { useStageFocus } from '../../hooks/useStageFocus'
 import { useEffect, useState } from 'react'
 
 import {
@@ -36,9 +37,14 @@ export function PlayerGameView({ session, view, status, send, dismissError, onLe
   const room = view.room
   const me = room?.players.find((player) => player.player_id === session.player_id) ?? null
 
+  const stage = !room ? 'connecting' : ['LOBBY', 'PROFILE_COLLECTION', 'READY'].includes(room.state)
+    ? `profile-${me?.has_profile}-${me?.is_ready}`
+    : `${room.state}-${view.question?.question_id}-${view.results?.question_id}-${!!view.finished}`
+  const stageRef = useStageFocus(stage)
+
   if (status === 'removed' || (room !== null && me === null)) {
     return (
-      <section className="game-shell player-shell">
+      <section ref={stageRef} className="game-shell player-shell">
         <div className="stage centered-stage">
           <h2>{t("You left the room")}</h2>
           <p className="card-copy">{t("The host removed you from this game.")}</p>
@@ -49,7 +55,7 @@ export function PlayerGameView({ session, view, status, send, dismissError, onLe
   }
 
   return (
-    <section className="game-shell player-shell" aria-label={t("Player screen")}>
+    <section ref={stageRef} className="game-shell player-shell" aria-label={t("Player screen")}>
       <header className="game-header compact">
         <div>
           <p className="eyebrow">{t('Room {code}', { code: session.room_code })}</p>
@@ -208,7 +214,7 @@ function PlayerQuestion({ question, view, send, connected }: { question: Questio
         ))}
       </div>
       {chosen !== null && (
-        <p className="answer-status" role="status">
+        <p className="answer-status" role="status" aria-label={t('Answer status')}>
           {t(locked ? 'Answer locked in!' : 'Sending…')}
           {progress !== null && ` ${t('{count} of {total} answered.', { count: progress.answered_count, total: progress.player_count })}`}
         </p>
@@ -258,6 +264,7 @@ function PlayerFinal({ view, me, onLeave }: { view: GameView; me: Player; onLeav
   const mine = finished.leaderboard.entries.find((entry) => entry.player_id === me.player_id)
   return (
     <div className="stage final-stage">
+      <h2>{t("Final leaderboard")}</h2>
       <Winners winners={finished.winners} />
       {mine !== undefined && (
         <p className="your-place">

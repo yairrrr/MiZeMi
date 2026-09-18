@@ -1,3 +1,4 @@
+import { useStageFocus } from '../../hooks/useStageFocus'
 import { useI18n, direction } from '../../i18n/I18n'
 import {
   AnswerBars,
@@ -32,8 +33,11 @@ export function HostGame({ session, onLeave }: { session: HostSession; onLeave: 
 export function HostGameView({ session, view, status, send, dismissError, onLeave }: HostGameViewProps) {
   const { t } = useI18n()
   const room = view.room
+  const stage = !room ? 'connecting' : ['LOBBY', 'PROFILE_COLLECTION', 'READY'].includes(room.state)
+    ? 'lobby' : `${room.state}-${view.question?.question_id}-${view.results?.question_id}-${!!view.finished}`
+  const stageRef = useStageFocus(stage)
   return (
-    <section className="game-shell host-shell" aria-label={t("Host screen")}>
+    <section ref={stageRef} className="game-shell host-shell" aria-label={t("Host screen")}>
       <header className="game-header">
         <div>
           <p className="eyebrow">{t("MiZeMi · Room code")}</p>
@@ -223,8 +227,8 @@ function HostFinal({ view, onLeave }: { view: GameView; onLeave: () => void }) {
   }
   return (
     <div className="stage final-stage">
-      <Winners winners={finished.winners} />
       <h2>{t("Final leaderboard")}</h2>
+      <Winners winners={finished.winners} />
       <LeaderboardList entries={finished.leaderboard.entries} />
       <button type="button" className="primary-button" onClick={onLeave}>{t("Host a new game")}</button>
     </div>
