@@ -181,6 +181,13 @@ class Game:
         if not self._state_machine.is_transition_allowed(self._state, target):
             raise InvalidStateTransitionError(self._state, target)
         self._state = target
+        if target is GameState.FINISHED:
+            # Generated rounds and scores suffice for results/reconnect.
+            # Keep the submitted-profile marker, but release all raw values,
+            # including opted-out values, even if sockets remain connected.
+            for player in self._players.values():
+                if player.profile is not None:
+                    player.profile = PlayerProfile(player.player_id, ())
 
     def submit_initial_profile(self, player_id: str, profile: PlayerProfile) -> None:
         """Accept a player's first profile submission (MASTER_SPEC.md §11).

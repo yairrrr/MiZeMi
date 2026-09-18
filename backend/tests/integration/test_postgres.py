@@ -14,6 +14,7 @@ from sqlalchemy.schema import CreateSchema, DropSchema
 
 from app.infrastructure.database import Base, create_database_engine, create_session_factory
 from app.infrastructure.repositories import SqlAlchemyGameRepository
+from app.infrastructure.database.models import GameRow, ProfileFieldRow
 from tests.integration.test_game_flow_hardening import Table, _app, NAMES
 from tests.fixtures.live import receive_until
 
@@ -57,6 +58,8 @@ def test_real_postgres_game_persistence_rollback_and_retention(language):
                 repository = SqlAlchemyGameRepository(session)
                 record = repository.get(table.game.game_id)
                 assert record.state == 'FINISHED'
+                assert all(player.profile_fields == () for player in record.players)
+                assert all(player.profile.fields == () for player in table.game.players)
                 assert record.config.question_count == 1
                 assert record.config.language == language
                 assert record.questions[0].language == language
@@ -76,6 +79,17 @@ def test_real_postgres_game_persistence_rollback_and_retention(language):
                 repository.save(table.game)
                 session.commit()
                 assert len(repository.get(table.game.game_id).answers) == 3
+                # Upgrade cleanup also works on PostgreSQL without extending retention.
+                saved_at = session.get(GameRow, table.game.game_id).updated_at
+                session.add(ProfileFieldRow(player_id=table.game.players[0].player_id,
+                    position=0, field_key='personal_fact', value='synthetic-legacy-private',
+                    value_type='str', allow_question_usage=False))
+                session.commit()
+                assert repository.delete_legacy_finished_profiles() == 1
+                session.commit()
+                session.expire_all()
+                assert session.get(GameRow, table.game.game_id).updated_at == saved_at
+                assert all(p.profile_fields == () for p in repository.get(table.game.game_id).players)
                 assert repository.delete_older_than(datetime.now(UTC) + timedelta(days=1)) == 1
                 session.commit()
                 for model in Base.metadata.sorted_tables:
