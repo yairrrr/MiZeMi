@@ -26,6 +26,18 @@ DIMENSIONS = {
 }
 
 
+def classify_shared(dataset, knowledge: KnowledgeBase, kind: str, value):
+    """Reuse classification inside this consent-only snapshot, never across rooms."""
+    cached = getattr(dataset, '_knowledge_classifications', None)
+    if cached is None or cached[0] is not knowledge:
+        cached = (knowledge, {})
+        dataset._knowledge_classifications = cached
+    key = (kind, value)
+    if key not in cached[1]:
+        cached[1][key] = knowledge.classify(kind, value)
+    return cached[1][key]
+
+
 class SemanticView:
     def __init__(self, dataset, knowledge: KnowledgeBase):
         self.dataset, self.knowledge = dataset, knowledge
@@ -35,7 +47,7 @@ class SemanticView:
             if field in rows:
                 continue
             rows[field] = MappingProxyType({pid: result.entity for pid,value in dataset.values_for(field)
-                                          if (result := knowledge.resolve(kind,value)).entity is not None})
+                                          if (result := classify_shared(dataset, knowledge, kind, value)).entity is not None})
         self.rows = MappingProxyType(rows)
         self.memberships = MappingProxyType({dim: MappingProxyType({p: knowledge.facts(e, 'music.genre' if dim in ('artist.genre','song.genre') else dim)
             for p,e in rows[field].items() if knowledge.facts(e, 'music.genre' if dim in ('artist.genre','song.genre') else dim)})

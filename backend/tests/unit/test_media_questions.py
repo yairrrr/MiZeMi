@@ -75,6 +75,11 @@ def test_final_media_comparison_survives_when_no_genre_has_a_unique_lead():
 ])
 def test_unique_genre_person_reaches_the_final_quiz(field, values, player):
     room = choices(field, values)
+    # Isolate this identity insight: other domains can legitimately win the
+    # limited person slots now that literal lookups no longer reserve any slots.
+    # Rich-room coverage/mix is tested separately above and in resolution tests.
+    room = replace(room, rows=tuple({**row, 'hide': tuple(f for f in row['values'] if f != field)}
+                                   for row in room.rows))
     t = trace(room)
     q, c = next(iter(selected_media(t, field, 'group_genre_outlier')))
     assert c.focus_player_ids == (player,)

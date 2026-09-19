@@ -1,0 +1,5247 @@
+{
+  "label": "after",
+  "fixture_sha256": "e31586ff17c0f5acdbf8a55223567ebea7c26395915a2c972a4e12a774dfccb5",
+  "counts": {
+    "correct": 147,
+    "ambiguous": 12,
+    "unknown": 56
+  },
+  "outcomes_by_group": {
+    "canonical": {
+      "correct": 41
+    },
+    "imperfect": {
+      "correct": 103,
+      "ambiguous": 2,
+      "unknown": 1
+    },
+    "reject": {
+      "ambiguous": 10,
+      "unknown": 55
+    },
+    "short_exact_control": {
+      "correct": 3
+    }
+  },
+  "load_ms": 1554.793,
+  "lookup_mean_us": 110.162,
+  "generation_30_players_20_requested": {
+    "runs": 20,
+    "median_ms": 23.247,
+    "max_ms": 28.318,
+    "total_ms": 467.662
+  },
+  "generation_20_players_20_requested": {
+    "runs": 20,
+    "median_ms": 21.561,
+    "max_ms": 26.241
+  },
+  "memory": {
+    "retained_bytes": 58771367,
+    "peak_bytes": 75429331,
+    "entities": 33831
+  },
+  "cases": [
+    {
+      "kind": "movies",
+      "text": "The Conjuring",
+      "expected_id": "Q5540479",
+      "group": "canonical",
+      "actual_id": "Q5540479",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "the conjuring",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Conjuring",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "PARTIAL_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjruing",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjurinng",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjurig",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic Park",
+      "expected_id": "Q167726",
+      "group": "canonical",
+      "actual_id": "Q167726",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic-Park",
+      "expected_id": "Q167726",
+      "group": "imperfect",
+      "actual_id": "Q167726",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurasic Park",
+      "expected_id": "Q167726",
+      "group": "imperfect",
+      "actual_id": "Q167726",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic Prak",
+      "expected_id": "Q167726",
+      "group": "imperfect",
+      "actual_id": "Q167726",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Back to the Future",
+      "expected_id": "Q91540",
+      "group": "canonical",
+      "actual_id": "Q91540",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Back to Future",
+      "expected_id": "Q91540",
+      "group": "imperfect",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "Back to the Futuer",
+      "expected_id": "Q91540",
+      "group": "imperfect",
+      "actual_id": "Q91540",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "לזמן את הרוע",
+      "expected_id": "Q5540479",
+      "group": "canonical",
+      "actual_id": "Q5540479",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "  לזמן   את הרוע ",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "לזמן את הרווע",
+      "expected_id": "Q5540479",
+      "group": "imperfect",
+      "actual_id": "Q5540479",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "The Dark Knight",
+      "expected_id": "Q163872",
+      "group": "canonical",
+      "actual_id": "Q163872",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Dark Knight",
+      "expected_id": "Q163872",
+      "group": "imperfect",
+      "actual_id": "Q163872",
+      "match": "PARTIAL_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "The Dark Knigth",
+      "expected_id": "Q163872",
+      "group": "imperfect",
+      "actual_id": "Q163872",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Forrest Gump",
+      "expected_id": "Q134773",
+      "group": "canonical",
+      "actual_id": "Q134773",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Forrest Gmp",
+      "expected_id": "Q134773",
+      "group": "imperfect",
+      "actual_id": "Q134773",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer Adam",
+      "expected_id": "Q2918713",
+      "group": "canonical",
+      "actual_id": "Q2918713",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "עומר אדם",
+      "expected_id": "Q2918713",
+      "group": "imperfect",
+      "actual_id": "Q2918713",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer Adma",
+      "expected_id": "Q2918713",
+      "group": "imperfect",
+      "actual_id": "Q2918713",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer Addam",
+      "expected_id": "Q2918713",
+      "group": "imperfect",
+      "actual_id": "Q2918713",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Eyal Golan",
+      "expected_id": "Q1382405",
+      "group": "canonical",
+      "actual_id": "Q1382405",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "אייל גולן",
+      "expected_id": "Q1382405",
+      "group": "imperfect",
+      "actual_id": "Q1382405",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Eyal Golna",
+      "expected_id": "Q1382405",
+      "group": "imperfect",
+      "actual_id": "Q1382405",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Eyal Gollan",
+      "expected_id": "Q1382405",
+      "group": "imperfect",
+      "actual_id": "Q1382405",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor Swift",
+      "expected_id": "Q26876",
+      "group": "canonical",
+      "actual_id": "Q26876",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor Swfit",
+      "expected_id": "Q26876",
+      "group": "imperfect",
+      "actual_id": "Q26876",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor Swiftt",
+      "expected_id": "Q26876",
+      "group": "imperfect",
+      "actual_id": "Q26876",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Metallica",
+      "expected_id": "Q15920",
+      "group": "canonical",
+      "actual_id": "Q15920",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Metalica",
+      "expected_id": "Q15920",
+      "group": "imperfect",
+      "actual_id": "Q15920",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Metallcia",
+      "expected_id": "Q15920",
+      "group": "imperfect",
+      "actual_id": "Q15920",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Coldplay",
+      "expected_id": "Q45188",
+      "group": "canonical",
+      "actual_id": "Q45188",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Coldplaay",
+      "expected_id": "Q45188",
+      "group": "imperfect",
+      "actual_id": "Q45188",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Coldpaly",
+      "expected_id": "Q45188",
+      "group": "imperfect",
+      "actual_id": "Q45188",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "עדן בן זקן",
+      "expected_id": "Q28053146",
+      "group": "canonical",
+      "actual_id": "Q28053146",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "עדן בן זקנ",
+      "expected_id": "Q28053146",
+      "group": "imperfect",
+      "actual_id": "Q28053146",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "עדן בן זקון",
+      "expected_id": "Q28053146",
+      "group": "imperfect",
+      "actual_id": "Q28053146",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Space",
+      "expected_id": "Q18441355",
+      "group": "canonical",
+      "actual_id": "Q18441355",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank-Space",
+      "expected_id": "Q18441355",
+      "group": "imperfect",
+      "actual_id": "Q18441355",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Sapce",
+      "expected_id": "Q18441355",
+      "group": "imperfect",
+      "actual_id": "Q18441355",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Spce",
+      "expected_id": "Q18441355",
+      "group": "imperfect",
+      "actual_id": "Q18441355",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandman",
+      "expected_id": "Q66057605",
+      "group": "canonical",
+      "actual_id": "Q66057605",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandamn",
+      "expected_id": "Q66057605",
+      "group": "imperfect",
+      "actual_id": "Q66057605",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandmann",
+      "expected_id": "Q66057605",
+      "group": "imperfect",
+      "actual_id": "Q66057605",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow - Coldplay",
+      "expected_id": "Q529026",
+      "group": "canonical",
+      "actual_id": "Q529026",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow – Coldplay",
+      "expected_id": "Q529026",
+      "group": "imperfect",
+      "actual_id": "Q529026",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow - Coldpaly",
+      "expected_id": "Q529026",
+      "group": "imperfect",
+      "actual_id": "Q529026",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off - Taylor Swift",
+      "expected_id": "Q17544624",
+      "group": "canonical",
+      "actual_id": "Q17544624",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off / Taylor Swift",
+      "expected_id": "Q17544624",
+      "group": "imperfect",
+      "actual_id": "Q17544624",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off - Taylor Swfit",
+      "expected_id": "Q17544624",
+      "group": "imperfect",
+      "actual_id": "Q17544624",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise - Coldplay",
+      "expected_id": "Q1416004",
+      "group": "canonical",
+      "actual_id": "Q1416004",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise: Coldplay",
+      "expected_id": "Q1416004",
+      "group": "imperfect",
+      "actual_id": "Q1416004",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise - Coldplaay",
+      "expected_id": "Q1416004",
+      "group": "imperfect",
+      "actual_id": "Q1416004",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Pizza",
+      "expected_id": "Q177",
+      "group": "canonical",
+      "actual_id": "Q177",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "פיצה",
+      "expected_id": "Q177",
+      "group": "imperfect",
+      "actual_id": "Q177",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "  PIZZA  ",
+      "expected_id": "Q177",
+      "group": "imperfect",
+      "actual_id": "Q177",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Pizzza",
+      "expected_id": "Q177",
+      "group": "imperfect",
+      "actual_id": "Q177",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Falafel",
+      "expected_id": "Q188788",
+      "group": "canonical",
+      "actual_id": "Q188788",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "פלאפל",
+      "expected_id": "Q188788",
+      "group": "imperfect",
+      "actual_id": "Q188788",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Falaefl",
+      "expected_id": "Q188788",
+      "group": "imperfect",
+      "actual_id": "Q188788",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Falafell",
+      "expected_id": "Q188788",
+      "group": "imperfect",
+      "actual_id": "Q188788",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Hummus",
+      "expected_id": "Q241987",
+      "group": "canonical",
+      "actual_id": "Q241987",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "חומוס",
+      "expected_id": "Q241987",
+      "group": "imperfect",
+      "actual_id": "Q241987",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Hummuss",
+      "expected_id": "Q241987",
+      "group": "imperfect",
+      "actual_id": "Q241987",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Spaghetti",
+      "expected_id": "Q20026",
+      "group": "canonical",
+      "actual_id": "Q20026",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Spagheti",
+      "expected_id": "Q20026",
+      "group": "imperfect",
+      "actual_id": "Q20026",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Spagehtti",
+      "expected_id": "Q20026",
+      "group": "imperfect",
+      "actual_id": "Q20026",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Lasagna",
+      "expected_id": "Q20034",
+      "group": "canonical",
+      "actual_id": "Q20034",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Lasagana",
+      "expected_id": "Q20034",
+      "group": "imperfect",
+      "actual_id": "Q20034",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Lasgana",
+      "expected_id": "Q20034",
+      "group": "imperfect",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "foods",
+      "text": "Hamburger",
+      "expected_id": "Q6663",
+      "group": "canonical",
+      "actual_id": "Q6663",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "המבורגר",
+      "expected_id": "Q6663",
+      "group": "imperfect",
+      "actual_id": "Q6663",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "Hamburgr",
+      "expected_id": "Q6663",
+      "group": "imperfect",
+      "actual_id": "Q6663",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "foods",
+      "text": "המבוררג",
+      "expected_id": "Q6663",
+      "group": "imperfect",
+      "actual_id": "Q6663",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Running",
+      "expected_id": "Q105674",
+      "group": "canonical",
+      "actual_id": "Q105674",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "ריצה",
+      "expected_id": "Q105674",
+      "group": "imperfect",
+      "actual_id": "Q105674",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Runinng",
+      "expected_id": "Q105674",
+      "group": "imperfect",
+      "actual_id": "Q105674",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Runningg",
+      "expected_id": "Q105674",
+      "group": "imperfect",
+      "actual_id": "Q105674",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Football",
+      "expected_id": "Q2736",
+      "group": "canonical",
+      "actual_id": "Q2736",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "כדורגל",
+      "expected_id": "Q2736",
+      "group": "imperfect",
+      "actual_id": "Q2736",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Footbal",
+      "expected_id": "Q2736",
+      "group": "imperfect",
+      "actual_id": "Q2736",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "כדרוגל",
+      "expected_id": "Q2736",
+      "group": "imperfect",
+      "actual_id": "Q2736",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swimming",
+      "expected_id": "Q6388",
+      "group": "canonical",
+      "actual_id": "Q6388",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "שחייה",
+      "expected_id": "Q6388",
+      "group": "imperfect",
+      "actual_id": "Q6388",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swiming",
+      "expected_id": "Q6388",
+      "group": "imperfect",
+      "actual_id": "Q6388",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swimmign",
+      "expected_id": "Q6388",
+      "group": "imperfect",
+      "actual_id": "Q6388",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Photography",
+      "expected_id": "Q11633",
+      "group": "canonical",
+      "actual_id": "Q11633",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "צילום",
+      "expected_id": "Q11633",
+      "group": "imperfect",
+      "actual_id": "Q11633",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Photograpy",
+      "expected_id": "Q11633",
+      "group": "imperfect",
+      "actual_id": "Q11633",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Photorgaphy",
+      "expected_id": "Q11633",
+      "group": "imperfect",
+      "actual_id": "Q11633",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Pilates",
+      "expected_id": "Q272460",
+      "group": "canonical",
+      "actual_id": "Q272460",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "פילאטיס",
+      "expected_id": "Q272460",
+      "group": "imperfect",
+      "actual_id": "Q272460",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Pialtes",
+      "expected_id": "Q272460",
+      "group": "imperfect",
+      "actual_id": "Q272460",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Pilattes",
+      "expected_id": "Q272460",
+      "group": "imperfect",
+      "actual_id": "Q272460",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Gaming",
+      "expected_id": "Q7889",
+      "group": "canonical",
+      "actual_id": "Q7889",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "גיימינג",
+      "expected_id": "Q7889",
+      "group": "imperfect",
+      "actual_id": "Q7889",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Gamming",
+      "expected_id": "Q7889",
+      "group": "imperfect",
+      "actual_id": "Q7889",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Kiryat Shmona",
+      "expected_id": "G293825",
+      "group": "canonical",
+      "actual_id": "G293825",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "קרית שמונה",
+      "expected_id": "G293825",
+      "group": "imperfect",
+      "actual_id": "G293825",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "קריית שמונה",
+      "expected_id": "G293825",
+      "group": "imperfect",
+      "actual_id": "G293825",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "קריית-שמונה",
+      "expected_id": "G293825",
+      "group": "imperfect",
+      "actual_id": "G293825",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Kiryat Shmnoa",
+      "expected_id": "G293825",
+      "group": "imperfect",
+      "actual_id": "G293825",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גן",
+      "expected_id": "G293788",
+      "group": "canonical",
+      "actual_id": "G293788",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת-גן",
+      "expected_id": "G293788",
+      "group": "imperfect",
+      "actual_id": "G293788",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גנ",
+      "expected_id": "G293788",
+      "group": "imperfect",
+      "actual_id": "G293788",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גןן",
+      "expected_id": "G293788",
+      "group": "imperfect",
+      "actual_id": "G293788",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel Aviv",
+      "expected_id": "G293397",
+      "group": "canonical",
+      "actual_id": "G293397",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "תל אביב",
+      "expected_id": "G293397",
+      "group": "imperfect",
+      "actual_id": "G293397",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "תל אביב יפו",
+      "expected_id": "G293397",
+      "group": "imperfect",
+      "actual_id": "G293397",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "ת״א",
+      "expected_id": "G293397",
+      "group": "imperfect",
+      "actual_id": "G293397",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "ת\"א",
+      "expected_id": "G293397",
+      "group": "imperfect",
+      "actual_id": "G293397",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel-Aviv",
+      "expected_id": "G293397",
+      "group": "imperfect",
+      "actual_id": "G293397",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "  TEL   AVIV  ",
+      "expected_id": "G293397",
+      "group": "imperfect",
+      "actual_id": "G293397",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Jerusalem",
+      "expected_id": "G281184",
+      "group": "canonical",
+      "actual_id": "G281184",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "ירושלים",
+      "expected_id": "G281184",
+      "group": "imperfect",
+      "actual_id": "G281184",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Jeruslaem",
+      "expected_id": "G281184",
+      "group": "imperfect",
+      "actual_id": "G281184",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Jeruslem",
+      "expected_id": "G281184",
+      "group": "imperfect",
+      "actual_id": "G281184",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Rehovot",
+      "expected_id": "G293725",
+      "group": "canonical",
+      "actual_id": "G293725",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "רחובות",
+      "expected_id": "G293725",
+      "group": "imperfect",
+      "actual_id": "G293725",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "Rehovoot",
+      "expected_id": "G293725",
+      "group": "imperfect",
+      "actual_id": "G293725",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "ראשון לציון",
+      "expected_id": "G293703",
+      "group": "canonical",
+      "actual_id": "G293703",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "ראשונ לציונ",
+      "expected_id": "G293703",
+      "group": "imperfect",
+      "actual_id": "G293703",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "localities",
+      "text": "ראשון־לציון",
+      "expected_id": "G293703",
+      "group": "imperfect",
+      "actual_id": "G293703",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Hip-Hop / Rap",
+      "expected_id": "Q11401",
+      "group": "canonical",
+      "actual_id": "Q11401",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "hip hop",
+      "expected_id": "Q11401",
+      "group": "imperfect",
+      "actual_id": "Q11401",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "hip-hop",
+      "expected_id": "Q11401",
+      "group": "imperfect",
+      "actual_id": "Q11401",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "היפ הופ",
+      "expected_id": "Q11401",
+      "group": "imperfect",
+      "actual_id": "Q11401",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "היפהופ",
+      "expected_id": "Q11401",
+      "group": "imperfect",
+      "actual_id": "Q11401",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "היפ־הופ",
+      "expected_id": "Q11401",
+      "group": "imperfect",
+      "actual_id": "Q11401",
+      "match": "NORMALIZED",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Electronic",
+      "expected_id": "Q9778",
+      "group": "canonical",
+      "actual_id": "Q9778",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Electornic",
+      "expected_id": "Q9778",
+      "group": "imperfect",
+      "actual_id": "Q9778",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Electronicc",
+      "expected_id": "Q9778",
+      "group": "imperfect",
+      "actual_id": "Q9778",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Mediterranean",
+      "expected_id": "Q108250543",
+      "group": "canonical",
+      "actual_id": "Q108250543",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Mediterranen",
+      "expected_id": "Q108250543",
+      "group": "imperfect",
+      "actual_id": "Q108250543",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Mediterraenan",
+      "expected_id": "Q108250543",
+      "group": "imperfect",
+      "actual_id": "Q108250543",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Mizrahi",
+      "expected_id": "Q2738544",
+      "group": "canonical",
+      "actual_id": "Q2738544",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "מזרחית",
+      "expected_id": "Q2738544",
+      "group": "imperfect",
+      "actual_id": "Q2738544",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Mizraahhi",
+      "expected_id": "Q2738544",
+      "group": "imperfect",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "Reggae",
+      "expected_id": "Q9794",
+      "group": "canonical",
+      "actual_id": "Q9794",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Reggaee",
+      "expected_id": "Q9794",
+      "group": "imperfect",
+      "actual_id": "Q9794",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Classical",
+      "expected_id": "Q9730",
+      "group": "canonical",
+      "actual_id": "Q9730",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Classsical",
+      "expected_id": "Q9730",
+      "group": "imperfect",
+      "actual_id": "Q9730",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "music",
+      "text": "Classiacl",
+      "expected_id": "Q9730",
+      "group": "imperfect",
+      "actual_id": "Q9730",
+      "match": "FUZZY_HIGH_CONFIDENCE",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "הארי פוטר",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "Harry Potter",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "Aladdin",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "Titanic",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjuring 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "Saw IIiII",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "Swa",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "it",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "rock",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "some obscure unreleased movie",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjuring not",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic Pork 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "Batman",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "movies",
+      "text": "Spider",
+      "expected_id": "Q930777",
+      "group": "short_exact_control",
+      "actual_id": "Q930777",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "movies",
+      "text": "Toy",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "movies",
+      "text": "Lord of the",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "Adam",
+      "expected_id": "Q7041432",
+      "group": "short_exact_control",
+      "actual_id": "Q7041432",
+      "match": "EXACT",
+      "outcome": "correct"
+    },
+    {
+      "kind": "artists",
+      "text": "Adele 2",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "Not Taylor Swift",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "Unknown Israeli Artist 991",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "rock",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "artists",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow",
+      "expected_id": "Q529026",
+      "group": "short_exact_control",
+      "actual_id": "Q529026",
+      "match": "ALIAS",
+      "outcome": "correct"
+    },
+    {
+      "kind": "songs",
+      "text": "Hello",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandman 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Spaces not",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "songs",
+      "text": "not a real song 778",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "songs",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "AMBIGUOUS",
+      "outcome": "ambiguous"
+    },
+    {
+      "kind": "songs",
+      "text": "it",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "Schnitzel",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "Piza",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "Sushi with no rice",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "pizza without cheese",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "Falafel 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "bananana xyz",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "foods",
+      "text": "it",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Run",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "art",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "hi",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "not football",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swimmmmmm",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "football without a ball",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "hobbies",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "ציון",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "גן",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "קריית",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "Ramat",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "Kiryat",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "New York",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel Aviv 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גן 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "Atlantis",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "localities",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "Other",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "not rock",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "Classic 99",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "Pop 2",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "ro",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    },
+    {
+      "kind": "music",
+      "text": "zzzzzy",
+      "expected_id": null,
+      "group": "reject",
+      "actual_id": null,
+      "match": "UNKNOWN",
+      "outcome": "unknown"
+    }
+  ],
+  "games": [
+    {
+      "room": "imperfect_10",
+      "language": "he",
+      "seed": 1,
+      "unknown_identities": 2,
+      "unclassified_values": 2,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"המסוור\" כסרט האהוב עליהם?",
+          "answer": "3"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו באמן \"Metalica\"?",
+          "answer": "2"
+        },
+        {
+          "rule": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "semantic": true,
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "answer": "רוני"
+        },
+        {
+          "rule": "group_genre_outlier",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "מי בחר שיר מסגנון שאף אחד אחר בקבוצה לא בחר?",
+          "answer": "נועה"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "semantic": true,
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "answer": "דנה + יעל"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים בשירים שבחרתם?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "רק אדם אחד בקבוצה בחר תחביב של בישול או אפייה. מי זה?",
+          "answer": "יונתן"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שבחרו סרטי אימה, איזה סגנון מופיע יותר בשירים שבחרו — רוק או אלקטרונית?",
+          "answer": "רוק"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, איזה סוג תחביב הכי נפוץ?",
+          "answer": "ספורט"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_10",
+      "language": "he",
+      "seed": 11,
+      "unknown_identities": 2,
+      "unclassified_values": 2,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"המסוור\" כסרט האהוב עליהם?",
+          "answer": "3"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו באמן \"Metalica\"?",
+          "answer": "2"
+        },
+        {
+          "rule": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "semantic": true,
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "answer": "רוני"
+        },
+        {
+          "rule": "group_genre_outlier",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "מי בחר שיר מסגנון שאף אחד אחר בקבוצה לא בחר?",
+          "answer": "נועה"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "semantic": true,
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "answer": "דנה + יעל"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים בשירים שבחרתם?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "רק אדם אחד בקבוצה בחר תחביב של בישול או אפייה. מי זה?",
+          "answer": "יונתן"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שבחרו סרטי אימה, איזה סגנון מופיע יותר בשירים שבחרו — רוק או אלקטרונית?",
+          "answer": "רוק"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, איזה סוג תחביב הכי נפוץ?",
+          "answer": "ספורט"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_10",
+      "language": "he",
+      "seed": 37,
+      "unknown_identities": 2,
+      "unclassified_values": 2,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"המסוור\" כסרט האהוב עליהם?",
+          "answer": "3"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו באמן \"Metalica\"?",
+          "answer": "2"
+        },
+        {
+          "rule": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "semantic": true,
+          "text": "מי מכם גר/ה ביישוב הכי דרומי?",
+          "answer": "רוני"
+        },
+        {
+          "rule": "group_genre_outlier",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "מי בחר שיר מסגנון שאף אחד אחר בקבוצה לא בחר?",
+          "answer": "נועה"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "semantic": true,
+          "text": "אילו שניים מכם גרים הכי קרוב זה לזה?",
+          "answer": "דנה + יעל"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סגנונות מוזיקה שונים מיוצגים בשירים שבחרתם?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "רק אדם אחד בקבוצה בחר תחביב של בישול או אפייה. מי זה?",
+          "answer": "יונתן"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שבחרו סרטי אימה, איזה סגנון מופיע יותר בשירים שבחרו — רוק או אלקטרונית?",
+          "answer": "רוק"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, איזה סוג תחביב הכי נפוץ?",
+          "answer": "ספורט"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_10",
+      "language": "en",
+      "seed": 1,
+      "unknown_identities": 2,
+      "unclassified_values": 2,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"המסוור\" as their favorite movie?",
+          "answer": "3"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Metalica\" as their favorite artist?",
+          "answer": "2"
+        },
+        {
+          "rule": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "semantic": true,
+          "text": "Which of you lives in the southernmost town?",
+          "answer": "רוני"
+        },
+        {
+          "rule": "group_genre_outlier",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "Who chose a song with a genre nobody else’s song represents?",
+          "answer": "נועה"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "semantic": true,
+          "text": "Which pair of you lives the shortest distance apart?",
+          "answer": "דנה + יעל"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many music genres are represented by the songs you chose?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "Only one person in our group chose a cooking or baking hobby. Who?",
+          "answer": "יונתן"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who chose horror movies, which style appears more in their chosen songs — Rock or Electronic?",
+          "answer": "Rock"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which type of hobby is the most common?",
+          "answer": "Sport"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_10",
+      "language": "en",
+      "seed": 11,
+      "unknown_identities": 2,
+      "unclassified_values": 2,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"המסוור\" as their favorite movie?",
+          "answer": "3"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Metalica\" as their favorite artist?",
+          "answer": "2"
+        },
+        {
+          "rule": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "semantic": true,
+          "text": "Which of you lives in the southernmost town?",
+          "answer": "רוני"
+        },
+        {
+          "rule": "group_genre_outlier",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "Who chose a song with a genre nobody else’s song represents?",
+          "answer": "נועה"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "semantic": true,
+          "text": "Which pair of you lives the shortest distance apart?",
+          "answer": "דנה + יעל"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many music genres are represented by the songs you chose?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "Only one person in our group chose a cooking or baking hobby. Who?",
+          "answer": "יונתן"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who chose horror movies, which style appears more in their chosen songs — Rock or Electronic?",
+          "answer": "Rock"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which type of hobby is the most common?",
+          "answer": "Sport"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_10",
+      "language": "en",
+      "seed": 37,
+      "unknown_identities": 2,
+      "unclassified_values": 2,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"המסוור\" as their favorite movie?",
+          "answer": "3"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Metalica\" as their favorite artist?",
+          "answer": "2"
+        },
+        {
+          "rule": "locality_extreme",
+          "kind": "geographic",
+          "family": "GEO_EXTREME",
+          "semantic": true,
+          "text": "Which of you lives in the southernmost town?",
+          "answer": "רוני"
+        },
+        {
+          "rule": "group_genre_outlier",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "Who chose a song with a genre nobody else’s song represents?",
+          "answer": "נועה"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "locality_distance_pair",
+          "kind": "geographic",
+          "family": "GEO_CLOSEST_PAIR",
+          "semantic": true,
+          "text": "Which pair of you lives the shortest distance apart?",
+          "answer": "דנה + יעל"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many music genres are represented by the songs you chose?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_unique",
+          "kind": "semantic",
+          "family": "SEMANTIC_UNIQUE",
+          "semantic": true,
+          "text": "Only one person in our group chose a cooking or baking hobby. Who?",
+          "answer": "יונתן"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who chose horror movies, which style appears more in their chosen songs — Rock or Electronic?",
+          "answer": "Rock"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which type of hobby is the most common?",
+          "answer": "Sport"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "1"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_20",
+      "language": "he",
+      "seed": 1,
+      "unknown_identities": 4,
+      "unclassified_values": 4,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "8"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים גרים ב\"חולונ\"?",
+          "answer": "2"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "6"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"Lasgana\" כאוכל האהוב עליהם?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל מזרח תיכוני או מקסיקני?",
+          "answer": "מזרח תיכוני"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "answer": "הדרום"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "מבין סוגי התחביבים האלה, איזה הכי נפוץ בקבוצה?",
+          "answer": "אמנות ויצירה"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שבחרו שירים בסגנון פופ, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אמריקאי?",
+          "answer": "איטלקי"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_20",
+      "language": "he",
+      "seed": 11,
+      "unknown_identities": 4,
+      "unclassified_values": 4,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "8"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים גרים ב\"חולונ\"?",
+          "answer": "2"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "6"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"Lasgana\" כאוכל האהוב עליהם?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל מזרח תיכוני או מקסיקני?",
+          "answer": "מזרח תיכוני"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "answer": "הדרום"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "מבין סוגי התחביבים האלה, איזה הכי נפוץ בקבוצה?",
+          "answer": "אמנות ויצירה"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שבחרו שירים בסגנון פופ, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אמריקאי?",
+          "answer": "איטלקי"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_20",
+      "language": "he",
+      "seed": 37,
+      "unknown_identities": 4,
+      "unclassified_values": 4,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "8"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים גרים ב\"חולונ\"?",
+          "answer": "2"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "6"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"Lasgana\" כאוכל האהוב עליהם?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל מזרח תיכוני או מקסיקני?",
+          "answer": "מזרח תיכוני"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "answer": "הדרום"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "מבין סוגי התחביבים האלה, איזה הכי נפוץ בקבוצה?",
+          "answer": "אמנות ויצירה"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שבחרו שירים בסגנון פופ, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אמריקאי?",
+          "answer": "איטלקי"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_20",
+      "language": "en",
+      "seed": 1,
+      "unknown_identities": 4,
+      "unclassified_values": 4,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "8"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"חולונ\" as their city?",
+          "answer": "2"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "6"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Lasgana\" as their favorite food?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many different types of hobbies are there in our group?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Based on your food choices, which leads — Middle Eastern or Mexican food?",
+          "answer": "Middle Eastern"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "answer": "The south"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "Of these types of hobbies, which is the most common in our group?",
+          "answer": "Arts and crafts"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "From how many regions of Israel does our group come?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who chose songs in the Pop style, which genre leads their movie choices?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which is more popular — Italian or American food?",
+          "answer": "Italian"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_20",
+      "language": "en",
+      "seed": 11,
+      "unknown_identities": 4,
+      "unclassified_values": 4,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "8"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"חולונ\" as their city?",
+          "answer": "2"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "6"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Lasgana\" as their favorite food?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many different types of hobbies are there in our group?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Based on your food choices, which leads — Middle Eastern or Mexican food?",
+          "answer": "Middle Eastern"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "answer": "The south"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "Of these types of hobbies, which is the most common in our group?",
+          "answer": "Arts and crafts"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "From how many regions of Israel does our group come?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who chose songs in the Pop style, which genre leads their movie choices?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which is more popular — Italian or American food?",
+          "answer": "Italian"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_20",
+      "language": "en",
+      "seed": 37,
+      "unknown_identities": 4,
+      "unclassified_values": 4,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "8"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"חולונ\" as their city?",
+          "answer": "2"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "6"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Lasgana\" as their favorite food?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many different types of hobbies are there in our group?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Based on your food choices, which leads — Middle Eastern or Mexican food?",
+          "answer": "Middle Eastern"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "answer": "The south"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "Of these types of hobbies, which is the most common in our group?",
+          "answer": "Arts and crafts"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "From how many regions of Israel does our group come?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who chose songs in the Pop style, which genre leads their movie choices?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "2"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which is more popular — Italian or American food?",
+          "answer": "Italian"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_30",
+      "language": "he",
+      "seed": 1,
+      "unknown_identities": 6,
+      "unclassified_values": 6,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "12"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים גרים ב\"חולונ\"?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "9"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"Lasgana\" כאוכל האהוב עליהם?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל מזרח תיכוני או מקסיקני?",
+          "answer": "מזרח תיכוני"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "answer": "הדרום"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "מבין סוגי התחביבים האלה, איזה הכי נפוץ בקבוצה?",
+          "answer": "אמנות ויצירה"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שבחרו שירים בסגנון פופ, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אמריקאי?",
+          "answer": "איטלקי"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_30",
+      "language": "he",
+      "seed": 11,
+      "unknown_identities": 6,
+      "unclassified_values": 6,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "12"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים גרים ב\"חולונ\"?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "9"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"Lasgana\" כאוכל האהוב עליהם?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל מזרח תיכוני או מקסיקני?",
+          "answer": "מזרח תיכוני"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "answer": "הדרום"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "מבין סוגי התחביבים האלה, איזה הכי נפוץ בקבוצה?",
+          "answer": "אמנות ויצירה"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שבחרו שירים בסגנון פופ, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אמריקאי?",
+          "answer": "איטלקי"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_30",
+      "language": "he",
+      "seed": 37,
+      "unknown_identities": 6,
+      "unclassified_values": 6,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "אם מסתכלים על השירים האהובים עליכם, איזה סגנון מוביל?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר מוזיקה הכי נפוץ בין האמנים האהובים שבחרתם?",
+          "answer": "מזרחית"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "איזה ז׳אנר חוזר הכי הרבה בסרטים שבחרתם?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "לכמה מכם יש תחביב שדורש פעילות גופנית?",
+          "answer": "12"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "איזה סגנון מוזיקה הכי פופולרי כאן?",
+          "answer": "פופ"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים גרים ב\"חולונ\"?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "איזה שיר נבחר הכי הרבה בקבוצה?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "כמה מהמאכלים שבחרתם הם מהמטבח המזרח תיכוני?",
+          "answer": "9"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "איזה משני הסרטים האלה נבחר יותר בקבוצה?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "באיזה אזור בארץ גרים הכי הרבה מכם?",
+          "answer": "המרכז"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "כמה משתתפים בחרו \"Lasgana\" כאוכל האהוב עליהם?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "כמה סוגי תחביבים שונים יש בקבוצה?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "לפי המאכלים שבחרתם, מה מוביל — אוכל מזרח תיכוני או מקסיקני?",
+          "answer": "מזרח תיכוני"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "אם מסתכלים על בחירות הסרטים, איזה צד מנצח — פשע או מדע בדיוני?",
+          "answer": "פשע"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "מה יש יותר בקבוצה — אנשים מהדרום או מאזור ירושלים?",
+          "answer": "הדרום"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "מבין סוגי התחביבים האלה, איזה הכי נפוץ בקבוצה?",
+          "answer": "אמנות ויצירה"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "מכמה אזורים בארץ מגיעים חברי הקבוצה?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "מבין מי שבחרו שירים בסגנון פופ, איזה ז׳אנר הכי נפוץ בסרטים שבחרו?",
+          "answer": "אימה"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "כמה אנשים בחרו גם מוזיקה מזרחית וגם תחביב יצירתי?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "מבין מי שגרים במרכז, מה יותר אהוב — אוכל איטלקי או אמריקאי?",
+          "answer": "איטלקי"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_30",
+      "language": "en",
+      "seed": 1,
+      "unknown_identities": 6,
+      "unclassified_values": 6,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "12"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"חולונ\" as their city?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "9"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Lasgana\" as their favorite food?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many different types of hobbies are there in our group?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Based on your food choices, which leads — Middle Eastern or Mexican food?",
+          "answer": "Middle Eastern"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "answer": "The south"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "Of these types of hobbies, which is the most common in our group?",
+          "answer": "Arts and crafts"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "From how many regions of Israel does our group come?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who chose songs in the Pop style, which genre leads their movie choices?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which is more popular — Italian or American food?",
+          "answer": "Italian"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_30",
+      "language": "en",
+      "seed": 11,
+      "unknown_identities": 6,
+      "unclassified_values": 6,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "12"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"חולונ\" as their city?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "9"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Lasgana\" as their favorite food?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many different types of hobbies are there in our group?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Based on your food choices, which leads — Middle Eastern or Mexican food?",
+          "answer": "Middle Eastern"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "answer": "The south"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "Of these types of hobbies, which is the most common in our group?",
+          "answer": "Arts and crafts"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "From how many regions of Israel does our group come?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who chose songs in the Pop style, which genre leads their movie choices?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which is more popular — Italian or American food?",
+          "answer": "Italian"
+        }
+      ]
+    },
+    {
+      "room": "imperfect_30",
+      "language": "en",
+      "seed": 37,
+      "unknown_identities": 6,
+      "unclassified_values": 6,
+      "total": 20,
+      "semantic": 15,
+      "direct_basic": 5,
+      "raw_lookups": 0,
+      "non_lookup": 20,
+      "questions": [
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Looking at your favorite songs, which style leads?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre is most common among the favorite artists you chose?",
+          "answer": "Mizrahi"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "semantic",
+          "family": "SEMANTIC_MAJORITY",
+          "semantic": true,
+          "text": "Which genre shows up most in the movies you chose?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of you picked a physically active hobby?",
+          "answer": "12"
+        },
+        {
+          "rule": "group_mode",
+          "kind": "direct",
+          "family": "DIRECT_CHOICE",
+          "semantic": false,
+          "text": "Which music style is the most popular here?",
+          "answer": "Pop"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"חולונ\" as their city?",
+          "answer": "3"
+        },
+        {
+          "rule": "most_common_value",
+          "kind": "direct",
+          "family": "DIRECT_MAJORITY",
+          "semantic": false,
+          "text": "What is the most common favorite song in this group?",
+          "answer": "Enter Sandamn"
+        },
+        {
+          "rule": "group_count",
+          "kind": "semantic",
+          "family": "SEMANTIC_COUNT",
+          "semantic": true,
+          "text": "How many of the dishes you chose are Middle Eastern?",
+          "answer": "9"
+        },
+        {
+          "rule": "group_comparison",
+          "kind": "direct",
+          "family": "DIRECT_COMPARISON",
+          "semantic": false,
+          "text": "Which of these two favorite movie choices was shared by more players?",
+          "answer": "המסוור"
+        },
+        {
+          "rule": "region_majority",
+          "kind": "geographic",
+          "family": "GEO_REGION_MAJORITY",
+          "semantic": true,
+          "text": "In which region of Israel do the most of you live?",
+          "answer": "The center"
+        },
+        {
+          "rule": "value_count",
+          "kind": "direct",
+          "family": "DIRECT_COUNT",
+          "semantic": false,
+          "text": "How many players have \"Lasgana\" as their favorite food?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_diversity",
+          "kind": "semantic",
+          "family": "SEMANTIC_DIVERSITY",
+          "semantic": true,
+          "text": "How many different types of hobbies are there in our group?",
+          "answer": "5"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Based on your food choices, which leads — Middle Eastern or Mexican food?",
+          "answer": "Middle Eastern"
+        },
+        {
+          "rule": "group_comparison_semantic",
+          "kind": "semantic",
+          "family": "SEMANTIC_COMPARISON",
+          "semantic": true,
+          "text": "Looking at your movie picks, which side wins — Crime or Science fiction?",
+          "answer": "Crime"
+        },
+        {
+          "rule": "region_comparison",
+          "kind": "geographic",
+          "family": "GEO_REGION_COMPARISON",
+          "semantic": true,
+          "text": "Are there more people from the south or from the Jerusalem area in our group?",
+          "answer": "The south"
+        },
+        {
+          "rule": "group_distribution",
+          "kind": "semantic",
+          "family": "SEMANTIC_DISTRIBUTION",
+          "semantic": true,
+          "text": "Of these types of hobbies, which is the most common in our group?",
+          "answer": "Arts and crafts"
+        },
+        {
+          "rule": "region_diversity",
+          "kind": "geographic",
+          "family": "GEO_REGION_DIVERSITY",
+          "semantic": true,
+          "text": "From how many regions of Israel does our group come?",
+          "answer": "4"
+        },
+        {
+          "rule": "group_filtered_mode",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_MAJORITY",
+          "semantic": true,
+          "text": "Among people who chose songs in the Pop style, which genre leads their movie choices?",
+          "answer": "Horror"
+        },
+        {
+          "rule": "group_intersection_count",
+          "kind": "cross_domain",
+          "family": "CROSS_INTERSECTION_COUNT",
+          "semantic": true,
+          "text": "How many people chose both Mizrahi music and a creative hobby?",
+          "answer": "3"
+        },
+        {
+          "rule": "group_subgroup_comparison",
+          "kind": "cross_domain",
+          "family": "CROSS_SUBGROUP_COMPARISON",
+          "semantic": true,
+          "text": "Among people who live in the center of the country, which is more popular — Italian or American food?",
+          "answer": "Italian"
+        }
+      ]
+    },
+    {
+      "room": "unknown_only",
+      "language": "he",
+      "seed": 1,
+      "unknown_identities": 60,
+      "unclassified_values": 60,
+      "total": 1,
+      "semantic": 0,
+      "direct_basic": 1,
+      "raw_lookups": 1,
+      "non_lookup": 0,
+      "questions": [
+        {
+          "rule": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "semantic": false,
+          "text": "מי היחיד/ה שגר/ה ב\"Unlisted city classroom choice 991\"?",
+          "answer": "דנה"
+        }
+      ]
+    },
+    {
+      "room": "unknown_only",
+      "language": "he",
+      "seed": 11,
+      "unknown_identities": 60,
+      "unclassified_values": 60,
+      "total": 1,
+      "semantic": 0,
+      "direct_basic": 1,
+      "raw_lookups": 1,
+      "non_lookup": 0,
+      "questions": [
+        {
+          "rule": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "semantic": false,
+          "text": "מי היחיד/ה שגר/ה ב\"Unlisted city classroom choice 991\"?",
+          "answer": "דנה"
+        }
+      ]
+    },
+    {
+      "room": "unknown_only",
+      "language": "he",
+      "seed": 37,
+      "unknown_identities": 60,
+      "unclassified_values": 60,
+      "total": 1,
+      "semantic": 0,
+      "direct_basic": 1,
+      "raw_lookups": 1,
+      "non_lookup": 0,
+      "questions": [
+        {
+          "rule": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "semantic": false,
+          "text": "מי היחיד/ה שגר/ה ב\"Unlisted city classroom choice 991\"?",
+          "answer": "דנה"
+        }
+      ]
+    },
+    {
+      "room": "unknown_only",
+      "language": "en",
+      "seed": 1,
+      "unknown_identities": 60,
+      "unclassified_values": 60,
+      "total": 1,
+      "semantic": 0,
+      "direct_basic": 1,
+      "raw_lookups": 1,
+      "non_lookup": 0,
+      "questions": [
+        {
+          "rule": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "semantic": false,
+          "text": "Who is the only player whose city is \"Unlisted city classroom choice 991\"?",
+          "answer": "דנה"
+        }
+      ]
+    },
+    {
+      "room": "unknown_only",
+      "language": "en",
+      "seed": 11,
+      "unknown_identities": 60,
+      "unclassified_values": 60,
+      "total": 1,
+      "semantic": 0,
+      "direct_basic": 1,
+      "raw_lookups": 1,
+      "non_lookup": 0,
+      "questions": [
+        {
+          "rule": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "semantic": false,
+          "text": "Who is the only player whose city is \"Unlisted city classroom choice 991\"?",
+          "answer": "דנה"
+        }
+      ]
+    },
+    {
+      "room": "unknown_only",
+      "language": "en",
+      "seed": 37,
+      "unknown_identities": 60,
+      "unclassified_values": 60,
+      "total": 1,
+      "semantic": 0,
+      "direct_basic": 1,
+      "raw_lookups": 1,
+      "non_lookup": 0,
+      "questions": [
+        {
+          "rule": "unique_value",
+          "kind": "direct",
+          "family": "DIRECT_UNIQUE",
+          "semantic": false,
+          "text": "Who is the only player whose city is \"Unlisted city classroom choice 991\"?",
+          "answer": "דנה"
+        }
+      ]
+    }
+  ]
+}

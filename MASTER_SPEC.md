@@ -236,6 +236,20 @@ The generic media outlier asks who chose a work/artist representing a genre nobo
 
 No reference facts, resolution policy, wire contract, scoring, persistence or frontend behavior change in this revision. [MEDIA_QUESTIONS_REPORT.md](MEDIA_QUESTIONS_REPORT.md) records the measured before/after pipeline and final-quiz regressions; the reproducible fixture audit is `scripts/knowledge/media-question-audit.json`.
 
+### 12.5 Conservative knowledge resolution (v6.2)
+
+The seven knowledge domains share a staged, offline resolver. Full canonical names and reviewed aliases remain authoritative; Unicode NFKC, whitespace, case, punctuation/hyphens and Hebrew quotes/niqqud are normalized. A unique Hebrew full/defective spelling or word-final-letter variant may resolve after a full-name miss. Collisions reject identity, including canonical-versus-alias collisions.
+
+Internal outcomes are EXACT, ALIAS, NORMALIZED, PARTIAL_HIGH_CONFIDENCE, FUZZY_HIGH_CONFIDENCE, AMBIGUOUS and UNKNOWN. Outcomes include a reason and, for fuzzy comparisons, best/runner-up scores. They are never public game payloads. Only accepted identities supply entity-specific facts. The existing exception for common positive categories of a **full-name** ambiguity remains: identity stays unknown, and no exclusive claim may treat that intersection as a complete classification. Ambiguous partial/fuzzy inputs supply no categories.
+
+Partial matching is limited to movies, songs and artists: a unique English article-omission spelling, or at least two complete significant tokens in order with at least 80% significant-character coverage. Every plausible full-token contender participates in ambiguity rejection, including long titles and low-coverage contenders. Shortened franchises are never assigned to one film. Other domains require full-name normalization or a qualified typo match.
+
+Fuzzy matches allow one insertion, deletion, substitution or adjacent transposition. Non-space input/reference minima are Latin 7 for media, 5 for foods and 6 otherwise; Hebrew 6 for songs and 5 otherwise. Scripts must agree. Similarity is `1 - edit_distance / min(max(name_length, input_length), 20)`, at least 0.82, with at least a 0.08 gap over the next distinct entity. The length cap ensures names outside the searched two-edit radius cannot silently violate the margin. Numbers and movie/song Roman tokens must remain identical. Approximate queries are capped at 64 characters; full names retain the existing 200-character bound. Candidate overflow rejects instead of truncating to a potentially wrong winner.
+
+Reference names are indexed once by script, length and bigrams using packed integer postings and character masks. At most 256 narrowed names receive bounded edit-distance calculations per query; JSON parsing and full-catalog distance scans never occur during a game. A consent-only dataset caches classifications locally during generation; no player-query cache crosses room boundaries. Withheld fields never enter the resolver or affect categories, candidates, counts, distractors or explanations.
+
+The group-first selector defers `unique_value` person lookups until no eligible non-lookup question remains, including under relaxed family/domain caps. At most one such EASY fallback is allowed, and that cap never relaxes. Useful literal group counts and comparisons remain distinct from these lookups. The no-settled-question rule remains absolute; games can be shorter than requested. See [KNOWLEDGE_RESOLUTION_REPORT.md](KNOWLEDGE_RESOLUTION_REPORT.md) and its frozen evaluation artifacts for before/after final-quiz evidence, limitations and resource measurements. No reference facts, dependencies, public contracts, scoring or deployment configuration change.
+
 ## 13. REST / API Conventions
 
 Base `/api/v1`, JSON objects, snake_case, UTC ISO-8601 `Z`. Public endpoints:

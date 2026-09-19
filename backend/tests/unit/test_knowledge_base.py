@@ -45,7 +45,7 @@ def kb():
 ])
 def test_researched_facts_and_bilingual_aliases(kb,kind,text,qid,fact):
     result=kb.resolve(kind,text)
-    assert result.match in (Match.EXACT,Match.ALIAS)
+    assert result.match in (Match.EXACT,Match.ALIAS,Match.NORMALIZED)
     assert result.entity.canonical_id==qid
     assert fact in result.entity.category_ids
 
@@ -68,13 +68,13 @@ def test_unknown_is_not_guessed(kb,kind,text):
 
 
 def test_confidence_and_name_collision_fail_closed(kb):
-    assert kb.resolve_food('  PIZZA  ').match==Match.EXACT
+    assert kb.resolve_food('  PIZZA  ').match==Match.NORMALIZED
     assert kb.resolve_israeli_locality('ת״א').match==Match.ALIAS
-    assert kb.resolve_movie('Aladdin').match==Match.UNKNOWN
+    assert kb.resolve_movie('Aladdin').match==Match.AMBIGUOUS
     original=kb.resolve_movie('Saw').entity
     another=replace(original,canonical_id='Q999',english='Other title',hebrew='',aliases=('Saw',))
     collision=KnowledgeBase([original,another],kb.categories.values(),'test')
-    assert collision.resolve_movie('Saw').match==Match.UNKNOWN
+    assert collision.resolve_movie('Saw').match==Match.AMBIGUOUS
     assert collision.resolve_movie('המסור').entity==original
     assert 'saw' in collision.ambiguous_names['movies']
 

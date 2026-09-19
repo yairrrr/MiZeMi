@@ -13,6 +13,8 @@ subgroups — and fills it with the most varied, most informative facts:
   capped, so a rule that emits hundreds of lookups competes like any other.
 * A kind's share is limited to its supply and never padded with weak
   questions; unused share flows to the kinds that have more to offer.
+* Raw person lookups are deferred until every eligible non-lookup fact has
+  been considered, with a hard one-question limit that never relaxes.
 * Within the semantic kind, give each supported movie/artist/song source a first
   genre discovery before repeating other sources; prefer its decisive leader,
   then a comparison or unique outlier. Artists, songs and selected music styles
@@ -45,6 +47,7 @@ from app.domain.questions.question import Difficulty
 
 KIND_SHARES = (('semantic', 0.45), ('direct', 0.25), ('geographic', 0.15), ('cross_domain', 0.15))
 DIRECT_RULE_CAP = 2
+RAW_LOOKUP_CAP = 1
 AGE_CAP = 1
 _LEVELS = {Difficulty.EASY: 0, Difficulty.MEDIUM: 1, Difficulty.HARD: 2}
 _MIX_KINDS = {'semantic': 'semantic', 'geographic': 'geographic', 'simple': 'direct', 'other': 'direct'}
@@ -302,6 +305,8 @@ class QuestionSelector:
                 return False
             if entry.person and people >= caps['person']:
                 return False
+            if entry.candidate.source_rule_id == 'unique_value' and rules['unique_value'] >= RAW_LOOKUP_CAP:
+                return False
             # Raw-answer lookups ("who chose couscous?") are capped per rule; group facts
             # about a listed choice are limited by their shared family instead.
             if (entry.kind == 'direct' and entry.family != 'DIRECT_CHOICE'
@@ -343,20 +348,26 @@ class QuestionSelector:
         # varied remaining fact wins regardless of kind. A question an earlier
         # one already answers is never selected.
         while remaining and len(selected) < question_count:
+            # Literal identity lookups are a last resort, never a reserved share
+            # of the game. Allow one useful easy clue only when all unsettled
+            # non-lookup facts have been considered, including relaxed caps.
+            eligible = [e for e in remaining if allowed(e, True)]
+            non_lookup = [e for e in eligible if e.candidate.source_rule_id != 'unique_value']
+            eligible = non_lookup or eligible
             kinds = sorted(supply, key=lambda k: (-(quotas.get(k, 0) - picked[k]), preference.get(k, 99), k))
             choice = None
             for within_quota in (True, False):
                 for kind in kinds:
                     if within_quota and picked[kind] >= quotas.get(kind, 0):
                         continue
-                    options = [e for e in remaining if e.kind == kind and allowed(e, False)]
+                    options = [e for e in eligible if e.kind == kind and allowed(e, False)]
                     if options:
                         choice = min(options, key=rank)
                         break
                 if choice is not None:
                     break
             if choice is None:
-                options = [e for e in remaining if allowed(e, True)]
+                options = eligible
                 if options:
                     choice = min(options, key=lambda e: (rank(e), kinds.index(e.kind)))
             if choice is None:

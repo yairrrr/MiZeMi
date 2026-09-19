@@ -1,0 +1,2217 @@
+{
+  "description": "Frozen before implementation. Positive identities come from existing local facts; negative cases are explicitly unsupported or ambiguous. Synthetic, not user data.",
+  "cases": [
+    {
+      "kind": "movies",
+      "text": "The Conjuring",
+      "expected_id": "Q5540479",
+      "group": "canonical"
+    },
+    {
+      "kind": "movies",
+      "text": "the conjuring",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Conjuring",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjruing",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjurinng",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjurig",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic Park",
+      "expected_id": "Q167726",
+      "group": "canonical"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic-Park",
+      "expected_id": "Q167726",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurasic Park",
+      "expected_id": "Q167726",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic Prak",
+      "expected_id": "Q167726",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Back to the Future",
+      "expected_id": "Q91540",
+      "group": "canonical"
+    },
+    {
+      "kind": "movies",
+      "text": "Back to Future",
+      "expected_id": "Q91540",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Back to the Futuer",
+      "expected_id": "Q91540",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "לזמן את הרוע",
+      "expected_id": "Q5540479",
+      "group": "canonical"
+    },
+    {
+      "kind": "movies",
+      "text": "  לזמן   את הרוע ",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "לזמן את הרווע",
+      "expected_id": "Q5540479",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "The Dark Knight",
+      "expected_id": "Q163872",
+      "group": "canonical"
+    },
+    {
+      "kind": "movies",
+      "text": "Dark Knight",
+      "expected_id": "Q163872",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "The Dark Knigth",
+      "expected_id": "Q163872",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "Forrest Gump",
+      "expected_id": "Q134773",
+      "group": "canonical"
+    },
+    {
+      "kind": "movies",
+      "text": "Forrest Gmp",
+      "expected_id": "Q134773",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer Adam",
+      "expected_id": "Q2918713",
+      "group": "canonical"
+    },
+    {
+      "kind": "artists",
+      "text": "עומר אדם",
+      "expected_id": "Q2918713",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer Adma",
+      "expected_id": "Q2918713",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer Addam",
+      "expected_id": "Q2918713",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Eyal Golan",
+      "expected_id": "Q1382405",
+      "group": "canonical"
+    },
+    {
+      "kind": "artists",
+      "text": "אייל גולן",
+      "expected_id": "Q1382405",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Eyal Golna",
+      "expected_id": "Q1382405",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Eyal Gollan",
+      "expected_id": "Q1382405",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor Swift",
+      "expected_id": "Q26876",
+      "group": "canonical"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor Swfit",
+      "expected_id": "Q26876",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor Swiftt",
+      "expected_id": "Q26876",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Metallica",
+      "expected_id": "Q15920",
+      "group": "canonical"
+    },
+    {
+      "kind": "artists",
+      "text": "Metalica",
+      "expected_id": "Q15920",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Metallcia",
+      "expected_id": "Q15920",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Coldplay",
+      "expected_id": "Q45188",
+      "group": "canonical"
+    },
+    {
+      "kind": "artists",
+      "text": "Coldplaay",
+      "expected_id": "Q45188",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "Coldpaly",
+      "expected_id": "Q45188",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "עדן בן זקן",
+      "expected_id": "Q28053146",
+      "group": "canonical"
+    },
+    {
+      "kind": "artists",
+      "text": "עדן בן זקנ",
+      "expected_id": "Q28053146",
+      "group": "imperfect"
+    },
+    {
+      "kind": "artists",
+      "text": "עדן בן זקון",
+      "expected_id": "Q28053146",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Space",
+      "expected_id": "Q18441355",
+      "group": "canonical"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank-Space",
+      "expected_id": "Q18441355",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Sapce",
+      "expected_id": "Q18441355",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Spce",
+      "expected_id": "Q18441355",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandman",
+      "expected_id": "Q66057605",
+      "group": "canonical"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandamn",
+      "expected_id": "Q66057605",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandmann",
+      "expected_id": "Q66057605",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow - Coldplay",
+      "expected_id": "Q529026",
+      "group": "canonical"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow – Coldplay",
+      "expected_id": "Q529026",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow - Coldpaly",
+      "expected_id": "Q529026",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off - Taylor Swift",
+      "expected_id": "Q17544624",
+      "group": "canonical"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off / Taylor Swift",
+      "expected_id": "Q17544624",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off - Taylor Swfit",
+      "expected_id": "Q17544624",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise - Coldplay",
+      "expected_id": "Q1416004",
+      "group": "canonical"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise: Coldplay",
+      "expected_id": "Q1416004",
+      "group": "imperfect"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise - Coldplaay",
+      "expected_id": "Q1416004",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Pizza",
+      "expected_id": "Q177",
+      "group": "canonical"
+    },
+    {
+      "kind": "foods",
+      "text": "פיצה",
+      "expected_id": "Q177",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "  PIZZA  ",
+      "expected_id": "Q177",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Pizzza",
+      "expected_id": "Q177",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Falafel",
+      "expected_id": "Q188788",
+      "group": "canonical"
+    },
+    {
+      "kind": "foods",
+      "text": "פלאפל",
+      "expected_id": "Q188788",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Falaefl",
+      "expected_id": "Q188788",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Falafell",
+      "expected_id": "Q188788",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Hummus",
+      "expected_id": "Q241987",
+      "group": "canonical"
+    },
+    {
+      "kind": "foods",
+      "text": "חומוס",
+      "expected_id": "Q241987",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Hummuss",
+      "expected_id": "Q241987",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Spaghetti",
+      "expected_id": "Q20026",
+      "group": "canonical"
+    },
+    {
+      "kind": "foods",
+      "text": "Spagheti",
+      "expected_id": "Q20026",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Spagehtti",
+      "expected_id": "Q20026",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Lasagna",
+      "expected_id": "Q20034",
+      "group": "canonical"
+    },
+    {
+      "kind": "foods",
+      "text": "Lasagana",
+      "expected_id": "Q20034",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Lasgana",
+      "expected_id": "Q20034",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Hamburger",
+      "expected_id": "Q6663",
+      "group": "canonical"
+    },
+    {
+      "kind": "foods",
+      "text": "המבורגר",
+      "expected_id": "Q6663",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "Hamburgr",
+      "expected_id": "Q6663",
+      "group": "imperfect"
+    },
+    {
+      "kind": "foods",
+      "text": "המבוררג",
+      "expected_id": "Q6663",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Running",
+      "expected_id": "Q105674",
+      "group": "canonical"
+    },
+    {
+      "kind": "hobbies",
+      "text": "ריצה",
+      "expected_id": "Q105674",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Runinng",
+      "expected_id": "Q105674",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Runningg",
+      "expected_id": "Q105674",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Football",
+      "expected_id": "Q2736",
+      "group": "canonical"
+    },
+    {
+      "kind": "hobbies",
+      "text": "כדורגל",
+      "expected_id": "Q2736",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Footbal",
+      "expected_id": "Q2736",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "כדרוגל",
+      "expected_id": "Q2736",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swimming",
+      "expected_id": "Q6388",
+      "group": "canonical"
+    },
+    {
+      "kind": "hobbies",
+      "text": "שחייה",
+      "expected_id": "Q6388",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swiming",
+      "expected_id": "Q6388",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swimmign",
+      "expected_id": "Q6388",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Photography",
+      "expected_id": "Q11633",
+      "group": "canonical"
+    },
+    {
+      "kind": "hobbies",
+      "text": "צילום",
+      "expected_id": "Q11633",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Photograpy",
+      "expected_id": "Q11633",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Photorgaphy",
+      "expected_id": "Q11633",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Pilates",
+      "expected_id": "Q272460",
+      "group": "canonical"
+    },
+    {
+      "kind": "hobbies",
+      "text": "פילאטיס",
+      "expected_id": "Q272460",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Pialtes",
+      "expected_id": "Q272460",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Pilattes",
+      "expected_id": "Q272460",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Gaming",
+      "expected_id": "Q7889",
+      "group": "canonical"
+    },
+    {
+      "kind": "hobbies",
+      "text": "גיימינג",
+      "expected_id": "Q7889",
+      "group": "imperfect"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Gamming",
+      "expected_id": "Q7889",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Kiryat Shmona",
+      "expected_id": "G293825",
+      "group": "canonical"
+    },
+    {
+      "kind": "localities",
+      "text": "קרית שמונה",
+      "expected_id": "G293825",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "קריית שמונה",
+      "expected_id": "G293825",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "קריית-שמונה",
+      "expected_id": "G293825",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Kiryat Shmnoa",
+      "expected_id": "G293825",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גן",
+      "expected_id": "G293788",
+      "group": "canonical"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת-גן",
+      "expected_id": "G293788",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גנ",
+      "expected_id": "G293788",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גןן",
+      "expected_id": "G293788",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel Aviv",
+      "expected_id": "G293397",
+      "group": "canonical"
+    },
+    {
+      "kind": "localities",
+      "text": "תל אביב",
+      "expected_id": "G293397",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "תל אביב יפו",
+      "expected_id": "G293397",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "ת״א",
+      "expected_id": "G293397",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "ת\"א",
+      "expected_id": "G293397",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel-Aviv",
+      "expected_id": "G293397",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "  TEL   AVIV  ",
+      "expected_id": "G293397",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Jerusalem",
+      "expected_id": "G281184",
+      "group": "canonical"
+    },
+    {
+      "kind": "localities",
+      "text": "ירושלים",
+      "expected_id": "G281184",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Jeruslaem",
+      "expected_id": "G281184",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Jeruslem",
+      "expected_id": "G281184",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Rehovot",
+      "expected_id": "G293725",
+      "group": "canonical"
+    },
+    {
+      "kind": "localities",
+      "text": "רחובות",
+      "expected_id": "G293725",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "Rehovoot",
+      "expected_id": "G293725",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "ראשון לציון",
+      "expected_id": "G293703",
+      "group": "canonical"
+    },
+    {
+      "kind": "localities",
+      "text": "ראשונ לציונ",
+      "expected_id": "G293703",
+      "group": "imperfect"
+    },
+    {
+      "kind": "localities",
+      "text": "ראשון־לציון",
+      "expected_id": "G293703",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Hip-Hop / Rap",
+      "expected_id": "Q11401",
+      "group": "canonical"
+    },
+    {
+      "kind": "music",
+      "text": "hip hop",
+      "expected_id": "Q11401",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "hip-hop",
+      "expected_id": "Q11401",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "היפ הופ",
+      "expected_id": "Q11401",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "היפהופ",
+      "expected_id": "Q11401",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "היפ־הופ",
+      "expected_id": "Q11401",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Electronic",
+      "expected_id": "Q9778",
+      "group": "canonical"
+    },
+    {
+      "kind": "music",
+      "text": "Electornic",
+      "expected_id": "Q9778",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Electronicc",
+      "expected_id": "Q9778",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Mediterranean",
+      "expected_id": "Q108250543",
+      "group": "canonical"
+    },
+    {
+      "kind": "music",
+      "text": "Mediterranen",
+      "expected_id": "Q108250543",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Mediterraenan",
+      "expected_id": "Q108250543",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Mizrahi",
+      "expected_id": "Q2738544",
+      "group": "canonical"
+    },
+    {
+      "kind": "music",
+      "text": "מזרחית",
+      "expected_id": "Q2738544",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Mizraahhi",
+      "expected_id": "Q2738544",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Reggae",
+      "expected_id": "Q9794",
+      "group": "canonical"
+    },
+    {
+      "kind": "music",
+      "text": "Reggaee",
+      "expected_id": "Q9794",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Classical",
+      "expected_id": "Q9730",
+      "group": "canonical"
+    },
+    {
+      "kind": "music",
+      "text": "Classsical",
+      "expected_id": "Q9730",
+      "group": "imperfect"
+    },
+    {
+      "kind": "music",
+      "text": "Classiacl",
+      "expected_id": "Q9730",
+      "group": "imperfect"
+    },
+    {
+      "kind": "movies",
+      "text": "הארי פוטר",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Harry Potter",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Aladdin",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Titanic",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjuring 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Saw IIiII",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Swa",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "it",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "rock",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "some obscure unreleased movie",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "The Conjuring not",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Jurassic Pork 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Batman",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Spider",
+      "expected_id": "Q930777",
+      "group": "short_exact_control"
+    },
+    {
+      "kind": "movies",
+      "text": "Toy",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "movies",
+      "text": "Lord of the",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "Omer",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "Taylor",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "Adam",
+      "expected_id": "Q7041432",
+      "group": "short_exact_control"
+    },
+    {
+      "kind": "artists",
+      "text": "Adele 2",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "Not Taylor Swift",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "Unknown Israeli Artist 991",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "rock",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "artists",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "Yellow",
+      "expected_id": "Q529026",
+      "group": "short_exact_control"
+    },
+    {
+      "kind": "songs",
+      "text": "Hello",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "Shake It Off",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "Paradise",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "Enter Sandman 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "Blank Spaces not",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "not a real song 778",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "songs",
+      "text": "it",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "Schnitzel",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "Piza",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "Sushi with no rice",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "pizza without cheese",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "Falafel 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "bananana xyz",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "foods",
+      "text": "it",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Run",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "art",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "hi",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "not football",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "Swimmmmmm",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "football without a ball",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "hobbies",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "ציון",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "גן",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "קריית",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "Ramat",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "Kiryat",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "New York",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "Tel Aviv 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "רמת גן 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "Atlantis",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "localities",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "Other",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "not rock",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "Classic 99",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "Pop 2",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "ro",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "a",
+      "expected_id": null,
+      "group": "reject"
+    },
+    {
+      "kind": "music",
+      "text": "zzzzzy",
+      "expected_id": null,
+      "group": "reject"
+    }
+  ],
+  "rooms": [
+    {
+      "name": "imperfect_10",
+      "rows": [
+        {
+          "name": "דנה",
+          "values": {
+            "city": "תל-אביב",
+            "favorite_food": "Pizzza",
+            "hobby": "Runinng",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "עומר אדמ",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "עומר",
+          "values": {
+            "city": "  חיפה  ",
+            "favorite_food": " סושי ",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "אייל גולנ",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "נועה",
+          "values": {
+            "city": "ירושלימ",
+            "favorite_food": "Hummuss",
+            "hobby": "Footbal",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "שרית חדדד",
+            "favorite_song": "Paradise - Coldplaay"
+          },
+          "hide": []
+        },
+        {
+          "name": "עמית",
+          "values": {
+            "city": "באר־שבע",
+            "favorite_food": "Hamburgr",
+            "hobby": "Gamming",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "משה פרצ",
+            "favorite_song": "Yellow – Coldpaly"
+          },
+          "hide": []
+        },
+        {
+          "name": "ליאור",
+          "values": {
+            "city": "נתנייה",
+            "favorite_food": "Passta",
+            "hobby": "Swiming",
+            "favorite_music": "Electornic",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "זהבה בןן",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "יעל",
+          "values": {
+            "city": "רמת גנ",
+            "favorite_food": "Falaefl",
+            "hobby": "Photograpy",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון-ארס",
+            "favorite_artist": "עדן בן זקנ",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "איתי",
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "Readingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתדי",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "רוני",
+          "values": {
+            "city": "אילת",
+            "favorite_food": "Lasgana",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "מאיה",
+          "values": {
+            "city": "רחובותת",
+            "favorite_food": "טאקו",
+            "hobby": "Pilattes",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldpaly",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "יונתן",
+          "values": {
+            "city": "חולונ",
+            "favorite_food": "שווארמה",
+            "hobby": "Cookingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בביית",
+            "favorite_artist": "Eminemm",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        }
+      ]
+    },
+    {
+      "name": "imperfect_20",
+      "rows": [
+        {
+          "name": "דנה",
+          "values": {
+            "city": "תל-אביב",
+            "favorite_food": "Pizzza",
+            "hobby": "Runinng",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "עומר אדמ",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "עומר",
+          "values": {
+            "city": "  חיפה  ",
+            "favorite_food": " סושי ",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "אייל גולנ",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "נועה",
+          "values": {
+            "city": "ירושלימ",
+            "favorite_food": "Hummuss",
+            "hobby": "Footbal",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "שרית חדדד",
+            "favorite_song": "Paradise - Coldplaay"
+          },
+          "hide": []
+        },
+        {
+          "name": "עמית",
+          "values": {
+            "city": "באר־שבע",
+            "favorite_food": "Hamburgr",
+            "hobby": "Gamming",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "משה פרצ",
+            "favorite_song": "Yellow – Coldpaly"
+          },
+          "hide": []
+        },
+        {
+          "name": "ליאור",
+          "values": {
+            "city": "נתנייה",
+            "favorite_food": "Passta",
+            "hobby": "Swiming",
+            "favorite_music": "Electornic",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "זהבה בןן",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "יעל",
+          "values": {
+            "city": "רמת גנ",
+            "favorite_food": "Falaefl",
+            "hobby": "Photograpy",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון-ארס",
+            "favorite_artist": "עדן בן זקנ",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "איתי",
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "Readingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתדי",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "רוני",
+          "values": {
+            "city": "אילת",
+            "favorite_food": "Lasgana",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "מאיה",
+          "values": {
+            "city": "רחובותת",
+            "favorite_food": "טאקו",
+            "hobby": "Pilattes",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldpaly",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "יונתן",
+          "values": {
+            "city": "חולונ",
+            "favorite_food": "שווארמה",
+            "hobby": "Cookingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בביית",
+            "favorite_artist": "Eminemm",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "תמר",
+          "values": {
+            "city": "תל-אביב",
+            "favorite_food": "Pizzza",
+            "hobby": "Runinng",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "עומר אדמ",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "אורי",
+          "values": {
+            "city": "  חיפה  ",
+            "favorite_food": " סושי ",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "אייל גולנ",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "שירה",
+          "values": {
+            "city": "ירושלימ",
+            "favorite_food": "Hummuss",
+            "hobby": "Footbal",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "שרית חדדד",
+            "favorite_song": "Paradise - Coldplaay"
+          },
+          "hide": []
+        },
+        {
+          "name": "דניאל",
+          "values": {
+            "city": "באר־שבע",
+            "favorite_food": "Hamburgr",
+            "hobby": "Gamming",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "משה פרצ",
+            "favorite_song": "Yellow – Coldpaly"
+          },
+          "hide": []
+        },
+        {
+          "name": "מיכל",
+          "values": {
+            "city": "נתנייה",
+            "favorite_food": "Passta",
+            "hobby": "Swiming",
+            "favorite_music": "Electornic",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "זהבה בןן",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "איתן",
+          "values": {
+            "city": "רמת גנ",
+            "favorite_food": "Falaefl",
+            "hobby": "Photograpy",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון-ארס",
+            "favorite_artist": "עדן בן זקנ",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "הילה",
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "Readingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתדי",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "נדב",
+          "values": {
+            "city": "אילת",
+            "favorite_food": "Lasgana",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "גל",
+          "values": {
+            "city": "רחובותת",
+            "favorite_food": "טאקו",
+            "hobby": "Pilattes",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldpaly",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "אביב",
+          "values": {
+            "city": "חולונ",
+            "favorite_food": "שווארמה",
+            "hobby": "Cookingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בביית",
+            "favorite_artist": "Eminemm",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        }
+      ]
+    },
+    {
+      "name": "imperfect_30",
+      "rows": [
+        {
+          "name": "דנה",
+          "values": {
+            "city": "תל-אביב",
+            "favorite_food": "Pizzza",
+            "hobby": "Runinng",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "עומר אדמ",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "עומר",
+          "values": {
+            "city": "  חיפה  ",
+            "favorite_food": " סושי ",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "אייל גולנ",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "נועה",
+          "values": {
+            "city": "ירושלימ",
+            "favorite_food": "Hummuss",
+            "hobby": "Footbal",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "שרית חדדד",
+            "favorite_song": "Paradise - Coldplaay"
+          },
+          "hide": []
+        },
+        {
+          "name": "עמית",
+          "values": {
+            "city": "באר־שבע",
+            "favorite_food": "Hamburgr",
+            "hobby": "Gamming",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "משה פרצ",
+            "favorite_song": "Yellow – Coldpaly"
+          },
+          "hide": []
+        },
+        {
+          "name": "ליאור",
+          "values": {
+            "city": "נתנייה",
+            "favorite_food": "Passta",
+            "hobby": "Swiming",
+            "favorite_music": "Electornic",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "זהבה בןן",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "יעל",
+          "values": {
+            "city": "רמת גנ",
+            "favorite_food": "Falaefl",
+            "hobby": "Photograpy",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון-ארס",
+            "favorite_artist": "עדן בן זקנ",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "איתי",
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "Readingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתדי",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "רוני",
+          "values": {
+            "city": "אילת",
+            "favorite_food": "Lasgana",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "מאיה",
+          "values": {
+            "city": "רחובותת",
+            "favorite_food": "טאקו",
+            "hobby": "Pilattes",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldpaly",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "יונתן",
+          "values": {
+            "city": "חולונ",
+            "favorite_food": "שווארמה",
+            "hobby": "Cookingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בביית",
+            "favorite_artist": "Eminemm",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "תמר",
+          "values": {
+            "city": "תל-אביב",
+            "favorite_food": "Pizzza",
+            "hobby": "Runinng",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "עומר אדמ",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "אורי",
+          "values": {
+            "city": "  חיפה  ",
+            "favorite_food": " סושי ",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "אייל גולנ",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "שירה",
+          "values": {
+            "city": "ירושלימ",
+            "favorite_food": "Hummuss",
+            "hobby": "Footbal",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "שרית חדדד",
+            "favorite_song": "Paradise - Coldplaay"
+          },
+          "hide": []
+        },
+        {
+          "name": "דניאל",
+          "values": {
+            "city": "באר־שבע",
+            "favorite_food": "Hamburgr",
+            "hobby": "Gamming",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "משה פרצ",
+            "favorite_song": "Yellow – Coldpaly"
+          },
+          "hide": []
+        },
+        {
+          "name": "מיכל",
+          "values": {
+            "city": "נתנייה",
+            "favorite_food": "Passta",
+            "hobby": "Swiming",
+            "favorite_music": "Electornic",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "זהבה בןן",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "איתן",
+          "values": {
+            "city": "רמת גנ",
+            "favorite_food": "Falaefl",
+            "hobby": "Photograpy",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון-ארס",
+            "favorite_artist": "עדן בן זקנ",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "הילה",
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "Readingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתדי",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "נדב",
+          "values": {
+            "city": "אילת",
+            "favorite_food": "Lasgana",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "גל",
+          "values": {
+            "city": "רחובותת",
+            "favorite_food": "טאקו",
+            "hobby": "Pilattes",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldpaly",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "אביב",
+          "values": {
+            "city": "חולונ",
+            "favorite_food": "שווארמה",
+            "hobby": "Cookingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בביית",
+            "favorite_artist": "Eminemm",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "שחר",
+          "values": {
+            "city": "תל-אביב",
+            "favorite_food": "Pizzza",
+            "hobby": "Runinng",
+            "favorite_music": "Pop",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "עומר אדמ",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "ענבל",
+          "values": {
+            "city": "  חיפה  ",
+            "favorite_food": " סושי ",
+            "hobby": "ציור",
+            "favorite_music": "Rock",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "אייל גולנ",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "רועי",
+          "values": {
+            "city": "ירושלימ",
+            "favorite_food": "Hummuss",
+            "hobby": "Footbal",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "שרית חדדד",
+            "favorite_song": "Paradise - Coldplaay"
+          },
+          "hide": []
+        },
+        {
+          "name": "אלה",
+          "values": {
+            "city": "באר־שבע",
+            "favorite_food": "Hamburgr",
+            "hobby": "Gamming",
+            "favorite_music": "Pop",
+            "favorite_movie": "לזמן את הרווע",
+            "favorite_artist": "משה פרצ",
+            "favorite_song": "Yellow – Coldpaly"
+          },
+          "hide": []
+        },
+        {
+          "name": "בן",
+          "values": {
+            "city": "נתנייה",
+            "favorite_food": "Passta",
+            "hobby": "Swiming",
+            "favorite_music": "Electornic",
+            "favorite_movie": "המסוור",
+            "favorite_artist": "זהבה בןן",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "טל",
+          "values": {
+            "city": "רמת גנ",
+            "favorite_food": "Falaefl",
+            "hobby": "Photograpy",
+            "favorite_music": "Rock",
+            "favorite_movie": "טרון-ארס",
+            "favorite_artist": "עדן בן זקנ",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "עדי",
+          "values": {
+            "city": "עכו",
+            "favorite_food": "ראמן",
+            "hobby": "Readingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "בחזרה לעתדי",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Shake It Off - Taylor Swfit"
+          },
+          "hide": []
+        },
+        {
+          "name": "ים",
+          "values": {
+            "city": "אילת",
+            "favorite_food": "Lasgana",
+            "hobby": "גיטרה",
+            "favorite_music": "Mizrahi",
+            "favorite_movie": "היומן",
+            "favorite_artist": "Metalica",
+            "favorite_song": "Blank Sapce"
+          },
+          "hide": []
+        },
+        {
+          "name": "אריאל",
+          "values": {
+            "city": "רחובותת",
+            "favorite_food": "טאקו",
+            "hobby": "Pilattes",
+            "favorite_music": "Jazz",
+            "favorite_movie": "שרק",
+            "favorite_artist": "Coldpaly",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        },
+        {
+          "name": "נגה",
+          "values": {
+            "city": "חולונ",
+            "favorite_food": "שווארמה",
+            "hobby": "Cookingg",
+            "favorite_music": "Pop",
+            "favorite_movie": "שכחו אותי בביית",
+            "favorite_artist": "Eminemm",
+            "favorite_song": "Enter Sandamn"
+          },
+          "hide": []
+        }
+      ]
+    },
+    {
+      "name": "unknown_only",
+      "rows": [
+        {
+          "name": "דנה",
+          "values": {
+            "city": "Unlisted city classroom choice 991",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 991",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 991",
+            "favorite_song": "Unlisted favorite_song classroom choice 991",
+            "favorite_food": "Unlisted favorite_food classroom choice 991",
+            "hobby": "Unlisted hobby classroom choice 991"
+          },
+          "hide": []
+        },
+        {
+          "name": "עומר",
+          "values": {
+            "city": "Unlisted city classroom choice 992",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 992",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 992",
+            "favorite_song": "Unlisted favorite_song classroom choice 992",
+            "favorite_food": "Unlisted favorite_food classroom choice 992",
+            "hobby": "Unlisted hobby classroom choice 992"
+          },
+          "hide": []
+        },
+        {
+          "name": "נועה",
+          "values": {
+            "city": "Unlisted city classroom choice 993",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 993",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 993",
+            "favorite_song": "Unlisted favorite_song classroom choice 993",
+            "favorite_food": "Unlisted favorite_food classroom choice 993",
+            "hobby": "Unlisted hobby classroom choice 993"
+          },
+          "hide": []
+        },
+        {
+          "name": "עמית",
+          "values": {
+            "city": "Unlisted city classroom choice 994",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 994",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 994",
+            "favorite_song": "Unlisted favorite_song classroom choice 994",
+            "favorite_food": "Unlisted favorite_food classroom choice 994",
+            "hobby": "Unlisted hobby classroom choice 994"
+          },
+          "hide": []
+        },
+        {
+          "name": "ליאור",
+          "values": {
+            "city": "Unlisted city classroom choice 995",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 995",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 995",
+            "favorite_song": "Unlisted favorite_song classroom choice 995",
+            "favorite_food": "Unlisted favorite_food classroom choice 995",
+            "hobby": "Unlisted hobby classroom choice 995"
+          },
+          "hide": []
+        },
+        {
+          "name": "יעל",
+          "values": {
+            "city": "Unlisted city classroom choice 996",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 996",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 996",
+            "favorite_song": "Unlisted favorite_song classroom choice 996",
+            "favorite_food": "Unlisted favorite_food classroom choice 996",
+            "hobby": "Unlisted hobby classroom choice 996"
+          },
+          "hide": []
+        },
+        {
+          "name": "איתי",
+          "values": {
+            "city": "Unlisted city classroom choice 997",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 997",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 997",
+            "favorite_song": "Unlisted favorite_song classroom choice 997",
+            "favorite_food": "Unlisted favorite_food classroom choice 997",
+            "hobby": "Unlisted hobby classroom choice 997"
+          },
+          "hide": []
+        },
+        {
+          "name": "רוני",
+          "values": {
+            "city": "Unlisted city classroom choice 998",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 998",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 998",
+            "favorite_song": "Unlisted favorite_song classroom choice 998",
+            "favorite_food": "Unlisted favorite_food classroom choice 998",
+            "hobby": "Unlisted hobby classroom choice 998"
+          },
+          "hide": []
+        },
+        {
+          "name": "מאיה",
+          "values": {
+            "city": "Unlisted city classroom choice 999",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 999",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 999",
+            "favorite_song": "Unlisted favorite_song classroom choice 999",
+            "favorite_food": "Unlisted favorite_food classroom choice 999",
+            "hobby": "Unlisted hobby classroom choice 999"
+          },
+          "hide": []
+        },
+        {
+          "name": "יונתן",
+          "values": {
+            "city": "Unlisted city classroom choice 1000",
+            "favorite_movie": "Unlisted favorite_movie classroom choice 1000",
+            "favorite_artist": "Unlisted favorite_artist classroom choice 1000",
+            "favorite_song": "Unlisted favorite_song classroom choice 1000",
+            "favorite_food": "Unlisted favorite_food classroom choice 1000",
+            "hobby": "Unlisted hobby classroom choice 1000"
+          },
+          "hide": []
+        }
+      ]
+    }
+  ]
+}
