@@ -1,8 +1,9 @@
 """Immutable, offline reference facts. This domain module performs no IO.
 
 An entity classification is a fact about a work/activity/place, never evidence
-of a player's behavior, personality or unsubmitted preferences. Only exact
-normalized names and explicitly reviewed aliases are eligible for scoring.
+of a player's behavior, personality or unsubmitted preferences. Identity is
+returned only after a deterministic high-confidence match; uncertain partial
+names and typos never contribute categories to scored questions.
 """
 
 from dataclasses import dataclass
@@ -13,33 +14,29 @@ from collections.abc import Iterable
 import re
 import unicodedata
 
+from app.domain.questions.name_matching import NameSearch, fold_hebrew_spelling
+
 KINDS = ('movies', 'music', 'artists', 'songs', 'foods', 'hobbies', 'localities')
 _HEBREW_LETTER = re.compile('[\u05d0-\u05ea]')
-_DOUBLED_HEBREW_LETTER = re.compile('(?<=[\u05d0-\u05ea])(\u05d5\u05d5|\u05d9\u05d9)(?=[\u05d0-\u05ea])')
 
 
 class Match(str, Enum):
     EXACT = 'EXACT'
     ALIAS = 'ALIAS'
+    NORMALIZED = 'NORMALIZED'
+    PARTIAL_HIGH_CONFIDENCE = 'PARTIAL_HIGH_CONFIDENCE'
+    FUZZY_HIGH_CONFIDENCE = 'FUZZY_HIGH_CONFIDENCE'
+    AMBIGUOUS = 'AMBIGUOUS'
     UNKNOWN = 'UNKNOWN'
 
 
 def normalize_name(value: str) -> str:
-    """Conservative token normalization, with no edit distance or guessing."""
+    """Unicode, case, whitespace, Hebrew marks/quotes and punctuation only."""
     text = unicodedata.normalize('NFKC', value).casefold()
     text = ''.join(c for c in text if not ('\u0591' <= c <= '\u05bd' or c in '\u05bf\u05c1\u05c2\u05c4\u05c5\u05c7'))
-    text = text.translate(str.maketrans({c: '' for c in "'’‘\"״׳"}))
-    text = text.translate(str.maketrans({c: ' ' for c in '-‐‑‒–—־:.,'}))
+    text = text.translate(str.maketrans({c: '' for c in "'’‘`´\"“”„״׳"}))
+    text = ''.join(' ' if unicodedata.category(c) == 'Pd' or c in ':.,;!?()/\\' else c for c in text)
     return ' '.join(text.split())
-
-
-def fold_hebrew_spelling(key: str) -> str:
-    """Treat full and defective Hebrew spellings alike (קריית/קרית, תקווה/תקוה).
-
-    Only a doubled vav or yod between two Hebrew letters collapses. Used as a
-    secondary lookup after the exact key misses; folded collisions fail closed.
-    """
-    return _DOUBLED_HEBREW_LETTER.sub(lambda match: match.group(0)[0], key)
 
 
 @dataclass(frozen=True, slots=True)
@@ -77,9 +74,17 @@ class KnownEntity:
 class Resolution:
     match: Match
     entity: KnownEntity | None = None
+    similarity: float | None = None
+    runner_up_similarity: float | None = None
+    candidate_count: int = 0
+    reason: str = ''
+
+    @property
+    def high_confidence(self) -> bool:
+        return self.entity is not None and self.match not in (Match.UNKNOWN, Match.AMBIGUOUS)
 
 
-UNKNOWN = Resolution(Match.UNKNOWN)
+UNKNOWN = Resolution(Match.UNKNOWN, reason='no_supported_match')
 
 
 @dataclass(frozen=True, slots=True)
@@ -100,21 +105,18 @@ class Classification:
 UNCLASSIFIED = Classification(None, frozenset())
 
 
-def _index_names(entities: Iterable[KnownEntity]) -> tuple[dict, dict, dict]:
+def _index_names(entities: Iterable[KnownEntity]) -> tuple[dict, dict]:
     """Name indexes for one kind, built in a single pass.
 
-    Returns unique name → entity, colliding name → contenders, and — only for
-    names spelled with a doubled vav or yod — folded spelling → entities, so a
-    defectively spelled lookup can still find them.
+    Returns unique name → entity and colliding name → contenders. Additional
+    spelling variants belong to the compact NameSearch index.
     """
-    index, contenders, doubled = {}, {}, {}
+    index, contenders = {}, {}
     for entity in entities:
         for name in (entity.english, entity.hebrew, *entity.aliases):
             key = normalize_name(name)
             if not key:
                 continue
-            if _DOUBLED_HEBREW_LETTER.search(key):
-                doubled.setdefault(fold_hebrew_spelling(key), {})[entity.canonical_id] = entity
             if key in contenders:
                 contenders[key][entity.canonical_id] = entity
                 continue
@@ -124,14 +126,15 @@ def _index_names(entities: Iterable[KnownEntity]) -> tuple[dict, dict, dict]:
             elif previous.canonical_id != entity.canonical_id:
                 del index[key]
                 contenders[key] = {previous.canonical_id: previous, entity.canonical_id: entity}
-    return index, contenders, doubled
+    return index, contenders
 
 
 class KnowledgeBase:
-    """Read-only entity/category graph with O(1) normalized-name lookup.
+    """Read-only entity/category graph with O(1) literal/normalized lookup.
 
     Name collisions fail closed even when one contender uses a canonical
-    label and the other uses an alias. There is deliberately no fuzzy API.
+    label and the other uses an alias. Approximate search is bounded, rejects
+    near competitors and returns no entity on ambiguous or unsupported input.
     Construction is pure; the infrastructure loader owns schema validation.
     """
 
@@ -143,16 +146,16 @@ class KnowledgeBase:
         by_kind = {kind: [] for kind in KINDS}
         for entity in all_entities:
             by_kind[entity.kind].append(entity)
-        indexes, contenders, doubled = {}, {}, {}
+        indexes, contenders = {}, {}
         for kind, members in by_kind.items():
-            index, collisions, spellings = _index_names(members)
+            index, collisions = _index_names(members)
             indexes[kind] = MappingProxyType(index)
             contenders[kind] = MappingProxyType({k: tuple(v.values()) for k, v in collisions.items()})
-            doubled[kind] = MappingProxyType({k: tuple(v.values()) for k, v in spellings.items()})
         self._indexes = MappingProxyType(indexes)
         self._contenders = MappingProxyType(contenders)
-        self._doubled = MappingProxyType(doubled)
         self.ambiguous_names = MappingProxyType({k: frozenset(v) for k, v in contenders.items()})
+        gram_pool = {}
+        self._search = {kind: NameSearch((*indexes[kind], *contenders[kind]), kind, gram_pool) for kind in KINDS}
         # Thousands of works share a small number of classification combinations.
         # Cache one facet map per combination, not per entity.
         facets = {}
@@ -166,34 +169,81 @@ class KnowledgeBase:
         self._facets = MappingProxyType(facets)
 
     def _spelling_group(self, kind: str, key: str) -> tuple[KnownEntity, ...]:
-        """Every entity named ``key`` under another Hebrew spelling (קרית/קריית)."""
-        folded = fold_hebrew_spelling(key)
-        group = {e.canonical_id: e for e in self._doubled[kind].get(folded, ())}
-        entity = self._indexes[kind].get(folded)
-        if entity is not None:
-            group[entity.canonical_id] = entity
-        for contender in self._contenders[kind].get(folded, ()):
-            group[contender.canonical_id] = contender
-        return tuple(group.values())
+        """Every contender under a conservative Hebrew spelling fold."""
+        return self._named_group(kind, self._search[kind].spelling_names(key))
+
+    def _named_group(self, kind: str, names: Iterable[str]) -> tuple[KnownEntity, ...]:
+        group = {}
+        for name in names:
+            entity = self._indexes[kind].get(name)
+            if entity is not None:
+                group[entity.canonical_id] = entity
+            for contender in self._contenders[kind].get(name, ()):
+                group[contender.canonical_id] = contender
+        return tuple(group[k] for k in sorted(group))
 
     def resolve(self, kind: str, text: str) -> Resolution:
         if kind not in self._indexes or not isinstance(text, str) or len(text) > 200:
             return UNKNOWN
         key = normalize_name(text)
+        if not key or any(unicodedata.category(c) == 'Cc' and not c.isspace() for c in text):
+            return UNKNOWN
+        if key in self.ambiguous_names[kind]:
+            return Resolution(Match.AMBIGUOUS, candidate_count=len(self._contenders[kind][key]), reason='name_collision')
         entity = self._indexes[kind].get(key)
-        if entity is None:
-            # A different Hebrew spelling of a unique name; never of an ambiguous one.
-            if key in self.ambiguous_names[kind] or not _HEBREW_LETTER.search(key):
-                return UNKNOWN
+        if entity is not None:
+            match = Match.EXACT if text in (entity.english, entity.hebrew) else Match.ALIAS if text in entity.aliases else Match.NORMALIZED
+            return Resolution(match, entity, 1.0, candidate_count=1, reason='unique_full_name')
+        if _HEBREW_LETTER.search(key):
             group = self._spelling_group(kind, key)
-            return Resolution(Match.ALIAS, group[0]) if len(group) == 1 else UNKNOWN
-        exact = key in (normalize_name(entity.english), normalize_name(entity.hebrew))
-        return Resolution(Match.EXACT if exact else Match.ALIAS, entity)
+            if len(group) > 1:
+                return Resolution(Match.AMBIGUOUS, candidate_count=len(group), reason='spelling_collision')
+            if group:
+                return Resolution(Match.NORMALIZED, group[0], 1.0, candidate_count=1, reason='hebrew_spelling')
+        search = self._search[kind]
+        partial = search.partial_names(key)
+        if partial is None:
+            return Resolution(Match.AMBIGUOUS, reason='partial_search_too_broad')
+        group = self._named_group(kind, partial)
+        if len(group) > 1:
+            return Resolution(Match.AMBIGUOUS, candidate_count=len(group), reason='partial_collision')
+        if group and any(search.partial_is_strong(key, name) for name in partial):
+            return Resolution(Match.PARTIAL_HIGH_CONFIDENCE, group[0], 1.0, candidate_count=1, reason='unique_token_partial')
+        # A weak partial is not promoted by a later fuzzy guess.
+        if partial:
+            return Resolution(Match.UNKNOWN, reason='partial_too_weak')
+        fuzzy = search.fuzzy_names(key)
+        if fuzzy is None:
+            return Resolution(Match.AMBIGUOUS, reason='fuzzy_search_too_broad')
+        scores = {}
+        distances = {}
+        entities = {}
+        for name, distance, score in fuzzy:
+            # Approximation cannot use orthography to break a known Hebrew
+            # spelling collision that normalization itself would reject.
+            names = self._search[kind].spelling_names(name) if _HEBREW_LETTER.search(name) else (name,)
+            for entity in self._named_group(kind, (name, *names)):
+                eid = entity.canonical_id
+                if score > scores.get(eid, -1):
+                    scores[eid], distances[eid], entities[eid] = score, distance, entity
+        ranked = sorted(scores, key=lambda eid: (-scores[eid], eid))
+        if not ranked:
+            return UNKNOWN
+        best = ranked[0]
+        score = scores[best]
+        runner = scores[ranked[1]] if len(ranked) > 1 else 0.0
+        if distances[best] != 1 or score < search.policy.similarity:
+            return Resolution(Match.UNKNOWN, similarity=score, runner_up_similarity=runner,
+                              candidate_count=len(ranked), reason='below_fuzzy_threshold')
+        if score - runner < search.policy.margin:
+            return Resolution(Match.AMBIGUOUS, similarity=score, runner_up_similarity=runner,
+                              candidate_count=len(ranked), reason='fuzzy_margin')
+        return Resolution(Match.FUZZY_HIGH_CONFIDENCE, entities[best], score, runner, len(ranked), 'one_edit_clear_margin')
 
     def classify(self, kind: str, text: str) -> Classification:
         """Categories for a typed name: the entity's own, or those all same-name contenders share."""
         resolution = self.resolve(kind, text)
-        if resolution.entity is not None:
+        if resolution.high_confidence:
             return Classification(resolution.entity, resolution.entity.category_ids)
         if kind not in self._indexes or not isinstance(text, str) or len(text) > 200:
             return UNCLASSIFIED

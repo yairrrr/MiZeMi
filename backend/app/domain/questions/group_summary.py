@@ -31,6 +31,7 @@ from math import ceil
 from types import MappingProxyType
 
 from app.domain.questions.knowledge import KnowledgeBase, KnownEntity, distance_km
+from app.domain.questions.semantic import classify_shared
 
 _DISAMBIGUATION = re.compile(r'\s*\([^()]*\)$')  # "Titanic (1997 film)", "לה לה לנד (סרט)"
 _HEBREW = re.compile('[\u05d0-\u05ea]')
@@ -154,7 +155,7 @@ class DimensionSummary:
             if value in dimension.neutral_values:
                 neutral.append(player_id)
                 continue
-            result = knowledge.classify(dimension.kind, value)
+            result = classify_shared(dataset, knowledge, dimension.kind, value)
             facts = knowledge.facet(result.category_ids, dimension.facet) - dimension.ignored
             labels = frozenset(parents.get(c, c) for c in facts) & allowed
             if result.entity is not None:

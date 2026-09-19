@@ -1,0 +1,1703 @@
+{
+  "typed_inputs": 210,
+  "correct": 209,
+  "incorrect": 0,
+  "unresolved": 1,
+  "median_ms": 90.704,
+  "max_ms": 93.663,
+  "runs": 10,
+  "question_counts": [
+    20,
+    20,
+    20,
+    20,
+    20,
+    20,
+    20,
+    20,
+    20,
+    20
+  ],
+  "inputs": [
+    {
+      "kind": "movies",
+      "canonical": "Bullet in the Head",
+      "typed": "Bulelt in the Head",
+      "expected_id": "Q1004410",
+      "actual_id": "Q1004410",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Kill the Irishman",
+      "typed": "Kill hte Irishman",
+      "expected_id": "Q1004440",
+      "actual_id": "Q1004440",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Bullets Over Broadway",
+      "typed": "Bulelts Over Broadway",
+      "expected_id": "Q1004531",
+      "actual_id": "Q1004531",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Decision to Leave",
+      "typed": "Deicsion to Leave",
+      "expected_id": "Q100889636",
+      "actual_id": "Q100889636",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Bunny Lake Is Missing",
+      "typed": "Bunyn Lake Is Missing",
+      "expected_id": "Q1009708",
+      "actual_id": "Q1009708",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "The Conversation",
+      "typed": "The oCnversation",
+      "expected_id": "Q1009788",
+      "actual_id": "Q1009788",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "The Brutalist",
+      "typed": "The rButalist",
+      "expected_id": "Q101112656",
+      "actual_id": "Q101112656",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Gorillas in the Mist",
+      "typed": "Goirllas in the Mist",
+      "expected_id": "Q1012216",
+      "actual_id": "Q1012216",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Hula Fulla Dance",
+      "typed": "Hual Fulla Dance",
+      "expected_id": "Q102024447",
+      "actual_id": "Q102024447",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Licorice Pizza",
+      "typed": "Liocrice Pizza",
+      "expected_id": "Q102036245",
+      "actual_id": "Q102036245",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Home Sweet Home Alone",
+      "typed": "Hoem Sweet Home Alone",
+      "expected_id": "Q102046208",
+      "actual_id": "Q102046208",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Stage Door",
+      "typed": "Stgae Door",
+      "expected_id": "Q1020603",
+      "actual_id": "Q1020603",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Alien Xmas",
+      "typed": "Alein Xmas",
+      "expected_id": "Q102396311",
+      "actual_id": "Q102396311",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Nightbreed",
+      "typed": "Nihgtbreed",
+      "expected_id": "Q1024694",
+      "actual_id": "Q1024694",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Cadillac Man",
+      "typed": "Caidllac Man",
+      "expected_id": "Q1025198",
+      "actual_id": "Q1025198",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "The Wedding Date",
+      "typed": "The eWdding Date",
+      "expected_id": "Q1027175",
+      "actual_id": "Q1027175",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Here Comes Peter Cottontail",
+      "typed": "Heer Comes Peter Cottontail",
+      "expected_id": "Q10295038",
+      "actual_id": "Q10295038",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Empire of the Wolves",
+      "typed": "Emipre of the Wolves",
+      "expected_id": "Q1031257",
+      "actual_id": "Q1031257",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Katy the Caterpillar",
+      "typed": "Kayt the Caterpillar",
+      "expected_id": "Q10314026",
+      "actual_id": "Q10314026",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Captain Ron",
+      "typed": "Catpain Ron",
+      "expected_id": "Q1035137",
+      "actual_id": "Q1035137",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Wrestling Ernest Hemingway",
+      "typed": "Wrsetling Ernest Hemingway",
+      "expected_id": "Q1035248",
+      "actual_id": "Q1035248",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "The Adam Project",
+      "typed": "The dAam Project",
+      "expected_id": "Q104033835",
+      "actual_id": "Q104033835",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Spiderhead",
+      "typed": "Spdierhead",
+      "expected_id": "Q104094034",
+      "actual_id": "Q104094034",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Pulp Fiction",
+      "typed": "Pupl Fiction",
+      "expected_id": "Q104123",
+      "actual_id": "Q104123",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Unforgiven",
+      "typed": "Unofrgiven",
+      "expected_id": "Q104137",
+      "actual_id": "Q104137",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Prey for the Devil",
+      "typed": "Prye for the Devil",
+      "expected_id": "Q104214267",
+      "actual_id": "Q104214267",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Outside the Wire",
+      "typed": "Oustide the Wire",
+      "expected_id": "Q104241071",
+      "actual_id": "Q104241071",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Bamse and the City of Thieves",
+      "typed": "Basme and the City of Thieves",
+      "expected_id": "Q10425783",
+      "actual_id": "Q10425783",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Beyond Beyond",
+      "typed": "Beoynd Beyond",
+      "expected_id": "Q10429157",
+      "actual_id": "Q10429157",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "movies",
+      "canonical": "Taare Zameen Par",
+      "typed": "Tarae Zameen Par",
+      "expected_id": "Q1043614",
+      "actual_id": "Q1043614",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Finer Feelings",
+      "typed": "Fienr Feelings",
+      "expected_id": "Q1001467",
+      "actual_id": "Q1001467",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "I Lost a Friend",
+      "typed": "I oLst a Friend",
+      "expected_id": "Q100235001",
+      "actual_id": "Q100235001",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "For Your Love",
+      "typed": "For oYur Love",
+      "expected_id": "Q1002788",
+      "actual_id": "Q1002788",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Friends Will Be Friends",
+      "typed": "Freinds Will Be Friends",
+      "expected_id": "Q1003996",
+      "actual_id": "Q1003996",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "What You Know Bout Love",
+      "typed": "Whta You Know Bout Love",
+      "expected_id": "Q100412422",
+      "actual_id": "Q100412422",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Settling Down",
+      "typed": "Setlting Down",
+      "expected_id": "Q100712090",
+      "actual_id": "Q100712090",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "I Know Places",
+      "typed": "I nKow Places",
+      "expected_id": "Q100785413",
+      "actual_id": "Q100785413",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "How You Get the Girl",
+      "typed": "How oYu Get the Girl",
+      "expected_id": "Q101004005",
+      "actual_id": "Q101004005",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Gin and Juice",
+      "typed": "Gin nad Juice",
+      "expected_id": "Q1010545",
+      "actual_id": "Q1010545",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Give Your Heart a Break",
+      "typed": "Giev Your Heart a Break",
+      "expected_id": "Q1010886",
+      "actual_id": "Q1010886",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Swimming in the Stars",
+      "typed": "Swmiming in the Stars",
+      "expected_id": "Q101483058",
+      "actual_id": "Q101483058",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Do Not Disturb",
+      "typed": "Do oNt Disturb",
+      "expected_id": "Q102111517",
+      "actual_id": "Q102111517",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Why Do You Lie to Me",
+      "typed": "Why oD You Lie to Me",
+      "expected_id": "Q102115611",
+      "actual_id": "Q102115611",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Here We Go Around Again",
+      "typed": "Heer We Go Around Again",
+      "expected_id": "Q102217192",
+      "actual_id": "Q102217192",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Your Love Is My Drug",
+      "typed": "Yoru Love Is My Drug",
+      "expected_id": "Q1025228",
+      "actual_id": "Q1025228",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Never Let Me Down Again",
+      "typed": "Neevr Let Me Down Again",
+      "expected_id": "Q1027613",
+      "actual_id": "Q1027613",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Got to Give It Up",
+      "typed": "Got ot Give It Up",
+      "expected_id": "Q1027675",
+      "actual_id": "Q1027675",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "No Presents for Christmas",
+      "typed": "No rPesents for Christmas",
+      "expected_id": "Q1027945",
+      "actual_id": "Q1027945",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Zauvijek volim te",
+      "typed": "Zavuijek volim te",
+      "expected_id": "Q1028560",
+      "actual_id": "Q1028560",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "How Bizarre",
+      "typed": "How iBzarre",
+      "expected_id": "Q10298652",
+      "actual_id": "Q10298652",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Here Without You",
+      "typed": "Heer Without You",
+      "expected_id": "Q1032020",
+      "actual_id": "Q1032020",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Hammer to Fall",
+      "typed": "Hamemr to Fall",
+      "expected_id": "Q1033415",
+      "actual_id": "Q1033415",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Head over Feet",
+      "typed": "Heda over Feet",
+      "expected_id": "Q1034226",
+      "actual_id": "Q1034226",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Head Like a Hole",
+      "typed": "Heda Like a Hole",
+      "expected_id": "Q1034643",
+      "actual_id": "Q1034643",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Heaven for Everyone",
+      "typed": "Hevaen for Everyone",
+      "expected_id": "Q1034691",
+      "actual_id": "Q1034691",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Heroes and Villains",
+      "typed": "Heores and Villains",
+      "expected_id": "Q1035698",
+      "actual_id": "Q1035698",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "So Beautiful",
+      "typed": "So eBautiful",
+      "expected_id": "Q10372463",
+      "actual_id": "Q10372463",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "Hollow Years",
+      "typed": "Hololw Years",
+      "expected_id": "Q1038007",
+      "actual_id": "Q1038007",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "The Moment I Knew",
+      "typed": "The oMment I Knew",
+      "expected_id": "Q10381624",
+      "actual_id": "Q10381624",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "songs",
+      "canonical": "One Whole Day",
+      "typed": "One hWole Day",
+      "expected_id": "Q104062566",
+      "actual_id": "Q104062566",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Budka Suflera",
+      "typed": "Bukda Suflera",
+      "expected_id": "Q1001514",
+      "actual_id": "Q1001514",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Enertopia",
+      "typed": "Enretopia",
+      "expected_id": "Q100340757",
+      "actual_id": "Q100340757",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Sivan Arbel",
+      "typed": "Siavn Arbel",
+      "expected_id": "Q100605067",
+      "actual_id": "Q100605067",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Omer Fedi",
+      "typed": "Omre Fedi",
+      "expected_id": "Q100717799",
+      "actual_id": "Q100717799",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Avrumi Weinberg",
+      "typed": "Avurmi Weinberg",
+      "expected_id": "Q100806733",
+      "actual_id": "Q100806733",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Okean Elzy",
+      "typed": "Okaen Elzy",
+      "expected_id": "Q1008489",
+      "actual_id": "Q1008489",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Fred Astaire",
+      "typed": "Frde Astaire",
+      "expected_id": "Q100937",
+      "actual_id": "Q100937",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Nur Ben Shalom",
+      "typed": "Nur eBn Shalom",
+      "expected_id": "Q101096159",
+      "actual_id": "Q101096159",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Deep Purple",
+      "typed": "Depe Purple",
+      "expected_id": "Q101505",
+      "actual_id": "Q101505",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Gaetano Donizetti",
+      "typed": "Gateano Donizetti",
+      "expected_id": "Q101698",
+      "actual_id": "Q101698",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Moshe Ben Yohana",
+      "typed": "Mohse Ben Yohana",
+      "expected_id": "Q102027262",
+      "actual_id": "Q102027262",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Itay Shimoni",
+      "typed": "Itya Shimoni",
+      "expected_id": "Q102200711",
+      "actual_id": "Q102200711",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Yukari Tamura",
+      "typed": "Yuakri Tamura",
+      "expected_id": "Q1022023",
+      "actual_id": "Q1022023",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "The Pussycat Dolls",
+      "typed": "The uPssycat Dolls",
+      "expected_id": "Q102385",
+      "actual_id": "Q102385",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Earl Sweatshirt",
+      "typed": "Ealr Sweatshirt",
+      "expected_id": "Q1033188",
+      "actual_id": "Q1033188",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "The Velvet Underground",
+      "typed": "The eVlvet Underground",
+      "expected_id": "Q103550",
+      "actual_id": "Q103550",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Macaulay Culkin",
+      "typed": "Maaculay Culkin",
+      "expected_id": "Q103578",
+      "actual_id": "Q103578",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Glenn Miller",
+      "typed": "Glnen Miller",
+      "expected_id": "Q103651",
+      "actual_id": "Q103651",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Charlie Parker",
+      "typed": "Chralie Parker",
+      "expected_id": "Q103767",
+      "actual_id": "Q103767",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Kiefer Sutherland",
+      "typed": "Kifeer Sutherland",
+      "expected_id": "Q103946",
+      "actual_id": "Q103946",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Kirk Douglas",
+      "typed": "Kikr Douglas",
+      "expected_id": "Q104027",
+      "actual_id": "Q104027",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Bella Poarch",
+      "typed": "Belal Poarch",
+      "expected_id": "Q104064843",
+      "actual_id": "Q104064843",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Armond Sosna",
+      "typed": "Aromnd Sosna",
+      "expected_id": "Q104088401",
+      "actual_id": "Q104088401",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Arilena Ara",
+      "typed": "Arliena Ara",
+      "expected_id": "Q10417885",
+      "actual_id": "Q10417885",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Billie Holiday",
+      "typed": "Bilile Holiday",
+      "expected_id": "Q104358",
+      "actual_id": "Q104358",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Doris Day",
+      "typed": "Doirs Day",
+      "expected_id": "Q104372",
+      "actual_id": "Q104372",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Enzo Jannacci",
+      "typed": "Enoz Jannacci",
+      "expected_id": "Q1046038",
+      "actual_id": "Q1046038",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Far East Movement",
+      "typed": "Far aEst Movement",
+      "expected_id": "Q104625",
+      "actual_id": "Q104625",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Tom Chaplin",
+      "typed": "Tom hCaplin",
+      "expected_id": "Q1046612",
+      "actual_id": "Q1046612",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "artists",
+      "canonical": "Brendon Urie",
+      "typed": "Brnedon Urie",
+      "expected_id": "Q1047474",
+      "actual_id": "Q1047474",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "music of Mediterranea",
+      "typed": "muisc of Mediterranea",
+      "expected_id": "Q108250543",
+      "actual_id": "Q108250543",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Alternative rock",
+      "typed": "Aletrnative rock",
+      "expected_id": "Q11366",
+      "actual_id": "Q11366",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Rock music",
+      "typed": "Rokc music",
+      "expected_id": "Q11399",
+      "actual_id": "Q11399",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Soul music",
+      "typed": "Solu music",
+      "expected_id": "Q131272",
+      "actual_id": "Q131272",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Black metal",
+      "typed": "Blcak metal",
+      "expected_id": "Q132438",
+      "actual_id": "Q132438",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Drill music",
+      "typed": "Drlil music",
+      "expected_id": "Q15697534",
+      "actual_id": "Q15697534",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Trance music",
+      "typed": "Trnace music",
+      "expected_id": "Q170435",
+      "actual_id": "Q170435",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Gospel music",
+      "typed": "Gopsel music",
+      "expected_id": "Q180268",
+      "actual_id": "Q180268",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Indie rock",
+      "typed": "Inide rock",
+      "expected_id": "Q183504",
+      "actual_id": "Q183504",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Electropop",
+      "typed": "Elcetropop",
+      "expected_id": "Q188450",
+      "actual_id": "Q188450",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Drum and bass",
+      "typed": "Drmu and bass",
+      "expected_id": "Q188994",
+      "actual_id": "Q188994",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Ambient music",
+      "typed": "Amibent music",
+      "expected_id": "Q193207",
+      "actual_id": "Q193207",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Reggaeton",
+      "typed": "Regageton",
+      "expected_id": "Q202930",
+      "actual_id": "Q202930",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Alternative metal",
+      "typed": "Aletrnative metal",
+      "expected_id": "Q20378",
+      "actual_id": "Q20378",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "House music",
+      "typed": "Hosue music",
+      "expected_id": "Q20502",
+      "actual_id": "Q20502",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Psychedelic rock",
+      "typed": "Pscyhedelic rock",
+      "expected_id": "Q206159",
+      "actual_id": "Q206159",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Romantic music",
+      "typed": "Roamntic music",
+      "expected_id": "Q207591",
+      "actual_id": "Q207591",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Salsa music",
+      "typed": "Sasla music",
+      "expected_id": "Q208239",
+      "actual_id": "Q208239",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Nu metal",
+      "typed": "Nu emtal",
+      "expected_id": "Q263734",
+      "actual_id": "Q263734",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Mizrahi music",
+      "typed": "Mirzahi music",
+      "expected_id": "Q2738544",
+      "actual_id": "Q2738544",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Trap music",
+      "typed": "Trpa music",
+      "expected_id": "Q2913982",
+      "actual_id": "Q2913982",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Israeli rock",
+      "typed": "Isareli rock",
+      "expected_id": "Q2917227",
+      "actual_id": "Q2917227",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Punk rock",
+      "typed": "Pukn rock",
+      "expected_id": "Q3071",
+      "actual_id": "Q3071",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Pop music",
+      "typed": "Pop umsic",
+      "expected_id": "Q37073",
+      "actual_id": "Q37073",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Heavy metal music",
+      "typed": "Hevay metal music",
+      "expected_id": "Q38848",
+      "actual_id": "Q38848",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Indie music",
+      "typed": "Inide music",
+      "expected_id": "Q42201",
+      "actual_id": "Q42201",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Folk music",
+      "typed": "Fokl music",
+      "expected_id": "Q43343",
+      "actual_id": "Q43343",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Rhythm and blues",
+      "typed": "Rhtyhm and blues",
+      "expected_id": "Q45981",
+      "actual_id": "Q45981",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Dancehall",
+      "typed": "Dacnehall",
+      "expected_id": "Q474027",
+      "actual_id": "Q474027",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "music",
+      "canonical": "Death metal",
+      "typed": "Detah metal",
+      "expected_id": "Q483251",
+      "actual_id": "Q483251",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "mushroom soup",
+      "typed": "muhsroom soup",
+      "expected_id": "Q100285281",
+      "actual_id": "Q100285281",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "fried tofu",
+      "typed": "freid tofu",
+      "expected_id": "Q100323254",
+      "actual_id": "Q100323254",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Sweet potato soup",
+      "typed": "Swete potato soup",
+      "expected_id": "Q1012556",
+      "actual_id": "Q1012556",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "White pizza",
+      "typed": "Whtie pizza",
+      "expected_id": "Q101611276",
+      "actual_id": "Q101611276",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Bush bread",
+      "typed": "Buhs bread",
+      "expected_id": "Q1017266",
+      "actual_id": "Q1017266",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Butterbrot",
+      "typed": "Butetrbrot",
+      "expected_id": "Q1018075",
+      "actual_id": "Q1018075",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Butterfinger",
+      "typed": "Butetrfinger",
+      "expected_id": "Q1018081",
+      "actual_id": "Q1018081",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Coussin de Lyon",
+      "typed": "Cosusin de Lyon",
+      "expected_id": "Q10220",
+      "actual_id": "Q10220",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Caldo galego",
+      "typed": "Cadlo galego",
+      "expected_id": "Q1026488",
+      "actual_id": "Q1026488",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "XO sauce",
+      "typed": "XO asuce",
+      "expected_id": "Q1026857",
+      "actual_id": "Q1026857",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Calisson",
+      "typed": "Cailsson",
+      "expected_id": "Q1027031",
+      "actual_id": "Q1027031",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Wine gum",
+      "typed": "Wien gum",
+      "expected_id": "Q1028754",
+      "actual_id": "Q1028754",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Cappelletti",
+      "typed": "Capeplletti",
+      "expected_id": "Q1034869",
+      "actual_id": "Q1034869",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Pudim Abade de Priscos",
+      "typed": "Puidm Abade de Priscos",
+      "expected_id": "Q10355424",
+      "actual_id": "Q10355424",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Butter cookie",
+      "typed": "Butetr cookie",
+      "expected_id": "Q1038537",
+      "actual_id": "Q1038537",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Zuppa pavese",
+      "typed": "Zupap pavese",
+      "expected_id": "Q10395380",
+      "actual_id": "Q10395380",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Doujiang",
+      "typed": "Dojuiang",
+      "expected_id": "Q104414613",
+      "actual_id": "Q104414613",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Curry bread",
+      "typed": "Curyr bread",
+      "expected_id": "Q1046006",
+      "actual_id": "Q1046006",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Hot dog bun",
+      "typed": "Hot odg bun",
+      "expected_id": "Q1047392",
+      "actual_id": "Q1047392",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Chakhokhbili",
+      "typed": "Chkahokhbili",
+      "expected_id": "Q1047978",
+      "actual_id": "Q1047978",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Tigelada",
+      "typed": "Tieglada",
+      "expected_id": "Q104829802",
+      "actual_id": "Q104829802",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Sushi burrito",
+      "typed": "Suhsi burrito",
+      "expected_id": "Q104844158",
+      "actual_id": "Q104844158",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "botvinia",
+      "typed": "bovtinia",
+      "expected_id": "Q1048496",
+      "actual_id": "Q1048496",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "White cake",
+      "typed": "Whtie cake",
+      "expected_id": "Q104858815",
+      "actual_id": "Q104858815",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Frittata",
+      "typed": "Frtitata",
+      "expected_id": "Q1051155",
+      "actual_id": "Q1051155",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Dorayaki",
+      "typed": "Doaryaki",
+      "expected_id": "Q1051482",
+      "actual_id": "Q1051482",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Hasselback potatoes",
+      "typed": "Haseslback potatoes",
+      "expected_id": "Q10518439",
+      "actual_id": "Q10518439",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Corzetti",
+      "typed": "Cozretti",
+      "expected_id": "Q1051861",
+      "actual_id": "Q1051861",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Shengjian mantou",
+      "typed": "Shnegjian mantou",
+      "expected_id": "Q1052204",
+      "actual_id": "Q1052204",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "foods",
+      "canonical": "Pasta salad",
+      "typed": "Patsa salad",
+      "expected_id": "Q1052236",
+      "actual_id": "Q1052236",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Losing chess",
+      "typed": "Loisng chess",
+      "expected_id": "Q1003361",
+      "actual_id": "Q1003361",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Chinese checkers",
+      "typed": "Chniese checkers",
+      "expected_id": "Q1045090",
+      "actual_id": "Q1045090",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Acrobatic gymnastics",
+      "typed": "Acorbatic gymnastics",
+      "expected_id": "Q1049443",
+      "actual_id": "Q1049443",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Online poker",
+      "typed": "Onilne poker",
+      "expected_id": "Q1050367",
+      "actual_id": "Q1050367",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Resonator guitar",
+      "typed": "Reosnator guitar",
+      "expected_id": "Q1051615",
+      "actual_id": "Q1051615",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Chordophone",
+      "typed": "Chrodophone",
+      "expected_id": "Q1051772",
+      "actual_id": "Q1051772",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Karma yoga",
+      "typed": "Kamra yoga",
+      "expected_id": "Q1054016",
+      "actual_id": "Q1054016",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "running discipline of track",
+      "typed": "runinng discipline of track",
+      "expected_id": "Q10572883",
+      "actual_id": "Q10572883",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Electrophone",
+      "typed": "Elcetrophone",
+      "expected_id": "Q105738",
+      "actual_id": "Q105738",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Hammond organ",
+      "typed": "Hamomnd organ",
+      "expected_id": "Q105891",
+      "actual_id": "Q105891",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Digital audio workstation",
+      "typed": "Diigtal audio workstation",
+      "expected_id": "Q1060750",
+      "actual_id": "Q1060750",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Super Mario Kart",
+      "typed": "Suepr Mario Kart",
+      "expected_id": "Q1061560",
+      "actual_id": "Q1061560",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Stradivarius",
+      "typed": "Stardivarius",
+      "expected_id": "Q1068162",
+      "actual_id": "Q1068162",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Second Life",
+      "typed": "Seocnd Life",
+      "expected_id": "Q106827",
+      "actual_id": "Q106827",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Sonic Adventure",
+      "typed": "Soinc Adventure",
+      "expected_id": "Q1069059",
+      "actual_id": "Q1069059",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Paris Marathon",
+      "typed": "Pairs Marathon",
+      "expected_id": "Q1071285",
+      "actual_id": "Q1071285",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Chicago Marathon",
+      "typed": "Chciago Marathon",
+      "expected_id": "Q1071822",
+      "actual_id": "Q1071822",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Ski mountaineering",
+      "typed": "Ski omuntaineering",
+      "expected_id": "Q1075998",
+      "actual_id": "Q1075998",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Meditation",
+      "typed": "Meidtation",
+      "expected_id": "Q108458",
+      "actual_id": "Q108458",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Ballroom dance",
+      "typed": "Balrloom dance",
+      "expected_id": "Q1085001",
+      "actual_id": "Q1085001",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Dry roasting",
+      "typed": "Dry orasting",
+      "expected_id": "Q10860338",
+      "actual_id": "Q10860338",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Chrono des Nations",
+      "typed": "Chorno des Nations",
+      "expected_id": "Q1088157",
+      "actual_id": "Q1088157",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Assetto Corsa",
+      "typed": "Asestto Corsa",
+      "expected_id": "Q10896671",
+      "actual_id": "Q10896671",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Scuba diving",
+      "typed": "Scbua diving",
+      "expected_id": "Q1096878",
+      "actual_id": "Q1096878",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Kemenche",
+      "typed": "Keemnche",
+      "expected_id": "Q10969818",
+      "actual_id": "Q10969818",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Triathlon",
+      "typed": "Traithlon",
+      "expected_id": "Q10980",
+      "actual_id": "Q10980",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Clavinet",
+      "typed": "Clvainet",
+      "expected_id": "Q1099153",
+      "actual_id": "Q1099153",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Mountain bike racing",
+      "typed": "Monutain bike racing",
+      "expected_id": "Q11112275",
+      "actual_id": "Q11112275",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Computer chess",
+      "typed": "Copmuter chess",
+      "expected_id": "Q1122588",
+      "actual_id": "Q1122588",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "hobbies",
+      "canonical": "Wheelchair basketball",
+      "typed": "Whelechair basketball",
+      "expected_id": "Q1128216",
+      "actual_id": "Q1128216",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Mitspe Ilan",
+      "typed": "Mistpe Ilan",
+      "expected_id": "G10016186",
+      "actual_id": "G10016186",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Kadima Zoran",
+      "typed": "Kaidma Zoran",
+      "expected_id": "G11524864",
+      "actual_id": "G11524864",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Merhav Am",
+      "typed": "Mehrav Am",
+      "expected_id": "G11778042",
+      "actual_id": "G11778042",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Kerem Ben Shemen",
+      "typed": "Keerm Ben Shemen",
+      "expected_id": "G11979642",
+      "actual_id": "G11979642",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Bnei Dkalim",
+      "typed": "Bnie Dkalim",
+      "expected_id": "G11979643",
+      "actual_id": "G11979643",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Bnei Netsarim",
+      "typed": "Bnie Netsarim",
+      "expected_id": "G11979644",
+      "actual_id": "G11979644",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Ganey Tal",
+      "typed": "Gaeny Tal",
+      "expected_id": "G11979647",
+      "actual_id": "G11979647",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Khawalid",
+      "typed": "Khwaalid",
+      "expected_id": "G11979650",
+      "actual_id": "G11979650",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Yanuah Jat",
+      "typed": "Yaunah Jat",
+      "expected_id": "G11979655",
+      "actual_id": "G11979655",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Mahane Yocheved",
+      "typed": "Maahne Yocheved",
+      "expected_id": "G11979748",
+      "actual_id": "G11979748",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Mahane Yafe",
+      "typed": "Maahne Yafe",
+      "expected_id": "G11979749",
+      "actual_id": "G11979749",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Mahane Miriam",
+      "typed": "Maahne Miriam",
+      "expected_id": "G11979750",
+      "actual_id": "G11979750",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Mahane Hila",
+      "typed": "Maahne Hila",
+      "expected_id": "G11979752",
+      "actual_id": "G11979752",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Maale Iron",
+      "typed": "Malae Iron",
+      "expected_id": "G11979755",
+      "actual_id": "G11979755",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Mitzpe Ilan",
+      "typed": "Miztpe Ilan",
+      "expected_id": "G11979756",
+      "actual_id": "G11979756",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Neve Shalom",
+      "typed": "Neev Shalom",
+      "expected_id": "G11979758",
+      "actual_id": null,
+      "match": "AMBIGUOUS"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Netser hazani",
+      "typed": "Nester hazani",
+      "expected_id": "G11979765",
+      "actual_id": "G11979765",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Tzukei yam",
+      "typed": "Tzkuei yam",
+      "expected_id": "G11979771",
+      "actual_id": "G11979771",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Tsur Itshak",
+      "typed": "Tsru Itshak",
+      "expected_id": "G11979772",
+      "actual_id": "G11979772",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Shavei darom",
+      "typed": "Shvaei darom",
+      "expected_id": "G12031825",
+      "actual_id": "G12031825",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Karmei Katiff",
+      "typed": "Kamrei Katiff",
+      "expected_id": "G12031826",
+      "actual_id": "G12031826",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Kiryat Ono",
+      "typed": "Kiyrat Ono",
+      "expected_id": "G12031840",
+      "actual_id": "G12031840",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Umm Batin",
+      "typed": "Umm aBtin",
+      "expected_id": "G12156429",
+      "actual_id": "G12156429",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "AlSayid Tribe",
+      "typed": "AlaSyid Tribe",
+      "expected_id": "G12156432",
+      "actual_id": "G12156432",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Bir Hadaj",
+      "typed": "Bir aHdaj",
+      "expected_id": "G12156436",
+      "actual_id": "G12156436",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Kibbutz Shaar Hagolan",
+      "typed": "Kibubtz Shaar Hagolan",
+      "expected_id": "G12493420",
+      "actual_id": "G12493420",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Ramat HaNasi Trump",
+      "typed": "Raamt HaNasi Trump",
+      "expected_id": "G13496877",
+      "actual_id": "G13496877",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Tel Qatsir",
+      "typed": "Tel aQtsir",
+      "expected_id": "G163684",
+      "actual_id": "G163684",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Talpiyyot",
+      "typed": "Tapliyyot",
+      "expected_id": "G281168",
+      "actual_id": "G281168",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    },
+    {
+      "kind": "localities",
+      "canonical": "Jerusalem",
+      "typed": "Jeursalem",
+      "expected_id": "G281184",
+      "actual_id": "G281184",
+      "match": "FUZZY_HIGH_CONFIDENCE"
+    }
+  ]
+}

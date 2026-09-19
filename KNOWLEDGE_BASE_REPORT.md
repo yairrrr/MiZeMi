@@ -4,6 +4,8 @@ Verified locally on **2026-09-14**, bundle **2026-09-14.1**. The production engi
 
 > **Update (category-first revision).** The question selection described below was diagnosed as not reaching realistic rooms: its group families required every player's answer to be recognized. Production now uses the category-first engine documented in [QUESTION_ENGINE_DIAGNOSTIC.md](QUESTION_ENGINE_DIAGNOSTIC.md) and MASTER_SPEC.md §12.3, with the current audit in [QUESTION_STYLE_AUDIT.md](QUESTION_STYLE_AUDIT.md). The knowledge bundle, sources and licenses in this report are unchanged; the rule catalog, selection targets, audit counts and measurements below describe the previous revision (current measurements are in the diagnostic's Performance section; `benchmark-results.json` now holds them).
 
+**Resolution follow-up (2026-09-19):** [KNOWLEDGE_RESOLUTION_REPORT.md](KNOWLEDGE_RESOLUTION_REPORT.md) supersedes the historical exact/alias-only resolution and resource measurements below. It records conservative normalized/partial/fuzzy resolution, confidence and ambiguity rejection, the frozen before/after corpus, final quiz impact and a hard one-question limit for raw person lookups. Reference entities, facts, source files and licenses are unchanged.
+
 ## Recovery and preserved architecture
 
 **Media follow-up:** [MEDIA_QUESTIONS_REPORT.md](MEDIA_QUESTIONS_REPORT.md) and MASTER_SPEC.md §12.4 document the focused movie/song/artist generation and selection improvements after the category-first revision. Reference assets, licenses and resolution behavior remain unchanged. Current media samples and regression results are in that follow-up report.
