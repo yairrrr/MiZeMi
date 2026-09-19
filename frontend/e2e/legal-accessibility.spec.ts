@@ -4,6 +4,7 @@ import type { AxeResults } from 'axe-core'
 import { translate, type Language, type MessageKey } from '../src/i18n/messages'
 
 const require = createRequire(import.meta.url)
+const OPERATORS = ['yairrrr', 'gavrielalafi-boop', 'urielmizrahi91-svg', 'elick-chitrit']
 async function audit(page: Page) {
   await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') })
   const results: AxeResults = await page.evaluate(async () => {
@@ -59,7 +60,7 @@ for (const language of ['en', 'he'] as Language[]) {
       await expect(page).toHaveURL(new RegExp(`/${path}\\?lang=${language}$`))
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
       const contact = page.locator('.contact-details')
-      await expect(contact).toContainText('yairrrr')
+      for (const operator of OPERATORS) await expect(contact).toContainText(operator)
       const contactLink = contact.getByRole('link')
       await expect(contactLink).toHaveAttribute('href', 'https://github.com/yairrrr/MiZeMi/issues')
       await expect(contactLink).toHaveAttribute('rel', 'noopener noreferrer')
@@ -120,7 +121,7 @@ for (const language of ['en', 'he'] as Language[]) {
         await expect(player.locator('#profile-favorite_music')).toHaveValue('Pop')
         await player.keyboard.press('Tab')
         await reflow(player)
-        await expect(player.locator('.collection-notice .contact-details')).toContainText('yairrrr')
+        for (const operator of OPERATORS) await expect(player.locator('.collection-notice .contact-details')).toContainText(operator)
         await expect(player.locator('.collection-notice .contact-details a')).toHaveAttribute('href', 'https://github.com/yairrrr/MiZeMi/issues')
         if (i === 0) {
           await audit(player)

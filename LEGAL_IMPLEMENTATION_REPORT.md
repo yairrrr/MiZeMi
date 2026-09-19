@@ -54,7 +54,7 @@ The knowledge E2E oracle previously reconstructed its input from saved profiles.
 
 ## 5. Privacy request mechanism — updated 19 September 2026
 
-The owner approved public operator identification **yairrrr** and the MiZeMi GitHub Issues page for **initial non-sensitive contact**. The earlier missing-identity/contact placeholder has been replaced in both languages and the collection notice. No email, phone, home address, invented private inbox or private Git-author address is published. Exact wording and checks are in §16.
+The owner approved public operator identification **yairrrr, gavrielalafi-boop, urielmizrahi91-svg, elick-chitrit** and the MiZeMi GitHub Issues page for **initial non-sensitive contact**. The earlier missing-identity/contact placeholder has been replaced in both languages and the collection notice. No email, phone, home address, invented private inbox or private Git-author address is published. Exact wording and checks are in §16.
 
 The text does not ask users to post personal request details, identifiers, credentials, identity documents or identifying screenshots. It explicitly requires a separately agreed private channel before exchanging confidential information or verifying identity. It does not claim that channel already exists. No unauthenticated deletion endpoint or unsafe identity lookup was added.
 
@@ -152,7 +152,7 @@ Changed files are confined to backend minimization/API/tests, frontend legal UI/
 
 **Owner actions before broader real-user use:**
 
-1. Operator identification is now `yairrrr`, and initial contact is MiZeMi GitHub Issues. Ensure intended users can access Issues and establish suitable private follow-up for requests requiring personal details or verification. The repository is currently private. No private email/phone/address is to be published. Confirm the intended audience separately.
+1. Operator identification is now `yairrrr, gavrielalafi-boop, urielmizrahi91-svg, elick-chitrit`, and initial contact is MiZeMi GitHub Issues. Ensure intended users can access Issues and establish suitable private follow-up for requests requiring personal details or verification. The repository is currently private. No private email/phone/address is to be published. Confirm the intended audience separately.
 2. Resolve provider contract/security/backup/location/transfer arrangements and proportionate incident/request procedures. Verify the actual environment's retention settings. Review what legal basis and consent evidence are appropriate; finished records intentionally do not retain the raw consent form.
 3. Obtain the needed Israeli privacy/accessibility/minor-use professional assessment, especially operator-specific applicability/exemptions and the fixed 20-second timer. No universal registration/notification duty or arbitrary age threshold is introduced here.
 4. Test with real assistive technology and people who need accommodations; decide whether timed play needs an accessible alternative before offering it to that audience.
@@ -175,7 +175,7 @@ Scope: operator/contact copy, its tests and directly related documentation only.
 
 ### Exact public wording — English
 
-Project operator: yairrrr
+Project operator: yairrrr, gavrielalafi-boop, urielmizrahi91-svg, elick-chitrit
 
 For privacy questions, access, correction/deletion or accessibility requests, start with a non-sensitive message on [MiZeMi GitHub Issues](https://github.com/yairrrr/MiZeMi/issues).
 
@@ -194,7 +194,7 @@ Use Issues only for an initial non-sensitive message. Do not post personal infor
 
 ### Exact public wording — Hebrew
 
-מפעיל הפרויקט: yairrrr
+מפעיל הפרויקט: yairrrr, gavrielalafi-boop, urielmizrahi91-svg, elick-chitrit
 
 לשאלות פרטיות, לבקשות גישה למידע, תיקון או מחיקה, או לפניות בנושא נגישות, התחילו בהודעה שאינה מכילה מידע רגיש בעמוד [הפניות של MiZeMi ב־GitHub](https://github.com/yairrrr/MiZeMi/issues).
 
