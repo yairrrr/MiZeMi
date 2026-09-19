@@ -4,6 +4,8 @@ import { App } from '../components/App'
 import { I18nProvider } from '../i18n/I18n'
 import { CollectionNotice } from './CollectionNotice'
 
+const OPERATORS = ['yairrrr', 'gavrielalafi-boop', 'urielmizrahi91-svg', 'elick-chitrit']
+
 vi.mock('./privacyInfo', () => ({
   usePrivacyInfo: () => ({ status: 'ready', info: {
     policy_version: '2026-09-18', retention_days: 7, room_idle_ttl_minutes: 120,
@@ -23,7 +25,7 @@ for (const language of ['en', 'he'] as const) {
       history.replaceState(null, '', `/${path}?lang=${language}`)
       render(<App />)
       const contact = document.querySelector('.contact-details')!
-      expect(contact).toHaveTextContent('yairrrr')
+      for (const operator of OPERATORS) expect(contact).toHaveTextContent(operator)
       const link = screen.getByRole('link', { name: language === 'en' ? /MiZeMi GitHub Issues/ : /הפניות של MiZeMi/ })
       expect(link).toHaveAttribute('href', 'https://github.com/yairrrr/MiZeMi/issues')
       expect(link).toHaveAttribute('target', '_blank')
@@ -39,7 +41,7 @@ for (const language of ['en', 'he'] as const) {
   test(`${language}: collection notice identifies the operator and warns against personal data in Issues`, () => {
     history.replaceState(null, '', `/?lang=${language}`)
     render(<I18nProvider><CollectionNotice info={null} /></I18nProvider>)
-    expect(screen.getByText('yairrrr')).toBeVisible()
+    expect(screen.getByText('yairrrr, gavrielalafi-boop, urielmizrahi91-svg, elick-chitrit')).toBeVisible()
     expect(document.querySelector('.contact-details')).toHaveTextContent(language === 'en'
       ? 'Personal details and identity verification require a separately agreed private channel'
       : 'מסירת פרטים אישיים ואימות זהות דורשים ערוץ פרטי שתואם בנפרד')

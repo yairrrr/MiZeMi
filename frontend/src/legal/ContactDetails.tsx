@@ -1,9 +1,9 @@
 import { useI18n } from '../i18n/I18n'
 
-export const PUBLIC_OPERATOR = 'yairrrr'
+export const PUBLIC_OPERATORS = ['yairrrr', 'gavrielalafi-boop', 'urielmizrahi91-svg', 'elick-chitrit'] as const
 export const CONTACT_URL = 'https://github.com/yairrrr/MiZeMi/issues'
 
-// Owner-approved public identity and initial-contact route; never a private inbox.
+// Owner-approved public identities and initial-contact route; never a private inbox.
 export const contactCopy = {
   en: {
     operator: 'Project operator:',
@@ -31,7 +31,7 @@ export function ContactDetails({ compact = false }: { compact?: boolean }) {
   const { language, t } = useI18n()
   const copy = contactCopy[language]
   return <div className="contact-details">
-    <p>{copy.operator} <bdi>{PUBLIC_OPERATOR}</bdi></p>
+    <p>{copy.operator} <bdi>{PUBLIC_OPERATORS.join(', ')}</bdi></p>
     <p>{copy.introduction}{' '}<a href={CONTACT_URL} target="_blank" rel="noopener noreferrer">{copy.link}<span className="sr-only">{t(' (opens in a new tab)')}</span></a>.</p>
     {compact ? <p>{copy.compact}</p> : <>
       <p>{copy.warning}</p>
