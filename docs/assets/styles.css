@@ -182,3 +182,20 @@ h1 span { color: var(--purple); }
   .button { transition: none; }
   .button-primary:hover { transform: none; }
 }
+
+/* Links to the authoritative legal information hosted with the game. */
+.legal-links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin-block: 1.25rem; }
+.legal-links a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: .2em; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+:where(a, button, summary, [tabindex]):focus-visible { outline: 3px solid #4f35aa; outline-offset: 4px; }
+
+/* Preserve content when text is enlarged on a narrow viewport. */
+.shell { overflow-wrap: anywhere; }
+.site-header { flex-wrap: wrap; }
+.hero > *, .picks-list li > *, .features-grid > * { min-width: 0; }
+.picks-list li { flex-wrap: wrap; }
+@media (max-width: 380px) {
+  .shell { width: calc(100% - 1.5rem); }
+  .sample-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .at-a-glance { grid-template-columns: 1fr; }
+}

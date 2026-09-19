@@ -22,6 +22,7 @@ from app.api.errors import error_response
 from app.api.guards import ClassroomHttpGuard
 from app.api.health import router as health_router
 from app.api.rooms import router as rooms_router
+from app.api.privacy import router as privacy_router
 from app.application.gameplay import GameplayConfig, GameplayService, utc_now
 from app.domain.game import Game
 from app.domain.questions.generator import QuestionGenerator
@@ -80,7 +81,9 @@ class _Database:
         with self._lock:
             self.ensure_schema()
             with self.session_factory() as session:
-                removed = SqlAlchemyGameRepository(session).delete_older_than(utc_now() - retention)
+                repository = SqlAlchemyGameRepository(session)
+                removed = repository.delete_older_than(utc_now() - retention)
+                repository.delete_legacy_finished_profiles()
                 session.commit()
                 return removed
 
@@ -171,6 +174,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.room_connections = connections
     app.state.game_hub = hub
     app.state.database = database
+    app.state.maintenance_interval_seconds = MAINTENANCE_INTERVAL_SECONDS
 
     app.add_middleware(ClassroomHttpGuard)
 
@@ -197,6 +201,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
     app.include_router(health_router, prefix="/api/v1")
+    app.include_router(privacy_router, prefix="/api/v1")
     app.include_router(rooms_router, prefix="/api/v1")
     app.include_router(player_ws_router)  # WS paths are /ws/... — no /api/v1 prefix
     app.include_router(host_ws_router)

@@ -34,12 +34,15 @@ export function Timer({ question, serverOffsetMs }: { question: Question; server
   const fraction = Math.min(1, left / (question.time_limit_seconds * 1000))
 
   return (
-    <div className={`timer ${seconds <= 5 ? 'timer-urgent' : ''}`} role="timer" aria-label={t('{seconds} seconds left', { seconds })}>
+    <>
+    <div className={`timer ${seconds <= 5 ? 'timer-urgent' : ''}`} role="timer" aria-live="off" aria-label={t('{seconds} seconds left', { seconds })}>
       <div className="timer-track">
         <div className="timer-fill" style={{ width: `${fraction * 100}%` }} />
       </div>
       <span className="timer-seconds">{seconds}</span>
     </div>
+    <p className="sr-only" role="status" aria-label={t('Time warning')} aria-atomic="true">{seconds === 0 ? t('Time is up.') : seconds <= 5 ? t('Five seconds or less remain.') : ''}</p>
+    </>
   )
 }
 
@@ -72,7 +75,7 @@ export function AnswerBars({
               <span className="option-letter">{optionLetter(index)}</span>
               <span className="answer-bar-text"><bdi>{option.text}</bdi></span>
               {option.option_id === ownOptionId && <span className="own-answer-label">{t('Your answer')}</span>}
-              {isCorrect && <span className="correct-mark" aria-label={t("Correct answer")}>✓</span>}
+              {isCorrect && <span className="correct-mark"><span aria-hidden="true">✓</span><span className="sr-only">{t("Correct answer")}</span></span>}
             </div>
             <div className="answer-bar-track">
               <div className="answer-bar-fill" style={{ width: `${percentage}%` }} />
@@ -107,7 +110,7 @@ export function LeaderboardList({
           key={entry.player_id}
           className={`leaderboard-row ${entry.player_id === highlightPlayerId ? 'is-me' : ''}`}
         >
-          <span className="leaderboard-rank">{MEDALS[entry.rank - 1] ?? `#${entry.rank}`}</span>
+          <span className="leaderboard-rank"><span aria-hidden="true">{MEDALS[entry.rank - 1] ?? `#${entry.rank}`}</span><span className="sr-only">{t('Rank {rank}', { rank: entry.rank })}</span></span>
           <span className="leaderboard-name"><bdi>{entry.display_name}</bdi></span>
           <span className="leaderboard-score">{entry.total_score.toLocaleString('en-US')}</span>
         </li>
@@ -147,7 +150,7 @@ export function PlayerRoster({
     <ul className="roster" aria-label={t("Players")}>
       {players.map((player) => (
         <li key={player.player_id} className="roster-row">
-          <span className={`presence ${player.connected ? 'online' : 'offline'}`} aria-label={t(player.connected ? 'Connected' : 'Disconnected')} />
+          <span className="connection-state"><span className={`presence ${player.connected ? 'online' : 'offline'}`} aria-hidden="true" />{t(player.connected ? 'Connected' : 'Disconnected')}</span>
           <span className="roster-name"><bdi>{player.display_name}</bdi></span>
           <span className={`chip ${player.has_profile ? 'chip-done' : ''}`}>
             {t(player.has_profile ? 'Profile ✓' : 'Profile…')}

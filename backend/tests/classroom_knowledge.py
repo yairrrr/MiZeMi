@@ -154,11 +154,15 @@ def verify_finished_quiz(results):
             record = SqlAlchemyGameRepository(session).get(game_id)
         assert record.state == 'FINISHED' and len(record.questions) == len(results) == 20
         players = []
-        for p, expected in zip(record.players, fixture_players()):
-            fields = tuple(ProfileField(f.field_key, f.value, f.allow_question_usage) for f in p.profile_fields)
-            profile = PlayerProfile(p.player_id, fields)
-            assert {f.field_key: f.value for f in profile.consented_fields()} == {
-                f.field_key: f.value for f in expected.profile.fields}
+        expected_players = fixture_players()
+        assert len(record.players) == len(expected_players)
+        for p, expected in zip(record.players, expected_players):
+            assert p.display_name == expected.display_name
+            assert p.has_profile and p.profile_fields == (), 'Finished records must not retain raw profiles'
+            # Replay the reviewed synthetic fixture with the real server IDs.
+            # Playwright also checks its exact outbound profile submissions.
+            # Privacy minimization must not depend on keeping input in the DB.
+            profile = PlayerProfile(p.player_id, expected.profile.fields)
             players.append(Player(p.player_id, p.display_name, profile=profile))
         dataset = ProfileDataset(players, language='he')
         generator = QuestionGenerator(knowledge=get_knowledge())

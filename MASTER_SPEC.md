@@ -152,7 +152,7 @@ Non-consented fields are absent from ProfileDataset and invisible to rules, incl
 
 No phone/email/address/ID/password/account requirement. No profile values in URLs or logs. No other player's raw profile or individual answer in a client payload. A consenting fact may appear in generated question text/options. Scores, display names and connection/readiness status are public to the room.
 
-Default database retention: seven days, with entire expired game trees removed (including generated questions containing facts). Cleanup runs at startup and every five minutes while running; overdue cleanup runs after a sleeping service wakes. Rooms with no connections are removed after 120 idle minutes. Credentials expire with their room. Connected rooms remain in memory while their process lives.
+Default database retention: seven days from the last database save, with entire expired FINISHED game trees removed (including generated questions containing facts). Cleanup runs at startup and every five minutes while running, at most 100 expired games per transaction; outages/backlogs can delay deletion. The same transaction removes up to 500 legacy raw-profile rows from FINISHED games regardless of age, without changing their retention clock or touching active records. Shutdown waits for maintenance and persistence workers before engine disposal. Rooms with no connections are removed after 120 idle minutes. Credentials expire with their room. Connected rooms remain in memory while their process lives.
 
 ## 11. Game State Machine
 
@@ -303,7 +303,7 @@ All room mutations and event enqueueing occur under one room lock. Each socket d
 
 SQLAlchemy declarative models and repository interfaces. ORM/bound statements only; no input-interpolated SQL. Every row has UTC created/updated timestamps. Sessions own transactions; commit explicitly, roll back on failure/close. SQL error parameter printing is disabled.
 
-One finished game stores players, profiles/consent, generated questions/options, accepted answers with server times, and final scores. The original seven tables are `games`, `players`, `profile_fields`, `game_questions`, `question_options`, `answers`, `scores`. Answers/scores are additive tables, so old retained games have empty answers/scores. Writes occur off-loop at FINISHED; shutdown waits for submitted writes before disposing the engine. Persistence failure emits a safe log message, without credentials/query parameters; no durable retry queue exists.
+One finished game stores player names/IDs/status, generated questions/options/explanations, accepted answers with server times, and final scores. New snapshots never store raw profile fields or per-field consent rows. The FINISHED transition clears raw in-memory profile values, retaining an empty profile marker for reconnect/status compatibility; generated game content can still contain consented facts. The original seven tables are `games`, `players`, `profile_fields`, `game_questions`, `question_options`, `answers`, `scores`. Answers/scores are additive tables, so old retained games have empty answers/scores. Writes occur off-loop at FINISHED; shutdown waits for submitted writes before disposing the engine. Persistence failure emits a safe log message, without credentials/query parameters; no durable retry queue exists.
 
 Active rooms, token digests and active games are memory-only; process restart invalidates their credentials and loses unfinished games. Finished records are internal read-only repository records, not rehydrated active rooms. Whole-tree upserts, rollback and retention cascades work on SQLite and PostgreSQL.
 
@@ -409,3 +409,14 @@ Additional agent obligations:
 ---
 
 *End of MASTER_SPEC.md. If you are about to write code and haven't read §21 and §22 — go back and read them.*
+
+
+## Legal information and accessibility implementation (18 September 2026)
+
+Public frontend routes `/privacy`, `/terms`, `/accessibility` have English/Hebrew text and `?lang=en|he` deep links. They do not initialize a game socket. Shared footer links open separately during play with `noopener noreferrer`, preserving drafts and tab credentials. GitHub Pages links to these authoritative Render pages. They are disclosures, not legal certification.
+
+`GET /api/v1/privacy-info` is PUBLIC and returns only `policy_version`, configured `retention_days`, `room_idle_ttl_minutes`, `maintenance_interval_seconds`, and `raw_profiles_persisted=false`. The collection notice fetches these facts without credentials/cache; submission remains disabled if the policy version/capability is incompatible or unavailable. This prevents deploying new storage promises against an old backend. Other public game and WebSocket contracts are unchanged.
+
+Question-use labels explicitly control question generation/derivation, not transmission/storage. A visible pre-submission notice explains sharing, retention, optionality and the lack of profile editing. No new consent checkbox, age gate, tracking, cookie banner or automated deletion API was added. Owner-approved public operator identification is `yairrrr`. Legal pages and the collection notice link to `https://github.com/yairrrr/MiZeMi/issues` for initial non-sensitive contact only. They warn against public personal details and state the GitHub-account/repository-access requirement. Private verification/details must wait for a separately agreed private channel; Issues is not that channel. No email, phone or private address is published. Repository accessibility and confidential follow-up remain practical limits. The contact-text update date is 19 September 2026; the backend privacy capability version remains unchanged because data processing did not change.
+
+Accessibility work includes landmarks/skip link, associated field errors, keyboard stage focus, text connection/rank/result cues, contrast, 320px reflow and reduced motion. The readable timer is not a live announcement each second; it announces only the near-deadline warning and expiry. Standard 20-second rules remain. Individual time extensions, real assistive-technology spoken-output evaluation and legal applicability review remain unresolved. See `LEGAL_IMPLEMENTATION_REPORT.md` for verification and limits.

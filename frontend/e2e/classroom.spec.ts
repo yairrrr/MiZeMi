@@ -2,7 +2,7 @@ import { test, expect, type Page } from '@playwright/test'
 import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { translate, type MessageKey, type Values } from '../src/i18n/messages'
-import type { ServerMessage, Question, QuestionEnded } from '../src/types'
+import type { ServerMessage, Question, QuestionEnded, ProfileField } from '../src/types'
 
 const knowledgeFixture = JSON.parse(readFileSync(new URL('./fixtures/knowledge-room.json', import.meta.url), 'utf8')) as { profiles: string[][] }
 
@@ -19,6 +19,7 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
   const pages = await Promise.all(contexts.map((context) => context.newPage()))
   const [host, ...players] = pages
   const messages = new Map<Page, ServerMessage[]>()
+  const submissions = new Map<Page, ProfileField[]>()
   const errors: string[] = []
   const externalRequests: string[] = []
   const finalQuestions: Pick<QuestionEnded, 'question_id' | 'text' | 'options' | 'correct_option_id' | 'explanation'>[] = []
@@ -28,9 +29,13 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
     page.on('request', (request) => {
       if (!['http://127.0.0.1:4173', 'http://127.0.0.1:8765'].includes(new URL(request.url()).origin)) externalRequests.push(request.url())
     })
-    page.on('websocket', (ws) => ws.on('framereceived', ({ payload }) => {
-      messages.get(page)!.push(JSON.parse(String(payload)))
-    }))
+    page.on('websocket', (ws) => {
+      ws.on('framereceived', ({ payload }) => messages.get(page)!.push(JSON.parse(String(payload))))
+      ws.on('framesent', ({ payload }) => {
+        const message = JSON.parse(String(payload))
+        if (message.event === 'player.profile_submit') submissions.set(page, message.payload.fields)
+      })
+    })
   }
   const latest = <T>(page: Page, event: string): T | undefined =>
     messages.get(page)!.filter((m) => m.event === event).at(-1)?.payload as T | undefined
@@ -82,12 +87,20 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
       await page.getByLabel(t('Age') + t(' (optional)')).fill(age)
       await page.getByLabel(t('Favorite movie') + t(' (optional)')).fill(movie)
       await page.getByLabel(t('Something interesting about me') + t(' (optional)')).fill('PRIVATE_MARKER_DO_NOT_SHARE')
-      await expect(page.getByLabel(t('Use {field} in questions', { field: t('Something interesting about me') }))).not.toBeChecked()
+      await expect(page.getByLabel(t('Allow {field} to be used for game questions', { field: t('Something interesting about me') }))).not.toBeChecked()
       await noOverflow(page)
       if (i === 0) await page.screenshot({ path: `test-results/${prefix}-profile.png`, fullPage: true })
       await page.getByRole('button', { name: t('Save my profile') }).click()
       await page.getByRole('button', { name: t('I’m ready') }).click()
       await expect(page.getByText(t('You’re ready!'))).toBeVisible()
+      if (knowledge) {
+        // Input evidence stays in this synthetic test; raw profiles no longer persist.
+        const keys = ['city', 'favorite_food', 'hobby', 'favorite_music', 'age', 'favorite_movie', 'favorite_artist', 'favorite_song']
+        expect(submissions.get(page)).toEqual([
+          ...keys.map((field_key, index) => ({ field_key, value: field_key === 'age' ? Number(profiles[i][index + 1]) : profiles[i][index + 1], allow_question_usage: true })),
+          { field_key: 'personal_fact', value: 'PRIVATE_MARKER_DO_NOT_SHARE', allow_question_usage: false },
+        ])
+      }
       await expect(host.getByRole('button', { name: t('Start game'), exact: true })).toBeEnabled()
     }
     await expect(host.getByRole('list', { name: t('Players') }).getByRole('listitem')).toHaveCount(playerCount)

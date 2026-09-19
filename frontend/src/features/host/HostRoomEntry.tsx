@@ -18,6 +18,7 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
     const questionCount = Number(count)
     if (!/^\d+$/.test(count) || !Number.isInteger(questionCount) || questionCount < 1 || questionCount > 50) {
       setError('Choose a whole number from 1 to 50.')
+      document.getElementById('question-count')?.focus()
       return
     }
     isPending.current = true
@@ -47,7 +48,8 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
             <button type="button" aria-label={t('Fewer questions')} disabled={Number(count) <= 1}
               onClick={() => setCount(String(Math.max(1, (Number(count) || 20) - 1)))}>−</button>
             <input id="question-count" type="number" inputMode="numeric" min={1} max={50} step={1}
-              value={count} onChange={(e) => setCount(e.target.value)} aria-describedby="count-help" />
+              value={count} onChange={(e) => setCount(e.target.value)} aria-invalid={error === 'Choose a whole number from 1 to 50.' || undefined}
+              aria-describedby={error === 'Choose a whole number from 1 to 50.' ? 'count-help host-entry-error' : 'count-help'} />
             <button type="button" aria-label={t('More questions')} disabled={Number(count) >= 50}
               onClick={() => setCount(String(Math.min(50, (Number(count) || 20) + 1)))}>+</button>
           </div>
@@ -63,7 +65,7 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
           </button>
         </fieldset>
       </form>
-      {error !== null && <p className="status-message error-message" role="alert">
+      {error !== null && <p id="host-entry-error" className="status-message error-message" role="alert">
         {typeof error === 'string' ? t(error) : publicError(language, error)}
       </p>}
     </section>

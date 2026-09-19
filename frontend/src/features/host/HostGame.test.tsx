@@ -75,7 +75,7 @@ describe('HostGameView', () => {
     const roster = screen.getByRole('list', { name: 'Players' })
     expect(roster).toHaveTextContent('Dana')
     expect(roster).toHaveTextContent('Profile…')
-    expect(screen.getAllByLabelText('Disconnected')).toHaveLength(1)
+    expect(screen.getAllByText('Disconnected', { exact: true })).toHaveLength(1)
   })
 
   test('start is disabled until everyone is ready', () => {

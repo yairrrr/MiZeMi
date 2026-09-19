@@ -40,8 +40,8 @@ describe('ProfileForm', () => {
   test('the personal fact is not used in questions unless the player opts in', () => {
     render(<ProfileForm playerId="p1" displayName="Dana" send={vi.fn()} serverError={null} />)
 
-    expect(screen.getByLabelText('Use Something interesting about me in questions')).not.toBeChecked()
-    expect(screen.getByLabelText('Use City in questions')).toBeChecked()
+    expect(screen.getByLabelText('Allow Something interesting about me to be used for game questions')).not.toBeChecked()
+    expect(screen.getByLabelText('Allow City to be used for game questions')).toBeChecked()
   })
 
   test('players can withhold any field from questions', async () => {
@@ -50,7 +50,7 @@ describe('ProfileForm', () => {
     render(<ProfileForm playerId="p1" displayName="Dana" send={send} serverError={null} />)
 
     await fillRequired(user)
-    await user.click(screen.getByLabelText('Use City in questions'))
+    await user.click(screen.getByLabelText('Allow City to be used for game questions'))
     await user.click(screen.getByRole('button', { name: 'Save my profile' }))
 
     const payload = send.mock.calls[0][1] as { fields: { field_key: string; allow_question_usage: boolean }[] }
@@ -79,12 +79,12 @@ describe('buildProfileFields', () => {
 
   test('rejects contact details and ID-like numbers', () => {
     const result = buildProfileFields({ ...required, personal_fact: 'mail dana@example.com' }, initialConsent())
-    expect(result).toEqual({ error: PRIVACY_MESSAGE })
+    expect(result).toEqual({ error: PRIVACY_MESSAGE, fieldKey: 'personal_fact' })
   })
 
   test('rejects an out-of-range age', () => {
     expect(buildProfileFields({ ...required, age: '150' }, initialConsent())).toEqual({
-      error: 'Age must be between 5 and 120.',
+      error: 'Age must be between 5 and 120.', fieldKey: 'age',
     })
   })
 
@@ -117,3 +117,9 @@ describe('buildProfileFields', () => {
   await user.click(screen.getByRole('button', { name: 'Save my profile' }))
   expect(props.send).toHaveBeenCalledTimes(2)
  })
+
+vi.mock('../../legal/privacyInfo', () => ({ usePrivacyInfo: () => ({
+  info: { policy_version: '2026-09-18', retention_days: 7, room_idle_ttl_minutes: 120,
+    maintenance_interval_seconds: 300, raw_profiles_persisted: false },
+  status: 'ready', retry: () => {},
+}) }))
