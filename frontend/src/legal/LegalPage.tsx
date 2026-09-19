@@ -4,7 +4,10 @@ import { useI18n } from '../i18n/I18n'
 import { ContactDetails } from './ContactDetails'
 import { legalCopy, type LegalPageName } from './content'
 import { RetentionDetails } from './RetentionDetails'
-import { POLICY_VERSION, usePrivacyInfo } from './privacyInfo'
+import { usePrivacyInfo } from './privacyInfo'
+
+// Contact-copy update; the backend privacy capability version is unchanged.
+const LEGAL_UPDATED_DATE = '2026-09-19'
 
 export function legalPageFromPath(path: string): LegalPageName | null {
   const name = path.replace(/\/$/, '').slice(1)
@@ -26,7 +29,7 @@ export function LegalPage({ page }: { page: LegalPageName }) {
       </a>
       <p className="eyebrow">{t('About your experience')}</p>
       <h1>{copy.title}</h1>
-      <p className="legal-date">{t('Updated:')} <time dateTime={POLICY_VERSION}>{language === 'he' ? '18 בספטמבר 2026' : '18 September 2026'}</time></p>
+      <p className="legal-date">{t('Updated:')} <time dateTime={LEGAL_UPDATED_DATE}>{language === 'he' ? '19 בספטמבר 2026' : '19 September 2026'}</time></p>
       <p className="legal-intro">{copy.intro}</p>
     </header>
     <nav className="legal-contents" aria-label={t('On this page')}>

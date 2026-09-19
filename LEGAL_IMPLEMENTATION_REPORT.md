@@ -52,13 +52,13 @@ No retention period was invented or shortened silently. No database migration dr
 
 The knowledge E2E oracle previously reconstructed its input from saved profiles. The first complete regression therefore correctly failed after minimization. It now reconstructs the reviewed synthetic fixture using persisted player IDs/names, asserts stored profiles are empty, and compares the exact final public/stored/replayed questions and answers. Playwright additionally asserts the exact outbound synthetic profile fields and flags. Semantic media/domain coverage, independent classification/count checks, supporting explanations and determinism were retained. No debug metadata was exposed to production clients.
 
-## 5. Privacy request mechanism — owner action remains
+## 5. Privacy request mechanism — updated 19 September 2026
 
-No dedicated authorized public contact method or operator identity was supplied or found in the repository. Private Git-author email addresses were **not** repurposed. The pages truthfully say the channel has not yet been published; an arranged demonstration can use an existing private organizer/operator channel. Users without that channel are told to avoid real personal information.
+The owner approved public operator identification **yairrrr** and the MiZeMi GitHub Issues page for **initial non-sensitive contact**. The earlier missing-identity/contact placeholder has been replaced in both languages and the collection notice. No email, phone, home address, invented private inbox or private Git-author address is published. Exact wording and checks are in §16.
 
-The text explains requests for access/correction/deletion where applicable, verification before disclosure, and why a room code/name alone is insufficient. It discourages public GitHub issues containing personal data or credentials. No unauthenticated deletion endpoint or unsafe identity lookup was added. A host's pre-game removal is not presented as a general privacy-deletion service.
+The text does not ask users to post personal request details, identifiers, credentials, identity documents or identifying screenshots. It explicitly requires a separately agreed private channel before exchanging confidential information or verifying identity. It does not claim that channel already exists. No unauthenticated deletion endpoint or unsafe identity lookup was added.
 
-**Before real-user promotion:** owner must provide the public operator identification and an authorized private contact channel, appoint someone to receive requests and establish proportionate verification/handling. The fallback is not a complete public rights-request service. No guaranteed response period is invented.
+**Remaining operational limits:** GitHub API metadata checked on 19 September 2026 reports Issues enabled but the repository private, so the link is not generally accessible. Publishing links does not change permissions. Confidential requests still require a suitable private follow-up method and proportionate verification; public Issues alone cannot provide that. The public handle is owner-approved identification, not an independent legal finding that every applicable identity-disclosure requirement is met.
 
 ## 6. Terms implementation
 
@@ -82,7 +82,7 @@ The first accessibility checks identified a language-control landmark gap and en
 
 ## 8. Accessibility statement
 
-The bilingual statement describes measures actually implemented and tests actually performed. It explicitly records the unresolved fixed timer, lack of per-player extension/pause/untimed mode, missing public contact, and lack of VoiceOver/NVDA/TalkBack spoken-output or independent conformance assessment. It does not claim that synchronized gameplay automatically qualifies for a timing exception, or that MiZeMi is fully compliant/certified.
+The bilingual statement describes measures actually implemented and tests actually performed. It explicitly records the unresolved fixed timer, lack of per-player extension/pause/untimed mode, contact access/private-follow-up limits, and lack of VoiceOver/NVDA/TalkBack spoken-output or independent conformance assessment. It does not claim that synchronized gameplay automatically qualifies for a timing exception, or that MiZeMi is fully compliant/certified.
 
 ## 9. GitHub Pages changes
 
@@ -152,14 +152,14 @@ Changed files are confined to backend minimization/API/tests, frontend legal UI/
 
 **Owner actions before broader real-user use:**
 
-1. Supply an authorized private privacy/accessibility contact and suitable public operator identification; confirm who receives and verifies requests. Replace the explicit contact limitation only with real details. Confirm the intended audience. Do not publish home/phone or repurpose a contributor's private email.
+1. Operator identification is now `yairrrr`, and initial contact is MiZeMi GitHub Issues. Ensure intended users can access Issues and establish suitable private follow-up for requests requiring personal details or verification. The repository is currently private. No private email/phone/address is to be published. Confirm the intended audience separately.
 2. Resolve provider contract/security/backup/location/transfer arrangements and proportionate incident/request procedures. Verify the actual environment's retention settings. Review what legal basis and consent evidence are appropriate; finished records intentionally do not retain the raw consent form.
 3. Obtain the needed Israeli privacy/accessibility/minor-use professional assessment, especially operator-specific applicability/exemptions and the fixed 20-second timer. No universal registration/notification duty or arbitrary age threshold is introduced here.
 4. Test with real assistive technology and people who need accommodations; decide whether timed play needs an accessible alternative before offering it to that audience.
 5. Independently resolve the earlier contributor/logo/Git-identity publication gates before changing repository visibility. This implementation does not settle ownership.
 6. Review these commits and text. When ready, the owner may push this branch and verify GitHub Actions; any deployment is a separate decision. Deploy compatible backend before frontend, then Pages; verify legal deep links, policy facts, notices, cleanup and a synthetic game on the deployed architecture.
 
-**Current limited/demo use:** no new immediate credential exposure or authorization bypass was found. Controlled synthetic-data demonstrations can continue. Do not treat the current fallback as permission for unattended real-person data collection: pause that use until participants have appropriate operator/contact disclosure and a reachable private request channel. Do not expand to child-directed use or broad promotion while the identified gaps remain. Existing live code has not acquired these fixes automatically.
+**Current limited/demo use:** no new immediate credential exposure or authorization bypass was found. Controlled synthetic-data demonstrations can continue. Do not treat a public initial-contact link as a complete confidential request service: resolve access and private follow-up before unattended real-person data collection. Do not expand to child-directed use or broad promotion while the identified gaps remain. Existing live code has not acquired these fixes automatically.
 
 Implementation references, consulted **18 September 2026**:
 
@@ -167,3 +167,64 @@ Implementation references, consulted **18 September 2026**:
 - BEST PRACTICE: [W3C Understanding Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html) — fixed timing limitation; exception is not assumed.
 - PROVIDER PRIVACY TERMS: [Render Privacy Policy](https://render.com/privacy), [Neon privacy link](https://neon.com/privacy-policy) (redirects to [Databricks Privacy Notice](https://www.databricks.com/legal/privacynotice)) — provider disclosure, not proof of this owner's account arrangements.
 - The current-law/legal-source analysis and redistribution terms remain in `LEGAL_READINESS_REPORT.md` §27 and the checked-in knowledge `LICENSES.md`; their qualifications are preserved. This implementation does not independently determine statutory applicability or claim certification.
+
+
+## 16. Owner-approved legal contact finalization — 19 September 2026
+
+Scope: operator/contact copy, its tests and directly related documentation only. Operator: **yairrrr**. Initial-contact URL: **https://github.com/yairrrr/MiZeMi/issues**. All three legal pages use one shared contact component; the collection notice uses its shorter warning. Contact links open separately with `noopener noreferrer`, no prefilled player data/query parameters and no private-contact scheme. Text date updated to 19 September; no backend privacy-capability or processing change.
+
+### Exact public wording — English
+
+Project operator: yairrrr
+
+For privacy questions, access, correction/deletion or accessibility requests, start with a non-sensitive message on [MiZeMi GitHub Issues](https://github.com/yairrrr/MiZeMi/issues).
+
+Treat Issues as public: your GitHub username, message and attachments may be visible to others. Do not post personal or sensitive information, profile answers, room/player identifiers, credentials, identity documents or identifying screenshots.
+
+For a request involving personal information, post only this initial message: “I would like to contact the operator about a privacy request.” Do not include the request details.
+
+Any necessary personal details or identity verification must wait until a suitable private channel has been agreed with the operator. Public Issues alone cannot complete a request that requires confidential information. This page does not provide a private channel.
+
+A GitHub account and access to the repository are required. If the Issues page is unavailable to you, this contact route cannot be used. For an arranged demonstration, you may use an existing private organizer contact. Do not publish personal information to work around an access problem.
+
+Collection-notice warning (in addition to operator and contact link):
+
+Use Issues only for an initial non-sensitive message. Do not post personal information, profile answers, room/player identifiers or credentials. Personal details and identity verification require a separately agreed private channel; Issues is not that channel. A GitHub account and repository access are required.
+
+
+### Exact public wording — Hebrew
+
+מפעיל הפרויקט: yairrrr
+
+לשאלות פרטיות, לבקשות גישה למידע, תיקון או מחיקה, או לפניות בנושא נגישות, התחילו בהודעה שאינה מכילה מידע רגיש בעמוד [הפניות של MiZeMi ב־GitHub](https://github.com/yairrrr/MiZeMi/issues).
+
+התייחסו לפניות כאל פרסום ציבורי: שם המשתמש שלכם, ההודעה והקבצים המצורפים עשויים להיות גלויים לאחרים. אל תפרסמו מידע אישי או רגיש, תשובות מהפרופיל, מזהי חדר או משתתף, אישורי כניסה, מסמכי זיהוי או צילומי מסך מזהים.
+
+לבקשה הכרוכה במידע אישי, פרסמו רק את הודעת הפתיחה הזאת: ״ברצוני ליצור קשר עם המפעיל בנוגע לבקשת פרטיות.״ אל תכללו את פרטי הבקשה.
+
+יש להמתין עם מסירת פרטים אישיים או אימות זהות עד לתיאום ערוץ פרטי מתאים עם המפעיל. אי אפשר להשלים בפנייה ציבורית בלבד בקשה המחייבת מידע חסוי. עמוד זה אינו מספק ערוץ פרטי.
+
+נדרשים חשבון GitHub והרשאת גישה למאגר. אם עמוד הפניות אינו זמין לכם, אי אפשר להשתמש בדרך הקשר הזאת. בהדגמה מתואמת אפשר להשתמש בערוץ פרטי קיים מול המארגן. אל תפרסמו מידע אישי כדי לעקוף בעיית גישה.
+
+אזהרה בהודעת איסוף המידע, בנוסף למפעיל ולקישור הפנייה:
+
+השתמשו בעמוד הפניות רק להודעה ראשונית שאינה מכילה מידע רגיש. אל תפרסמו מידע אישי, תשובות מהפרופיל, מזהי חדר או משתתף, או אישורי כניסה. מסירת פרטים אישיים ואימות זהות דורשים ערוץ פרטי שתואם בנפרד; עמוד הפניות אינו ערוץ כזה. נדרשים חשבון GitHub והרשאת גישה למאגר.
+
+The link also includes the existing screen-reader description “(opens in a new tab)” / “(נפתח בלשונית חדשה)”. Privacy provider text now explains that GitHub processes the account and Issue content. Accessibility reporting instructions request only non-sensitive public information; no diagnosis is requested. Terms no longer imply an existing private contact route.
+
+### Verification of this contact-only change
+
+| Check | Command/method | Result |
+|---|---|---|
+| Frontend complete tests | `npm --prefix frontend test` | **399 passed / 16 files**; 8 new contact tests cover both languages, all legal pages and collection notice |
+| Types | `npm --prefix frontend run type-check` | PASS |
+| Legal/accessibility browser checks | `npm run test:e2e -- legal-accessibility.spec.ts` in frontend | **5 passed**, 16.6s; axe, EN/HE, keyboard contact-link access, both game journeys, 320px/reflow, reduced motion and Pages |
+| Production build | Public Render HTTPS/WSS URL environment, `npm run build` | PASS |
+| Diff whitespace | `git diff --check` | PASS |
+| Existing repository contact access | Read-only `gh api repos/yairrrr/MiZeMi`, restricted to visibility/has_issues/html_url | `private`, Issues enabled; **not universally available** |
+| Actual public Issue submission / private request handling | Not performed | No message sent, no channel fabricated |
+| Deployment / push / repository visibility | Not performed | Unchanged |
+
+[GitHub: Creating an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue), retrieved **19 September 2026** (PLATFORM DOCUMENTATION), confirms that creating an issue requires repository read access and enabled Issues. That supports the access warning; it does not establish private-request handling or legal sufficiency.
+
+The remaining contact blocker is operational: intended users need an accessible initial contact route, and confidential follow-up/identity verification needs a suitable separately agreed private channel. No private channel is claimed to exist, and none is established by this change. The owner can choose an appropriate method without publishing a private email/phone/home address. Other prior legal/publication determinations are outside this contact-only update and are not declared resolved.

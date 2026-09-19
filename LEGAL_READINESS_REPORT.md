@@ -1,5 +1,7 @@
 # MiZeMi legal, privacy, accessibility and licensing readiness audit
 
+**Contact update: 19 September 2026.** Owner-approved public identity and initial contact are recorded in §30; this supersedes earlier missing-identity/contact placeholders.
+
 **Implementation update: 18 September 2026.** Sections 1–28 below preserve the historical audit/publication evidence. Their pre-implementation storage/UI findings are superseded by §29 and `LEGAL_IMPLEMENTATION_REPORT.md`. The implementation is local and has not been deployed. Outstanding owner/professional-review gates remain.
 
 Audit and source retrieval date: **17 September 2026**. This is an engineering readiness assessment informed by primary legal materials, not a legal opinion or accessibility certification. During the original audit, no policy, terms, age restriction, retention rule, software license, product behavior, deployment or repository visibility was changed. The subsequent authorized implementation is recorded in §29.
@@ -1350,3 +1352,16 @@ The exact public-source gates remain contributor publication authority, logo acc
 PUBLIC SERVICE LEGAL READINESS: NOT YET READY
 
 The immediate owner next action is to provide an authorized private contact method and suitable public operator identification, review the bilingual copy and decide the intended audience. Then review the provider/legal/accessibility gaps before a separately authorized release or promotion.
+
+
+## 30. Owner contact decisions implemented — 19 September 2026
+
+Public operator identification: **yairrrr**. Owner-approved initial contact: [MiZeMi GitHub Issues](https://github.com/yairrrr/MiZeMi/issues), for privacy/access/correction/deletion and accessibility messages. The shared English/Hebrew contact block appears on Privacy, Terms and Accessibility; a shorter warning is in the collection notice. Placeholder operator/contact text is removed from those pages. No email, phone, home address or other private contact information is published or claimed.
+
+Users are told to post only an initial non-sensitive message, with the exact suggested wording “I would like to contact the operator about a privacy request.” / “ברצוני ליצור קשר עם המפעיל בנוגע לבקשת פרטיות.” They must not publish request details, raw profiles, room/player identifiers, credentials, identity documents or identifying screenshots. Any necessary confidential details or identity verification must wait for a separately agreed private channel. The page explicitly says it does not provide that channel. Full verbatim wording is in `LEGAL_IMPLEMENTATION_REPORT.md` §16.
+
+Read-only GitHub API metadata on 19 September confirms **Issues enabled, repository private**. No settings were changed. The link is therefore not generally available to people without repository access. GitHub's [official issue-creation documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue), retrieved 19 September 2026, supports the access requirement. This is platform behavior, not a legal-compliance finding.
+
+**Resolved:** the owner has selected a public handle and initial-contact mechanism; bilingual copy and contact safety warnings are implemented. **Not resolved by a public Issue link:** access for all intended users while the repository is private, and a confidential method of handling requests that need personal details or identity verification. No safe private handling is promised where no private channel is agreed. These remain conditions for broader real-user use; the handle is not independently certified as satisfying every possible statutory identification duty. Earlier contributor/logo/author-privacy gates and other professional-review items are unchanged.
+
+Verification: 399 frontend tests, type-check, public-URL production build, and 5 Playwright legal/accessibility scenarios passed, including EN/HE keyboard/axe/mobile checks. `git diff --check` passed. No backend behavior, retention, consent, scoring, dependency lock, deployment, repository visibility or remote messages were changed. The original unrelated files remain untouched. See implementation report §16 for commands and exact text.

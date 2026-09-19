@@ -35,7 +35,6 @@ export const hebrew = {
   "Time is up.": "הזמן הסתיים.",
   "Five seconds or less remain.": "נותרו חמש שניות או פחות.",
   "Rank {rank}": "מקום {rank}",
-  "Only use real personal information if your organizer has given you a private way to reach the operator.": "השתמשו במידע אישי אמיתי רק אם המארגן מסר לכם דרך פרטית לפנות למפעיל.",
   "Third-party software notices": "הודעות רישוי תוכנה חיצונית",
   'e.g. Titanic 1997': 'למשל: טיטניק 1997',
   'Song title, with artist if needed': 'שם השיר, ואם צריך גם האמן',

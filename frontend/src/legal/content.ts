@@ -12,7 +12,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
       sections: [
         { id: 'information', title: 'What you provide', paragraphs: [
           'Joining requires a room code and a display name that the group will see. A profile requires a city or locality, favorite food, hobby and music style. Age, favorite movie, favorite artist, favorite song and a personal fact are optional. Leave optional fields blank if you prefer. Participation is voluntary; without the required fields you cannot complete the profile and play.',
-          'Do not enter passwords, identity numbers, contact details, a home address, sensitive personal information or private information about someone else. MiZeMi does not request an account, email address, birthdate, precise device location, microphone, camera or payment details. Text fields can still contain personal information, so choose light, appropriate answers.',
+          'Do not enter passwords, identity numbers, contact details, a home address, sensitive personal information or private information about someone else. The game does not request an account, email address, birthdate, precise device location, microphone, camera or payment details. Text fields can still contain personal information, so choose light, appropriate answers.',
         ] },
         { id: 'purpose', title: 'Running the game and generating questions', paragraphs: [
           'The server uses your name, profile, readiness and connection status to organize the room. It receives your selected quiz answers and records server timing, correctness and scores. Names, status, scores and rankings are visible to the group. The game shows aggregate answer distributions and each player their own result; it does not send the complete raw profile to other players.',
@@ -30,7 +30,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
         ] },
         { id: 'providers', title: 'Hosting and service providers', paragraphs: [
           'Render serves the frontend and FastAPI backend, including WebSocket traffic. The production database is PostgreSQL provided by Neon. These services process the relevant network requests and stored game records on behalf of operating the project; this does not mean the providers are unable to access data.',
-          'The separate project landing page and source repository use GitHub/GitHub Pages. Visiting that landing page sends connection information to GitHub; it does not submit a game profile to MiZeMi. Following an external link is governed by that destination’s practices.',
+          'The separate project landing page and source repository use GitHub/GitHub Pages. Visiting that landing page sends connection information to GitHub; it does not submit a game profile to MiZeMi. The contact link also leads to GitHub, where your account and any submitted Issue content are processed by GitHub; only send an initial non-sensitive message. Following an external link is governed by that destination’s practices.',
           'Connections involve IP addresses, request times and browser/network metadata. The application uses bounded in-memory request counters for abuse protection and generic operational errors; it does not intentionally log complete profiles or session credentials. Provider logs, account arrangements, backup retention and processing regions are not fully verified. Cloud processing may take place outside Israel. No promise is made that all copies stay in a particular country.',
         ] },
         { id: 'security', title: 'Security and the limits of sharing', paragraphs: [
@@ -74,7 +74,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
           'Knowledge classifications or generated questions can be incomplete or wrong. Scores are for friendly gameplay, not educational grading, employment decisions or judgments about a person. The service may change or stop. Nothing here excludes liability or a remedy where applicable law does not allow that exclusion.',
         ] },
         { id: 'contact', title: 'Questions, concerns and privacy', paragraphs: [
-          'The Privacy Policy explains collection, storage, recipients, question-use choices and available request handling. Contact the operator privately about an issue without posting another person’s information or a session credential. No exclusive court, governing-law clause or absolute liability waiver is imposed by this demo text.',
+          'The Privacy Policy explains collection, storage, recipients, question-use choices and available request handling. Use the initial-contact instructions below; public Issues are not a private request channel. No exclusive court, governing-law clause or absolute liability waiver is imposed by this demo text.',
         ] },
       ],
     },
@@ -96,7 +96,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
           'Automated checks and keyboard browser tests do not replace evaluation by people using assistive technology. Spoken-output testing with VoiceOver, NVDA or TalkBack and an independent accessibility conformance assessment have not been completed. Browser zoom and device behavior can vary. These are known verification limits, not a claim that every barrier has been found.',
         ] },
         { id: 'report', title: 'Report a barrier or request help', paragraphs: [
-          'Describe the page or game stage, the action that was difficult and, if useful, your browser and assistive technology. You do not need to disclose a diagnosis. Remove player names, private profile information and credentials from any screenshot. The contact limitation below remains unresolved and should be addressed before broader public use.',
+          'Describe the page or game stage, the action that was difficult and, if useful, your browser and assistive technology. You do not need to disclose a diagnosis. Remove player names, private profile information and credentials from any screenshot. Use the contact instructions below for an initial non-sensitive report; keep personal details out of public Issues.',
         ] },
       ],
     },
@@ -126,7 +126,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
         ] },
         { id: 'providers', title: 'אחסון וספקי שירות', paragraphs: [
           'Render מארח את הממשק ואת שרת המשחק, לרבות תעבורת WebSocket. מסד הנתונים בייצור הוא PostgreSQL בשירות Neon. השירותים האלה מעבדים את בקשות הרשת ורשומות המשחק הרלוונטיות לצורך הפעלת הפרויקט; אין פירוש הדבר שלספקים אין אפשרות לגשת למידע.',
-          'עמוד הפרויקט הנפרד ומאגר הקוד משתמשים ב־GitHub וב־GitHub Pages. ביקור בעמוד הפרויקט מעביר מידע חיבור ל־GitHub, אך אינו שולח פרופיל משחק ל־MiZeMi. לחיצה על קישור חיצוני כפופה לנוהלי היעד שאליו עוברים.',
+          'עמוד הפרויקט הנפרד ומאגר הקוד משתמשים ב־GitHub וב־GitHub Pages. ביקור בעמוד הפרויקט מעביר מידע חיבור ל־GitHub, אך אינו שולח פרופיל משחק ל־MiZeMi. גם קישור הפנייה מוביל ל־GitHub, שמעבד את החשבון ואת תוכן הפנייה שתשלחו; שלחו רק הודעה ראשונית שאינה מכילה מידע רגיש. לחיצה על קישור חיצוני כפופה לנוהלי היעד שאליו עוברים.',
           'חיבורים כוללים כתובות IP, זמני בקשות ומידע על הדפדפן והרשת. היישום מחזיק מוני בקשות מוגבלים בזיכרון להגנה מפני שימוש לרעה ורושם שגיאות תפעוליות כלליות; הוא אינו רושם בכוונה פרופילים מלאים או אישורי כניסה. יומני הספקים, הסכמי החשבון, תקופות שמירת הגיבויים ואזורי העיבוד לא אומתו במלואם. עיבוד בענן עשוי להתבצע מחוץ לישראל. אין הבטחה שכל העותקים נמצאים במדינה מסוימת.',
         ] },
         { id: 'security', title: 'אבטחה וגבולות השיתוף', paragraphs: [
@@ -170,7 +170,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
           'סיווגי הידע או השאלות שנוצרו יכולים להיות חלקיים או שגויים. הניקוד מיועד למשחק חברתי, לא לציונים בלימודים, להחלטות תעסוקתיות או לשיפוט של אדם. השירות עשוי להשתנות או להיפסק. אין כאן שלילה של אחריות או סעד במקום שהדין אינו מאפשר זאת.',
         ] },
         { id: 'contact', title: 'שאלות, בעיות ופרטיות', paragraphs: [
-          'מדיניות הפרטיות מסבירה איסוף, שמירה, נמענים, בחירות שימוש בשאלות ואפשרויות טיפול בבקשות. פנו למפעיל בפרטיות בלי לפרסם מידע על אדם אחר או אישור כניסה. הטקסט הזה אינו קובע בית משפט בלעדי, תניית דין חל או ויתור מוחלט על אחריות.',
+          'מדיניות הפרטיות מסבירה איסוף, שמירה, נמענים, בחירות שימוש בשאלות ואפשרויות טיפול בבקשות. פעלו לפי הוראות הפנייה הראשונית שלהלן; עמוד הפניות הציבורי אינו ערוץ פרטי לטיפול בבקשות. הטקסט הזה אינו קובע בית משפט בלעדי, תניית דין חל או ויתור מוחלט על אחריות.',
         ] },
       ],
     },
@@ -192,7 +192,7 @@ export const legalCopy: Record<Language, Record<LegalPageName, PageCopy>> = {
           'בדיקות אוטומטיות ובדיקות מקלדת בדפדפן אינן מחליפות בדיקה עם אנשים המשתמשים בטכנולוגיה מסייעת. לא הושלמה בדיקת פלט קולי עם VoiceOver, NVDA או TalkBack ולא בוצעה הערכת התאמה עצמאית. הגדלה והתנהגות מכשירים עשויות להשתנות. אלו מגבלות אימות ידועות, ולא טענה שכל החסמים אותרו.',
         ] },
         { id: 'report', title: 'דיווח על חסם או בקשת עזרה', paragraphs: [
-          'תארו את העמוד או השלב במשחק, את הפעולה שהייתה קשה, ואם מועיל גם את הדפדפן ואת הטכנולוגיה המסייעת. אין צורך לחשוף אבחנה רפואית. הסירו שמות משתתפים, פרופילים פרטיים ואישורי כניסה מכל צילום מסך. מגבלת הקשר שלהלן טרם נפתרה ויש לטפל בה לפני הרחבת השימוש לציבור.',
+          'תארו את העמוד או השלב במשחק, את הפעולה שהייתה קשה, ואם מועיל גם את הדפדפן ואת הטכנולוגיה המסייעת. אין צורך לחשוף אבחנה רפואית. הסירו שמות משתתפים, פרופילים פרטיים ואישורי כניסה מכל צילום מסך. השתמשו בהוראות הפנייה שלהלן לדיווח ראשוני שאינו מכיל מידע רגיש; אל תפרסמו פרטים אישיים בפנייה ציבורית.',
         ] },
       ],
     },

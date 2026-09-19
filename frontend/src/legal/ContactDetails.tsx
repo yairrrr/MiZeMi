@@ -1,16 +1,43 @@
 import { useI18n } from '../i18n/I18n'
 
-// No private Git author address is repurposed as a public support address.
-// Replace this disclosure only after the operator supplies an authorized channel.
-export function ContactDetails() {
-  const { language } = useI18n()
-  return language === 'he' ? <>
-    <p>טרם פורסם ערוץ קשר פרטי ייעודי עם מפעיל הפרויקט. בהדגמה מתואמת, פנו לאדם שהזמין אתכם דרך ערוץ פרטי שכבר קיים ביניכם ובקשו ממנו להעביר למפעיל שאלה בנושא פרטיות או נגישות. אם אין לכם דרך להגיע למפעיל, הימנעו משליחת מידע אישי אמיתי.</p>
-    <p>אפשר לבקש בירור, גישה למידע שלכם, תיקון או מחיקה, לפי הדין והנסיבות. לפני טיפול במידע יש לוודא את זהות הפונה ואת הקשר שלו למשחק; קוד חדר או שם לתצוגה לבדם אינם הוכחת זהות. אל תפרסמו מידע אישי, אסימוני כניסה או פרטי משתתפים בבעיית GitHub ציבורית. אין כרגע טופס בקשות או שירות תמיכה עם זמן מענה מובטח.</p>
-    <p>פרסום ערוץ קשר פרטי ופרטי מפעיל מתאימים נדרש לפני הרחבת השירות לציבור. עצם הצגת העמוד הזה אינה מעידה שבקשה הוגשה או טופלה.</p>
-  </> : <>
-    <p>A dedicated private contact channel for the project operator has not yet been published. For an arranged demonstration, contact the person who invited you through an existing private channel and ask them to forward a privacy or accessibility question to the operator. If you cannot reach the operator, avoid submitting real personal information.</p>
-    <p>You can ask about access to your information, correction or deletion, subject to applicable law and the circumstances. Handling personal records requires verifying the requester and their connection to the game; a room code or display name alone is not proof of identity. Do not post personal information, session tokens or other players’ details in a public GitHub issue. There is currently no request form or guaranteed support response time.</p>
-    <p>An appropriate private contact channel and operator details must be published before broader public use. Displaying this page does not mean a request has been submitted or handled.</p>
-  </>
+export const PUBLIC_OPERATOR = 'yairrrr'
+export const CONTACT_URL = 'https://github.com/yairrrr/MiZeMi/issues'
+
+// Owner-approved public identity and initial-contact route; never a private inbox.
+export const contactCopy = {
+  en: {
+    operator: 'Project operator:',
+    introduction: 'For privacy questions, access, correction/deletion or accessibility requests, start with a non-sensitive message on',
+    link: 'MiZeMi GitHub Issues',
+    warning: 'Treat Issues as public: your GitHub username, message and attachments may be visible to others. Do not post personal or sensitive information, profile answers, room/player identifiers, credentials, identity documents or identifying screenshots.',
+    initial: 'For a request involving personal information, post only this initial message: “I would like to contact the operator about a privacy request.” Do not include the request details.',
+    private: 'Any necessary personal details or identity verification must wait until a suitable private channel has been agreed with the operator. Public Issues alone cannot complete a request that requires confidential information. This page does not provide a private channel.',
+    access: 'A GitHub account and access to the repository are required. If the Issues page is unavailable to you, this contact route cannot be used. For an arranged demonstration, you may use an existing private organizer contact. Do not publish personal information to work around an access problem.',
+    compact: 'Use Issues only for an initial non-sensitive message. Do not post personal information, profile answers, room/player identifiers or credentials. Personal details and identity verification require a separately agreed private channel; Issues is not that channel. A GitHub account and repository access are required.',
+  },
+  he: {
+    operator: 'מפעיל הפרויקט:',
+    introduction: 'לשאלות פרטיות, לבקשות גישה למידע, תיקון או מחיקה, או לפניות בנושא נגישות, התחילו בהודעה שאינה מכילה מידע רגיש בעמוד',
+    link: 'הפניות של MiZeMi ב־GitHub',
+    warning: 'התייחסו לפניות כאל פרסום ציבורי: שם המשתמש שלכם, ההודעה והקבצים המצורפים עשויים להיות גלויים לאחרים. אל תפרסמו מידע אישי או רגיש, תשובות מהפרופיל, מזהי חדר או משתתף, אישורי כניסה, מסמכי זיהוי או צילומי מסך מזהים.',
+    initial: 'לבקשה הכרוכה במידע אישי, פרסמו רק את הודעת הפתיחה הזאת: ״ברצוני ליצור קשר עם המפעיל בנוגע לבקשת פרטיות.״ אל תכללו את פרטי הבקשה.',
+    private: 'יש להמתין עם מסירת פרטים אישיים או אימות זהות עד לתיאום ערוץ פרטי מתאים עם המפעיל. אי אפשר להשלים בפנייה ציבורית בלבד בקשה המחייבת מידע חסוי. עמוד זה אינו מספק ערוץ פרטי.',
+    access: 'נדרשים חשבון GitHub והרשאת גישה למאגר. אם עמוד הפניות אינו זמין לכם, אי אפשר להשתמש בדרך הקשר הזאת. בהדגמה מתואמת אפשר להשתמש בערוץ פרטי קיים מול המארגן. אל תפרסמו מידע אישי כדי לעקוף בעיית גישה.',
+    compact: 'השתמשו בעמוד הפניות רק להודעה ראשונית שאינה מכילה מידע רגיש. אל תפרסמו מידע אישי, תשובות מהפרופיל, מזהי חדר או משתתף, או אישורי כניסה. מסירת פרטים אישיים ואימות זהות דורשים ערוץ פרטי שתואם בנפרד; עמוד הפניות אינו ערוץ כזה. נדרשים חשבון GitHub והרשאת גישה למאגר.',
+  },
+} as const
+
+export function ContactDetails({ compact = false }: { compact?: boolean }) {
+  const { language, t } = useI18n()
+  const copy = contactCopy[language]
+  return <div className="contact-details">
+    <p>{copy.operator} <bdi>{PUBLIC_OPERATOR}</bdi></p>
+    <p>{copy.introduction}{' '}<a href={CONTACT_URL} target="_blank" rel="noopener noreferrer">{copy.link}<span className="sr-only">{t(' (opens in a new tab)')}</span></a>.</p>
+    {compact ? <p>{copy.compact}</p> : <>
+      <p>{copy.warning}</p>
+      <p>{copy.initial}</p>
+      <p>{copy.private}</p>
+      <p>{copy.access}</p>
+    </>}
+  </div>
 }
