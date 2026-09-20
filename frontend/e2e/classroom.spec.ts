@@ -210,7 +210,10 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
     if (knowledge) {
       expect(semanticRounds).toBeGreaterThanOrEqual(10)
       expect(explanations.some((text) => text.includes('המסור') && text.includes('לזמן את הרוע'))).toBe(true)
-      expect(explanations.some((text) => text.includes('ספורט') && text.includes('אימה'))).toBe(true)
+      // Cross-domain reasoning reaches the players: a hobby type joined with a
+      // music style, and a movie genre joined with a cuisine.
+      expect(explanations.some((text) => text.includes('ספורט') && text.includes('מזרחית'))).toBe(true)
+      expect(explanations.some((text) => text.includes('אימה') && text.includes('איטלקי'))).toBe(true)
     }
   } finally {
     await Promise.all(contexts.map((context) => context.close()))

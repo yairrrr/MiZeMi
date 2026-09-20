@@ -41,18 +41,32 @@ from dataclasses import dataclass, field
 from math import ceil
 
 from app.domain.questions.candidate import QuestionCandidate
-from app.domain.questions.group_summary import MEDIA_DOMAINS
+from app.domain.questions.group_summary import DOMAIN_GROUPS
 from app.domain.questions.language import normalize
 from app.domain.questions.question import Difficulty
 
-KIND_SHARES = (('semantic', 0.45), ('direct', 0.25), ('geographic', 0.15), ('cross_domain', 0.15))
+KIND_SHARES = (('semantic', 0.45), ('cross_domain', 0.20), ('geographic', 0.13), ('social', 0.12),
+               ('direct', 0.10))
 DIRECT_RULE_CAP = 2
 RAW_LOOKUP_CAP = 1
 AGE_CAP = 1
 _LEVELS = {Difficulty.EASY: 0, Difficulty.MEDIUM: 1, Difficulty.HARD: 2}
-_MIX_KINDS = {'semantic': 'semantic', 'geographic': 'geographic', 'simple': 'direct', 'other': 'direct'}
-_MEDIA_DISCOVERY_ORDER = {'group_mode': 0, 'group_comparison_semantic': 1, 'group_genre_outlier': 2,
-                          'group_diversity': 3, 'group_count': 4, 'group_unique': 5}
+_MIX_KINDS = {'semantic': 'semantic', 'geographic': 'geographic', 'simple': 'direct', 'other': 'direct',
+              'social': 'social'}
+# Families the legacy raw-answer rules belong to, in the same terms the
+# discovery families describe themselves.
+_LEGACY_OPERATIONS = {'DIRECT_UNIQUE': 'unique', 'DIRECT_COUNT': 'count', 'DIRECT_COMPARISON': 'comparison',
+                      'DIRECT_MAJORITY': 'majority', 'DIRECT_AGE': 'extreme', 'DIRECT_CHOICE': 'literal'}
+# Reasoning patterns a player cannot tell apart within one subject: "of these,
+# which appears most?" and "which appears least?" read as the same question.
+_IDEA_CLASSES = {'distribution': 'ranked_list', 'minority': 'ranked_list',
+                 'agreement': 'group_spread', 'variety': 'group_spread',
+                 # "X chose this — who else?" and "who chose both?" name one
+                 # person from one connection; they read as the same question.
+                 'partner': 'connection', 'link': 'connection', 'both': 'connection'}
+# Music style, favourite artist and favourite song are classified the same way;
+# for "have we asked this already?" they are one subject, not three.
+_IDEA_TOPICS = {'artist.genre': 'music.genre', 'song.genre': 'music.genre'}
 
 
 @dataclass
@@ -73,6 +87,15 @@ class _Entry:
     players: tuple[str, ...] = field(default_factory=tuple)
     level: int = 0
     hops: int = 1
+    operation: str = ''
+    topic: str = ''
+    subgroup: str = ''
+    anchor: str = ''
+    idea: tuple = ()
+    signature: tuple = ()
+    group: str = ''
+    groups: tuple[str, ...] = ()
+    fields: tuple[str, ...] = ()
     reveals: frozenset = frozenset()
     needs: tuple[frozenset, ...] = ()
     topics: frozenset = frozenset()
@@ -87,14 +110,30 @@ def _entry(candidate: QuestionCandidate, score: float, order: int) -> _Entry:
         candidate.source_field_keys,
         candidate.involved_player_ids[0] if candidate.involved_player_ids else None,
     )
+    family = meta.get('family') or candidate.source_rule_id
+    operation = meta.get('operation') or _LEGACY_OPERATIONS.get(family, family.lower())
+    topic = meta.get('topic') or (candidate.source_field_keys[0] if candidate.source_field_keys else family)
+    domains = tuple(meta['domains'].split(',')) if meta.get('domains') else (domain,)
+    groups = tuple(dict.fromkeys(DOMAIN_GROUPS.get(d, d) for d in domains))
     return _Entry(
         candidate=candidate,
         score=score,
         order=order,
         kind=kind,
-        family=meta.get('family') or candidate.source_rule_id,
+        family=family,
+        operation=operation,
+        topic=topic,
+        subgroup=meta.get('subgroup', ''),
+        anchor=meta.get('anchor', ''),
+        # What the question asks, whatever wording variant it was given, and the
+        # idea behind it — the pair that must not appear twice in one game.
+        signature=tuple(meta.get('signature') or (operation, topic, *map(str, fact))),
+        idea=(_IDEA_CLASSES.get(operation, operation), _IDEA_TOPICS.get(topic, topic)),
+        group=groups[-1],
+        groups=groups,
+        fields=tuple(dict.fromkeys(candidate.source_field_keys)),
         domain=domain,
-        domains=tuple(meta['domains'].split(',')) if meta.get('domains') else (domain,),
+        domains=domains,
         fact=fact,
         fact_order=repr(fact),
         text_key=str(normalize(candidate.text)),
@@ -254,14 +293,30 @@ class QuestionSelector:
         caps = {
             'family': max(2, ceil(question_count / 5)),
             'domain': max(2, ceil(question_count * 0.25)),
+            # A subject a player experiences as one topic — music style, artist
+            # and song are one — never takes more than a quarter of a game.
+            'group': max(2, ceil(question_count * 0.3)),
             'domain_family': max(1, question_count // 12),
             'person': max(2, question_count // 4),
+            # No reasoning pattern takes more than a fifth of the game, however
+            # much supply it has: that is what made games feel repetitive.
+            'operation': max(2, ceil(question_count / 5)),
+            'direct': max(1, ceil(question_count * 0.1)),
             'supporting_family': max(1, question_count // 20),
         }
         picked: Counter = Counter()
         families: Counter = Counter()
         domains: Counter = Counter()
-        media_discoveries: Counter = Counter()
+        groups: Counter = Counter()
+        operations: Counter = Counter()
+        styles: Counter = Counter()
+        direct_groups: Counter = Counter()
+        lookups = [0]  # raw-answer questions chosen so far
+        fields: Counter = Counter()
+        seen_signatures: set = set()
+        seen_ideas: set = set()
+        seen_subgroups: set = set()
+        seen_anchors: set = set()
         domain_families: Counter = Counter()
         rules: Counter = Counter()
         players: Counter = Counter()
@@ -276,12 +331,36 @@ class QuestionSelector:
         for entry in remaining:
             for topic in entry.topics:
                 sharing.setdefault(topic, []).append(entry)
+        # Each subject has a limited budget, so it is spent on that subject's
+        # strongest discovery before any weaker question from the same subject.
         settled_elsewhere = {
             id(entry) for entry in remaining
             if prefer_settling and entry.needs and any(
                 other is not entry and other.hops >= entry.hops and _settled(entry.needs, entry.level, [other])
                 for topic in entry.topics for other in sharing[topic])
         }
+        ordered = sorted(remaining, key=lambda e: (-round(e.score, 9), e.fact_order, e.order))
+        # A room's strongest discoveries are asked whatever the variety rules
+        # would otherwise prefer: a group whose story is "most of us are from
+        # the north" must not lose that question to a fresher reasoning pattern.
+        # At most two per subject, so this cannot bring back domain dominance.
+        headline: dict[int, int] = {}
+        reserved: Counter = Counter()
+        for entry in ordered:
+            if len(headline) >= max(3, question_count // 4):
+                break
+            # Never reserve a question that a stronger fact already answers.
+            if id(entry) in settled_elsewhere or any(reserved[g] >= 2 for g in entry.groups):
+                continue
+            headline[id(entry)] = len(headline)
+            for group in entry.groups:
+                reserved[group] += 1
+        # Each subject's best remaining fact still outranks its weaker ones.
+        best_of_group: dict[str, _Entry] = {}
+        for entry in ordered:
+            for group in entry.groups:
+                best_of_group.setdefault(group, entry)
+        finest = {id(entry) for entry in best_of_group.values()}
         people = 0
         selected: list[_Entry] = []
 
@@ -298,12 +377,36 @@ class QuestionSelector:
                        and _settled(other.needs, other.level, [e for e in related if e is not other], entry.reveals)
                        for other in related)
 
-        def allowed(entry: _Entry, relaxed: bool) -> bool:
+        def allowed(entry: _Entry, relaxed: bool, variety: int = 0) -> bool:
             if entry.text_key in seen_texts or (entry.membership is not None and entry.membership in seen_memberships):
+                return False
+            # Wording is not identity: the same idea is never asked twice, and
+            # the same reasoning about the same dimension is one idea.
+            if entry.signature in seen_signatures or entry.idea in seen_ideas:
+                return False
+            # "Among the people from the north…" is one discovery, not two, and
+            # one person's answer anchors at most one question.
+            if entry.subgroup and entry.subgroup in seen_subgroups:
+                return False
+            if entry.anchor and entry.anchor in seen_anchors:
                 return False
             if answered(entry):
                 return False
-            if entry.person and people >= caps['person']:
+            # Variety staging: a reasoning pattern is used once; it may return
+            # only in a subject it has not been applied to, and repeats only
+            # when nothing newer is left.
+            if variety == 0 and operations[entry.idea[0]] and id(entry) not in headline:
+                return False
+            if variety < 2 and operations[entry.idea[0]] >= caps['operation']:
+                return False
+            if variety == 1 and (operations[entry.idea[0]] >= 2
+                                 or any(styles[(entry.idea[0], g)] for g in entry.groups)):
+                return False
+            # The subject ceiling is not relaxed to fill a game: one topic taking
+            # a third of the quiz is the problem this exists to prevent.
+            if any(groups[g] >= caps.get(g, caps['group']) for g in entry.groups):
+                return False
+            if entry.person and people >= caps['person'] and id(entry) not in headline:
                 return False
             if entry.candidate.source_rule_id == 'unique_value' and rules['unique_value'] >= RAW_LOOKUP_CAP:
                 return False
@@ -311,6 +414,14 @@ class QuestionSelector:
             # about a listed choice are limited by their shared family instead.
             if (entry.kind == 'direct' and entry.family != 'DIRECT_CHOICE'
                     and rules[entry.candidate.source_rule_id] >= DIRECT_RULE_CAP):
+                return False
+            # Reading a raw answer back ("who is the only one from Haifa?") is a
+            # warm-up, never a tenth of the game, and the few that are asked come
+            # from different subjects. A fact about a listed choice ("how many
+            # picked rock?") is a group fact, limited by the variety rules instead.
+            lookup = entry.kind == 'direct' and entry.family != 'DIRECT_CHOICE'
+            if lookup and variety < 2 and (lookups[0] >= caps['direct']
+                                           or any(direct_groups[g] for g in entry.groups)):
                 return False
             if 'age' in entry.candidate.source_field_keys and rules['age'] >= AGE_CAP:
                 return False
@@ -324,19 +435,22 @@ class QuestionSelector:
 
         def rank(entry: _Entry):
             target = 0 if len(selected) < question_count * 0.3 else 1 if len(selected) < question_count * 0.75 else 2
-            unseen_media = (entry.kind == 'semantic' and entry.domain in MEDIA_DOMAINS
-                            and not media_discoveries[entry.domain])
             return (
-                # A valid genre discovery from each shared media field gets a
-                # chance before repeats elsewhere. Raw lookups do not satisfy
-                # this coverage. There is no slot for unsupported media data.
-                not unseen_media,
-                _MEDIA_DISCOVERY_ORDER.get(entry.candidate.source_rule_id, 6) if unseen_media else 0,
+                # The headline discoveries first, strongest first; then variety
+                # in the order a player notices it: a new kind of reasoning,
+                # then a new subject, then a new profile answer, then a family
+                # that has not been used yet.
+                headline.get(id(entry), len(headline)),
+                operations[entry.idea[0]],
+                int(id(entry) not in finest),
+                max(styles[(entry.idea[0], g)] for g in entry.groups),
+                max(groups[g] for g in entry.groups),
+                min((fields[f] for f in entry.fields), default=0),
                 families[entry.family] + entry.tier,
                 max(domains[d] for d in entry.domains),
                 domain_families[(entry.domain, entry.family)],
                 int(id(entry) in settled_elsewhere),
-                int(bool(selected) and selected[-1].domain == entry.domain),
+                int(bool(selected) and selected[-1].group == entry.group),
                 abs(_LEVELS[entry.candidate.difficulty] - target),
                 -round(entry.score, 6),
                 sum(players[p] for p in entry.players),
@@ -351,36 +465,60 @@ class QuestionSelector:
             # Literal identity lookups are a last resort, never a reserved share
             # of the game. Allow one useful easy clue only when all unsettled
             # non-lookup facts have been considered, including relaxed caps.
-            eligible = [e for e in remaining if allowed(e, True)]
-            non_lookup = [e for e in eligible if e.candidate.source_rule_id != 'unique_value']
-            eligible = non_lookup or eligible
             kinds = sorted(supply, key=lambda k: (-(quotas.get(k, 0) - picked[k]), preference.get(k, 99), k))
             choice = None
-            for within_quota in (True, False):
-                for kind in kinds:
-                    if within_quota and picked[kind] >= quotas.get(kind, 0):
-                        continue
-                    options = [e for e in eligible if e.kind == kind and allowed(e, False)]
-                    if options:
-                        choice = min(options, key=rank)
+            # Unused reasoning first; then a pattern in a genuinely different
+            # subject; only then a repeat. Caps relax before variety does.
+            for variety in (0, 1, 2):
+                eligible = [e for e in remaining if allowed(e, True, variety)]
+                # Reading answers back fills a game only when discovering
+                # something new is no longer possible.
+                eligible = [e for e in eligible
+                            if e.kind != 'direct' or e.family == 'DIRECT_CHOICE'] or eligible
+                non_lookup = [e for e in eligible if e.candidate.source_rule_id != 'unique_value']
+                eligible = non_lookup or eligible
+                if not eligible:
+                    continue
+                for within_quota in (True, False):
+                    for kind in kinds:
+                        if within_quota and picked[kind] >= quotas.get(kind, 0):
+                            continue
+                        options = [e for e in eligible if e.kind == kind and allowed(e, False, variety)]
+                        if options:
+                            choice = min(options, key=rank)
+                            break
+                    if choice is not None:
                         break
+                if choice is None:
+                    choice = min(eligible, key=lambda e: (rank(e), kinds.index(e.kind)))
                 if choice is not None:
                     break
-            if choice is None:
-                options = eligible
-                if options:
-                    choice = min(options, key=lambda e: (rank(e), kinds.index(e.kind)))
             if choice is None:
                 break
             remaining.remove(choice)
             selected.append(choice)
             picked[choice.kind] += 1
             families[choice.family] += 1
+            operations[choice.idea[0]] += 1
+            if choice.kind == 'direct' and choice.family != 'DIRECT_CHOICE':
+                lookups[0] += 1
+            for g in choice.groups:
+                styles[(choice.idea[0], g)] += 1
+                if choice.kind == 'direct' and choice.family != 'DIRECT_CHOICE':
+                    direct_groups[g] += 1
+            seen_signatures.add(choice.signature)
+            seen_ideas.add(choice.idea)
+            if choice.subgroup:
+                seen_subgroups.add(choice.subgroup)
+            if choice.anchor:
+                seen_anchors.add(choice.anchor)
             domain_families[(choice.domain, choice.family)] += 1
             for d in choice.domains:
                 domains[d] += 1
-            if choice.kind == 'semantic' and choice.domain in MEDIA_DOMAINS:
-                media_discoveries[choice.domain] += 1
+            for g in choice.groups:
+                groups[g] += 1
+            for f in choice.fields:
+                fields[f] += 1
             rules[choice.candidate.source_rule_id] += 1
             if 'age' in choice.candidate.source_field_keys:
                 rules['age'] += 1
