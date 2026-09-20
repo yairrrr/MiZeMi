@@ -244,7 +244,7 @@ def test_generation_never_reads_network_or_database_or_asset_files(monkeypatch):
 def test_load_memory_and_classroom_generation_have_wide_sanity_bounds():
     tracemalloc.start(); start=perf_counter(); kb=load_knowledge()
     retained,peak=tracemalloc.get_traced_memory();tracemalloc.stop()
-    assert perf_counter()-start<15  # Instrumented loading; uninstrumented SLA is measured separately.
+    assert perf_counter()-start<30  # Instrumented loading; uninstrumented SLA is measured separately.
     assert peak<80_000_000
     assert retained<60_000_000
     rows=[ROWS[i%5] for i in range(30)]

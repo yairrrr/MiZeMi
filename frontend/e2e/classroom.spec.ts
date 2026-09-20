@@ -1,13 +1,17 @@
 import { test, expect, type Page } from '@playwright/test'
+import { execFileSync } from 'node:child_process'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { translate, type MessageKey, type Values } from '../src/i18n/messages'
-import type { ServerMessage, Question, QuestionEnded } from '../src/types'
+import type { ServerMessage, Question, QuestionEnded, ProfileField } from '../src/types'
+
+const knowledgeFixture = JSON.parse(readFileSync(new URL('./fixtures/knowledge-room.json', import.meta.url), 'utf8')) as { profiles: string[][] }
 
 for (const scenario of [{ language: 'en', count: 20, knowledge: false }, { language: 'he', count: 7, knowledge: false }, { language: 'he', count: 20, knowledge: true }] as const) {
 const { language, count, knowledge } = scenario
 const playerCount = knowledge ? 5 : 3
 const prefix = knowledge ? 'knowledge-he' : language
 const t = (key: MessageKey, values?: Values) => translate(language, key, values)
-test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-question game with reconnects and visual QA`, async ({ browser, baseURL }) => {
+test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-question game with reconnects and visual QA`, async ({ browser, baseURL }, testInfo) => {
   const contexts = await Promise.all(Array.from({ length: playerCount + 1 }, (_, i) => browser.newContext({
     viewport: i === 0 ? { width: 1440, height: 1000 } : { width: 390, height: 844 },
     isMobile: i !== 0, hasTouch: i !== 0,
@@ -15,19 +19,23 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
   const pages = await Promise.all(contexts.map((context) => context.newPage()))
   const [host, ...players] = pages
   const messages = new Map<Page, ServerMessage[]>()
+  const submissions = new Map<Page, ProfileField[]>()
   const errors: string[] = []
   const externalRequests: string[] = []
-  let semanticRounds = 0
-  const explanations: string[] = []
+  const finalQuestions: Pick<QuestionEnded, 'question_id' | 'text' | 'options' | 'correct_option_id' | 'explanation'>[] = []
   for (const page of pages) {
     messages.set(page, [])
     page.on('pageerror', (error) => errors.push(error.message))
     page.on('request', (request) => {
       if (!['http://127.0.0.1:4173', 'http://127.0.0.1:8765'].includes(new URL(request.url()).origin)) externalRequests.push(request.url())
     })
-    page.on('websocket', (ws) => ws.on('framereceived', ({ payload }) => {
-      messages.get(page)!.push(JSON.parse(String(payload)))
-    }))
+    page.on('websocket', (ws) => {
+      ws.on('framereceived', ({ payload }) => messages.get(page)!.push(JSON.parse(String(payload))))
+      ws.on('framesent', ({ payload }) => {
+        const message = JSON.parse(String(payload))
+        if (message.event === 'player.profile_submit') submissions.set(page, message.payload.fields)
+      })
+    })
   }
   const latest = <T>(page: Page, event: string): T | undefined =>
     messages.get(page)!.filter((m) => m.event === event).at(-1)?.payload as T | undefined
@@ -50,13 +58,7 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
     if (language === 'he') await host.locator('#question-count').fill(String(count))
     await host.getByRole('button', { name: t('Create Room') }).click()
     const code = (await host.locator('.room-code').textContent())!.trim()
-    const profiles = knowledge ? [
-      ['דנה', 'חיפה', 'פיצה', 'ריצה', 'Mizrahi', '20', 'המסור'],
-      ['עומר', 'תל אביב', 'סושי', 'כדורגל', 'Mizrahi', '22', 'לזמן את הרוע'],
-      ['נועה', 'רחובות', 'ספגטי', 'גלישה', 'Rock', '24', 'צעצוע של סיפור'],
-      ['עמית', 'ראשון לציון', 'לזניה', 'גיטרה', 'Pop', '26', 'מוצאים את נמו'],
-      ['ליאור', 'באר שבע', 'פלאפל', 'צילום', 'Jazz', '28', 'טיטניק (סרט, 1997)'],
-    ] : language === 'he' ? [
+    const profiles = knowledge ? knowledgeFixture.profiles : language === 'he' ? [
       ['דנה', 'חיפה', 'פיצה', 'שחמט', 'Rock', '16', 'למעלה'],
       ['עומר', 'תל אביב', 'סושי', 'ריצה', 'Pop', '17', 'מכוניות'],
       ['נועה', 'חיפה', 'פיצה', 'גיטרה אקוסטית', 'Jazz', '18', 'למעלה'],
@@ -73,24 +75,32 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
       await page.getByLabel(t('Display Name')).fill(profiles[i][0])
       await page.getByRole('button', { name: t('Join Room') }).click()
       await expect(page.getByRole('heading', { name: t('Tell the group about you') })).toBeVisible()
-      const [, city, food, hobby, music, age, movie] = profiles[i]
+      const [, city, food, hobby, music, age, movie, artist, song] = profiles[i]
       await page.getByLabel(t('City'), { exact: true }).fill(city)
       await page.getByLabel(t('Favorite food'), { exact: true }).fill(food)
       await page.getByLabel(t('Hobby'), { exact: true }).fill(hobby)
       await page.getByLabel(t('Favorite music style'), { exact: true }).selectOption(music)
       if (knowledge) {
-        await page.getByLabel(t('Favorite artist') + t(' (optional)')).fill(['עומר אדם', 'עדן בן זקן', 'Taylor Swift', 'Metallica', 'Coldplay'][i])
-        await page.getByLabel(t('Favorite song') + t(' (optional)')).fill(['Shake It Off - Taylor Swift', 'Blank Space', 'Enter Sandman', 'Yellow - Coldplay', 'Paradise - Coldplay'][i])
+        await page.getByLabel(t('Favorite artist') + t(' (optional)')).fill(artist)
+        await page.getByLabel(t('Favorite song') + t(' (optional)')).fill(song)
       }
       await page.getByLabel(t('Age') + t(' (optional)')).fill(age)
       await page.getByLabel(t('Favorite movie') + t(' (optional)')).fill(movie)
       await page.getByLabel(t('Something interesting about me') + t(' (optional)')).fill('PRIVATE_MARKER_DO_NOT_SHARE')
-      await expect(page.getByLabel(t('Use {field} in questions', { field: t('Something interesting about me') }))).not.toBeChecked()
+      await expect(page.getByLabel(t('Allow {field} to be used for game questions', { field: t('Something interesting about me') }))).not.toBeChecked()
       await noOverflow(page)
       if (i === 0) await page.screenshot({ path: `test-results/${prefix}-profile.png`, fullPage: true })
       await page.getByRole('button', { name: t('Save my profile') }).click()
       await page.getByRole('button', { name: t('I’m ready') }).click()
       await expect(page.getByText(t('You’re ready!'))).toBeVisible()
+      if (knowledge) {
+        // Input evidence stays in this synthetic test; raw profiles no longer persist.
+        const keys = ['city', 'favorite_food', 'hobby', 'favorite_music', 'age', 'favorite_movie', 'favorite_artist', 'favorite_song']
+        expect(submissions.get(page)).toEqual([
+          ...keys.map((field_key, index) => ({ field_key, value: field_key === 'age' ? Number(profiles[i][index + 1]) : profiles[i][index + 1], allow_question_usage: true })),
+          { field_key: 'personal_fact', value: 'PRIVATE_MARKER_DO_NOT_SHARE', allow_question_usage: false },
+        ])
+      }
       await expect(host.getByRole('button', { name: t('Start game'), exact: true })).toBeEnabled()
     }
     await expect(host.getByRole('list', { name: t('Players') }).getByRole('listitem')).toHaveCount(playerCount)
@@ -118,6 +128,9 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
       expect(q).not.toHaveProperty('correct_option_id')
       expect(q).not.toHaveProperty('explanation')
       expect(q).not.toHaveProperty('knowledge_version')
+      expect(q).not.toHaveProperty('source_rule_id')
+      expect(q).not.toHaveProperty('question_family')
+      expect(q).not.toHaveProperty('metadata')
       // Check all active frames, not just question.started.
       for (const page of pages) {
         const active = messages.get(page)!.slice(messages.get(page)!.findLastIndex((m) => m.event === 'question.started'))
@@ -144,9 +157,9 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
       // English round 1 closes by the authoritative 20-second timer.
       await expect(host.getByRole('button', { name: t('Show leaderboard') })).toBeVisible({ timeout: 25_000 })
       const hostResult = latest<QuestionEnded>(host, 'question.ended')!
+      const { question_id, text, options, correct_option_id, explanation } = hostResult
+      finalQuestions.push({ question_id, text, options, correct_option_id, explanation })
       if (hostResult.explanation) {
-        semanticRounds += 1
-        explanations.push(hostResult.explanation)
         await expect(host.locator('.question-explanation')).toHaveText(hostResult.explanation)
         await expect(host.locator('.question-explanation')).toHaveAttribute('dir', language === 'he' ? 'rtl' : 'ltr')
       }
@@ -208,12 +221,28 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
     expect(errors).toEqual([])
     expect(externalRequests).toEqual([])
     if (knowledge) {
-      expect(semanticRounds).toBeGreaterThanOrEqual(10)
-      expect(explanations.some((text) => text.includes('המסור') && text.includes('לזמן את הרוע'))).toBe(true)
-      // Cross-domain reasoning reaches the players: a hobby type joined with a
-      // music style, and a movie genre joined with a cuisine.
-      expect(explanations.some((text) => text.includes('ספורט') && text.includes('מזרחית'))).toBe(true)
-      expect(explanations.some((text) => text.includes('אימה') && text.includes('איטלקי'))).toBe(true)
+      const publicEvidence = testInfo.outputPath('knowledge-public-results.json')
+      writeFileSync(publicEvidence, JSON.stringify(finalQuestions, null, 2))
+      await testInfo.attach('knowledge-public-results', { path: publicEvidence, contentType: 'application/json' })
+      // Internal metadata stays in the test process. The offline oracle links
+      // these exact browser frames to the finished local game, checks the
+      // seeded trace and counts reviewed fixture facts independently of rules.
+      // Persistence runs in a worker, so allow its final transaction to finish.
+      let evidence = ''
+      await expect(async () => {
+        evidence = execFileSync('../.venv/bin/python', ['../backend/tests/classroom_knowledge.py'], {
+          input: JSON.stringify(finalQuestions), encoding: 'utf8', timeout: 15_000,
+        })
+      }).toPass({ timeout: 10_000 })
+      const internalEvidence = testInfo.outputPath('knowledge-final-quiz.json')
+      writeFileSync(internalEvidence, evidence)
+      await testInfo.attach('knowledge-final-quiz', { path: internalEvidence, contentType: 'application/json' })
+      // Question variety: the oracle reports the reasoning patterns and repeated
+      // ideas it found in the same finished game, so the players' quiz is held
+      // to the variety targets without pinning any question's wording.
+      const summary = JSON.parse(evidence) as { reasoning_families: number; repeated_signatures: number }
+      expect(summary.reasoning_families).toBeGreaterThanOrEqual(6)
+      expect(summary.repeated_signatures).toBe(0)
     }
   } finally {
     await Promise.all(contexts.map((context) => context.close()))

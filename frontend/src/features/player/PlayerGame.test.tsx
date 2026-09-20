@@ -96,7 +96,7 @@ describe('PlayerGameView', () => {
 
   test('locks the options once the server accepted the answer', () => {
     renderView({ room: room('QUESTION_ACTIVE'), question, answeredOptionId: 'a' })
-    expect(screen.getByRole('status')).toHaveTextContent('Answer locked in!')
+    expect(screen.getByRole('status', { name: 'Answer status' })).toHaveTextContent('Answer locked in!')
     expect(screen.getByRole('button', { name: /Omer/ })).toBeDisabled()
   })
 
@@ -171,10 +171,16 @@ describe('PlayerGameView', () => {
   const { rerender } = render(<PlayerGameView {...props} status="open" />)
   const user = userEvent.setup()
   await user.click(screen.getByRole('button', { name: /Omer/ }))
-  expect(screen.getByRole('status')).toHaveTextContent('Sending…')
+  expect(screen.getByRole('status', { name: 'Answer status' })).toHaveTextContent('Sending…')
   rerender(<PlayerGameView {...props} status="reconnecting" />)
   expect(screen.getByRole('button', { name: /Omer/ })).toBeDisabled()
   rerender(<PlayerGameView {...props} status="open" />)
   await user.click(screen.getByRole('button', { name: /Omer/ }))
   expect(props.send).toHaveBeenCalledTimes(2)
  })
+
+vi.mock('../../legal/privacyInfo', () => ({ usePrivacyInfo: () => ({
+  info: { policy_version: '2026-09-18', retention_days: 7, room_idle_ttl_minutes: 120,
+    maintenance_interval_seconds: 300, raw_profiles_persisted: false },
+  status: 'ready', retry: () => {},
+}) }))

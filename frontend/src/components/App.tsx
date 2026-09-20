@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
+import { LegalFooter } from '../legal/LegalFooter'
+import { LegalPage, legalPageFromPath } from '../legal/LegalPage'
 import { KnowledgeCredits } from './KnowledgeCredits'
 import logo from '../assets/mizemi-logo.png'
 import { I18nProvider, LanguageSelector, useI18n } from '../i18n/I18n'
@@ -18,7 +20,18 @@ function roomCodeFromUrl(): string {
 }
 
 export function App() {
-  return <I18nProvider><AppContent /></I18nProvider>
+  const legalPage = legalPageFromPath(window.location.pathname)
+  return <I18nProvider>{legalPage ? <AppShell><LegalPage page={legalPage} /></AppShell> : <AppContent />}</I18nProvider>
+}
+
+function AppShell({ children, inGame = false }: { children: ReactNode; inGame?: boolean }) {
+  const { t } = useI18n()
+  return <div className={`app-shell${inGame ? ' game-mode' : ''}`}>
+    <a className="skip-link" href="#main-content">{t('Skip to main content')}</a>
+    <header><LanguageSelector /></header>
+    <main id="main-content" tabIndex={-1}>{children}</main>
+    <LegalFooter inGame={inGame} />
+  </div>
 }
 
 function AppContent() {
@@ -37,26 +50,25 @@ function AppContent() {
 
   if (session?.role === 'host') {
     return (
-      <main className="app-shell game-mode">
-        <LanguageSelector />
+      <AppShell inGame>
+        <h1 className="sr-only">MiZeMi · {t('Host screen')}</h1>
         <HostGame session={session} onLeave={leave} />
         <KnowledgeCredits />
-      </main>
+      </AppShell>
     )
   }
   if (session?.role === 'player') {
     return (
-      <main className="app-shell game-mode">
-        <LanguageSelector />
+      <AppShell inGame>
+        <h1 className="sr-only">MiZeMi · {t('Player screen')}</h1>
         <PlayerGame session={session} onLeave={leave} />
         <KnowledgeCredits />
-      </main>
+      </AppShell>
     )
   }
 
   return (
-    <main className="app-shell">
-      <LanguageSelector />
+    <AppShell>
       <header className="welcome-copy">
 
         <h1 id="app-title" className="brand-heading"><img className="brand-logo" src={logo} width={1254} height={1254} alt="MiZeMi" /></h1>
@@ -91,6 +103,6 @@ function AppContent() {
 
       <p className="privacy-note">{t('No account needed. Just your group and a room code.')}</p>
       <KnowledgeCredits />
-    </main>
+    </AppShell>
   )
 }

@@ -2,7 +2,7 @@
 
 Exercises a real SQLite database through the ``db_session`` fixture: save a
 game aggregate, read it back as a FinishedGameRecord, and confirm the round
-trip preserves order, profiles, consent flags, and question data.
+trip preserves result data while discarding raw profile values.
 """
 
 import pytest
@@ -52,7 +52,7 @@ class TestRoundTrip:
         assert len(record.players) == 3
         assert len(record.questions) == 3
 
-    def test_preserves_player_order_profiles_and_consent(self, repo, db_session) -> None:
+    def test_preserves_player_order_without_persisting_raw_profiles(self, repo, db_session) -> None:
         players = [
             make_player("p1", "Dana", profile=make_profile("p1")),
             make_player(
@@ -77,11 +77,11 @@ class TestRoundTrip:
 
         assert [p.player_id for p in record.players] == ["p1", "p2"]
         omer = record.players[1]
-        assert omer.profile_fields[0].field_key == "age"
-        assert omer.profile_fields[0].value == 31
-        assert omer.profile_fields[0].allow_question_usage is True
-        assert omer.profile_fields[1].field_key == "personal_fact"
-        assert omer.profile_fields[1].allow_question_usage is False
+        assert omer.has_profile is True
+        assert omer.profile_fields == ()
+        assert db_session.scalar(select(func.count()).select_from(ProfileFieldRow)) == 0
+        # Persistence minimization does not change active in-memory profiles.
+        assert players[1].profile.fields[1].value == "was a lifeguard"
 
     def test_preserves_question_options_and_correct_id(self, repo, db_session) -> None:
         game = make_ready_game("g3")

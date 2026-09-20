@@ -1303,7 +1303,9 @@ class GroupUnanimityRule(DiscoveryRule):
     hops = 3
     dimensions = ('movie.genre', 'food.cuisine', 'food.format', 'hobby.family', 'hobby.setting',
                   'hobby.physical', 'music.genre', 'place.region')
-    minimum = 4
+    # Three people who all answered the same is still a real shared fact, and in
+    # a room that uniform it is the only honest question left.
+    minimum = 3
 
     def candidates(self, summary, words, rng):
         for key in self.dimensions:

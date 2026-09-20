@@ -72,3 +72,10 @@ Repository checks:
 | `git diff --check` | Passed |
 
 **Existing E2E limitation:** the Hebrew knowledge scenario completed the game, score checks, privacy checks, reconnects and final leaderboard, then failed `frontend/e2e/classroom.spec.ts:212`. That assertion requires one explanation to contain both specific film titles “המסור” and “לזמן את הרוע”. The game source and test are unchanged by this landing-page work; this result does not constitute a fully passing E2E suite. The assertion was left for the question-engine/test-maintenance work rather than changing game behavior in a presentation-only change.
+
+
+## Legal/accessibility follow-up — 18 September 2026
+
+The landing footer now points intentionally to `https://mizemi-frontend.onrender.com/privacy?lang=en`, `/terms?lang=en` and `/accessibility?lang=en`, plus Hebrew privacy. There is one authoritative bilingual copy in the game application. Its routes must be deployed in a separately authorized release before these new links are advertised. Local tests verify exact destinations; no deployment/visibility change has been made.
+
+Landmark semantics, keyboard focus, numeric sample-result meaning, and text enlargement/reflow at 320px were checked and improved. The earlier E2E limitation above is historical; the current complete-suite result is recorded in `LEGAL_IMPLEMENTATION_REPORT.md`. No logo or dataset license was changed.

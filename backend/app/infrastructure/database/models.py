@@ -4,10 +4,9 @@ Infrastructure layer only — nothing above imports these. They mirror the
 ``Game`` aggregate for the approved MVP snapshot: a game persisted on the
 ``FINISHED`` transition (§15).
 
-``profile_fields`` is deliberately schema-agnostic: the final PlayerProfile
-schema is deferred (§9.2), so it stores whatever fields the domain supplies.
-Interim (§9.2): ``value`` is text plus a ``value_type`` discriminator
-("str" | "int"). Primary keys are domain-supplied strings or natural
+``profile_fields`` remains only for legacy reads and bounded cleanup. New
+snapshots never write raw profile values. Primary keys are domain-supplied
+strings or natural
 composites — never database-generated (§15). Child rows are cleaned up
 through the ORM ``delete-orphan`` cascade.
 

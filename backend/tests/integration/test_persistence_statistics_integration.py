@@ -65,7 +65,7 @@ class TestFullVerticalIsPersisted:
         assert {p.display_name for p in record.players} == set(PROFILES)
         assert len(record.questions) == len(questions)
 
-    def test_persisted_profiles_match_what_was_submitted_over_the_wire(
+    def test_wire_profiles_stay_in_memory_but_are_not_persisted(
         self, db_session
     ) -> None:
         app = create_app()
@@ -79,21 +79,9 @@ class TestFullVerticalIsPersisted:
         record = repo.get(game.game_id)
 
         dana = next(p for p in record.players if p.display_name == "Dana")
-        stored = {f.field_key: f.value for f in dana.profile_fields}
-        assert stored == {
-            "city": "Haifa",
-            "favorite_food": "pizza",
-            "hobby": "chess",
-            "favorite_music": "Rock",
-            "age": 27,
-        }
-        assert [f.field_key for f in dana.profile_fields][:4] == [
-            "city",
-            "favorite_food",
-            "hobby",
-            "favorite_music",
-        ]
-        assert all(f.allow_question_usage for f in dana.profile_fields)
+        assert dana.has_profile is True
+        assert dana.profile_fields == ()
+        assert {f.field_key: f.value for f in game.players[0].profile.fields}["city"] == "Haifa"
 
 
 class TestGeneratedQuestionsSurvivePersistence:

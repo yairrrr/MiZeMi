@@ -39,9 +39,8 @@ from app.infrastructure.database.models import (
 )
 
 
-def _value_type(value: str | int) -> str:
-    # bool is a subclass of int; profile values are only ever str | int (§9.2).
-    return "int" if isinstance(value, int) and not isinstance(value, bool) else "str"
+FINISHED_GAME_BATCH_LIMIT = 100
+LEGACY_PROFILE_BATCH_LIMIT = 500
 
 
 def _decode_value(value: str, value_type: str) -> str | int:
@@ -96,18 +95,9 @@ def _game_to_row(game: Game) -> GameRow:
             is_ready=player.is_ready,
             has_profile=player.has_profile,
         )
-        if player.profile is not None:
-            player_row.profile_fields = [
-                ProfileFieldRow(
-                    player_id=player.player_id,
-                    position=field_position,
-                    field_key=field.field_key,
-                    value=str(field.value),
-                    value_type=_value_type(field.value),
-                    allow_question_usage=field.allow_question_usage,
-                )
-                for field_position, field in enumerate(player.profile.fields)
-            ]
+        # Result history needs names, questions, answers and scores, not a
+        # second copy of participants' raw profiles (even consented fields).
+        # Keep the legacy table readable for compatibility and cleanup only.
         row.players.append(player_row)
     for question in game.questions:
         row.questions.append(_question_to_row(question, game.game_id))
@@ -197,7 +187,32 @@ class SqlAlchemyGameRepository(GameRepository):
     def delete_older_than(self, cutoff: datetime) -> int:
         # ORM deletes (not a bulk DELETE) so the delete-orphan cascade removes
         # child rows on every backend, including SQLite without FK pragmas.
-        rows = self._session.scalars(select(GameRow).where(GameRow.updated_at < cutoff)).all()
+        # Bound each maintenance transaction and never purge an active record.
+        rows = self._session.scalars(
+            select(GameRow)
+            .where(GameRow.state == "FINISHED", GameRow.updated_at < cutoff)
+            .order_by(GameRow.updated_at, GameRow.game_id)
+            .limit(FINISHED_GAME_BATCH_LIMIT)
+        ).all()
+        for row in rows:
+            self._session.delete(row)
+        self._session.flush()
+        return len(rows)
+
+    def delete_legacy_finished_profiles(self) -> int:
+        """Minimize old snapshots in bounded batches, without touching active games.
+
+        Does not update GameRow timestamps or extend result retention. The
+        caller commits this in the same maintenance transaction as expiry.
+        """
+        rows = self._session.scalars(
+            select(ProfileFieldRow)
+            .join(PlayerRow, ProfileFieldRow.player_id == PlayerRow.player_id)
+            .join(GameRow, PlayerRow.game_id == GameRow.game_id)
+            .where(GameRow.state == "FINISHED")
+            .order_by(ProfileFieldRow.player_id, ProfileFieldRow.position)
+            .limit(LEGACY_PROFILE_BATCH_LIMIT)
+        ).all()
         for row in rows:
             self._session.delete(row)
         self._session.flush()

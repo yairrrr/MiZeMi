@@ -4,7 +4,7 @@ Application-side contract (owned by Backend/Platform, §7). Implementations
 live in ``app/infrastructure/repositories/``; no SQLAlchemy type appears here.
 
 ``GameRepository`` covers the approved MVP persistence point (§15): the game
-runs in memory during play and the whole aggregate is persisted on reaching
+runs in memory during play and a minimized result snapshot is persisted on reaching
 ``FINISHED``. ``get`` returns a read-only ``FinishedGameRecord`` — a plain
 snapshot for statistics / retention / audit — not a live ``Game`` (the domain
 aggregate has no rehydration path and the MVP never resumes a stored game).
@@ -20,7 +20,7 @@ from app.domain.game.config import GameConfig
 
 @dataclass(frozen=True)
 class RecordedProfileField:
-    """One persisted profile field. ``value`` keeps the §9.2 interim ``str | int``."""
+    """Legacy profile field, readable only for compatibility. New writes omit these."""
 
     field_key: str
     value: str | int
@@ -93,7 +93,7 @@ class GameRepository(ABC):
 
     @abstractmethod
     def save(self, game: Game) -> None:
-        """Upsert the game's current state, players, profiles, and questions.
+        """Upsert result state, players, questions, answers and scores, without raw profiles.
 
         The MVP caller invokes this once, on the ``FINISHED`` transition (§15).
         The method itself does not require ``FINISHED`` — it stores whatever
