@@ -27,20 +27,28 @@ followed by "sport or reading?".
 
 from collections import deque
 from itertools import combinations
+from math import ceil
 from random import Random
 
 from app.domain.questions.candidate import QuestionCandidate
 from app.domain.questions.discovery_language import (
+    BOTH,
+    EXCEPTIONS,
     INTERSECTIONS,
+    PARTNERS,
     SUBGROUP_COMPARISONS,
     SUBGROUP_CONDITIONS,
     SUBGROUP_QUESTIONS,
     TEMPLATES,
+    TOPIC_LABELS,
+    UNANIMITY,
     Wording,
     stable_index,
 )
 from app.domain.questions.group_summary import (
+    _DISAMBIGUATION,
     DIMENSIONS_BY_KEY,
+    DOMAIN_GROUPS,
     MEDIA_DIMENSIONS,
     POLICY,
     decisive_leader,
@@ -57,7 +65,12 @@ MAX_CANDIDATES = 60
 MAX_PAIRS = 12
 TASTES = ('movie.genre', 'food.cuisine', 'hobby.family', 'music.genre', 'artist.genre', 'song.genre')
 _OPTION_IDS = 'abcd'
-_MIX = {'semantic': 'semantic', 'geographic': 'geographic', 'cross_domain': 'geographic', 'direct': 'simple'}
+_MIX = {'semantic': 'semantic', 'geographic': 'geographic', 'cross_domain': 'geographic',
+        'direct': 'simple', 'social': 'social'}
+# Dimensions that describe a taste rather than a circumstance; whole-profile
+# families compare people across these.
+PROFILE_DIMENSIONS = ('movie.genre', 'food.cuisine', 'food.format', 'hobby.family', 'music.genre',
+                      'artist.genre', 'song.genre')
 
 
 def number_choices(answer: int, *, uncertain: int, maximum: int, minimum: int = 0) -> list[str]:
@@ -183,6 +196,7 @@ class DiscoveryRule(QuestionRule):
     rule_id = 'discovery'
     family = 'DISCOVERY'
     kind = 'semantic'
+    operation = 'discovery'  # the reasoning pattern, for the selector's variety rules
     difficulty = Difficulty.MEDIUM
     hops = 3
     tier = 0  # 1 marks supporting families, chosen after the core ones
@@ -217,9 +231,11 @@ class DiscoveryRule(QuestionRule):
     def candidates(self, summary, words: Wording, rng: Random):
         raise NotImplementedError
 
-    def candidate(self, rng: Random, *, text, answer, dimensions, explanation, fact, involved, answer_key,
+    def candidate(self, rng: Random, *, text, answer, explanation, fact, involved, answer_key,
+                  dimensions=(), fields=(), domains=(), topic='', operation='',
                   distractors=(), ordered=None, focus=(), coverage=1.0, interest=0.5, person=False,
-                  membership=None, literal=False, reveals=(), needs=()) -> QuestionCandidate | None:
+                  membership=None, literal=False, reveals=(), needs=(), subgroup='',
+                  anchor='') -> QuestionCandidate | None:
         if ordered is not None:
             options = tuple(QuestionOption(_OPTION_IDS[i], t) for i, t in enumerate(ordered))
             correct = _OPTION_IDS[ordered.index(answer)]
@@ -228,7 +244,15 @@ class DiscoveryRule(QuestionRule):
             if not pool:
                 return None
             options, correct = _build_options(answer, rng.sample(pool, min(3, len(pool))), rng)
-        domains = tuple(dict.fromkeys(DIMENSIONS_BY_KEY[d].selection_domain for d in dimensions))
+        domains = domains or tuple(dict.fromkeys(DIMENSIONS_BY_KEY[d].selection_domain for d in dimensions))
+        fields = fields or tuple(dict.fromkeys(DIMENSIONS_BY_KEY[d].field for d in dimensions))
+        # What the question actually asks, independent of its wording variant:
+        # the reasoning operation, the dimension it is about and the categories
+        # involved. The selector uses it to keep one game from asking one idea
+        # twice (MASTER_SPEC.md §12.4).
+        operation = operation or self.operation
+        topic = topic or (dimensions[0] if len(dimensions) == 1 else 'multi')
+        signature = (operation, topic, *(str(part) for part in fact))
         # A fact about a listed choice that no grouping changed is a simple, direct
         # question; all such facts share one family so they cannot crowd a game.
         kind, family, hops = self.kind, self.family, self.hops
@@ -238,7 +262,15 @@ class DiscoveryRule(QuestionRule):
                     ('domains', ','.join(domains)), ('reasoning_hops', hops),
                     ('coverage', round(coverage, 3)), ('interest', round(min(max(interest, 0.0), 1.0), 3)),
                     ('tier', self.tier), ('person_answer', person), ('answer_key', str(answer_key)),
-                    ('mix', 'simple' if literal else _MIX[self.kind]))
+                    ('mix', 'simple' if literal else _MIX[self.kind]),
+                    # A listed choice changes the family, never the reasoning: one
+                    # "pop or rock?" per game, whether or not grouping merged anything.
+                    ('operation', operation),
+                    ('topic', topic), ('signature', signature))
+        if subgroup:
+            metadata += (('subgroup', subgroup),)
+        if anchor:
+            metadata += (('anchor', anchor),)
         if membership is not None:
             metadata += (('membership_signature', membership),)
         if reveals or needs:
@@ -248,7 +280,7 @@ class DiscoveryRule(QuestionRule):
             options=options,
             correct_option_id=correct,
             source_rule_id=self.rule_id,
-            source_field_keys=tuple(dict.fromkeys(DIMENSIONS_BY_KEY[d].field for d in dimensions)),
+            source_field_keys=fields,
             involved_player_ids=tuple(involved),
             difficulty=self.difficulty,
             semantic_key=(self.family, *map(str, fact)),
@@ -337,9 +369,11 @@ class GroupCountRule(DiscoveryRule):
 
     rule_id = 'group_count'
     family = 'SEMANTIC_COUNT'
+    operation = 'count'
     difficulty = Difficulty.EASY
     hops = 2
-    dimensions = ('movie.genre', 'food.cuisine', 'hobby.family', 'hobby.physical', 'hobby.setting',
+    dimensions = ('movie.genre', 'food.cuisine', 'food.format', 'hobby.family', 'hobby.physical',
+                  'hobby.setting', 'hobby.making_music', 'age.band',
                   'music.genre', 'artist.genre', 'song.genre')
     only = {'hobby.physical': ('activity.physical',), 'hobby.setting': ('setting.outdoor',)}
 
@@ -350,7 +384,9 @@ class GroupCountRule(DiscoveryRule):
                 continue
             for category in self.only.get(key, s.categories):
                 members = s.members.get(category, ())
-                if not 0 < len(members) < len(s.consented):
+                # A count of one is the unique-member question in disguise, and a
+                # weaker version of it: ask who, not how many.
+                if not 1 < len(members) < len(s.consented):
                     continue
                 fact = (key, category)
                 n = len(members)
@@ -375,9 +411,10 @@ class GroupMajorityRule(DiscoveryRule):
 
     rule_id = 'group_mode'
     family = 'SEMANTIC_MAJORITY'
+    operation = 'majority'
     difficulty = Difficulty.EASY
     hops = 3
-    dimensions = TASTES
+    dimensions = (*TASTES, 'food.format', 'age.band')
     character = ('food.cuisine', 'hobby.family', 'music.genre')
 
     def candidates(self, summary, words, rng):
@@ -426,9 +463,11 @@ class GroupComparisonRule(DiscoveryRule):
 
     rule_id = 'group_comparison_semantic'
     family = 'SEMANTIC_COMPARISON'
+    operation = 'comparison'
     difficulty = Difficulty.MEDIUM
     hops = 3
-    dimensions = ('movie.genre', 'food.cuisine', 'hobby.family', 'hobby.setting', 'hobby.physical',
+    dimensions = ('movie.genre', 'food.cuisine', 'food.format', 'age.band', 'hobby.family',
+                  'hobby.setting', 'hobby.physical',
                   'music.genre', 'artist.genre', 'song.genre')
     item_options = ('hobby.family', 'hobby.setting', 'hobby.physical')
 
@@ -465,9 +504,10 @@ class GroupUniqueRule(DiscoveryRule):
 
     rule_id = 'group_unique'
     family = 'SEMANTIC_UNIQUE'
+    operation = 'unique'
     difficulty = Difficulty.MEDIUM
     hops = 2
-    dimensions = TASTES
+    dimensions = (*TASTES, 'food.format', 'hobby.making_music')
 
     def candidates(self, summary, words, rng):
         for key in self.dimensions:
@@ -501,6 +541,7 @@ class MediaGenreOutlierRule(DiscoveryRule):
 
     rule_id = 'group_genre_outlier'
     family = 'SEMANTIC_UNIQUE'
+    operation = 'unique'
     hops = 3
 
     def candidates(self, summary, words, rng):
@@ -537,9 +578,10 @@ class GroupDiversityRule(DiscoveryRule):
 
     rule_id = 'group_diversity'
     family = 'SEMANTIC_DIVERSITY'
+    operation = 'diversity'
     difficulty = Difficulty.MEDIUM
     hops = 3
-    dimensions = ('food.cuisine', 'hobby.family', 'music.genre', *MEDIA_DIMENSIONS)
+    dimensions = ('food.cuisine', 'food.format', 'hobby.family', 'music.genre', 'age.band', *MEDIA_DIMENSIONS)
     maximum = 6
 
     def candidates(self, summary, words, rng):
@@ -574,6 +616,7 @@ class GroupMinorityRule(DiscoveryRule):
 
     rule_id = 'group_minority'
     family = 'SEMANTIC_MINORITY'
+    operation = 'minority'
     difficulty = Difficulty.MEDIUM
     hops = 3
     dimensions = ('movie.genre', 'food.cuisine', 'hobby.family', 'music.genre')
@@ -612,6 +655,7 @@ class GroupDistributionRule(DiscoveryRule):
 
     rule_id = 'group_distribution'
     family = 'SEMANTIC_DISTRIBUTION'
+    operation = 'distribution'
     difficulty = Difficulty.MEDIUM
     hops = 3
     dimensions = TASTES
@@ -655,6 +699,7 @@ class RegionMajorityRule(DiscoveryRule):
 
     rule_id = 'region_majority'
     family = 'GEO_REGION_MAJORITY'
+    operation = 'majority'
     kind = 'geographic'
     difficulty = Difficulty.EASY
     hops = 3
@@ -694,6 +739,7 @@ class RegionMajorityRule(DiscoveryRule):
 class RegionComparisonRule(GroupComparisonRule):
     rule_id = 'region_comparison'
     family = 'GEO_REGION_COMPARISON'
+    operation = 'comparison'
     kind = 'geographic'
     dimensions = ('place.region',)
 
@@ -702,6 +748,7 @@ class RegionCountRule(GroupCountRule):
     tier = 1
     rule_id = 'region_count'
     family = 'GEO_REGION_COUNT'
+    operation = 'count'
     kind = 'geographic'
     dimensions = ('place.region',)
     only = {}
@@ -711,6 +758,7 @@ class RegionUniqueRule(GroupUniqueRule):
     tier = 1
     rule_id = 'region_unique'
     family = 'GEO_REGION_UNIQUE'
+    operation = 'unique'
     kind = 'geographic'
     dimensions = ('place.region',)
 
@@ -719,6 +767,7 @@ class RegionDiversityRule(GroupDiversityRule):
     tier = 1
     rule_id = 'region_diversity'
     family = 'GEO_REGION_DIVERSITY'
+    operation = 'diversity'
     kind = 'geographic'
     dimensions = ('place.region',)
     maximum = 4
@@ -729,6 +778,7 @@ class LocalityExtremeRule(DiscoveryRule):
 
     rule_id = 'locality_extreme'
     family = 'GEO_EXTREME'
+    operation = 'extreme'
     kind = 'geographic'
     difficulty = Difficulty.EASY
     hops = 2
@@ -760,6 +810,7 @@ class ClosestPairRule(DiscoveryRule):
 
     rule_id = 'locality_distance_pair'
     family = 'GEO_CLOSEST_PAIR'
+    operation = 'closest_pair'
     kind = 'geographic'
     difficulty = Difficulty.MEDIUM
     hops = 3
@@ -794,6 +845,7 @@ class GeographicOutlierRule(DiscoveryRule):
 
     rule_id = 'geographic_outlier'
     family = 'GEO_OUTLIER'
+    operation = 'outlier'
     kind = 'geographic'
     difficulty = Difficulty.MEDIUM
     hops = 3
@@ -857,6 +909,7 @@ class SubgroupMajorityRule(DiscoveryRule):
 
     rule_id = 'group_filtered_mode'
     family = 'CROSS_SUBGROUP_MAJORITY'
+    operation = 'majority'
     kind = 'cross_domain'
     difficulty = Difficulty.HARD
     hops = 4
@@ -900,7 +953,7 @@ class SubgroupMajorityRule(DiscoveryRule):
                                      interest=leader_interest(counts[winner], runner_up, len(known)),
                                      reveals=(*ranks_of(within, (winner,)), *counts_of(within, (winner,)),
                                               *counts_of(condition_key, (category,))),
-                                     needs=(ranks_of(within, (winner,)),),
+                                     needs=(ranks_of(within, (winner,)),), subgroup=f'{condition_key}:{category}',
                                      membership=pair_membership(condition, target,
                                                                 (p for p in known if p in target.members[winner])))
 
@@ -910,6 +963,7 @@ class SubgroupComparisonRule(DiscoveryRule):
 
     rule_id = 'group_subgroup_comparison'
     family = 'CROSS_SUBGROUP_COMPARISON'
+    operation = 'comparison'
     kind = 'cross_domain'
     difficulty = Difficulty.HARD
     hops = 4
@@ -952,7 +1006,8 @@ class SubgroupComparisonRule(DiscoveryRule):
                               involved=known, answer_key=winner, coverage=len(known) / len(members),
                               interest=closeness(counts[a], counts[b]),
                               reveals=(*counts_of(within, (a, b)), *counts_of(condition.dimension.key, (category,))),
-                              needs=(ranks_of(within, (a,)), ranks_of(within, (b,)), counts_of(within, (a, b))))
+                              needs=(ranks_of(within, (a,)), ranks_of(within, (b,)), counts_of(within, (a, b))),
+                              subgroup=f'{condition.dimension.key}:{category}')
 
 
 class IntersectionCountRule(DiscoveryRule):
@@ -960,6 +1015,7 @@ class IntersectionCountRule(DiscoveryRule):
 
     rule_id = 'group_intersection_count'
     family = 'CROSS_INTERSECTION_COUNT'
+    operation = 'count'
     kind = 'cross_domain'
     difficulty = Difficulty.HARD
     hops = 3
@@ -979,7 +1035,9 @@ class IntersectionCountRule(DiscoveryRule):
                     if len(members_a) < 2 or len(members_b) < 2:
                         continue
                     both = tuple(p for p in members_a if p in set(members_b))
-                    if 0 < len(both) < min(len(members_a), len(members_b)):
+                    # One person in both is the "who chose both?" question, and a
+                    # better version of it: ask who, not how many.
+                    if 1 < len(both) < min(len(members_a), len(members_b)):
                         found.append((category_a, category_b, both))
             found.sort(key=lambda f: (-len(f[2]), first.categories.index(f[0]), second.categories.index(f[1])))
             for category_a, category_b, both in found[:self.per_pair]:
@@ -1018,6 +1076,543 @@ class IntersectionCountRule(DiscoveryRule):
                               reveals=disclosed, needs=tuple((atom,) for atom in disclosed))
 
 
+# ----- whole-profile and connection discoveries ----------------------------------------
+
+
+def _pair_name(summary, pair) -> str:
+    return f'{summary.name(pair[0])} + {summary.name(pair[1])}'
+
+
+def _shared_dimensions(summary, keys):
+    """One usable dimension per subject: music style, artist and song are one topic."""
+    found, seen = [], set()
+    for key in keys:
+        dimension = summary.get(key)
+        if dimension is None or not dimension.eligible_for_count() or not dimension.classified:
+            continue
+        group = DOMAIN_GROUPS[dimension.dimension.selection_domain]
+        if group in seen:
+            continue
+        seen.add(group)
+        found.append(dimension)
+    return found
+
+
+class PersonalFactRule(DiscoveryRule):
+    """Attribute a consented "something about me" line to whoever wrote it.
+
+    The text is quoted exactly as written and nothing is inferred from it: an
+    unclassifiable sentence stays unclassified. A line two people wrote is not
+    asked at all, because it has no single answer.
+    """
+
+    rule_id = 'personal_fact_attribution'
+    family = 'SOCIAL_ATTRIBUTION'
+    operation = 'attribution'
+    kind = 'social'
+    difficulty = Difficulty.EASY
+    hops = 1
+    max_length = 120
+
+    def candidates(self, summary, words, rng):
+        dataset = summary.dataset
+        shared = [(pid, ' '.join(str(value).split())) for pid, value in dataset.values_for('personal_fact')]
+        written = {}
+        for _, line in shared:
+            written[line.casefold()] = written.get(line.casefold(), 0) + 1
+        everyone = list(dataset.player_ids)
+        if len(everyone) < 4:
+            return
+        for player_id, line in shared:
+            others = [p for p in everyone if p != player_id]
+            if not line or len(line) > self.max_length or written[line.casefold()] > 1 or len(others) < 3:
+                continue
+            explanation = words.text('{name} wrote this in their profile.', '{name} כתב/ה את זה בפרופיל.',
+                                     name=summary.name(player_id))
+            yield self.candidate(
+                rng, text=words.question('attribution', 'personal.fact', ('personal_fact', player_id), line=line),
+                answer=summary.name(player_id), distractors=[summary.name(p) for p in others],
+                fields=('personal_fact',), domains=('social',), topic='personal.fact',
+                fact=('personal_fact', player_id), explanation=explanation, involved=(player_id, *others),
+                answer_key=player_id, focus=(player_id,), person=True, interest=0.95)
+
+
+class TasteTwinsRule(DiscoveryRule):
+    """The two people whose answers fall into the same categories most often."""
+
+    rule_id = 'taste_twins'
+    family = 'SOCIAL_TWINS'
+    operation = 'twins'
+    difficulty = Difficulty.MEDIUM
+    hops = 4
+    dimensions = PROFILE_DIMENSIONS
+    minimum_shared = 2
+
+    def candidates(self, summary, words, rng):
+        found = _shared_dimensions(summary, self.dimensions)
+        if len(found) < 3:
+            return
+        people_ids = [p for p in summary.dataset.player_ids
+                      if sum(p in d.classified for d in found) >= self.minimum_shared]
+        if len(people_ids) < 5:
+            return
+        shared = {}
+        for first, second in combinations(people_ids, 2):
+            common = [(d, d.classified[first] & d.classified[second]) for d in found
+                      if first in d.classified and second in d.classified]
+            matches = [(d, labels) for d, labels in common if labels]
+            if len(matches) >= self.minimum_shared:
+                shared[(first, second)] = matches
+        if len(shared) < 4:
+            return
+        # Rank by the subjects two people share, then by how many categories
+        # inside them; a pair sharing two film genres is closer than one.
+        def closeness(pair):
+            return (len(shared[pair]), sum(len(labels) for _, labels in shared[pair]))
+
+        ranked = sorted(shared, key=lambda pair: (tuple(-part for part in closeness(pair)), pair))
+        best = ranked[0]
+        if closeness(best) == closeness(ranked[1]):
+            return  # No single closest pair.
+        labels = []
+        for dimension, common in shared[best]:
+            category = sorted(common, key=dimension.categories.index)[0]
+            labels.append(words.forms(category, dimension.dimension.domain)['items'])
+        labels = list(dict.fromkeys(labels))
+        explanation = words.text(
+            '{a} and {b} share {n}: {labels}.', '{a} ו{b} חולקים {n} דברים: {labels}.',
+            a=summary.name(best[0]), b=summary.name(best[1]), n=len(labels), labels=words.join(labels))
+        yield self.candidate(
+            rng, text=words.question('twins', 'multi', ('twins',)), answer=_pair_name(summary, best),
+            distractors=[_pair_name(summary, pair) for pair in ranked[1:9]], fact=('twins',),
+            dimensions=tuple(d.dimension.key for d, _ in shared[best]), topic='multi',
+            explanation=explanation, involved=tuple(people_ids), answer_key='+'.join(best),
+            focus=best, person=True, interest=1.0)
+
+
+class TypicalMemberRule(DiscoveryRule):
+    """Whose answers sit in the group's leading category most often."""
+
+    rule_id = 'typical_member'
+    family = 'SOCIAL_TYPICAL'
+    operation = 'typical'
+    difficulty = Difficulty.HARD
+    hops = 4
+    dimensions = PROFILE_DIMENSIONS
+
+    def candidates(self, summary, words, rng):
+        leaders = []
+        for dimension in _shared_dimensions(summary, self.dimensions):
+            counts = {c: dimension.count(c) for c in dimension.categories}
+            leader = meaningful_leader(dimension, counts)
+            if leader is not None:
+                leaders.append((dimension, leader[0]))
+        if len(leaders) < 3:
+            return
+        scores = {}
+        for player in summary.dataset.player_ids:
+            matched = [(d, c) for d, c in leaders if player in d.members[c]]
+            if matched:
+                scores[player] = matched
+        if len(scores) < 4:
+            return
+        ranked = sorted(scores, key=lambda p: (-len(scores[p]), p))
+        best = ranked[0]
+        if len(scores[best]) < 2 or len(scores[best]) == len(scores[ranked[1]]):
+            return
+        labels = list(dict.fromkeys(words.forms(c, d.dimension.domain)['items'] for d, c in scores[best]))
+        explanation = words.text(
+            '{name} matches the group on {n} of them: {labels}.',
+            '{name} מתאים/ה לקבוצה ב־{n} מהן: {labels}.',
+            name=summary.name(best), n=len(labels), labels=words.join(labels))
+        yield self.candidate(
+            rng, text=words.question('typical', 'multi', ('typical',)), answer=summary.name(best),
+            distractors=[summary.name(p) for p in ranked[1:9]], fact=('typical',),
+            dimensions=tuple(d.dimension.key for d, _ in scores[best]), topic='multi',
+            explanation=explanation, involved=tuple(scores), answer_key=best, focus=(best,),
+            person=True, interest=0.9)
+
+
+class GroupAgreementRule(DiscoveryRule):
+    """Which subject the group agrees on most — or is most divided about."""
+
+    rule_id = 'group_agreement'
+    family = 'SOCIAL_AGREEMENT'
+    operation = 'agreement'
+    difficulty = Difficulty.MEDIUM
+    hops = 4
+    dimensions = ('movie.genre', 'food.cuisine', 'hobby.family', 'music.genre', 'place.region')
+    margin = 0.15
+
+    def candidates(self, summary, words, rng):
+        shares, groups = {}, {}
+        for key in self.dimensions:
+            dimension = summary.get(key)
+            if dimension is None or not dimension.eligible_for_strong_claim():
+                continue
+            counts = [dimension.count(c) for c in dimension.categories]
+            if not any(counts) or len(dimension.represented()) < 2:
+                continue
+            group = DOMAIN_GROUPS[dimension.dimension.selection_domain]
+            if group in groups:
+                continue  # One dimension per subject; music style stands for music.
+            groups[group] = dimension
+            shares[key] = max(counts) / len(dimension.recognized)
+        if len(shares) < 3:
+            return
+        ordered = sorted(shares, key=lambda k: (-shares[k], k))
+        for operation, ranking in (('agreement', ordered), ('variety', ordered[::-1])):
+            first, second = ranking[0], ranking[1]
+            if abs(shares[first] - shares[second]) < self.margin:
+                continue
+            dimension = summary.get(first)
+            topics = {k: TOPIC_LABELS[summary.get(k).dimension.selection_domain] for k in ordered}
+            labels = {k: (pair[1] if words.he else pair[0]) for k, pair in topics.items()}
+            shown = ordered[:3] if len(ordered) >= 3 else ordered
+            if first not in shown:
+                shown = [first, *shown[:2]]
+            shown = sorted(shown, key=ordered.index)
+            leader = max(dimension.categories, key=lambda c: (dimension.count(c), -dimension.categories.index(c)))
+            if operation == 'agreement':
+                explanation = words.text(
+                    'The biggest agreement is about {topic}: {n} of {total} chose {label}.',
+                    'ההסכמה הגדולה ביותר היא בנושא {topic}: {n} מתוך {total} בחרו {label}.',
+                    topic=labels[first], n=dimension.count(leader), total=len(dimension.recognized),
+                    label=words.forms(leader, dimension.dimension.domain)['items'])
+            else:
+                explanation = words.text(
+                    'You are most spread out about {topic}: even the most popular, {label}, has only {n} of {total}.',
+                    'הכי מפוזרים בנושא {topic}: גם הנפוץ ביותר, {label}, קיבל רק {n} מתוך {total}.',
+                    topic=labels[first], label=words.forms(leader, dimension.dimension.domain)['items'],
+                    n=dimension.count(leader), total=len(dimension.recognized))
+            yield self.candidate(
+                rng, text=words.question(operation, 'multi', (operation,), a=labels[shown[0]],
+                                         b=labels[shown[1]], c=labels[shown[2]] if len(shown) > 2 else ''),
+                answer=labels[first], ordered=[labels[k] for k in shown], fact=(operation,),
+                dimensions=tuple(shown), topic='multi', operation=operation, explanation=explanation,
+                involved=tuple(dimension.recognized), answer_key=first, interest=0.9)
+
+
+class GroupUnanimityRule(DiscoveryRule):
+    """The one category every single recognized answer shares."""
+
+    rule_id = 'group_unanimity'
+    family = 'SEMANTIC_UNANIMITY'
+    operation = 'unanimity'
+    difficulty = Difficulty.EASY
+    hops = 3
+    dimensions = ('movie.genre', 'food.cuisine', 'food.format', 'hobby.family', 'hobby.setting',
+                  'hobby.physical', 'music.genre', 'place.region')
+    # Three people who all answered the same is still a real shared fact, and in
+    # a room that uniform it is the only honest question left.
+    minimum = 3
+
+    def candidates(self, summary, words, rng):
+        for key in self.dimensions:
+            dimension = summary.get(key)
+            if (dimension is None or not dimension.complete or len(dimension.categories) < 2
+                    or len(dimension.recognized) < max(self.minimum, ceil(0.6 * dimension.group_size))):
+                continue
+            shared = [c for c in dimension.categories if dimension.count(c) == len(dimension.recognized)]
+            if len(shared) != 1:
+                continue
+            category = shared[0]
+            others = [c for c in dimension.categories if c != category]
+            if len(others) < 1:
+                continue
+            domain = dimension.dimension.domain
+            explanation = words.text(
+                'Everyone {chose} — all {n} recognized answers.', 'כולם {chose} — כל {n} התשובות שזוהו.',
+                chose=chose(words, key, category, len(dimension.recognized)), n=len(dimension.recognized))
+            yield self.candidate(
+                rng, text=words.render(UNANIMITY[key]), answer=words.forms(category, domain)['label'],
+                distractors=[words.forms(c, domain)['label'] for c in others], fact=(key, category),
+                dimensions=(key,), explanation=explanation, involved=tuple(dimension.recognized),
+                answer_key=category, interest=1.0,
+                reveals=(*counts_of(key, (category,)), *ranks_of(key, (category,))))
+
+
+class GroupExceptionRule(DiscoveryRule):
+    """Everyone shares a category except exactly one person."""
+
+    rule_id = 'group_exception'
+    family = 'SEMANTIC_EXCEPTION'
+    operation = 'exception'
+    difficulty = Difficulty.MEDIUM
+    hops = 3
+    dimensions = ('movie.genre', 'food.cuisine', 'food.format', 'hobby.family', 'hobby.setting',
+                  'hobby.physical', 'music.genre', 'place.region', 'age.band')
+    minimum = 5
+
+    def candidates(self, summary, words, rng):
+        for key in self.dimensions:
+            dimension = summary.get(key)
+            if (dimension is None or not dimension.complete
+                    or len(dimension.recognized) < max(self.minimum, ceil(0.6 * dimension.group_size))):
+                continue
+            for category in dimension.represented():
+                members = dimension.members[category]
+                outside = [p for p in dimension.recognized if p not in members]
+                if len(outside) != 1 or len(members) < 4:
+                    continue
+                odd = outside[0]
+                domain = dimension.dimension.domain
+                forms = words.forms(category, domain)
+                if dimension.dimension.private_evidence:
+                    explanation = words.text('Everyone else who shared an age is {items}.',
+                                             'כל מי ששיתף גיל הוא {items}.', **forms)
+                else:
+                    explanation = words.text('{name} chose {choice}; everyone else chose {items}.',
+                                             '{name} בחר/ה {choice}; כל השאר בחרו {items}.',
+                                             name=summary.name(odd), choice=dimension.evidence_label(odd, words.language),
+                                             **forms)
+                yield self.candidate(
+                    rng, text=words.render(EXCEPTIONS[key], **forms), answer=summary.name(odd),
+                    distractors=[summary.name(p) for p in members], fact=(key, category, 'exception'),
+                    dimensions=(key,), explanation=explanation, involved=tuple(dimension.recognized),
+                    answer_key=odd, focus=(odd,), person=True, interest=1.0,
+                    membership=(dimension.dimension.field, members))
+
+
+class SharedTastePartnerRule(DiscoveryRule):
+    """Two different answers that turn out to be the same kind of thing."""
+
+    rule_id = 'shared_taste_partner'
+    family = 'SEMANTIC_PARTNER'
+    operation = 'partner'
+    difficulty = Difficulty.MEDIUM
+    hops = 3
+    dimensions = ('movie.genre', 'food.cuisine', 'food.format', 'hobby.family', 'artist.genre')
+
+    def candidates(self, summary, words, rng):
+        for key in self.dimensions:
+            dimension = summary.get(key)
+            if dimension is None or not dimension.complete or len(dimension.recognized) < 5:
+                continue
+            for category in dimension.represented():
+                members = dimension.members[category]
+                outside = dimension.non_members(category)
+                if len(members) != 2 or len(outside) < 3:
+                    continue
+                asked, answer = members
+                if dimension.choice_key(asked) == dimension.choice_key(answer):
+                    continue  # The same answer twice is not a hidden connection.
+                domain = dimension.dimension.domain
+                explanation = words.text(
+                    '{a} chose {choice_a} and {b} chose {choice_b} — both are {items}.',
+                    '{a} בחר/ה {choice_a} ו{b} בחר/ה {choice_b} — שניהם {items}.',
+                    a=summary.name(asked), b=summary.name(answer),
+                    choice_a=dimension.evidence_label(asked, words.language),
+                    choice_b=dimension.evidence_label(answer, words.language),
+                    **words.forms(category, domain))
+                yield self.candidate(
+                    rng, text=words.render(PARTNERS[key], name=summary.name(asked),
+                                           choice=dimension.evidence_label(asked, words.language)),
+                    answer=summary.name(answer), distractors=[summary.name(p) for p in outside],
+                    anchor=f'{dimension.dimension.field}:{asked}',
+                    fact=(key, category, 'partner'), dimensions=(key,), explanation=explanation,
+                    involved=tuple(dimension.recognized), answer_key=answer, focus=(asked, answer),
+                    person=True, interest=1.0, membership=(dimension.dimension.field, members))
+
+
+class IntersectionPersonRule(DiscoveryRule):
+    """The one person who is in two categories from different domains at once."""
+
+    rule_id = 'intersection_person'
+    family = 'CROSS_INTERSECTION_PERSON'
+    operation = 'both'
+    kind = 'cross_domain'
+    difficulty = Difficulty.HARD
+    hops = 4
+    pairs = (('movie.genre', 'hobby.family'), ('food.cuisine', 'hobby.family'),
+             ('music.genre', 'hobby.family'), ('place.region', 'food.cuisine'),
+             ('movie.genre', 'food.cuisine'), ('music.genre', 'movie.genre'))
+    per_pair = 3
+
+    def candidates(self, summary, words, rng):
+        for key_a, key_b in self.pairs:
+            produced = 0
+            first, second = summary.get(key_a), summary.get(key_b)
+            if first is None or second is None or not (first.complete and second.complete):
+                continue
+            if len(first.recognized) < 5 or len(second.recognized) < 5:
+                continue
+            for category_a in first.represented():
+                for category_b in second.represented():
+                    members_a, members_b = first.members[category_a], second.members[category_b]
+                    both = [p for p in members_a if p in set(members_b)]
+                    if len(both) != 1 or len(members_a) < 2 or len(members_b) < 2:
+                        continue
+                    only = both[0]
+                    others = [p for p in (*members_a, *members_b) if p != only]
+                    if len(set(others)) < 3:
+                        continue
+                    forms = {**words.forms(category_a, first.dimension.domain, '_a'),
+                             **words.forms(category_b, second.dimension.domain, '_b')}
+                    template = BOTH.get(key_a, BOTH[None])
+                    explanation = words.text(
+                        '{name} is the only one in both groups: {n_a} chose {items_a} and {n_b} chose {items_b}.',
+                        '{name} היחיד/ה שנמצא/ת בשתי הקבוצות: {n_a} בחרו {items_a} ו־{n_b} בחרו {items_b}.',
+                        name=summary.name(only), n_a=len(members_a), n_b=len(members_b), **forms)
+                    produced += 1
+                    if produced > self.per_pair:
+                        break
+                    yield self.candidate(
+                        rng, text=words.render(template, **forms), answer=summary.name(only),
+                        distractors=[summary.name(p) for p in dict.fromkeys(others)],
+                        fact=(key_a, category_a, key_b, category_b, 'person'),
+                        dimensions=(key_a, key_b), topic=key_b, explanation=explanation,
+                        involved=tuple(dict.fromkeys((*members_a, *members_b))), answer_key=only,
+                        focus=(only,), person=True, interest=1.0,
+                        membership=pair_membership(first, second, both))
+
+
+class SongArtistLinkRule(DiscoveryRule):
+    """One player's favourite song is by another player's favourite artist."""
+
+    rule_id = 'song_artist_link'
+    family = 'CROSS_MEDIA_LINK'
+    operation = 'link'
+    kind = 'cross_domain'
+    difficulty = Difficulty.MEDIUM
+    hops = 3
+
+    def candidates(self, summary, words, rng):
+        artists, songs = summary.get('artist.genre'), summary.get('song.genre')
+        if artists is None or songs is None:
+            return
+        for owner, artist in artists.entities.items():
+            listeners = [p for p, song in songs.entities.items()
+                         if p != owner and artist.canonical_id in song.performer_ids]
+            if len(listeners) != 1:
+                continue
+            listener = listeners[0]
+            if artists.entities.get(listener) is artist:
+                continue  # Both named the same artist: no hidden link to find.
+            others = [p for p in songs.entities if p not in (owner, listener)]
+            if len(others) < 3:
+                others = [p for p in summary.dataset.player_ids if p not in (owner, listener)]
+            if len(others) < 3:
+                continue
+            label = artists.evidence_label(owner, words.language)
+            explanation = words.text(
+                '{name} chose “{song}”, a song by {artist}.', '{name} בחר/ה את ״{song}״ — שיר של {artist}.',
+                name=summary.name(listener), song=songs.evidence_label(listener, words.language), artist=label)
+            yield self.candidate(
+                rng, text=words.question('song_link', 'multi', ('song_link', owner),
+                                         name=summary.name(owner), artist=label),
+                answer=summary.name(listener), distractors=[summary.name(p) for p in others],
+                anchor=f'favorite_artist:{owner}',
+                fact=('song_link', owner), dimensions=('artist.genre', 'song.genre'), topic='multi',
+                explanation=explanation, involved=(owner, listener, *others), answer_key=listener,
+                focus=(owner, listener), person=True, interest=1.0)
+
+
+# Wikidata series values include studio catalogues ("Pixar films") and critics'
+# lists, so a shared series id alone would claim Toy Story and Finding Nemo are
+# one series. A real franchise also shares a distinctive word in its title.
+_TITLE_NOISE = frozenset((
+    'the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'part', 'film', 'movie',
+    'ii', 'iii', 'iv', 'vi', 'vii', 'viii', 'ix', 'xi', 'xii', 'xiii', 'xiv',
+    'של', 'את', 'עם', 'סרט', 'חלק', 'ה', 'ו',
+))
+
+
+def _title_words(entity, language: str) -> frozenset[str]:
+    """Distinctive words of a film title, ignoring sequel numbers and articles."""
+    title = entity.label(language) or ''
+    title = _DISAMBIGUATION.sub('', title)
+    words = {word.strip('״"\u2019\'-:,.!?') for word in title.replace(':', ' ').split()}
+    return frozenset(w.casefold() for w in words
+                     if len(w) > 2 and not w.isdigit() and w.casefold() not in _TITLE_NOISE)
+
+
+def _same_franchise(first, second) -> bool:
+    """Whether two films that share a series id really are one film series."""
+    return any(_title_words(first, language) & _title_words(second, language)
+               for language in ('en', 'he'))
+
+
+class MovieSeriesLinkRule(DiscoveryRule):
+    """Two players picked different films from the same series."""
+
+    rule_id = 'movie_series_link'
+    family = 'SEMANTIC_LINK'
+    operation = 'link'
+    difficulty = Difficulty.MEDIUM
+    hops = 3
+
+    def candidates(self, summary, words, rng):
+        movies = summary.get('movie.genre')
+        if movies is None or len(movies.entities) < 5:
+            return
+        by_series = {}
+        for player, entity in movies.entities.items():
+            for series in entity.series_ids:
+                by_series.setdefault(series, []).append(player)
+        for series, players in by_series.items():
+            if len(players) != 2:
+                continue
+            asked, answer = players
+            if movies.entities[asked].canonical_id == movies.entities[answer].canonical_id:
+                continue  # The same film, not two films from one series.
+            if not _same_franchise(movies.entities[asked], movies.entities[answer]):
+                continue  # A shared studio or list is not a film series.
+            others = [p for p in movies.entities if p not in players
+                      and series not in movies.entities[p].series_ids]
+            if len(others) < 3:
+                continue
+            explanation = words.text(
+                '“{a}” and “{b}” belong to the same film series.', '״{a}״ ו״{b}״ שייכים לאותה סדרת סרטים.',
+                a=movies.evidence_label(asked, words.language), b=movies.evidence_label(answer, words.language))
+            yield self.candidate(
+                rng, text=words.question('series_link', 'movie.genre', ('series', series),
+                                         name=summary.name(asked),
+                                         choice=movies.evidence_label(asked, words.language)),
+                answer=summary.name(answer), distractors=[summary.name(p) for p in others],
+                anchor=f'favorite_movie:{asked}',
+                fact=('series', series), dimensions=('movie.genre',), topic='movie.series',
+                explanation=explanation, involved=(asked, answer, *others), answer_key=answer,
+                focus=(asked, answer), person=True, interest=1.0)
+
+
+class AgeSpreadRule(DiscoveryRule):
+    """How many years separate the youngest and the oldest shared age."""
+
+    rule_id = 'age_spread'
+    family = 'SEMANTIC_SPREAD'
+    operation = 'spread'
+    difficulty = Difficulty.MEDIUM
+    hops = 2
+    minimum_shared = 5
+    minimum_spread = 3
+
+    def candidates(self, summary, words, rng):
+        dimension = summary.get('age.band')
+        if dimension is None:
+            return
+        ages = []
+        for player, value in summary.dataset.values_for('age'):
+            try:
+                ages.append(int(str(value).strip()))
+            except (TypeError, ValueError):
+                continue
+        if len(ages) < max(self.minimum_shared, ceil(0.6 * summary.dataset.player_count)):
+            return
+        spread = max(ages) - min(ages)
+        if spread < self.minimum_spread or spread > 90:
+            return
+        explanation = words.text(
+            '{n} of you shared an age, and {spread} years separate the youngest from the oldest.',
+            '{n} מכם שיתפו גיל, ו־{spread} שנים מפרידות בין הצעיר/ה למבוגר/ת ביותר.',
+            n=len(ages), spread=spread)
+        yield self.candidate(
+            rng, text=words.question('spread', 'age.band', ('age_spread',)), answer=str(spread),
+            distractors=number_choices(spread, uncertain=0, maximum=max(ages), minimum=1),
+            fact=('age_spread',), dimensions=('age.band',), topic='age.spread', explanation=explanation,
+            involved=tuple(p for p, _ in summary.dataset.values_for('age')), answer_key=spread, interest=0.85)
+
+
 def discovery_rules(knowledge) -> tuple[DiscoveryRule, ...]:
     """Category-first families, in a stable order (the order candidates are generated)."""
     return tuple(rule(knowledge) for rule in (
@@ -1025,7 +1620,9 @@ def discovery_rules(knowledge) -> tuple[DiscoveryRule, ...]:
         GroupMinorityRule, GroupDistributionRule,
         RegionMajorityRule, RegionComparisonRule, RegionCountRule, RegionUniqueRule, RegionDiversityRule,
         LocalityExtremeRule, ClosestPairRule, GeographicOutlierRule,
-        SubgroupMajorityRule, SubgroupComparisonRule, IntersectionCountRule,
+        SubgroupMajorityRule, SubgroupComparisonRule, IntersectionCountRule, IntersectionPersonRule,
+        PersonalFactRule, TasteTwinsRule, TypicalMemberRule, GroupAgreementRule, GroupUnanimityRule,
+        GroupExceptionRule, SharedTastePartnerRule, SongArtistLinkRule, MovieSeriesLinkRule, AgeSpreadRule,
     ))
 
 

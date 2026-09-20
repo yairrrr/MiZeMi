@@ -203,7 +203,11 @@ def test_complete_generation_replay_and_semantic_selection(language):
     assert first==second and len(first)==20
     semantic=[q for q in first if q.knowledge_version]
     assert len(semantic)>=10
-    assert {'group_filtered_mode','region_hobby_diversity'} & set(q.source_rule_id for q in first)
+    # Cross-domain reasoning reaches the game; which of those families wins the
+    # slot now depends on the room and the variety rules (QUESTION_VARIETY_DESIGN.md).
+    cross={'group_filtered_mode','group_subgroup_comparison','group_intersection_count',
+           'intersection_person','song_artist_link','region_hobby_diversity'}
+    assert cross & set(q.source_rule_id for q in first)
     assert not {'music_artist_bridge','similar_to_player','profile_fingerprint'} & set(q.source_rule_id for q in first)
     assert all(q.explanation for q in semantic)
     assert all(q.language==language for q in first)
@@ -247,7 +251,9 @@ def test_load_memory_and_classroom_generation_have_wide_sanity_bounds():
     start=perf_counter()
     for seed in range(3):
         qs=QuestionGenerator(knowledge=kb).generate(dataset(rows),question_count=20,time_limit_seconds=20,seed=seed)
-        assert len(qs)==20
+        # Thirty players sharing five distinct profiles support fewer than
+        # twenty separate discoveries; the engine returns what it can prove.
+        assert 15<=len(qs)<=20
     assert perf_counter()-start<5
 
 

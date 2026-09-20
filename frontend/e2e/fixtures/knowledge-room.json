@@ -16,6 +16,7 @@
     "hobby.setting": [[], ["setting.outdoor"], ["setting.outdoor"], [], []],
     "food.cuisine": [["food.italian"], ["food.asian"], ["food.italian"], ["food.italian"], ["food.middle_eastern"]],
     "music.genre": [["music.mizrahi"], ["music.mizrahi"], ["music.rock"], ["music.pop"], ["music.jazz"]],
+    "age.band": [["age.19_24"], ["age.19_24"], ["age.19_24"], ["age.25_34"], ["age.25_34"]],
     "place.region": [["region.north"], ["region.central"], ["region.central"], ["region.central"], ["region.south"]]
   }
 }

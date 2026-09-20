@@ -174,7 +174,7 @@ Only a verified host starts or advances. Generation occurs at host start from RE
 
 Pure pipeline: `ProfileDataset → QuestionRule[] → QuestionValidator → QuestionQualityScorer → QuestionSelector → Question[]`. Seed is a stable SHA-256-derived integer from game id; identical dataset/config/seed yields identical questions. Randomness is local seeded Python Random, never global or an external service.
 
-The historical catalog contains 29 direct/profile rules, 18 v4 semantic rules and the v5 group families. The current production composition (§12.3) uses **5 simple direct families and 18 category-first discovery families** (7 semantic, 8 geographic, 3 cross-domain). The other historical algorithms remain available to pure callers and regression tests, but the deployed composition does not select them.
+The historical catalog contains 29 direct/profile rules, 18 v4 semantic rules and the v5 group families. The current production composition (§12.3, §12.6) uses **5 simple direct families and 30 category-first discovery families** (16 semantic, 8 geographic, 5 cross-domain, 1 social). The other historical algorithms remain available to pure callers and regression tests, but the deployed composition does not select them.
 
 Difficulty is explicit EASY/MEDIUM/HARD metadata on candidates and final questions. Legacy selection targets 25% easy, 45% medium and 30% hard. The current group-first selector plans the mix in §12.3, uses these difficulty bands as a secondary preference, then orders selected questions EASY → MEDIUM → HARD. Data availability determines the actual difficulty proportions. Within each band a greedy selector balances rule, field and subject diversity and recent-use penalties. When those signals tie, demonstrated semantic reasoning depth takes precedence over basic lookup, then coverage and stable text order apply; scoring of player answers is unchanged. It suppresses normalized text duplicates and semantic signatures across equivalent families; it does not fabricate or repeat questions to fill a quota.
 
@@ -249,6 +249,44 @@ Fuzzy matches allow one insertion, deletion, substitution or adjacent transposit
 Reference names are indexed once by script, length and bigrams using packed integer postings and character masks. At most 256 narrowed names receive bounded edit-distance calculations per query; JSON parsing and full-catalog distance scans never occur during a game. A consent-only dataset caches classifications locally during generation; no player-query cache crosses room boundaries. Withheld fields never enter the resolver or affect categories, candidates, counts, distractors or explanations.
 
 The group-first selector defers `unique_value` person lookups until no eligible non-lookup question remains, including under relaxed family/domain caps. At most one such EASY fallback is allowed, and that cap never relaxes. Useful literal group counts and comparisons remain distinct from these lookups. The no-settled-question rule remains absolute; games can be shorter than requested. See [KNOWLEDGE_RESOLUTION_REPORT.md](KNOWLEDGE_RESOLUTION_REPORT.md) and its frozen evaluation artifacts for before/after final-quiz evidence, limitations and resource measurements. No reference facts, dependencies, public contracts, scoring or deployment configuration change.
+
+### 12.6 Question variety (v6.3)
+
+A game must discover things about the group, not restate the profile form. Every candidate carries a
+**semantic signature** `(operation, topic, fact…)` and an **idea key** `(idea class, idea topic)`
+alongside the membership signature. `operation` is the reasoning act; `topic` is the subject as a
+player experiences it, so artist and song genres collapse to one music topic, and mirror-image
+shapes (most/least, agree/differ, the three “who else?” forms) share one idea class. A signature, an
+idea, a scoped subgroup and a person's anchoring answer may each be used once per game. Raw question
+text is never the duplicate test.
+
+Music style, artist and song are one subject with one budget; film, place, food, hobby, age and
+personal are the others. In a 20-question game no subject exceeds 30% of the requested count and
+that ceiling never relaxes; a reasoning pattern is used once, may return only on a subject it has
+not been applied to, and repeats only in a final relaxation. The strongest two facts per subject are
+reserved before variety staging so headline discoveries survive. Direct answer lookups are capped at
+10% with at most one raw identity lookup. Selection stays a bounded greedy fill with an explainable
+deterministic ranking; there are no arbitrary bonuses and no random tie-breaking.
+
+New families: attribution of a consented personal fact to its writer, taste twins, the most typical
+member, where the group agrees or differs most, unanimity, everyone-except-one, the other person in
+your category, a song by someone else's favourite artist, two films of one series, age spread, the
+one person in both of two groups, and region counts and uniques. New derived dimensions: age bands
+(12 and under, 13–15, 16–18, 19–24, 25–34, 35–49, 50+), food formats and music-making hobbies. **No
+question or explanation reveals an exact age**, and individual age evidence is never listed.
+
+Free-text personal facts are quoted, never interpreted: the only question they support asks who
+wrote a fact, and only when its writer consented and did not withhold their name. No inference is
+made from arbitrary text; where meaning cannot be derived the value stays unknown. Reference
+"series" values that are studio catalogues or curated lists do not make two films a series: a
+shared distinctive title word in one of the game languages is also required.
+
+Targets for rooms with real data, per game: at least six distinct reasoning families, at least five
+profile fields, no subject above 30%, no repeated signature, direct lookups at most 10%, and zero
+questions answered by an earlier one. Quality still beats length — a short game is preferred to a
+repeated idea. Evidence, before/after metrics and limitations:
+[QUESTION_VARIETY_DESIGN.md](QUESTION_VARIETY_DESIGN.md) and
+[QUESTION_VARIETY_REPORT.md](QUESTION_VARIETY_REPORT.md).
 
 ## 13. REST / API Conventions
 

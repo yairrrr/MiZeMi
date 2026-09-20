@@ -7,7 +7,7 @@ import pytest
 
 from app.domain.questions import QuestionGenerator, QuestionValidator
 from app.domain.questions.discovery_rules import GroupCountRule, MediaGenreOutlierRule
-from app.domain.questions.group_summary import summarize
+from app.domain.questions.group_summary import DOMAIN_GROUPS, summarize
 from app.infrastructure.knowledge import get_knowledge
 from tests.fixtures.media import MEDIA_RICH, MEDIA_ROOMS
 from tests.unit.test_category_first_questions import answered_by_earlier_questions
@@ -31,6 +31,17 @@ def selected_media(t, field, rule=None):
             and (rule is None or q.source_rule_id == rule)]
 
 
+def valid_media(t, field, rule=None):
+    """Media candidates that survived validation, whether or not they were selected.
+
+    One game no longer asks "which genre leads?" about films, artists and songs
+    at once — that is three questions about one subject (QUESTION_VARIETY_DESIGN.md).
+    The engine must still produce each of them; the selector decides which fits.
+    """
+    return [c for c in t.valid if c.source_field_keys == (field,)
+            and (rule is None or c.source_rule_id == rule)]
+
+
 def choices(field, values, *, room=MEDIA_RICH):
     return replace(room, rows=tuple(
         {'values': {**row['values'], field: value}, 'hide': row['hide']}
@@ -40,27 +51,39 @@ def choices(field, values, *, room=MEDIA_RICH):
 @pytest.mark.parametrize('room', MEDIA_ROOMS, ids=lambda r: r.name)
 @pytest.mark.parametrize('language', ['he', 'en'])
 @pytest.mark.parametrize('seed', [1, 11, 37])
-def test_all_three_supported_media_leaders_reach_final_questions(room, language, seed):
+def test_every_supported_media_leader_is_built_and_one_reaches_the_game(room, language, seed):
     t = trace(room, language, seed)
-    assert len(t.questions) == 20
+    # Small media rooms support fewer than twenty separate discoveries once the
+    # variety rules forbid asking one idea twice; the engine returns what it has.
+    assert len(t.questions) >= 15
     expected = ('אימה', 'מזרחית', 'פופ') if language == 'he' else ('Horror', 'Mizrahi', 'Pop')
     for field, correct in zip(FIELDS, expected):
-        q, c = next(iter(selected_media(t, field, 'group_mode')))
-        assert answer(q) == correct
-        assert q.explanation and q.knowledge_version == KB.version
-        assert dict(c.metadata)['domain'] == field.removeprefix('favorite_')
-        assert any(word in q.text for word in (
+        candidate = next(iter(valid_media(t, field, 'group_mode')))
+        question = next(iter(candidate.options and [candidate]))
+        assert answer(question) == correct
+        assert candidate.explanation and candidate.knowledge_version == KB.version
+        assert dict(candidate.metadata)['domain'] == field.removeprefix('favorite_')
+        assert any(word in candidate.text for word in (
             ('סרט', 'אמנים', 'שירים') if language == 'he' else ('movie', 'artist', 'song')))
         # A supported choice is shown as evidence, not just a generic genre label.
-        assert 'בין הבחירות:' in q.explanation if language == 'he' else 'Choices included:' in q.explanation
+        assert 'בין הבחירות:' in candidate.explanation if language == 'he' else 'Choices included:' in candidate.explanation
+    # The game asks about this group's media, without repeating one subject.
+    media = [c for c in t.selected if set(c.source_field_keys) & set(FIELDS)]
+    assert media, [c.text for c in t.selected]
+    # A leader may be asked about films and about music, never twice about one
+    # of them: films, artists and songs are two subjects, not three.
+    leaders = [dict(c.metadata)['domains'] for c in media if c.source_rule_id == 'group_mode']
+    groups = [DOMAIN_GROUPS[d] for domains in leaders for d in domains.split(',')]
+    assert len(groups) == len(set(groups)), leaders
 
 
 def test_final_media_comparison_survives_when_no_genre_has_a_unique_lead():
     room = choices('favorite_movie', ('המסור', 'המסור', 'היומן', 'היומן', 'היומן',
                                       'טרון: ארס', 'טרון: ארס', 'שרק', 'שרק', 'שכחו אותי בבית'))
     t = trace(room)
-    assert not selected_media(t, 'favorite_movie', 'group_mode')  # Several genres tie at three.
-    q, c = next(iter(selected_media(t, 'favorite_movie', 'group_comparison_semantic')))
+    assert not valid_media(t, 'favorite_movie', 'group_mode')  # Several genres tie at three.
+    c = next(iter(valid_media(t, 'favorite_movie', 'group_comparison_semantic')))
+    q = c
     s = summarize(room.dataset(), KB).get('movie.genre')
     _, _, a, b = c.semantic_key
     assert abs(s.count(a) - s.count(b)) > 0
@@ -107,22 +130,26 @@ def test_common_genres_of_an_ambiguous_title_cannot_prove_exclusivity_or_total_d
     assert not [c for c in trace(room).raw if c.source_rule_id == rule and c.source_field_keys == ('favorite_movie',)]
 
 
-def test_genre_count_and_diversity_reach_final_quizzes_and_count_people_not_distinct_works():
+def test_genre_counts_and_diversity_count_people_not_distinct_works():
     rich, small = trace(MEDIA_ROOMS[0]), trace(MEDIA_ROOMS[1])
-    counts = [(q, c) for q, c in zip(rich.questions, rich.selected)
-              if q.source_rule_id == 'group_count' and c.source_field_keys[0] in FIELDS]
+    counts = [c for c in rich.valid if c.source_rule_id == 'group_count' and c.source_field_keys[0] in FIELDS]
     assert counts
     s = summarize(MEDIA_RICH.dataset(), KB)
-    for q, c in counts:
+    for c in counts:
         _, dim, genre = c.semantic_key
-        assert int(answer(q)) == s.get(dim).count(genre)
-        assert 'אנשים' in q.text or 'מכם' in q.text
-    diversity = [(q, c) for q, c in zip(small.questions, small.selected)
-                 if q.source_rule_id == 'group_diversity' and c.source_field_keys[0] in FIELDS]
+        assert int(answer(c)) == s.get(dim).count(genre)
+        assert 'אנשים' in c.text or 'מכם' in c.text
+    diversity = [c for c in small.valid
+                 if c.source_rule_id == 'group_diversity' and c.source_field_keys[0] in FIELDS]
     assert diversity
-    for q, c in diversity:
+    for c in diversity:
         dim = c.semantic_key[1]
-        assert int(answer(q)) == len(summarize(MEDIA_ROOMS[1].dataset(), KB).get(dim).represented())
+        assert int(answer(c)) == len(summarize(MEDIA_ROOMS[1].dataset(), KB).get(dim).represented())
+    # Across the media rooms the optional fields are genuinely used, not ignored.
+    used = {field for room in MEDIA_ROOMS for seed in (1, 11, 37)
+            for c in trace(room, seed=seed).selected for field in c.source_field_keys
+            if field in FIELDS}
+    assert used == set(FIELDS)
 
 
 @pytest.mark.parametrize('field,values', [
@@ -142,10 +169,10 @@ def test_each_media_domain_can_supply_a_final_diversity_question_with_other_fiel
     assert 'כל סגנון נספר פעם אחת' in q.explanation
 
 
-def test_artist_and_song_subgroup_discoveries_reach_the_final_quiz():
+def test_artist_and_song_subgroup_discoveries_are_built_correctly():
     t = trace()
-    questions = [(q, c) for q, c in zip(t.questions, t.selected)
-                 if q.source_rule_id in ('group_filtered_mode', 'group_subgroup_comparison')
+    questions = [(c, c) for c in t.valid
+                 if c.source_rule_id in ('group_filtered_mode', 'group_subgroup_comparison')
                  and {'favorite_artist', 'favorite_song'}.intersection(c.source_field_keys)]
     assert questions
     summary = summarize(MEDIA_RICH.dataset(), KB)

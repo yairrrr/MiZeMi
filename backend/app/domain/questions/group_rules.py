@@ -436,6 +436,10 @@ def group_rules(knowledge):
                     (LocalityDistanceRule,LocalityExtremeRule,LocalityDistinctRule)))
 
 
+# The reasoning each raw-answer family performs, in the same terms the
+# discovery families use, so the selector compares like with like.
+DIRECT_OPERATIONS = {'unique_value': 'unique', 'value_count': 'count', 'most_common_value': 'majority',
+                     'group_comparison': 'comparison', 'age_ranking': 'extreme'}
 DIRECT_FAMILIES = {'unique_value': 'DIRECT_UNIQUE', 'most_common_value': 'DIRECT_MAJORITY', 'value_count': 'DIRECT_COUNT',
                    'group_comparison': 'DIRECT_COMPARISON', 'age_ranking': 'DIRECT_AGE'}
 FIELD_DOMAINS = {'city': 'place', 'favorite_food': 'food', 'hobby': 'hobby', 'favorite_movie': 'movie',
@@ -486,6 +490,9 @@ class SocialLegacyRule:
                 continue
             if self.rule_id=='value_count' and len(q.involved_player_ids)==1:
                 continue  # "How many live in Herzliya?" (1) only restates who is unique.
+            if (self.rule_id=='value_count'
+                    and len(q.involved_player_ids)==len(dataset.values_for(q.source_field_keys[0]))):
+                continue  # "How many chose pizza?" when everyone did is not a question.
             # Do not pretend an unshared raw answer is a different answer.
             if any(len(dataset.values_for(f)) != dataset.player_count for f in q.source_field_keys):
                 continue
@@ -493,9 +500,13 @@ class SocialLegacyRule:
                 value=dict(dataset.values_for('personal_fact'))[q.involved_player_ids[0]]
                 q=replace(q,text=say(dataset.language,'Who wrote this about themselves: "{value}"?',
                                      'מי כתב/ה את זה על עצמו/ה: "{value}"?',value=value))
+            field=q.source_field_keys[0]
+            operation=DIRECT_OPERATIONS[self.rule_id]
+            fact=q.semantic_key or (q.source_rule_id,*q.source_field_keys,*q.involved_player_ids[:1])
             metadata=(*q.metadata,('mix','simple'),('person_answer',person),('kind','direct'),
-                ('family',DIRECT_FAMILIES[self.rule_id]),('domain',FIELD_DOMAINS.get(q.source_field_keys[0],'social')),
-                ('reasoning_hops',1))
+                ('family',DIRECT_FAMILIES[self.rule_id]),('domain',FIELD_DOMAINS.get(field,'social')),
+                ('reasoning_hops',1),('operation',operation),('topic',field),
+                ('signature',(operation,field,*map(str,fact))))
             if self.rule_id in ('unique_value','value_count','most_common_value'):
                 # "Who is the only one in Rehovot?" and "how many live in Rehovot?" (1) are one fact.
                 holders=q.involved_player_ids[:1] if self.rule_id=='unique_value' else q.involved_player_ids

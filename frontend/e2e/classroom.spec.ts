@@ -237,6 +237,12 @@ test(`${prefix}: host and ${playerCount} mobile players complete a ${count}-ques
       const internalEvidence = testInfo.outputPath('knowledge-final-quiz.json')
       writeFileSync(internalEvidence, evidence)
       await testInfo.attach('knowledge-final-quiz', { path: internalEvidence, contentType: 'application/json' })
+      // Question variety: the oracle reports the reasoning patterns and repeated
+      // ideas it found in the same finished game, so the players' quiz is held
+      // to the variety targets without pinning any question's wording.
+      const summary = JSON.parse(evidence) as { reasoning_families: number; repeated_signatures: number }
+      expect(summary.reasoning_families).toBeGreaterThanOrEqual(6)
+      expect(summary.repeated_signatures).toBe(0)
     }
   } finally {
     await Promise.all(contexts.map((context) => context.close()))

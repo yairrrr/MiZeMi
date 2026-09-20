@@ -76,6 +76,45 @@ LEXICON = {
     'movie.biographical': _movie('Biography', 'ביוגרפיה', 'biographical movies', 'סרטים ביוגרפיים', 'a biographical movie', 'סרט ביוגרפי'),
     'movie.superhero': _movie('Superhero', 'גיבורי על', 'superhero movies', 'סרטי גיבורי על', 'a superhero movie', 'סרט גיבורי על'),
     'movie.animation': _movie('Animation', 'אנימציה', 'animated movies', 'סרטי אנימציה', 'an animated movie', 'סרט אנימציה'),
+    'food.soup': Term('Soup', 'מרק', 'soups', 'מרקים', 'a soup', 'מרק',
+        en_fans='people who chose soups', he_fans='מי שבחרו מרקים'),
+    'food.salad': Term('Salad', 'סלט', 'salads', 'סלטים', 'a salad', 'סלט',
+        en_fans='people who chose salads', he_fans='מי שבחרו סלטים'),
+    'food.sandwich': Term('Sandwich or wrap', 'כריך או ראפ', 'sandwiches and wraps', 'כריכים וראפים', 'a sandwich or a wrap', 'כריך או ראפ',
+        en_fans='people who chose sandwiches and wraps', he_fans='מי שבחרו כריכים וראפים'),
+    'food.dessert': Term('Dessert', 'קינוח', 'desserts', 'קינוחים', 'a dessert', 'קינוח',
+        en_fans='people who chose desserts', he_fans='מי שבחרו קינוחים'),
+    'food.pasta': Term('Pasta or noodles', 'פסטה או אטריות', 'pasta and noodle dishes', 'מנות פסטה ואטריות', 'a pasta or noodle dish', 'מנת פסטה או אטריות',
+        en_fans='people who chose pasta and noodle dishes', he_fans='מי שבחרו מנות פסטה ואטריות'),
+    'food.rice': Term('Rice dish', 'מנת אורז', 'rice dishes', 'מנות אורז', 'a rice dish', 'מנת אורז',
+        en_fans='people who chose rice dishes', he_fans='מי שבחרו מנות אורז'),
+    'food.dip': Term('Dip or spread', 'מטבל או ממרח', 'dips and spreads', 'מטבלים וממרחים', 'a dip or a spread', 'מטבל או ממרח',
+        en_fans='people who chose dips and spreads', he_fans='מי שבחרו מטבלים וממרחים'),
+    'food.stew': Term('Stew', 'תבשיל', 'stews', 'תבשילים', 'a stew', 'תבשיל',
+        en_fans='people who chose stews', he_fans='מי שבחרו תבשילים'),
+    'food.egg': Term('Egg dish', 'מנת ביצים', 'egg dishes', 'מנות ביצים', 'an egg dish', 'מנת ביצים',
+        en_fans='people who chose egg dishes', he_fans='מי שבחרו מנות ביצים'),
+    'food.potato': Term('Potato dish', 'מנת תפוחי אדמה', 'potato dishes', 'מנות תפוחי אדמה', 'a potato dish', 'מנת תפוחי אדמה',
+        en_fans='people who chose potato dishes', he_fans='מי שבחרו מנות תפוחי אדמה'),
+    'food.dumpling': Term('Dumplings', 'כיסונים', 'dumplings', 'כיסונים', 'a dumpling dish', 'מנת כיסונים',
+        en_fans='people who chose dumplings', he_fans='מי שבחרו כיסונים'),
+    'hobby.music': _hobby('Making music', 'נגינה ושירה', 'music-making hobbies',
+        'תחביבים של נגינה או שירה', 'a music-making hobby', 'תחביב של נגינה או שירה',
+        'making music', 'לנגינה ולשירה'),
+    'age.12_under': Term('12 and under', '12 ומטה', 'people aged 12 and under', 'בני 12 ומטה', 'people aged 12 and under', 'בני 12 ומטה',
+        en_fans='people aged 12 and under', he_fans='בני 12 ומטה'),
+    'age.13_15': Term('13–15', '13–15', 'people aged 13–15', 'בני 13–15', 'people aged 13–15', 'בני 13–15',
+        en_fans='people aged 13–15', he_fans='בני 13–15'),
+    'age.16_18': Term('16–18', '16–18', 'people aged 16–18', 'בני 16–18', 'people aged 16–18', 'בני 16–18',
+        en_fans='people aged 16–18', he_fans='בני 16–18'),
+    'age.19_24': Term('19–24', '19–24', 'people aged 19–24', 'בני 19–24', 'people aged 19–24', 'בני 19–24',
+        en_fans='people aged 19–24', he_fans='בני 19–24'),
+    'age.25_34': Term('25–34', '25–34', 'people aged 25–34', 'בני 25–34', 'people aged 25–34', 'בני 25–34',
+        en_fans='people aged 25–34', he_fans='בני 25–34'),
+    'age.35_49': Term('35–49', '35–49', 'people aged 35–49', 'בני 35–49', 'people aged 35–49', 'בני 35–49',
+        en_fans='people aged 35–49', he_fans='בני 35–49'),
+    'age.50_plus': Term('50 and over', '50 ומעלה', 'people aged 50 and over', 'בני 50 ומעלה', 'people aged 50 and over', 'בני 50 ומעלה',
+        en_fans='people aged 50 and over', he_fans='בני 50 ומעלה'),
     'food.italian': _cuisine('Italian', 'איטלקי', 'האיטלקי'),
     'food.asian': _cuisine('Asian', 'אסייתי', 'האסייתי'),
     'food.middle_eastern': _cuisine('Middle Eastern', 'מזרח תיכוני', 'המזרח תיכוני'),
@@ -392,6 +431,71 @@ TEMPLATES = {
     ('distribution', 'song.genre'): [
         ('Of these styles, which fits the most of the songs you chose?', 'מבין הסגנונות האלה, איזה מתאים להכי הרבה מהשירים שבחרתם?'),
     ],
+    ('count', 'food.format'): [
+        ('How many of the dishes you chose are {items}?', 'כמה מהמאכלים שבחרתם הם {items}?'),
+        ('How many of you picked {item}?', 'כמה מכם בחרו {item}?'),
+    ],
+    ('majority', 'food.format'): [
+        ('Which kind of dish shows up most in your food choices?', 'איזה סוג מנה הכי נפוץ בבחירות האוכל שלכם?'),
+        ('Looking at the dishes you chose, which kind leads?', 'אם מסתכלים על המאכלים שבחרתם, איזה סוג מנה מוביל?'),
+    ],
+    ('comparison', 'food.format'): [
+        ('Which shows up more in your choices — {items_a} or {items_b}?', 'מה מופיע יותר בבחירות שלכם — {items_a} או {items_b}?'),
+    ],
+    ('unique', 'food.format'): [
+        ('Only one person chose {item}. Who?', 'רק אדם אחד בחר {item}. מי זה?'),
+    ],
+    ('diversity', 'food.format'): [
+        ('How many different kinds of dishes are in your food choices?', 'כמה סוגי מנות שונים יש בבחירות האוכל שלכם?'),
+    ],
+    ('count', 'hobby.making_music'): [
+        ('How many of you chose a hobby that means playing or singing?', 'כמה מכם בחרו תחביב של נגינה או שירה?'),
+    ],
+    ('unique', 'hobby.making_music'): [
+        ('Only one person here chose a music-making hobby. Who?', 'רק אדם אחד כאן בחר תחביב של נגינה או שירה. מי זה?'),
+    ],
+    ('count', 'age.band'): [
+        ('How many of you are {label}?', 'כמה מכם בני {label}?'),
+    ],
+    ('majority', 'age.band'): [
+        ('Which age range is the most common in our group?', 'איזה טווח גילים הכי נפוץ בקבוצה?'),
+        ('Most of the shared ages fall in one range. Which?', 'רוב הגילים ששיתפתם נמצאים בטווח אחד. איזה?'),
+    ],
+    ('comparison', 'age.band'): [
+        ('Which is bigger in our group — {items_a} or {items_b}?', 'מי יותר גדולה בקבוצה — הקבוצה של {items_a} או של {items_b}?'),
+    ],
+    ('diversity', 'age.band'): [
+        ('How many different age ranges are in this group?', 'כמה טווחי גיל שונים יש בקבוצה?'),
+    ],
+    ('spread', 'age.band'): [
+        ('How many years are there between the youngest and the oldest of you?', 'כמה שנים מפרידות בין הצעיר/ה ביותר למבוגר/ת ביותר בקבוצה?'),
+    ],
+    ('attribution', 'personal.fact'): [
+        ('Who wrote this about themselves: “{line}”?', 'מי כתב/ה את זה על עצמו/ה: ״{line}״?'),
+        ('One of you shared this: “{line}”. Who?', 'אחד מכם שיתף את זה: ״{line}״. מי?'),
+    ],
+    ('twins', 'multi'): [
+        ('Which two of you turned out to be the most alike?', 'איזה שניים מכם יצאו הכי דומים בבחירות?'),
+        ('Which pair here has the most in common?', 'לאיזה זוג כאן יש הכי הרבה במשותף?'),
+    ],
+    ('typical', 'multi'): [
+        ('Whose answers match the group’s most common choices?', 'מי מכם בחר/ה הכי הרבה מהבחירות הנפוצות בקבוצה?'),
+        ('Who turned out to be the most typical member of this group?', 'מי יצא/ה הכי מייצג/ת את הקבוצה?'),
+    ],
+    ('agreement', 'multi'): [
+        ('Where do you agree the most — {a}, {b} or {c}?', 'במה אתם הכי מסכימים — {a}, {b} או {c}?'),
+    ],
+    ('variety', 'multi'): [
+        ('Where are you the most different from each other — {a}, {b} or {c}?', 'במה אתם הכי שונים זה מזה — {a}, {b} או {c}?'),
+    ],
+    ('song_link', 'multi'): [
+        ('{name} picked {artist} as a favorite artist. Which of you chose a song by {artist}?',
+         '{name} בחר/ה את {artist} כאמן/ית אהוב/ה. מי מכם בחר/ה שיר של {artist}?'),
+    ],
+    ('series_link', 'movie.genre'): [
+        ('{name} chose “{choice}”. Who picked another movie from the same series?',
+         '{name} בחר/ה את ״{choice}״. מי בחר/ה סרט אחר מאותה סדרה?'),
+    ],
     ('region_majority', 'place.region'): [
         ('Which region of Israel is home to most of our group?', 'מאיזה אזור בארץ מגיע רוב הקבוצה?'),
         ('Most of our group lives in one region. Which one?', 'רוב הקבוצה גרה באותו אזור. באיזה?'),
@@ -421,6 +525,44 @@ TEMPLATES = {
 }
 
 # How a subgroup is introduced, and what is asked about it.
+# "Everyone except one", "who else shares this" and "who chose both".
+EXCEPTIONS = {
+    'movie.genre': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'food.cuisine': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'food.format': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'hobby.family': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'hobby.setting': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'hobby.physical': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'music.genre': ('Everyone here chose {items} — except one person. Who?', 'כולם כאן בחרו {items} — חוץ מאדם אחד. מי?'),
+    'place.region': ('Everyone here lives {in} — except one person. Who?', 'כולם כאן גרים {in} — חוץ מאדם אחד. מי?'),
+    'age.band': ('Everyone who shared an age is {items} — except one person. Who?', 'כל מי ששיתף גיל הוא {items} — חוץ מאדם אחד. מי?'),
+}
+UNANIMITY = {
+    'movie.genre': ('Every movie you chose shares one thing. What?', 'מה משותף לכל הסרטים שבחרתם?'),
+    'food.cuisine': ('Every dish you chose shares one thing. What?', 'מה משותף לכל המאכלים שבחרתם?'),
+    'food.format': ('Every dish you chose shares one thing. What?', 'מה משותף לכל המאכלים שבחרתם?'),
+    'hobby.family': ('Every hobby you chose shares one thing. What?', 'מה משותף לכל התחביבים שבחרתם?'),
+    'hobby.setting': ('Every hobby you chose shares one thing. What?', 'מה משותף לכל התחביבים שבחרתם?'),
+    'hobby.physical': ('Every hobby you chose shares one thing. What?', 'מה משותף לכל התחביבים שבחרתם?'),
+    'music.genre': ('Every music choice here shares one thing. What?', 'מה משותף לכל בחירות המוזיקה שלכם?'),
+    'place.region': ('Everyone here shares one thing about where they live. What?', 'מה משותף לכולכם מבחינת מקום המגורים?'),
+}
+PARTNERS = {
+    'movie.genre': ('{name} chose “{choice}”. Who else picked a movie from the same genre?',
+                    '{name} בחר/ה את ״{choice}״. מי עוד בחר/ה סרט מאותו ז׳אנר?'),
+    'food.cuisine': ('{name} chose {choice}. Who else picked a dish from the same cuisine?',
+                     '{name} בחר/ה {choice}. מי עוד בחר/ה מאכל מאותו מטבח?'),
+    'food.format': ('{name} chose {choice}. Who else picked the same kind of dish?',
+                    '{name} בחר/ה {choice}. מי עוד בחר/ה מנה מאותו סוג?'),
+    'hobby.family': ('{name} chose {choice}. Who else picked a hobby of the same kind?',
+                     '{name} בחר/ה {choice}. מי עוד בחר/ה תחביב מאותו סוג?'),
+    'artist.genre': ('{name} chose {choice}. Who else picked an artist of the same style?',
+                     '{name} בחר/ה את {choice}. מי עוד בחר/ה אמן/ית מאותו סגנון?'),
+}
+BOTH = {
+    'place.region': ('Who here lives {in_a} and also chose {item_b}?', 'מי מכם גר/ה {in_a} וגם בחר/ה {item_b}?'),
+    None: ('Who here chose both {item_a} and {item_b}?', 'מי מכם בחר/ה גם {item_a} וגם {item_b}?'),
+}
 SUBGROUP_CONDITIONS = {
     'movie.genre': ('Among people who chose {items}', 'מבין מי שבחרו {items}'),
     'food.cuisine': ('Among people who chose {items}', 'מבין מי שבחרו {items}'),
@@ -429,6 +571,8 @@ SUBGROUP_CONDITIONS = {
     'artist.genre': ('Among people who chose artists associated with {items}', 'מבין מי שבחרו אמנים שמזוהים עם {items}'),
     'song.genre': ('Among people who chose songs in the {style} style', 'מבין מי שבחרו שירים בסגנון {style}'),
     'place.region': ('Among people who live in {in}', 'מבין מי שגרים {in}'),
+    'age.band': ('Among {items}', 'מבין {items}'),
+    'food.format': ('Among people who chose {items}', 'מבין מי שבחרו {items}'),
 }
 SUBGROUP_QUESTIONS = {
     'hobby.family': ('which type of hobby is the most common?', 'איזה סוג תחביב הכי נפוץ?'),
@@ -464,6 +608,18 @@ NOUNS = {
     'artist.genre': (('style', 'סגנון'), ('styles', 'סגנונות'), ('artists chosen', 'אמנים')),
     'song.genre': (('style', 'סגנון'), ('styles', 'סגנונות'), ('songs chosen', 'שירים')),
     'place.region': (('region', 'אזור'), ('regions', 'אזורים'), ('towns', 'יישובים')),
+    'food.format': (('kind of dish', 'סוג מנה'), ('kinds of dishes', 'סוגי מנות'), ('dishes chosen', 'מאכלים')),
+    'hobby.making_music': (('kind of hobby', 'סוג תחביב'), ('kinds of hobbies', 'סוגי תחביבים'),
+                           ('hobbies chosen', 'תחביבים')),
+    'age.band': (('age range', 'טווח גילים'), ('age ranges', 'טווחי גיל'), ('ages shared', 'גילים')),
+}
+
+# The subject a whole-group comparison is about ("where do you agree most?").
+TOPIC_LABELS = {
+    'movie': ('movies', 'סרטים'), 'food': ('food', 'אוכל'), 'hobby': ('hobbies', 'תחביבים'),
+    'music': ('music', 'מוזיקה'), 'artist': ('favorite artists', 'אמנים אהובים'),
+    'song': ('favorite songs', 'שירים אהובים'), 'place': ('where you live', 'מקום המגורים'),
+    'age': ('age', 'גיל'),
 }
 
 
@@ -547,6 +703,11 @@ class Wording:
         return ' ' + self.text('{r} of the {c} {noun} were recognized.', 'זוהו {r} מתוך {c} {noun}.',
                                r=len(summary.recognized), c=len(summary.consented),
                                noun=noun[1] if self.he else noun[0])
+
+    def answers_noun(self, dimension: str) -> str:
+        """What the recognized answers are called: "movies", "dishes", "hobbies"."""
+        noun = NOUNS[dimension][2]
+        return noun[1] if self.he else noun[0]
 
     def kind(self, dimension: str, plural: bool = False) -> str:
         noun = NOUNS[dimension][1 if plural else 0]

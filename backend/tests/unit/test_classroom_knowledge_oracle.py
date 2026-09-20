@@ -5,7 +5,7 @@ import pytest
 
 from app.domain.questions import ProfileDataset, QuestionGenerator
 from app.infrastructure.knowledge import get_knowledge
-from tests.classroom_knowledge import fixture_players, verify_trace
+from tests.classroom_knowledge import MEDIA, fixture_players, verify_trace
 
 
 def generate(seed=11):
@@ -34,8 +34,12 @@ def test_browser_oracle_rejects_lost_semantics_and_wrong_answers(mutation):
         selected = [replace(c, metadata=tuple({**dict(c.metadata), 'kind': 'direct'}.items()))
                     if dict(c.metadata)['domain'] == domain else c for c in selected]
     else:
-        index = next(i for i, c in enumerate(selected) if c.source_rule_id == 'group_mode'
-                     and dict(c.metadata)['domain'] == 'artist')
+        # A media discovery whose explanation states the group's shared
+        # category and cites a choice behind it. Media fields share one
+        # subject budget, so a quiz holds no genre leader per field.
+        index = next(i for i, c in enumerate(selected)
+                     if dict(c.metadata)['family'] == 'SEMANTIC_COUNT'
+                     and dict(c.metadata)['domain'] in MEDIA)
         q, c = questions[index], selected[index]
         if mutation == 'wrong_answer':
             questions[index] = replace(q, correct_option_id=next(o.option_id for o in q.options if o.option_id != q.correct_option_id))
@@ -43,10 +47,13 @@ def test_browser_oracle_rejects_lost_semantics_and_wrong_answers(mutation):
             selected[index] = replace(c, metadata=tuple({**dict(c.metadata), 'answer_key': 'music.rock'}.items()))
         else:
             if mutation == 'swapped_media_explanation':
-                explanation = next(q.explanation for q, candidate in zip(questions, selected)
-                                   if candidate.source_rule_id == 'group_mode' and dict(candidate.metadata)['domain'] == 'song')
+                explanation = next(other.explanation for other, candidate in zip(questions, selected)
+                                   if dict(candidate.metadata)['domain'] in MEDIA - {dict(c.metadata)['domain']}
+                                   and other.explanation)
             elif mutation == 'wrong_genre_explanation':
-                explanation = q.explanation.replace('פופ', 'רוק')
+                label = get_knowledge().categories[c.semantic_key[2]].label('he')
+                explanation = q.explanation.replace(label, 'פופ')
+                assert explanation != q.explanation, 'The mutation must really change the claimed genre'
             elif mutation == 'unrelated_hebrew_explanation':
                 explanation = '4 אנשים העדיפו לבלות יותר זמן יחד.'
             else:

@@ -8,6 +8,7 @@ wording variants exist on purpose.
 
 import re
 from collections import Counter, defaultdict
+from math import ceil
 from random import Random
 from time import perf_counter
 
@@ -29,7 +30,7 @@ from app.domain.questions.discovery_rules import (
     RegionMajorityRule,
     discovery_rules,
 )
-from app.domain.questions.group_summary import summarize
+from app.domain.questions.group_summary import DOMAIN_GROUPS, summarize
 from app.domain.questions.knowledge import Category, KnownEntity, KnowledgeBase
 from app.domain.questions.language import normalize
 from app.infrastructure.knowledge import get_knowledge
@@ -180,12 +181,21 @@ def test_scenario_5_rich_rooms_are_mostly_group_discoveries(room, domains):
     t, table = diagnostic_table(room.dataset())
     print('\n'.join(' | '.join(map(str, row)) for row in table))  # Visible with pytest -s.
     mix = kinds(t.selected)
-    assert len(t.questions) == 20
+    assert len(t.questions) >= 18, table  # A rich room fills the game, or very nearly.
     assert mix['semantic'] >= 7, table
-    assert mix['direct'] <= 7, table
+    lookups = sum(1 for c in t.selected if meta(c).get('kind') == 'direct'
+                  and meta(c).get('family') != 'DIRECT_CHOICE')
+    assert lookups <= max(2, len(t.questions) // 10), table
     assert mix['geographic'] + mix['cross_domain'] >= 4, table
     semantic_domains = {meta(c)['domain'] for c in t.selected if meta(c).get('kind') == 'semantic'}
     assert len(semantic_domains) >= domains, table
+    # Variety targets (QUESTION_VARIETY_DESIGN.md): many kinds of reasoning, and
+    # no single subject taking more than 30% of the game.
+    operations = Counter(meta(c).get('operation', meta(c).get('family')) for c in t.selected)
+    assert len(operations) >= 6, operations
+    subjects = Counter(DOMAIN_GROUPS[d] for c in t.selected
+                       for d in (meta(c).get('domains') or meta(c).get('domain', '')).split(',') if d)
+    assert max(subjects.values()) <= ceil(0.3 * len(t.questions)), subjects
 
 
 def test_scenario_6_semantic_candidates_reach_the_final_questions():
@@ -220,9 +230,9 @@ def test_scenario_7_a_flood_of_literal_questions_cannot_starve_discoveries():
             for i in range(30)]
     t = trace(dataset(rows, kb_names=[f'שחקן {i}' for i in range(30)]))
     raw, final = kinds(t.raw), kinds(t.selected)
-    assert raw['direct'] >= 2.5 * raw['semantic']
+    assert raw['direct'] >= 2 * raw['semantic'] and raw['direct'] > 150  # The flood is real.
     assert final['semantic'] >= 7
-    assert final['direct'] <= 7
+    assert final['direct'] <= 2  # Reading answers back is at most a tenth of the game.
     assert max(Counter(meta(c).get('family') for c in t.selected).values()) <= 4
 
 
@@ -604,7 +614,7 @@ def test_no_question_is_answered_by_one_shown_before_it(room):
         if room.name in ('sparse', 'unknown_heavy', 'audit_new_class'):
             assert 0 < len(t.questions) <= 20
         else:
-            assert len(t.questions) == 20
+            assert len(t.questions) >= 17  # Variety rules may end a thin game early.
         assert answered_by_earlier_questions(t, ds) == []
 
 
@@ -663,15 +673,19 @@ def test_selector_prefers_the_fact_that_settles_others_and_respects_presentation
     selector = QuestionSelector(group_first=True)
 
     # The leader settles "sport or art?" and discloses the sport count, so both give way to it.
+    # Every candidate here is about hobbies, so the 30%-per-subject rule caps this game at two.
     chosen = selector.select([sport_or_art, sport_count, leader, art_count, reading_or_games], question_count=3)
-    assert {c.text for c in chosen} == {'Which type leads?', 'How many chose art?', 'Reading or games?'}
+    assert {c.text for c in chosen} == {'Which type leads?', 'How many chose art?'}
     # An easy count shown before a comparison it does not settle is fine, even though the comparison
     # explanation later repeats that count.
     chosen = selector.select([sport_or_art, art_count], question_count=2)
     assert [c.text for c in chosen] == ['How many chose art?', 'Sport or art?']
-    # Nothing else can fill the game: fewer questions, never a settled one.
+    # Nothing else can fill the game: fewer questions, never a settled one. Two
+    # facts that settle nothing between them beat one stronger fact that rules
+    # both out, because neither of the two repeats an answer.
     chosen = selector.select([leader, sport_or_art, sport_count], question_count=3)
-    assert [c.text for c in chosen] == ['Which type leads?']
+    assert [c.text for c in chosen] == ['How many chose sport?', 'Sport or art?']
+    assert [c.text for c in selector.select([leader, sport_or_art], question_count=2)] == ['Which type leads?']
 
 
 def test_production_registry_asks_about_players_never_general_knowledge():
@@ -713,7 +727,9 @@ def test_validator_allows_either_or_questions_but_not_a_named_answer():
 def test_quotas_follow_supply_and_never_pad_a_missing_kind():
     from app.domain.questions.selector import plan_quotas
     assert plan_quotas(20, {'semantic': 40, 'direct': 40, 'geographic': 40, 'cross_domain': 40}) == {
-        'semantic': 9, 'direct': 5, 'geographic': 3, 'cross_domain': 3}
+        'semantic': 10, 'direct': 2, 'geographic': 3, 'cross_domain': 5}
+    # A kind's plan never exceeds what the room can supply.
+    assert plan_quotas(20, {'semantic': 40, 'direct': 400, 'social': 3})['social'] == 3
     limited = plan_quotas(20, {'semantic': 4, 'direct': 40, 'geographic': 2, 'cross_domain': 0})
     assert limited['semantic'] == 4 and limited['geographic'] == 2 and limited['cross_domain'] == 0
     assert sum(limited.values()) == 20

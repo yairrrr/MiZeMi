@@ -71,6 +71,11 @@ class CoveragePolicy:
 POLICY = CoveragePolicy()
 MEDIA_DIMENSIONS = ('movie.genre', 'artist.genre', 'song.genre')
 MEDIA_DOMAINS = ('movie', 'artist', 'song')
+# What a player experiences as one subject. Music style, favourite artist and
+# favourite song are three fields but one topic, so they share one budget.
+DOMAIN_GROUPS = MappingProxyType({'movie': 'film', 'music': 'music', 'artist': 'music',
+                                  'song': 'music', 'food': 'food', 'hobby': 'hobby',
+                                  'place': 'place', 'age': 'age', 'social': 'personal'})
 
 MOVIE_MAX_GENRES = 5
 CUISINES = ('food.italian', 'food.asian', 'food.middle_eastern', 'food.american', 'food.mexican',
@@ -88,6 +93,22 @@ MUSIC_FAMILIES = ('music.pop', 'music.rock', 'music.hiphop', 'music.electronic',
 MUSIC_PARENTS = (('music.house', 'music.electronic'), ('music.techno', 'music.electronic'),
                  ('music.trance', 'music.electronic'), ('music.metal', 'music.rock'))
 REGIONS = ('region.north', 'region.central', 'region.south', 'region.jerusalem')
+# Formats a player recognizes in their own dish. Pizza's "baked goods" tag and
+# the legume tag that also covers dips are left out: both read wrong in a game.
+FOOD_FORMATS = ('food.soup', 'food.salad', 'food.sandwich', 'food.dessert', 'food.pasta',
+                'food.rice', 'food.dip', 'food.stew', 'food.egg', 'food.potato', 'food.dumpling')
+AGE_BANDS = (('age.12_under', 0, 12), ('age.13_15', 13, 15), ('age.16_18', 16, 18),
+             ('age.19_24', 19, 24), ('age.25_34', 25, 34), ('age.35_49', 35, 49),
+             ('age.50_plus', 50, 120))
+
+
+def age_band(value) -> frozenset[str]:
+    """The band one shared age falls in; empty when it is not a usable age."""
+    try:
+        age = int(str(value).strip())
+    except (TypeError, ValueError):
+        return frozenset()
+    return frozenset(band for band, low, high in AGE_BANDS if low <= age <= high)
 
 
 @dataclass(frozen=True)
@@ -105,6 +126,9 @@ class SemanticDimension:
     neutral: frozenset[str] = frozenset()
     neutral_values: frozenset[str] = frozenset()
     max_labels: int = 0
+    exhaustive: bool = False  # a classified answer outside these categories is a known non-member
+    derive: object = None  # classify the answer itself (age bands), not through reference data
+    private_evidence: bool = False  # never list the individual answers behind a count
 
     @property
     def selection_domain(self) -> str:
@@ -130,6 +154,12 @@ DIMENSIONS = (
     SemanticDimension('song.genre', 'music', 'favorite_song', 'songs', 'music.genre', MUSIC_FAMILIES,
                       parents=MUSIC_PARENTS, max_labels=3),
     SemanticDimension('place.region', 'place', 'city', 'localities', 'place.region', REGIONS),
+    SemanticDimension('food.format', 'food', 'favorite_food', 'foods', 'food.format', FOOD_FORMATS,
+                      max_labels=2, exhaustive=True),
+    SemanticDimension('hobby.making_music', 'hobby', 'hobby', 'hobbies', 'hobby.family',
+                      ('hobby.music',), exhaustive=True),
+    SemanticDimension('age.band', 'age', 'age', '', 'age.band',
+                      tuple(band for band, _, _ in AGE_BANDS), derive=age_band, private_evidence=True),
 )
 DIMENSIONS_BY_KEY = MappingProxyType({d.key: d for d in DIMENSIONS})
 
@@ -142,13 +172,22 @@ class DimensionSummary:
         self.group_size = dataset.player_count
         defined = dimension.comparable or tuple(sorted(
             c.category_id for c in knowledge.categories.values() if c.dimension == dimension.facet))
-        self.categories = tuple(c for c in defined if c in knowledge.categories)
+        self.categories = tuple(defined) if dimension.derive else tuple(
+            c for c in defined if c in knowledge.categories)
         allowed, parents = frozenset(self.categories), dict(dimension.parents)
         consented, classified, neutral, unknown = [], {}, [], []
         evidence, entities, typed = {}, {}, {}
         for player_id, value in dataset.values_for(dimension.field):
             consented.append(player_id)
             typed[player_id] = ' '.join(str(value).split())
+            if dimension.derive is not None:
+                labels = dimension.derive(value) & allowed
+                if labels:
+                    classified[player_id] = labels
+                    evidence[player_id] = value
+                else:
+                    unknown.append(player_id)
+                continue
             if not isinstance(value, str):
                 unknown.append(player_id)
                 continue
@@ -163,7 +202,7 @@ class DimensionSummary:
             if labels and (not dimension.max_labels or len(labels) <= dimension.max_labels):
                 classified[player_id] = labels
                 evidence[player_id] = result.entity if result.entity is not None else value
-            elif not labels and facts & dimension.neutral:
+            elif not labels and (facts & dimension.neutral or (dimension.exhaustive and facts)):
                 neutral.append(player_id)
             else:
                 unknown.append(player_id)
