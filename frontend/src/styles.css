@@ -735,3 +735,33 @@ a { color: #4f35aa; text-underline-offset: .2em; }
 .game-header { flex-wrap: wrap; }
 .stage-controls, .game-shell, .stage { min-width: 0; }
 .stage { overflow-wrap: anywhere; }
+
+/* Language switch: a compact pill that reads as a control, not a raw select. */
+.language-bar { gap: .5rem; }
+.language-bar label { color: #5d5a70; font-size: .8rem; font-weight: 700; letter-spacing: .04em; }
+.language-bar select {
+  appearance: none;
+  min-height: 2.5rem;
+  padding-block: .4rem;
+  padding-inline: .95rem 2.15rem;
+  border: 1px solid rgb(79 53 170 / 20%);
+  border-radius: 999px;
+  color: #3f2f6b;
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  background-color: rgb(255 255 255 / 88%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%234f35aa' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .9rem center;
+  background-size: .7rem auto;
+  box-shadow: 0 1px 2px rgb(39 33 69 / 6%);
+  cursor: pointer;
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+[dir="rtl"] .language-bar select { background-position: left .9rem center; }
+.language-bar select:hover { border-color: rgb(79 53 170 / 45%); background-color: #fff; box-shadow: 0 4px 12px rgb(39 33 69 / 10%); }
+.language-bar select:focus-visible { border-color: #4f35aa; background-color: #fff; }
+.language-bar select:active { transform: translateY(1px); box-shadow: 0 1px 2px rgb(39 33 69 / 8%); }
+.language-bar option { color: #39354b; background: #fff; }
+@media (prefers-reduced-motion: reduce) { .language-bar select { transition: none; } .language-bar select:active { transform: none; } }
