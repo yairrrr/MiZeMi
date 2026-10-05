@@ -4,6 +4,7 @@ import { LegalPage, legalPageFromPath } from '../legal/LegalPage'
 import { KnowledgeCredits } from './KnowledgeCredits'
 import logo from '../assets/mizemi-logo.png'
 import { I18nProvider, LanguageSelector, useI18n } from '../i18n/I18n'
+import { SoundToggle } from '../audio/SoundToggle'
 
 import { HostGame } from '../features/host/HostGame'
 import { HostRoomEntry } from '../features/host/HostRoomEntry'
@@ -28,7 +29,7 @@ function AppShell({ children, inGame = false }: { children: ReactNode; inGame?: 
   const { t } = useI18n()
   return <div className={`app-shell${inGame ? ' game-mode' : ''}`}>
     <a className="skip-link" href="#main-content">{t('Skip to main content')}</a>
-    <header><LanguageSelector /></header>
+    <header className="top-controls"><SoundToggle /><LanguageSelector /></header>
     <main id="main-content" tabIndex={-1}>{children}</main>
     <LegalFooter inGame={inGame} />
   </div>
