@@ -1,5 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { QRCodeSVG } from 'qrcode.react'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
 import { initialGameView, type GameView } from '../../state/gameReducer'
@@ -63,6 +64,16 @@ describe('HostGameView', () => {
   test('shows the room code prominently', () => {
     renderView({})
     expect(screen.getByLabelText('Room code K7PW3N')).toHaveTextContent('K7PW3N')
+  })
+
+  test('shows a scannable QR code that opens this room instead of a raw link', () => {
+    renderView({ room: room('LOBBY', []) })
+    const qr = screen.getByRole('img', { name: 'QR code to join room K7PW3N' })
+    const expected = render(<QRCodeSVG value={`${window.location.origin}/?room=K7PW3N`} level="M" marginSize={0} />)
+    const modules = (svg: Element) => svg.querySelectorAll('path')[1]?.getAttribute('d')
+    expect(modules(qr)).toMatch(/^M/)
+    expect(modules(qr)).toBe(modules(expected.container.querySelector('svg')!))
+    expect(screen.queryByText(`${window.location.origin}/?room=K7PW3N`)).toBeNull()
   })
 
   test('lists players with profile and readiness status', () => {

@@ -1,6 +1,6 @@
 // Distribute the actual installed runtime-library notices with every Vite build.
 import { readFile, writeFile } from 'node:fs/promises'
-const packages = ['react', 'react-dom', 'scheduler']
+const packages = ['react', 'react-dom', 'scheduler', 'qrcode.react']
 const notices = []
 for (const name of packages) {
   const root = new URL(`../node_modules/${name}/`, import.meta.url)

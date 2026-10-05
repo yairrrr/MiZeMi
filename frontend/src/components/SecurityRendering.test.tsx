@@ -30,7 +30,9 @@ for (const role of ['host', 'player'] as const) {
       const { container } = render(role === 'host'
         ? <HostGameView {...props} session={{ role, room_code: 'AUDIT1', game_id: 'g1', host_token: 'synthetic-host' }} />
         : <PlayerGameView {...props} session={{ role, room_code: 'AUDIT1', game_id: 'g1', player_id: 'p1', player_token: 'synthetic-player', display_name: text }} />)
-      expect(container.querySelector('script, svg, [onerror], [onload], img[src="x"]')).toBeNull()
+      expect(container.querySelector('script, [onerror], [onload], img[src="x"]')).toBeNull()
+      // The only SVG allowed is the host's join QR code; anything else would be injected markup.
+      expect([...container.querySelectorAll('svg')].filter((svg) => !svg.closest('.join-qr'))).toEqual([])
       if (!(role === 'player' && state === 'READY')) expect(container.textContent).toContain(text)
     })
   }
