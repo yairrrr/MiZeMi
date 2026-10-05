@@ -16,10 +16,26 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(circle at 12% 8%, rgb(255 198 91 / 24%), transparent 28rem),
-    radial-gradient(circle at 88% 32%, rgb(137 105 255 / 18%), transparent 32rem),
-    #fffaf2;
+}
+
+/* Site-wide artwork. A fixed layer instead of background-attachment: fixed,
+   which iOS Safari ignores; it covers the viewport at every size and stays
+   put while the page scrolls. :root's cream shows until the image loads. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: #fffaf2 url("./assets/background.jpg") center / cover no-repeat;
+  pointer-events: none;
+}
+
+/* Portrait phones: a lighter file, anchored toward the figures on the left. */
+@media (max-width: 740px) and (orientation: portrait) {
+  body::before {
+    background-image: url("./assets/background-mobile.jpg");
+    background-position: 12% center;
+  }
 }
 
 button, input, textarea, select { font: inherit; }
