@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 
 from app.domain.questions.knowledge import Category, KINDS, KnownEntity, KnowledgeBase
+from app.domain.questions.suggestions import SuggestionIndex
 
 BUNDLE_DIR = Path(__file__).resolve().parents[1] / 'data' / 'knowledge'
 MAX_BUNDLE_BYTES = 30_000_000
@@ -145,3 +146,9 @@ def load_knowledge(directory: Path = BUNDLE_DIR) -> KnowledgeBase:
 @lru_cache(maxsize=1)
 def get_knowledge() -> KnowledgeBase:
     return load_knowledge()
+
+
+@lru_cache(maxsize=1)
+def get_suggestion_index() -> SuggestionIndex:
+    """One process-wide type-ahead index; its per-kind name lists are built once."""
+    return SuggestionIndex(get_knowledge())

@@ -1,7 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 
+import { fetchSuggestions } from '../../api/roomApi'
 import { ProfileForm } from './ProfileForm'
 import { buildProfileFields, initialConsent, PRIVACY_MESSAGE } from './profileSchema'
 
@@ -123,3 +124,49 @@ vi.mock('../../legal/privacyInfo', () => ({ usePrivacyInfo: () => ({
     maintenance_interval_seconds: 300, raw_profiles_persisted: false },
   status: 'ready', retry: () => {},
 }) }))
+
+vi.mock('../../api/roomApi', () => ({ fetchSuggestions: vi.fn(async () => []) }))
+
+describe('profile type-ahead', () => {
+  const listFor = (field: string) => within(document.getElementById(`profile-${field}-suggestions`)!)
+  const suggestMock = vi.mocked(fetchSuggestions)
+  afterEach(() => suggestMock.mockReset().mockResolvedValue([]))
+
+  test('lists server completions under the field and fills the picked one', async () => {
+    suggestMock.mockResolvedValue(['קריית שמונה', 'קריית ארבע', 'קריית אתא'])
+    const user = userEvent.setup()
+    render(<ProfileForm playerId="p1" displayName="Dana" send={vi.fn()} serverError={null} />)
+
+    await user.type(screen.getByLabelText('City'), 'קריית')
+    const options = await listFor('city').findAllByRole('option')
+
+    expect(options.map((o) => o.textContent)).toEqual(['קריית שמונה', 'קריית ארבע', 'קריית אתא'])
+    expect(suggestMock).toHaveBeenLastCalledWith('city', 'קריית', expect.any(AbortSignal))
+    await user.click(options[1])
+    expect(screen.getByLabelText('City')).toHaveValue('קריית ארבע')
+    expect(listFor('city').queryAllByRole('option')).toHaveLength(0)
+  })
+
+  test('keyboard selects a completion', async () => {
+    suggestMock.mockResolvedValue(['Pizza', 'Pita'])
+    const user = userEvent.setup()
+    render(<ProfileForm playerId="p1" displayName="Dana" send={vi.fn()} serverError={null} />)
+
+    await user.type(screen.getByLabelText('Favorite food'), 'pi')
+    await listFor('favorite_food').findAllByRole('option')
+    await user.keyboard('{ArrowDown}{ArrowDown}{Enter}')
+
+    expect(screen.getByLabelText('Favorite food')).toHaveValue('Pita')
+  })
+
+  test('the personal fact never asks for completions', async () => {
+    const user = userEvent.setup()
+    render(<ProfileForm playerId="p1" displayName="Dana" send={vi.fn()} serverError={null} />)
+
+    await user.type(screen.getByLabelText('Something interesting about me (optional)'), 'I juggle')
+    await new Promise((resolve) => setTimeout(resolve, 250))
+
+    expect(suggestMock).not.toHaveBeenCalled()
+    expect(document.getElementById('profile-personal_fact-suggestions')).toBeNull()
+  })
+})

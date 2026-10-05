@@ -891,3 +891,28 @@ h2 { font-weight: 600; letter-spacing: -.01em; }
 .timer-seconds, .count-stepper input, .leaderboard-rank, .leaderboard-score,
 .score-pill, .answer-bar-value, .answer-progress { font-variant-numeric: tabular-nums; }
 .card-copy, .welcome-copy > p:last-child, .legal-body p { font-weight: 400; }
+
+/* Profile type-ahead: at most five completions under the field. */
+.suggest { position: relative; }
+.suggest-list {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 0.3rem);
+  z-index: 20;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  border: 1px solid #d9d4e2;
+  border-radius: 0.85rem;
+  background: #fff;
+  box-shadow: 0 12px 28px rgb(39 33 69 / 14%);
+}
+.suggest-list[hidden] { display: none; }
+.suggest-list li {
+  padding: 0.65rem 0.8rem;
+  border-radius: 0.6rem;
+  color: #272145;
+  cursor: pointer;
+  text-align: start;
+}
+.suggest-list li:hover, .suggest-list li.active { background: #f1edfb; }

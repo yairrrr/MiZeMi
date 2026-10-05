@@ -12,6 +12,7 @@ import {
   type ProfileConsent,
   type ProfileFormValues,
 } from './profileSchema'
+import { SuggestInput } from './SuggestInput'
 
 export function ProfileForm({
   playerId,
@@ -96,6 +97,19 @@ export function ProfileForm({
                   </option>
                 ))}
               </select>
+            ) : spec.suggest ? (
+              <SuggestInput
+                id={inputId}
+                field={spec.key}
+                {...accessibleInput}
+                dir="auto"
+                value={values[spec.key] ?? ''}
+                maxLength={spec.maxLength}
+                placeholder={spec.placeholder ? t(spec.placeholder) : undefined}
+                autoComplete="off"
+                disabled={submitting}
+                onValueChange={(value) => setValues((current) => ({ ...current, [spec.key]: value }))}
+              />
             ) : (
               <input
                 id={inputId}
