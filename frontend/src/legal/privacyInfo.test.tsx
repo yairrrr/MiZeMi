@@ -35,6 +35,6 @@ test('profile submission fails closed on an older backend and retry recovers', a
   expect(send).not.toHaveBeenCalled()
   await act(async () => screen.getByRole('button', { name: 'Try again' }).click())
   await waitFor(() => expect(submit).toBeEnabled())
-  expect(screen.getByText(/after 7 days from their last save/)).toBeVisible()
-  expect(screen.getByText(/A disabled field does not influence question generation/)).toBeVisible()
+  expect(screen.getByText(/kept for about 7 days and then deleted/)).toBeVisible()
+  expect(screen.getByText(/Unticked answers still reach the server but are not used for questions/)).toBeVisible()
 })
