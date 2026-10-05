@@ -944,7 +944,6 @@ h2 { font-weight: 600; letter-spacing: -.01em; }
   padding: 0;
   border: 1px solid rgb(79 53 170 / 18%);
   border-radius: 999px;
-  font-size: 1.1rem;
   line-height: 1;
   background: rgb(255 255 255 / 88%);
   box-shadow: 0 1px 2px rgb(39 33 69 / 6%), inset 0 1px 0 rgb(255 255 255 / 70%);
@@ -954,4 +953,4 @@ h2 { font-weight: 600; letter-spacing: -.01em; }
 .sound-toggle:hover { border-color: rgb(79 53 170 / 45%); background-color: #fff; box-shadow: 0 6px 16px rgb(39 33 69 / 12%), inset 0 1px 0 #fff; }
 .sound-toggle:focus-visible { border-color: #4f35aa; background-color: #fff; }
 .sound-toggle:active { transform: translateY(1px); }
-.sound-toggle[aria-pressed="false"] { opacity: .75; }
+.sound-icon { display: block; width: 1.4rem; height: 1.4rem; }
