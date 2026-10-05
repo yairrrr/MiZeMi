@@ -93,7 +93,7 @@ h1 {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
   gap: clamp(1rem, 3vw, 2rem);
-  align-items: start;
+  align-items: stretch;
 }
 
 .entry-card {
@@ -954,3 +954,13 @@ h2 { font-weight: 600; letter-spacing: -.01em; }
 .sound-toggle:focus-visible { border-color: #4f35aa; background-color: #fff; }
 .sound-toggle:active { transform: translateY(1px); }
 .sound-icon { display: block; width: 1.4rem; height: 1.4rem; }
+
+/* Side-by-side entry cards share one height; each main button sits at the
+   card's bottom so the two buttons line up too. */
+.entry-card { display: flex; flex-direction: column; }
+.entry-card > form { display: flex; flex: 1; flex-direction: column; }
+.join-form { gap: 0.7rem; }
+.host-card .room-settings { display: flex; flex: 1; flex-direction: column; }
+/* The field above each button absorbs the spare height, so the buttons keep
+   their usual spacing on phones and drop to the bottom when cards stretch. */
+.join-form > input:last-of-type, .host-card .room-settings > small:last-of-type { margin-block-end: auto; }
