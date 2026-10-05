@@ -40,17 +40,19 @@ export type ProfileFieldSpec = {
   placeholder?: MessageKey
   /** Initial consent. Personal facts start opted out (§10.2). */
   defaultAllow: boolean
+  /** Offer type-ahead completions from the server's reference names. */
+  suggest?: boolean
 }
 
 export const PROFILE_FIELDS: readonly ProfileFieldSpec[] = [
-  { key: 'city', label: 'City', kind: 'text', required: true, maxLength: 40, placeholder: 'Where do you live?', defaultAllow: true },
-  { key: 'favorite_food', label: 'Favorite food', kind: 'text', required: true, maxLength: 40, placeholder: 'e.g. pizza', defaultAllow: true },
-  { key: 'hobby', label: 'Hobby', kind: 'text', required: true, maxLength: 40, placeholder: 'e.g. rock climbing', defaultAllow: true },
+  { key: 'city', label: 'City', kind: 'text', required: true, maxLength: 40, placeholder: 'Where do you live?', defaultAllow: true, suggest: true },
+  { key: 'favorite_food', label: 'Favorite food', kind: 'text', required: true, maxLength: 40, placeholder: 'e.g. pizza', defaultAllow: true, suggest: true },
+  { key: 'hobby', label: 'Hobby', kind: 'text', required: true, maxLength: 40, placeholder: 'e.g. rock climbing', defaultAllow: true, suggest: true },
   { key: 'favorite_music', label: 'Favorite music style', kind: 'choice', required: true, choices: MUSIC_STYLES, defaultAllow: true },
   { key: 'age', label: 'Age', kind: 'int', required: false, min: 5, max: 120, placeholder: 'Optional', defaultAllow: true },
-  { key: 'favorite_movie', label: 'Favorite movie', kind: 'text', required: false, maxLength: 60, placeholder: 'e.g. Titanic 1997', defaultAllow: true },
-  { key: 'favorite_artist', label: 'Favorite artist', kind: 'text', required: false, maxLength: 60, placeholder: 'Optional', defaultAllow: true },
-  { key: 'favorite_song', label: 'Favorite song', kind: 'text', required: false, maxLength: 60, placeholder: 'Song title, with artist if needed', defaultAllow: true },
+  { key: 'favorite_movie', label: 'Favorite movie', kind: 'text', required: false, maxLength: 60, placeholder: 'e.g. Titanic 1997', defaultAllow: true, suggest: true },
+  { key: 'favorite_artist', label: 'Favorite artist', kind: 'text', required: false, maxLength: 60, placeholder: 'Optional', defaultAllow: true, suggest: true },
+  { key: 'favorite_song', label: 'Favorite song', kind: 'text', required: false, maxLength: 60, placeholder: 'Song title, with artist if needed', defaultAllow: true, suggest: true },
   { key: 'personal_fact', label: 'Something interesting about me', kind: 'text', required: false, maxLength: 120, placeholder: 'Optional fun fact', defaultAllow: false },
 ]
 

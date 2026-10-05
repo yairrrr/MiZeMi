@@ -23,10 +23,11 @@ from app.api.guards import ClassroomHttpGuard
 from app.api.health import router as health_router
 from app.api.rooms import router as rooms_router
 from app.api.privacy import router as privacy_router
+from app.api.suggestions import FIELD_KINDS, router as suggestions_router
 from app.application.gameplay import GameplayConfig, GameplayService, utc_now
 from app.domain.game import Game
 from app.domain.questions.generator import QuestionGenerator
-from app.infrastructure.knowledge import get_knowledge
+from app.infrastructure.knowledge import get_knowledge, get_suggestion_index
 from app.infrastructure.credentials import CredentialStore
 from app.infrastructure.database import (
     Base,
@@ -117,6 +118,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     logging.getLogger("mizemi").setLevel(settings.log_level)
     database = _Database(settings.database_url)
 
+    suggestions = get_suggestion_index()
     registry = RoomRegistry()
     credentials = CredentialStore()
     connections = RoomConnectionRegistry()
@@ -157,6 +159,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise RuntimeError("Database initialization failed. Check DATABASE_URL, connectivity and schema permissions.") from None
         stop = asyncio.Event()
         task = asyncio.create_task(maintenance(stop))
+        # Build the type-ahead indexes off the event loop so the first player
+        # to type does not wait; queries before then build lazily.
+        warm = asyncio.create_task(asyncio.to_thread(suggestions.warm, set(FIELD_KINDS.values())))
         try:
             yield
         finally:
@@ -164,6 +169,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             # database operation. Join retention before closing connections.
             stop.set()
             await task
+            await warm
             await asyncio.to_thread(hub.shutdown)
             database.engine.dispose()
 
@@ -174,6 +180,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.room_connections = connections
     app.state.game_hub = hub
     app.state.database = database
+    app.state.suggestions = suggestions
     app.state.maintenance_interval_seconds = MAINTENANCE_INTERVAL_SECONDS
 
     app.add_middleware(ClassroomHttpGuard)
@@ -203,6 +210,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health_router, prefix="/api/v1")
     app.include_router(privacy_router, prefix="/api/v1")
     app.include_router(rooms_router, prefix="/api/v1")
+    app.include_router(suggestions_router, prefix="/api/v1")
     app.include_router(player_ws_router)  # WS paths are /ws/... — no /api/v1 prefix
     app.include_router(host_ws_router)
     return app

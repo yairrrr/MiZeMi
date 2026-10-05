@@ -83,3 +83,23 @@ export async function joinRoom(
 
   return readResponse<JoinRoomResponse>(response)
 }
+
+export const MAX_SUGGESTIONS = 5
+
+/**
+ * Up to five reference names completing a partially typed profile answer.
+ * Best effort: any failure (sleeping server, abort, bad body) yields none.
+ */
+export async function fetchSuggestions(field: string, query: string, signal?: AbortSignal): Promise<string[]> {
+  const params = new URLSearchParams({ field, q: query })
+  try {
+    const response = await fetch(buildApiUrl(`/suggestions?${params}`), { signal, credentials: 'omit' })
+    if (!response.ok) return []
+    const body: unknown = await response.json()
+    const suggestions = (body as { suggestions?: unknown } | null)?.suggestions
+    if (!Array.isArray(suggestions)) return []
+    return suggestions.filter((item): item is string => typeof item === 'string').slice(0, MAX_SUGGESTIONS)
+  } catch {
+    return []
+  }
+}
