@@ -1,3 +1,4 @@
+import { QRCodeSVG } from 'qrcode.react'
 import { useStageFocus } from '../../hooks/useStageFocus'
 import { useI18n, direction } from '../../i18n/I18n'
 import {
@@ -94,7 +95,7 @@ function HostLobby({ room, send }: { room: RoomSnapshot; send: SendFn }) {
   const players = room.players
   const readyCount = players.filter((player) => player.is_ready).length
   const canStart = room.state === 'READY'
-  const joinUrl = `${window.location.origin}/?room=${room.room_code}`
+  const joinUrl = `${window.location.origin}/?room=${encodeURIComponent(room.room_code)}`
 
   let startLabel = t('Start game')
   if (!canStart) {
@@ -104,11 +105,26 @@ function HostLobby({ room, send }: { room: RoomSnapshot; send: SendFn }) {
   return (
     <div className="stage lobby-stage">
       <div className="join-instructions">
-        <h2>{t("Join on your phone")}</h2>
-        <p>
-          {t('Open {host} and enter the room code — or use', { host: window.location.host })}{' '}
-          <bdi className="join-link" dir="ltr">{joinUrl}</bdi>
-        </p>
+        <figure className="join-qr">
+          <QRCodeSVG
+            value={joinUrl}
+            size={176}
+            level="M"
+            marginSize={0}
+            fgColor="#2f2170"
+            bgColor="#ffffff"
+            role="img"
+            aria-label={t('QR code to join room {code}', { code: room.room_code })}
+          />
+        </figure>
+        <div className="join-copy">
+          <h2>{t("Join on your phone")}</h2>
+          <p className="join-scan">{t("Scan the code with your phone camera to open the room.")}</p>
+          <p className="join-fallback">
+            {t('No camera? Open {host} and enter the code', { host: window.location.host })}{' '}
+            <bdi className="join-code" dir="ltr">{room.room_code}</bdi>
+          </p>
+        </div>
       </div>
 
       <p className="game-config-summary">{t('{count} questions · {language}', { count: room.config.question_count, language: t(room.config.language === 'he' ? 'Hebrew' : 'English') })}</p>
