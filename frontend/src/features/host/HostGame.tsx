@@ -175,7 +175,7 @@ function HostQuestion({ room, view }: { room: RoomSnapshot; view: GameView }) {
       <h2 className="question-text" lang={question.language} dir={direction(question.language)}>{question.text}</h2>
       <span className="difficulty-badge">{t(question.difficulty === 'HARD' ? 'Hard' : question.difficulty === 'MEDIUM' ? 'Medium' : 'Easy')}</span>
       {room.config.question_count > room.total_questions && <p className="privacy-hint">{t('Only {actual} of {requested} questions could be made from the shared profiles.', { actual: room.total_questions, requested: room.config.question_count })}</p>}
-      <Timer question={question} serverOffsetMs={view.serverOffsetMs} />
+      <Timer question={question} serverOffsetMs={view.serverOffsetMs} sound />
       <ol className="option-grid host-options" dir={direction(question.language)}>
         {question.options.map((option, index) => (
           <li key={option.option_id} className={`option-tile option-${index}`}>
@@ -244,7 +244,7 @@ function HostFinal({ view, onLeave }: { view: GameView; onLeave: () => void }) {
   return (
     <div className="stage final-stage">
       <h2>{t("Final leaderboard")}</h2>
-      <Winners winners={finished.winners} />
+      <Winners winners={finished.winners} applause />
       <LeaderboardList entries={finished.leaderboard.entries} />
       <button type="button" className="primary-button" onClick={onLeave}>{t("Host a new game")}</button>
     </div>

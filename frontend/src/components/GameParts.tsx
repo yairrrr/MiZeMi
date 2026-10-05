@@ -1,5 +1,7 @@
 import { useI18n, publicError } from '../i18n/I18n'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import { playApplause, playTick, playTimeUp } from '../audio/sound'
 
 import type { MessageKey } from '../i18n/messages'
 import type { SocketStatus } from '../realtime/gameSocket'
@@ -20,7 +22,7 @@ export function optionLetter(index: number): string {
 }
 
 /** Countdown driven by the server's question clock, corrected for skew. */
-export function Timer({ question, serverOffsetMs }: { question: Question; serverOffsetMs: number }) {
+export function Timer({ question, serverOffsetMs, sound = false }: { question: Question; serverOffsetMs: number; sound?: boolean }) {
   const { t } = useI18n()
   const [now, setNow] = useState(() => Date.now())
 
@@ -32,6 +34,17 @@ export function Timer({ question, serverOffsetMs }: { question: Question; server
   const left = remainingMs(question, serverOffsetMs, now)
   const seconds = Math.ceil(left / 1000)
   const fraction = Math.min(1, left / (question.time_limit_seconds * 1000))
+
+  // One tick per displayed second, then a chime at zero. A late join or a
+  // reconnect starts from the current second rather than replaying the past.
+  const lastSecond = useRef<number | null>(null)
+  useEffect(() => {
+    if (!sound || lastSecond.current === seconds) return
+    const first = lastSecond.current === null
+    lastSecond.current = seconds
+    if (seconds > 0) playTick(seconds <= 5)
+    else if (!first) playTimeUp()
+  }, [sound, seconds])
 
   return (
     <>
@@ -119,8 +132,16 @@ export function LeaderboardList({
   )
 }
 
-export function Winners({ winners }: { winners: LeaderboardEntry[] }) {
+export function Winners({ winners, applause = false }: { winners: LeaderboardEntry[]; applause?: boolean }) {
   const { t } = useI18n()
+  const hasWinner = winners.length > 0
+  const applauded = useRef(false)
+  useEffect(() => {
+    if (applause && hasWinner && !applauded.current) {
+      applauded.current = true
+      playApplause()
+    }
+  }, [applause, hasWinner])
   if (winners.length === 0) {
     return <p className="winner-banner">{t("No winner this time.")}</p>
   }

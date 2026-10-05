@@ -2,6 +2,8 @@
 // are TypeScript errors. Interpolation is plain text, never HTML.
 export const hebrew = {
   "Answer status": "מצב התשובה",
+  "Sound on — turn sound off": "הצליל פועל — להשתקה",
+  "Sound off — turn sound on": "הצליל מושתק — להפעלה",
   "Time warning": "התראת זמן",
   "Privacy": "פרטיות",
   "Terms": "תנאי שימוש",
