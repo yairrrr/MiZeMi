@@ -17,6 +17,7 @@ NEIGHBORS = {
     'music.mizrahi': ('music.mediterranean','music.pop','music.folk','music.rock'),
     'music.mediterranean': ('music.mizrahi','music.pop','music.folk','music.latin'),
     'music.israeli': ('music.mizrahi','music.mediterranean','music.pop','music.rock'),
+    'music.jewish': ('music.israeli','music.mizrahi','music.folk','music.classical'),
     'music.pop': ('music.rnb','music.rock','music.electronic','music.hiphop'),
     'music.hiphop': ('music.rnb','music.pop','music.reggae','music.funk'),
     'music.rock': ('music.indie','music.metal','music.blues','music.pop'),

@@ -103,3 +103,6 @@ def test_supplement_adds_israeli_records_and_keeps_compiled_ones(tmp_path,monkey
     assert kb.resolve_song('Jerusalem of Gold').entity==existing
     assert kb.resolve_artist('Test Israeli singer').entity.category_ids==frozenset({'music.israeli'})
     assert 'music.israeli' in kb.resolve_music_genre('זמר עברי').entity.category_ids
+    for kind in ('artists','songs','music','hobbies','foods'):
+        rows={r[0]:r for r in json.loads((tmp_path/'out'/f'{kind}.json').read_text())}
+        assert all(rows[r[0]]==r for r in json.loads((BUNDLE_DIR/f'{kind}.json').read_text()))

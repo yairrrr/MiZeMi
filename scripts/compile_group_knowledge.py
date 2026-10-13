@@ -165,6 +165,7 @@ def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None,
             for row in config.get('music_genres',[]): keep.setdefault(row[0],row)
         if kind=='hobbies':
             for q,row in keep.items():
+                if q in frozen: continue
                 row[4]=sorted(set(row[4])|activity_facts(q,records.get(q,{}),records,config))
                 previous_hebrew=row[2]
                 row[2]=config['hebrew_labels'].get(q,row[2])
