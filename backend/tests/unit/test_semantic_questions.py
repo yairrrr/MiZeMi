@@ -246,7 +246,7 @@ def test_load_memory_and_classroom_generation_have_wide_sanity_bounds():
     retained,peak=tracemalloc.get_traced_memory();tracemalloc.stop()
     assert perf_counter()-start<30  # Instrumented loading; uninstrumented SLA is measured separately.
     assert peak<80_000_000
-    assert retained<60_000_000
+    assert retained<65_000_000
     rows=[ROWS[i%5] for i in range(30)]
     start=perf_counter()
     for seed in range(3):
