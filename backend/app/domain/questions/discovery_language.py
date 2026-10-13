@@ -149,6 +149,7 @@ LEXICON = {
     'music.electronic': _music('Electronic', 'אלקטרונית', 'electronic music', 'מוזיקה אלקטרונית'),
     'music.mizrahi': _music('Mizrahi', 'מזרחית', 'Mizrahi music', 'מוזיקה מזרחית'),
     'music.mediterranean': _music('Mediterranean', 'ים תיכונית', 'Mediterranean music', 'מוזיקה ים תיכונית'),
+    'music.israeli': _music('Israeli', 'זמר עברי', 'Israeli music', 'זמר עברי'),
     'music.classical': _music('Classical', 'קלאסית', 'classical music', 'מוזיקה קלאסית'),
     'music.jazz': _music('Jazz', 'ג׳אז', 'jazz', 'מוזיקת ג׳אז'),
     'music.indie': _music('Indie', 'אינדי', 'indie music', 'מוזיקת אינדי'),

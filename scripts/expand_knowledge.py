@@ -31,6 +31,20 @@ SELECTIONS={
  'foods':('''{?item wdt:P31/wdt:P279* wd:Q746549.} UNION {?item wdt:P279+ wd:Q746549.} ?item wikibase:sitelinks ?n. FILTER(?n>=1)''',4500),
  'hobbies':(' '.join(('{'+ ' UNION '.join('{?item wdt:P31/wdt:P279* wd:'+q+'.} UNION {?item wdt:P279+ wd:'+q+'.}' for q in ('Q31629','Q2755547','Q61065','Q219067','Q34379','Q131436','Q38695','Q720398'))+'}', '?item wikibase:sitelinks ?n. FILTER(?n>=2)')),2500),
 }
+# A focused Israeli supplement: songs from Israel, sung in Hebrew or performed
+# by Israeli artists, plus Israeli musicians/bands and those songs' performers.
+# Origin is selection only; genres still come from each item's own P136.
+_SONG_TYPES='VALUES ?type {wd:Q7366 wd:Q134556 wd:Q105543609 wd:Q2188189} '
+_ISRAELI_SONG=('{?item wdt:P495 wd:Q801} UNION {?item wdt:P407 wd:Q9288} UNION '
+               '{?item wdt:P175 ?p. ?p wdt:P27 wd:Q801} UNION {?item wdt:P175 ?p. ?p wdt:P495 wd:Q801}')
+ISRAELI_SELECTIONS={
+ 'songs':(_SONG_TYPES+'?item wdt:P31 ?type. '+_ISRAELI_SONG+' ?item wikibase:sitelinks ?n.',5000),
+ 'artists':('''{?item wdt:P27 wd:Q801; wdt:P31 wd:Q5; wdt:P106 ?job.
+VALUES ?job {wd:Q177220 wd:Q639669 wd:Q2252262 wd:Q36834 wd:Q488205 wd:Q753110 wd:Q1278335 wd:Q855091 wd:Q386854}}
+UNION {?item wdt:P495 wd:Q801; wdt:P31/wdt:P279* wd:Q215380.}
+UNION {'''+_SONG_TYPES+'?song wdt:P31 ?type; wdt:P175 ?item. ?song wdt:P407 wd:Q9288.}'
+ ' ?item wikibase:sitelinks ?n.',6000),
+}
 
 def query(text, attempt=0):
     url=ENDPOINT+'?'+urllib.parse.urlencode({'query':PREFIX+text,'format':'json'})
@@ -80,13 +94,13 @@ def fetch_places(cache, retrieved):
 
 def qid(value): return value.rsplit('/',1)[-1]
 
-def fetch(cache,kinds,hebrew=False,retrieved=None):
+def fetch(cache,kinds,hebrew=False,retrieved=None,israeli=False):
     retrieved=retrieved or date.today().isoformat()
     cache.mkdir(parents=True,exist_ok=True)
     for kind in kinds:
-        tag=kind+'-he' if hebrew else kind
+        tag=kind+'-il' if israeli else kind+'-he' if hebrew else kind
         selection_path=cache/(tag+'-selection.json')
-        pattern,limit=SELECTIONS[kind]
+        pattern,limit=(ISRAELI_SELECTIONS if israeli else SELECTIONS)[kind]
         if hebrew:
             import re
             pattern=re.sub(r'FILTER\(\?n>=\d+\)', '', pattern)
@@ -179,11 +193,16 @@ def main():
     p.add_argument('--fetch',type=Path,required=True)
     p.add_argument('--kinds',nargs='+',choices=tuple(SELECTIONS),default=list(SELECTIONS))
     p.add_argument('--hebrew',action='store_true',help='Supplement Hebrew-linked works/artists and animated films')
+    p.add_argument('--israeli',action='store_true',help='Supplement Israeli/Hebrew songs and Israeli musicians')
     p.add_argument('--places-only',action='store_true',help='Fetch only the licensed GeoNames populated-place projection')
     p.add_argument('--retrieved',default=date.today().isoformat())
     a=p.parse_args()
     date.fromisoformat(a.retrieved)
     if a.places_only: fetch_places(a.fetch,a.retrieved)
+    elif a.israeli:
+        kinds=list(ISRAELI_SELECTIONS) if a.kinds==list(SELECTIONS) else a.kinds
+        if a.hebrew or set(kinds)-set(ISRAELI_SELECTIONS): p.error('--israeli selects only songs and artists')
+        fetch(a.fetch,kinds,retrieved=a.retrieved,israeli=True)
     else: fetch(a.fetch,a.kinds,a.hebrew,a.retrieved)
 
 if __name__=='__main__':main()

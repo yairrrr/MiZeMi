@@ -60,6 +60,12 @@
       "hobby.physical",
       "Non-physical recreation",
       "עיסוק שאינו פעילות גופנית"
+    ],
+    [
+      "music.israeli",
+      "music.genre",
+      "Israeli music",
+      "זמר עברי"
     ]
   ],
   "activity_roots": {
@@ -547,12 +553,50 @@
         "https://www.wikidata.org/wiki/Q105674"
       ],
       "license_note": "CC0 factual names and activity scopes; authored conservative alias policy."
+    },
+    {
+      "entity": "Q3858",
+      "retrieved": "2026-10-13",
+      "decision": "Map the music of Israel genre (Hebrew label זמר עברי) to its own music.israeli category, and Israeli hip hop (Q12411192) to hip-hop. Only an item's own genre statement can place it in this category; no nationality, language or performer is used to classify a song or artist.",
+      "sources": [
+        "https://www.wikidata.org/wiki/Q3858",
+        "https://www.wikidata.org/wiki/Q12411192"
+      ],
+      "license_note": "CC0 factual genre graph; authored category mapping and aliases are CC0."
     }
   ],
   "excluded_genre_parent_edges": [
     [
       "Q846544",
       "Q2484376"
+    ]
+  ],
+  "extra_genre_roots": {
+    "music.israeli": [
+      "Q3858"
+    ],
+    "music.hiphop": [
+      "Q12411192"
+    ]
+  },
+  "music_genres": [
+    [
+      "Q3858",
+      "music of Israel",
+      "זמר עברי",
+      [
+        "Hebrew music",
+        "Israeli",
+        "Israeli music",
+        "ישראלית",
+        "מוזיקה ישראלית",
+        "מוזיקה עברית"
+      ],
+      [
+        "music.israeli"
+      ],
+      null,
+      0
     ]
   ]
 }
