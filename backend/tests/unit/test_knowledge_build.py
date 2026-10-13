@@ -71,3 +71,38 @@ def test_expanded_compilation_is_reproducible_and_never_inherits_artist_genre(tm
     assert kb.resolve_artist('Test artist').entity.category_ids==frozenset({'music.rock'})
     assert kb.resolve_song('Unclassified song').entity is None
     assert kb.resolve_hobby('A person is not a hobby').entity is None
+
+
+def test_supplement_adds_israeli_records_and_keeps_compiled_ones(tmp_path,monkeypatch):
+    monkeypatch.syspath_prepend(str(ROOT/'scripts'))
+    import compile_group_knowledge as compiler
+    from app.infrastructure.knowledge import BUNDLE_DIR
+    base=load_knowledge(BUNDLE_DIR)
+    existing=base.resolve_song('Jerusalem of Gold').entity
+    cache=tmp_path/'research';cache.mkdir()
+    fixtures={
+        'songs':{
+            'Q99900011':{'titleHe':'שיר בדיקה עברי','P136':['Q3858'],'P175':['Q99900013']},
+            'Q99900012':{'en':'Test Israeli rap','P136':['Q12411192']},
+            existing.canonical_id:{'en':'Renamed upstream','P136':['Q11399']},
+        },
+        'artists':{'Q99900013':{'en':'Test Israeli singer','he':'זמר בדיקה','P136':['Q3858']}},
+    }
+    for kind,records in fixtures.items():
+        (cache/f'{kind}-il-selection.json').write_text(json.dumps({'ids':list(records)}))
+        (cache/f'{kind}-il-00000.json').write_text(json.dumps(records))
+    (cache/'ancestors.json').write_text(json.dumps({'Q3858':{},'Q12411192':{'P279':['Q3858']},'Q11399':{}}))
+    def forbidden(*a,**k): raise AssertionError('offline compiler attempted a network request')
+    monkeypatch.setattr(socket.socket,'connect',forbidden)
+    compiler.compile_bundle(cache,tmp_path/'out',supplement=True,version='test.3',retrieved='2026-10-13')
+    kb=load_knowledge(tmp_path/'out')
+    assert len(kb.in_kind('songs'))==len(base.in_kind('songs'))+2
+    assert kb.resolve_song('שיר בדיקה עברי').entity.category_ids==frozenset({'music.israeli'})
+    assert kb.resolve_song('זמר בדיקה - שיר בדיקה עברי').entity.canonical_id=='Q99900011'
+    assert kb.resolve_song('Test Israeli rap').entity.category_ids==frozenset({'music.hiphop','music.israeli'})
+    assert kb.resolve_song('Jerusalem of Gold').entity==existing
+    assert kb.resolve_artist('Test Israeli singer').entity.category_ids==frozenset({'music.israeli'})
+    assert 'music.israeli' in kb.resolve_music_genre('זמר עברי').entity.category_ids
+    for kind in ('artists','songs','music','hobbies','foods'):
+        rows={r[0]:r for r in json.loads((tmp_path/'out'/f'{kind}.json').read_text())}
+        assert all(rows[r[0]]==r for r in json.loads((BUNDLE_DIR/f'{kind}.json').read_text()))

@@ -55,7 +55,7 @@ def activity_facts(q,record,records,config):
     return facts
 
 
-def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None, version=None):
+def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None, version=None, supplement=False):
     retrieved=retrieved or date.today().isoformat()
     version=version or retrieved+'.1'
     old=json.loads(CURATION.read_text()); config=json.loads(GROUP.read_text())
@@ -71,25 +71,32 @@ def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None,
                 raise ValueError('--retrieved must not predate source retrieval')
             selection_dates.append(selection_date)
             if kind in selected:selected[kind].extend(selection['ids'])
-        elif path.name=='ancestors.json' or re.fullmatch(r'(movies|songs|artists|foods|hobbies)-(?:he-)?\d{5}\.json',path.name):
+        elif path.name=='ancestors.json' or re.fullmatch(r'(movies|songs|artists|foods|hobbies)-(?:he-|il-)?\d{5}\.json',path.name):
             records.update(json.loads(path.read_text()))
     if not records: raise ValueError('No factual research cache; fetch and review first')
     categories={r[0]:r for r in json.loads((base/'categories.json').read_text())}
     categories.update({r[0]:r for r in config['categories']})
     roots={key:set(ids) for key,ids in old['roots'].items()}
     roots['movie.animation']={'Q202866'}
+    for key,ids in config.get('extra_genre_roots',{}).items(): roots.setdefault(key,set()).update(ids)
     for key,row in categories.items():
         if row[1]=='music.genre': roots.setdefault(key,set())
     files={}; excluded={}; metadata_counts={}
+    # Performer names for "title - artist" aliases when a supplement cache
+    # holds the song but the performer was compiled in an earlier pass.
+    base_artists={r[0]:{'en':r[1],'he':r[2]} for r in json.loads((base/'artists.json').read_text())} if (base/'artists.json').exists() else {}
     for kind in KINDS:
         base_path=base/(kind+'.json')
         seed_rows=json.loads(base_path.read_text()) if base_path.exists() else []
         seed_ids=set(old['selection'].get(kind,[]))
         # Only curated seed records are carried forward; an updated fetch may
         # remove prior bulk records rather than silently retaining stale facts.
-        keep={r[0]:r for r in seed_rows if r[0] in seed_ids or r[0].startswith('local_') or kind=='localities'}
+        keep={r[0]:r for r in seed_rows if supplement or r[0] in seed_ids or r[0].startswith('local_') or kind=='localities'}
+        # A supplement only adds new records; every compiled row stays as is.
+        frozen=set(keep) if supplement else set()
         excluded[kind]=0
         for q in dict.fromkeys(selected[kind]):
+            if q in frozen: continue
             r=records.get(q,{})
             types=set(r.get('P31',[]))
             if types.intersection(('Q4167410','Q13406463')) or (kind=='hobbies' and 'Q5' in types):
@@ -136,7 +143,7 @@ def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None,
             performers=reference_ids(r.get('P175',[])) if kind=='songs' else []
             if kind=='songs':
                 for artist in performers:
-                    a=records.get(artist,{})
+                    a=records.get(artist) or base_artists.get(artist,{})
                     for title,artist_name in ((en,a.get('en','')),(he,a.get('he',''))):
                         if title and artist_name:
                             short=re.sub(r' \([^()]+\)$','',title)
@@ -154,8 +161,11 @@ def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None,
                     row[4]=sorted(set(row[4])|set(seed[4]))
                 row[6]=seed[6]
             keep[q]=row
+        if kind=='music':
+            for row in config.get('music_genres',[]): keep.setdefault(row[0],row)
         if kind=='hobbies':
             for q,row in keep.items():
+                if q in frozen: continue
                 row[4]=sorted(set(row[4])|activity_facts(q,records.get(q,{}),records,config))
                 previous_hebrew=row[2]
                 row[2]=config['hebrew_labels'].get(q,row[2])
@@ -190,7 +200,7 @@ def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None,
     output.mkdir(parents=True,exist_ok=True)
     for name,rows in files.items(): dump(output/name,rows)
     previous=json.loads((base/'manifest.json').read_text())
-    sources=previous['sources'][:2]
+    sources=previous['sources'] if supplement else previous['sources'][:2]
     # Keep the seed/GeoNames retrieval dates truthful; new query projections
     # have their own independently dated source entry and transformation record.
     if (cache/'geonames/localities.json').exists():
@@ -199,16 +209,17 @@ def compile_bundle(cache, output=BUNDLE_DIR, *, base=BUNDLE_DIR, retrieved=None,
         sources[1]={**sources[1],'retrieved':geo_date,
                     'fields':'GeoNames ID; populated-place feature code; names and reviewed aliases; latitude/longitude; administrative district code.',
                     'cache_sha256':hashlib.sha256((cache/'geonames/localities.json').read_bytes()).hexdigest()}
-    sources.append({'name':'Wikidata bounded group-reference expansion','url':'https://query.wikidata.org/sparql','retrieved':retrieved,
+    sources.append({'name':'Wikidata Israeli song and artist supplement' if supplement else 'Wikidata bounded group-reference expansion','url':'https://query.wikidata.org/sparql','retrieved':retrieved,
         'retrieval_started':min(selection_dates,default=retrieved),
         'license':'CC0-1.0','license_url':'https://www.wikidata.org/wiki/Wikidata:Licensing',
         'fields':'Q IDs; English/Hebrew labels and sitelink names; P136, P31, P279, P2012, P495, P577, P179, P175.',
-        'transformation':'Popularity-ranked finite selections, licensed factual projections only. At most two genre-parent edges, three activity/food-parent edges. No artist-to-song genre inheritance. Earliest supplied release year, explicit country/series/performer IDs. Reviewed seed records retain their original revisions; new query records use revision 0 with this dated query provenance. Ambiguous names fail closed.',
+        'transformation':('Songs from Israel, sung in Hebrew or performed by Israeli artists, and Israeli musicians and bands, added to the existing bundle; previously compiled records are unchanged. '*supplement)+'Popularity-ranked finite selections, licensed factual projections only. At most two genre-parent edges, three activity/food-parent edges. No artist-to-song genre inheritance. Earliest supplied release year, explicit country/series/performer IDs. Reviewed seed records retain their original revisions; new query records use revision 0 with this dated query provenance. Ambiguous names fail closed.',
         'query_recipe':'scripts/expand_knowledge.py','curation_recipe':'scripts/knowledge/group-curation.json',
         'cache_sha256':hashlib.sha256(json.dumps(records,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()).hexdigest()})
     manifest={**previous,'schema':2,'version':version,'sources':sources,
         'entity_columns':['id','en','he','aliases','categories','lat_lon','source_revision','optional_details'],
         'details_columns':['earliest_release_year','country_ids','series_ids','performer_ids','locality_type'],
+        'curation_sha256':hashlib.sha256(CURATION.read_bytes()).hexdigest(),
         'group_curation_sha256':hashlib.sha256(GROUP.read_bytes()).hexdigest(),
         'files':{name:{'bytes':(output/name).stat().st_size,'sha256':hashlib.sha256((output/name).read_bytes()).hexdigest(),'rows':len(rows)} for name,rows in sorted(files.items())}}
     dump(output/'manifest.json',manifest)
@@ -222,6 +233,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('cache',type=Path);p.add_argument('--output',type=Path,default=BUNDLE_DIR)
     p.add_argument('--base',type=Path,default=BUNDLE_DIR);p.add_argument('--retrieved');p.add_argument('--version')
-    a=p.parse_args();compile_bundle(a.cache,a.output,base=a.base,retrieved=a.retrieved,version=a.version)
+    p.add_argument('--supplement',action='store_true',help='Add new records to the base bundle without recompiling existing ones')
+    a=p.parse_args();compile_bundle(a.cache,a.output,base=a.base,retrieved=a.retrieved,version=a.version,supplement=a.supplement)
 
 if __name__=='__main__':main()

@@ -101,5 +101,7 @@
 ["setting.indoor","hobby.setting","Indoors","בבית או בחלל סגור"],
 ["setting.flexible","hobby.setting","Flexible setting","מקום גמיש"],
 ["activity.physical","hobby.physical","Physical activity","פעילות גופנית"],
-["activity.nonphysical","hobby.physical","Non-physical recreation","עיסוק שאינו פעילות גופנית"]
+["activity.nonphysical","hobby.physical","Non-physical recreation","עיסוק שאינו פעילות גופנית"],
+["music.israeli","music.genre","Israeli music","זמר עברי"],
+["music.jewish","music.genre","Jewish music","מוזיקה יהודית"]
 ]

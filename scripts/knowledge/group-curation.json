@@ -60,6 +60,18 @@
       "hobby.physical",
       "Non-physical recreation",
       "עיסוק שאינו פעילות גופנית"
+    ],
+    [
+      "music.israeli",
+      "music.genre",
+      "Israeli music",
+      "זמר עברי"
+    ],
+    [
+      "music.jewish",
+      "music.genre",
+      "Jewish music",
+      "מוזיקה יהודית"
     ]
   ],
   "activity_roots": {
@@ -547,12 +559,98 @@
         "https://www.wikidata.org/wiki/Q105674"
       ],
       "license_note": "CC0 factual names and activity scopes; authored conservative alias policy."
+    },
+    {
+      "entity": "Q3858",
+      "retrieved": "2026-10-13",
+      "decision": "Map the music of Israel genre (Hebrew label זמר עברי) to its own music.israeli category, and Israeli hip hop (Q12411192) to hip-hop. Only an item's own genre statement can place it in this category; no nationality, language or performer is used to classify a song or artist.",
+      "sources": [
+        "https://www.wikidata.org/wiki/Q3858",
+        "https://www.wikidata.org/wiki/Q12411192"
+      ],
+      "license_note": "CC0 factual genre graph; authored category mapping and aliases are CC0."
+    },
+    {
+      "entity": "Q1716019",
+      "retrieved": "2026-10-13",
+      "decision": "Map Jewish music, Hasidic music (Q20819985) and contemporary Jewish religious music (Q12408914) to a music.jewish category, and the pop song form (Q2894096) to pop. Song forms such as children's songs, love songs, ballads and lullabies, and broad labels such as popular or world music, stay unmapped because they do not name a style. Only an item's own genre statement can place it in a category.",
+      "sources": [
+        "https://www.wikidata.org/wiki/Q1716019",
+        "https://www.wikidata.org/wiki/Q20819985",
+        "https://www.wikidata.org/wiki/Q12408914",
+        "https://www.wikidata.org/wiki/Q2894096"
+      ],
+      "license_note": "CC0 factual genre graph; authored category mapping and aliases are CC0."
     }
   ],
   "excluded_genre_parent_edges": [
     [
       "Q846544",
       "Q2484376"
+    ]
+  ],
+  "extra_genre_roots": {
+    "music.israeli": [
+      "Q3858"
+    ],
+    "music.jewish": [
+      "Q1716019",
+      "Q20819985",
+      "Q12408914"
+    ],
+    "music.hiphop": [
+      "Q12411192"
+    ],
+    "music.pop": [
+      "Q2894096"
+    ]
+  },
+  "music_genres": [
+    [
+      "Q3858",
+      "music of Israel",
+      "זמר עברי",
+      [
+        "Hebrew music",
+        "Israeli",
+        "Israeli music",
+        "ישראלית",
+        "מוזיקה ישראלית",
+        "מוזיקה עברית"
+      ],
+      [
+        "music.israeli"
+      ],
+      null,
+      0
+    ],
+    [
+      "Q1716019",
+      "Jewish music",
+      "מוזיקה יהודית",
+      [
+        "Jewish",
+        "יהודית"
+      ],
+      [
+        "music.jewish"
+      ],
+      null,
+      0
+    ],
+    [
+      "Q20819985",
+      "Hasidic music",
+      "מוזיקה חסידית",
+      [
+        "Hasidic",
+        "חסידית"
+      ],
+      [
+        "music.jewish"
+      ],
+      null,
+      0
     ]
   ]
 }

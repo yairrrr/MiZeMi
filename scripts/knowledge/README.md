@@ -45,6 +45,13 @@ Reviewed taxonomy edges can also be excluded: disaster-film membership alone is 
 
 # After source/alias/fact/style review, compile to the real asset directory
 # with the same reviewed cache/date/version by omitting --output.
+
+# Israeli supplement: songs from Israel, in Hebrew or by Israeli performers,
+# and Israeli musicians. --supplement adds new records to the committed bundle
+# and leaves every existing row byte-identical.
+.venv/bin/python scripts/expand_knowledge.py --fetch /tmp/mizemi-israeli-review --israeli
+.venv/bin/python scripts/compile_group_knowledge.py /tmp/mizemi-israeli-review --supplement \
+  --version YYYY-MM-DD.1 --retrieved YYYY-MM-DD
 .venv/bin/python scripts/benchmark_knowledge.py
 .venv/bin/python scripts/audit_group_questions.py
 ```

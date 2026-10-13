@@ -87,9 +87,9 @@ HOBBY_FAMILIES = ('hobby.sport', 'hobby.creative', 'hobby.digital', 'hobby.table
                   'hobby.learning', 'hobby.cooking', 'hobby.collecting', 'hobby.wellbeing',
                   'hobby.social', 'hobby.travel')
 MUSIC_FAMILIES = ('music.pop', 'music.rock', 'music.hiphop', 'music.electronic', 'music.mizrahi',
-                  'music.mediterranean', 'music.classical', 'music.jazz', 'music.indie', 'music.rnb',
-                  'music.reggae', 'music.folk', 'music.country', 'music.blues', 'music.soul',
-                  'music.funk', 'music.gospel', 'music.latin', 'music.disco', 'music.ska')
+                  'music.mediterranean', 'music.israeli', 'music.jewish', 'music.classical', 'music.jazz',
+                  'music.indie', 'music.rnb', 'music.reggae', 'music.folk', 'music.country', 'music.blues',
+                  'music.soul', 'music.funk', 'music.gospel', 'music.latin', 'music.disco', 'music.ska')
 MUSIC_PARENTS = (('music.house', 'music.electronic'), ('music.techno', 'music.electronic'),
                  ('music.trance', 'music.electronic'), ('music.metal', 'music.rock'))
 REGIONS = ('region.north', 'region.central', 'region.south', 'region.jerusalem')
