@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useStageFocus } from '../../hooks/useStageFocus'
 import { useI18n, direction } from '../../i18n/I18n'
+import { AiLoadingScreen } from './AiLoadingScreen'
 import {
   AnswerBars,
   ConnectionBanner,
@@ -27,6 +28,8 @@ type HostGameViewProps = {
   onLeave: () => void
 }
 
+const PRE_GAME_STATES: string[] = ['LOBBY', 'PROFILE_COLLECTION', 'READY']
+
 export function HostGame({ session, onLeave }: { session: HostSession; onLeave: () => void }) {
   const connection = useGameConnection(session)
   return <HostGameView session={session} onLeave={onLeave} {...connection} />
@@ -35,9 +38,26 @@ export function HostGame({ session, onLeave }: { session: HostSession; onLeave: 
 export function HostGameView({ session, view, status, send, dismissError, onLeave }: HostGameViewProps) {
   const { t } = useI18n()
   const room = view.room
-  const stage = !room ? 'connecting' : ['LOBBY', 'PROFILE_COLLECTION', 'READY'].includes(room.state)
+  const stage = !room ? 'connecting' : PRE_GAME_STATES.includes(room.state)
     ? 'lobby' : `${room.state}-${view.question?.question_id}-${view.results?.question_id}-${!!view.finished}`
   const stageRef = useStageFocus(stage)
+
+  // AI mode writes the questions on the server, which can take a minute, so
+  // a full-screen loader covers the wait. It plays its 100% finish once the
+  // game starts and is dropped at once on an error or a lost connection.
+  const [aiLoader, setAiLoader] = useState<'off' | 'loading' | 'done'>('off')
+  const roomState = room?.state
+  const gameStarted = roomState !== undefined && !PRE_GAME_STATES.includes(roomState)
+  useEffect(() => {
+    if (gameStarted) setAiLoader((phase) => (phase === 'loading' ? 'done' : phase))
+  }, [gameStarted])
+  useEffect(() => {
+    if (view.error !== null) setAiLoader('off')
+  }, [view.error])
+  useEffect(() => {
+    if (status !== 'open' && status !== 'reconnecting') setAiLoader('off')
+  }, [status])
+
   return (
     <section ref={stageRef} className="game-shell host-shell" aria-label={t("Host screen")}>
       <header className="game-header">
@@ -57,8 +77,22 @@ export function HostGameView({ session, view, status, send, dismissError, onLeav
         <p className="waiting-copy">{t("Connecting to your room…")}</p>
       ) : (
         <fieldset className="stage-controls" disabled={status !== 'open'}>
-          <HostStage room={room} view={view} send={send} onLeave={onLeave} />
+          <HostStage
+            room={room}
+            view={view}
+            send={send}
+            onLeave={onLeave}
+            starting={aiLoader === 'loading'}
+            onAiStart={() => setAiLoader('loading')}
+          />
         </fieldset>
+      )}
+      {aiLoader !== 'off' && room !== null && (
+        <AiLoadingScreen
+          questionCount={room.config.question_count}
+          done={aiLoader === 'done'}
+          onExited={() => setAiLoader('off')}
+        />
       )}
     </section>
   )
@@ -69,17 +103,21 @@ function HostStage({
   view,
   send,
   onLeave,
+  starting,
+  onAiStart,
 }: {
   room: RoomSnapshot
   view: GameView
   send: SendFn
   onLeave: () => void
+  starting: boolean
+  onAiStart: () => void
 }) {
   switch (room.state) {
     case 'LOBBY':
     case 'PROFILE_COLLECTION':
     case 'READY':
-      return <HostLobby room={room} send={send} error={view.error} />
+      return <HostLobby room={room} send={send} starting={starting} onAiStart={onAiStart} />
     case 'QUESTION_ACTIVE':
       return <HostQuestion room={room} view={view} />
     case 'QUESTION_RESULTS':
@@ -91,13 +129,15 @@ function HostStage({
   }
 }
 
-function HostLobby({ room, send, error }: { room: RoomSnapshot; send: SendFn; error: GameView['error'] }) {
+function HostLobby({ room, send, starting, onAiStart }: {
+  room: RoomSnapshot
+  send: SendFn
+  starting: boolean
+  onAiStart: () => void
+}) {
   const { t } = useI18n()
-  // AI mode writes the questions on the server, which takes a while: show it,
-  // and keep the button from being pressed again (the server would refuse).
+  // While the AI writes, keep the button from being pressed again (the server would refuse).
   const isAi = room.config.question_source === 'ai'
-  const [starting, setStarting] = useState(false)
-  useEffect(() => { setStarting(false) }, [room.state, error])
   const players = room.players
   const readyCount = players.filter((player) => player.is_ready).length
   const canStart = room.state === 'READY'
@@ -155,15 +195,10 @@ function HostLobby({ room, send, error }: { room: RoomSnapshot; send: SendFn; er
         type="button"
         className="primary-button start-button"
         disabled={!canStart || starting}
-        onClick={() => { if (send('game.start') && isAi) setStarting(true) }}
+        onClick={() => { if (send('game.start') && isAi) onAiStart() }}
       >
         {starting ? t('AI is crafting your questions…') : startLabel}
       </button>
-      {starting && (
-        <p className="waiting-copy" role="status" aria-live="polite">
-          ⚡ {t('This can take a few minutes. Everyone stays connected.')}
-        </p>
-      )}
     </div>
   )
 }

@@ -73,7 +73,11 @@ def build_room_updated(room_code: str, game: Game) -> dict[str, Any]:
         ],
         current_question_index=game.current_question_index,
         total_questions=len(game.questions) or game.config.question_count,
-        config=GameConfigSchema(question_count=game.config.question_count, language=game.config.language),
+        config=GameConfigSchema(
+            question_count=game.config.question_count,
+            language=game.config.language,
+            question_source=game.config.question_source,
+        ),
     )
     return build_envelope(
         ServerToClientEvent.ROOM_UPDATED, snapshot.model_dump(mode="json"), game.game_id
