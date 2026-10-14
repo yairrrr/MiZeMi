@@ -18,7 +18,14 @@ def test_old_create_clients_get_twenty_questions(body):
     with TestClient(_app()) as client:
         response = client.post('/api/v1/rooms', **({} if body is None else {'json':body}))
         assert response.status_code == 201
-        assert response.json()['config'] == {'question_count':20,'language':'en'}
+        # The §9.0/§12.7 addition of question_source extends the response; old
+        # clients get the default algorithmic engine, which preserves the
+        # previous behavior exactly.
+        assert response.json()['config'] == {
+            'question_count': 20,
+            'language': 'en',
+            'question_source': 'algorithmic',
+        }
 
 
 @pytest.mark.parametrize('value', [0,-1,51,10**12,True,False,3.0,2.5,'20',None,[],{}])

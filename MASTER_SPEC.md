@@ -1,6 +1,6 @@
 # MiZeMi — MASTER SPECIFICATION
 
-**Status:** Classroom enhancement, v3.0, 2026-09-11. The completion mission explicitly authorized finalizing the previously deferred MVP decisions. This revision records the behavior on disk and supersedes the earlier proposed baseline. Architecture, no-runtime-AI, consent and zero-cost constraints remain binding.
+**Status:** Classroom enhancement, v3.0, 2026-09-11. The completion mission explicitly authorized finalizing the previously deferred MVP decisions. This revision records the behavior on disk and supersedes the earlier proposed baseline. Architecture, consent and zero-cost constraints remain binding. Runtime AI is allowed only as the opt-in, per-room mode of §12.7 (team decision, October 2026); the default remains deterministic.
 
 ## 0. Decision Status and Deferred Decisions
 
@@ -10,9 +10,9 @@ The MVP decisions in this revision are finalized: separate token-authenticated h
 
 MiZeMi is a live multiplayer classroom icebreaker. A host shares a room code; players submit social profiles with per-field consent. The server generates multiple-choice questions from shared facts, accepts answers, scores rounds and displays a final winner/leaderboard.
 
-**No AI at runtime:** no AI SDK, model, LLM API or network generation call exists in the application. Questions come from deterministic Python rules.
+**AI is opt-in, never default:** by default questions come from deterministic Python rules and the offline knowledge catalog, with no network generation call. A host may choose the **AI question mode** (§12.7) when creating a room, and only if the operator has enabled it on the server with their own key. That mode is the single permitted runtime AI use; every other path stays deterministic.
 
-**Zero cost:** only free/open-source dependencies and independently sufficient free hosting/database tiers. No paid API, paid realtime provider, payment-gated trial or required upgrade.
+**Zero cost:** only free/open-source dependencies and independently sufficient free hosting/database tiers. No paid realtime provider, payment-gated trial or required upgrade. The one exception is the optional AI mode, which calls a paid third-party API with the operator's own key; it is disabled unless explicitly configured, and the product is fully functional without it.
 
 ## 2. MVP Scope
 
@@ -22,7 +22,7 @@ No user accounts, cross-game identity, persistent public history, horizontal sca
 
 ## 3. Future Enhancements
 
-Profile editing, durable active-game recovery and versioned migration tooling can be added when specifically scoped. They must preserve the consent boundary and zero-cost/no-AI constraints.
+Profile editing, durable active-game recovery and versioned migration tooling can be added when specifically scoped. They must preserve the consent boundary and the zero-cost constraint, and must not widen AI use beyond §12.7.
 
 ## 4. Technology Stack
 
@@ -35,7 +35,7 @@ Profile editing, durable active-game recovery and versioned migration tooling ca
 | Tests | pytest, Vitest, React Testing Library, Playwright Chromium |
 | Hosting target | Single Render Free Python web service, free static site, Neon Free PostgreSQL |
 
-Do not replace this with Firebase, Supabase Realtime, Socket.IO, Pusher, Ably, Redis, brokers, microservices or runtime AI. Runtime and development dependencies are separate in backend requirements files; frontend dependencies are locked.
+Do not replace this with Firebase, Supabase Realtime, Socket.IO, Pusher, Ably, Redis, brokers or microservices. Runtime AI is limited to the optional mode of §12.7 (Anthropic SDK, backend only). Runtime and development dependencies are separate in backend requirements files; frontend dependencies are locked.
 
 ## 5. Architecture: Modular Monolith
 
@@ -77,7 +77,7 @@ Wire keys are snake_case; TypeScript mirrors are in `frontend/src/types/`, Pydan
 
 ### 9.0 Game configuration and languages
 
-The host sets immutable `Game.config = {question_count, language}` at creation. Count is a strict integer 1–50, default **20**; booleans, strings, floats, null, out-of-range values and unknown keys are rejected. Language is exactly `en` (default) or `he`. Missing request/body fields retain defaults; a deployment may explicitly override the no-body count with MIZEMI_QUESTIONS_PER_GAME (default 20). The public response and all room snapshots include this configuration. Requested count remains intact when quality gates yield fewer questions; `total_questions` reports the actual generated count after start and the requested count in the lobby. The UI explicitly explains shortfalls.
+The host sets immutable `Game.config = {question_count, language, question_source}` at creation. Count is a strict integer 1–50, default **20**; booleans, strings, floats, null, out-of-range values and unknown keys are rejected. Language is exactly `en` (default) or `he`. `question_source` is exactly `algorithmic` (default) or `ai`; `ai` is rejected with 400 `VALIDATION_ERROR` when the server has AI mode disabled (see `GET /api/v1/features`, §12.7). Missing request/body fields retain defaults; a deployment may explicitly override the no-body count with MIZEMI_QUESTIONS_PER_GAME (default 20). The public response and all room snapshots include this configuration. Requested count remains intact when quality gates yield fewer questions; `total_questions` reports the actual generated count after start and the requested count in the lobby. The UI explicitly explains shortfalls.
 
 Each browser stores its UI locale in localStorage (`mizemi.language`), independently of per-tab credentials. A persistent selector sets document lang/dir (English LTR, Hebrew RTL). Game language is separately selected by the host, defaults to their UI language, and never changes during play. Questions/options use deterministic bilingual templates on the server, with `language` and `difficulty` in started/ended payloads; clients render that shared text unchanged using its own direction. Player-entered names/values are never translated. Music choices have localized UI labels but stable existing wire values. Errors are localized by stable public error code; backend diagnostic messages remain safe English for older clients.
 
@@ -150,7 +150,7 @@ Only aggregate distributions are shared. During QUESTION_ACTIVE, `statistics.upd
 
 Non-consented fields are absent from ProfileDataset and invisible to rules, including suppression of candidates. Questions describe **shared facts**, not an exhaustive real-world census of the class. Personal facts start opted out. Display names remain public.
 
-No phone/email/address/ID/password/account requirement. No profile values in URLs or logs. No other player's raw profile or individual answer in a client payload. A consenting fact may appear in generated question text/options. Scores, display names and connection/readiness status are public to the room.
+No phone/email/address/ID/password/account requirement. No profile values in URLs or logs. No other player's raw profile or individual answer in a client payload. A consenting fact may appear in generated question text/options. **AI mode exception (§12.7):** in a room created with `question_source = ai`, the consented fields of the joined players are sent to the Anthropic API at game start (never player ids, never non-consented fields, age only as a §12.6 range). The profile form must disclose this before submission, and the privacy page must name the provider. Nothing else is ever sent to an AI service. Scores, display names and connection/readiness status are public to the room.
 
 Default database retention: seven days from the last database save, with entire expired FINISHED game trees removed (including generated questions containing facts). Cleanup runs at startup and every five minutes while running, at most 100 expired games per transaction; outages/backlogs can delay deletion. The same transaction removes up to 500 legacy raw-profile rows from FINISHED games regardless of age, without changing their retention clock or touching active records. Shutdown waits for maintenance and persistence workers before engine disposal. Rooms with no connections are removed after 120 idle minutes. Credentials expire with their room. Connected rooms remain in memory while their process lives.
 
@@ -180,7 +180,7 @@ Difficulty is explicit EASY/MEDIUM/HARD metadata on candidates and final questio
 
 Comparison normalization is Unicode NFC, collapsed whitespace and casefold; displayed user text keeps its original spelling. Fixed bilingual field labels/templates are selected from an allowlist, never dynamic paths. Similarity counts equal shared values once per field among city, favorite food, hobby, music and movie; age and personal facts are excluded. Similarity families require at least two preference fields shared by every compared participant and use that same field set, explicitly named in the question. Ties are rejected. Inequality/exclusion/age rules require consented data for every field actually tested; missing values are never treated as a different value. Minimal fingerprints require every smaller clue subset to remain ambiguous.
 
-Rules operate only on ProfileDataset, cache consent-safe indexes and pair overlap counts, cap candidate output and bound combination work. Distractors are real participants/pairs/categories or bounded neighboring integers. Every candidate passes structural/length/option/metadata validation; each family owns and tests its mathematical uniqueness gate. No eval, dynamic template execution, AI or network IO exists in generation.
+Rules operate only on ProfileDataset, cache consent-safe indexes and pair overlap counts, cap candidate output and bound combination work. Distractors are real participants/pairs/categories or bounded neighboring integers. Every candidate passes structural/length/option/metadata validation; each family owns and tests its mathematical uniqueness gate. No eval, dynamic template execution or network IO exists in the algorithmic generation path; the only AI path is §12.7.
 
 ### 12.1 Offline knowledge extension (v4, explicitly authorized)
 
@@ -288,6 +288,32 @@ repeated idea. Evidence, before/after metrics and limitations:
 [QUESTION_VARIETY_DESIGN.md](QUESTION_VARIETY_DESIGN.md) and
 [QUESTION_VARIETY_REPORT.md](QUESTION_VARIETY_REPORT.md).
 
+### 12.7 Optional AI question mode (October 2026)
+
+A host may choose **AI mode** instead of **Classic** at room creation (`question_source: "ai"`). Classic is the default and never contacts any AI service. AI mode is the only runtime AI in MiZeMi.
+
+**Availability.** Off unless `MIZEMI_AI_ENABLED=true` *and* `MIZEMI_ANTHROPIC_API_KEY` is set in the backend environment. `GET /api/v1/features` returns `{ai_mode_available}`; the frontend shows the toggle only when true, and `POST /rooms` rejects `ai` with 400 `VALIDATION_ERROR` otherwise. A per-process throttle (`MIZEMI_AI_MAX_GAMES_PER_HOUR`) counts one slot per game, not per retry.
+
+**What is sent.** At game start, for the players currently in the room: each player's *consented* fields only, as `{field: value}`. No player ids or tokens. Exact age is replaced by a §12.6 band (`12 and under`, `13-15`, `16-18`, `19-24`, `25-34`, `35-49`, `50+`) sent as `age_range`. Display names are sent because the questions are about the people in the room.
+
+**Quality gates (all must pass; a candidate failing any is dropped):**
+1. *Privacy by construction* — the payload above is built only from consented data.
+2. *Deterministic filters* — reject any text, option or explanation that states a player's exact age, and any question whose answer rests on something being absent from the data.
+3. *Shared `QuestionValidator`* — the same structural checks as §12.
+4. *Independent verification* — a second model call re-solves each question from the same payload and must return `correct`; `incorrect`, `ambiguous` or any failure to verify drops the question (fails closed).
+
+**Dynamic topic plan.** The request carries a `topic_plan` computed in code: the question budget is split across profile fields in proportion to how many players actually filled each field in (largest remainder, deterministic). A field answered by fewer than two players, and the free-text personal fact, receive no questions, so a group that shared little is not quizzed about it. The model is told to follow the plan, to use the actual content people named (films, artists, songs, places) only through widely known, undisputed facts, and never to invent a classification: a question that counts categories must name them.
+
+More questions than requested are generated (`min(50, n + max(2, n//3))`) so filtering still reaches the requested count. This reduces wrong answers but, unlike the mathematical uniqueness gates of the algorithmic families, **cannot prove** correctness; the documentation and presentation must say so. Generated questions carry `source_rule_id = "ai_group_insight"`.
+
+**Fallback.** Any AI error, timeout, refusal or zero valid questions silently falls back to the algorithmic engine, so the game starts whenever Classic could have started. If the AI yields some but fewer valid questions than requested, the game is shorter, with the same explicit notice as §9.0.
+
+**Event loop.** Generation is a long blocking call and must never run on the event loop. Start is three-phase: a snapshot on the loop, generation in a dedicated thread pool, then completion back on the loop under the room lock. If the roster changed meanwhile, AI questions are discarded and the host is told to start again. A second `game.start` while generating is refused. Generation can take several minutes for 20 questions; the host UI says so and keeps all clients connected.
+
+**Key handling.** The key exists only in the backend process environment. It is never logged, returned, persisted, put in the database, committed, or exposed through Vite variables. SDK exceptions are reduced to their type before logging. `scripts/check_secrets.py` detects Anthropic key patterns. Use a dedicated key with a provider-side spend limit.
+
+**Disclosure.** In AI rooms the profile form shows an additional notice before submission, the host and player screens show an "AI question" badge, and `/privacy` names Anthropic and describes what is sent.
+
 ## 13. REST / API Conventions
 
 Base `/api/v1`, JSON objects, snake_case, UTC ISO-8601 `Z`. Public endpoints:
@@ -295,7 +321,8 @@ Base `/api/v1`, JSON objects, snake_case, UTC ISO-8601 `Z`. Public endpoints:
 | Method/path | Request | Success |
 |---|---|---|
 | GET `/health` | None | 200 health response |
-| POST `/rooms` | Optional `{question_count: 20, language: "en"}` | 201 `{room_code, game_id, host_token, config}` |
+| GET `/features` | None | 200 `{ai_mode_available}` (§12.7) |
+| POST `/rooms` | Optional `{question_count: 20, language: "en", question_source: "algorithmic"}` | 201 `{room_code, game_id, host_token, config}` |
 | POST `/rooms/{room_code}/players` | `{display_name}` | 201 `{game_id, player, player_token}` |
 
 The private credential belongs only to the response recipient. HTTP responses use no-store. Unknown room: 404; duplicate name, non-joinable room or full room: 409. Validation errors: 400/422. Oversized HTTP body: 413. Request bursts: 429. Global room cap reached: 503. Error bodies follow §17 without echoing untrusted input.
@@ -378,10 +405,15 @@ Frozen typed Pydantic settings loaded once, optional backend `.env`, real env fi
 | MIZEMI_MAX_PLAYERS_PER_ROOM | 50 |
 | MIZEMI_ROOM_IDLE_TTL_MINUTES | 120 |
 | MIZEMI_RETENTION_DAYS | 7 |
+| MIZEMI_AI_ENABLED | false |
+| MIZEMI_ANTHROPIC_API_KEY | unset (secret, backend env only) |
+| MIZEMI_ANTHROPIC_MODEL | claude-sonnet-5 |
+| MIZEMI_AI_MAX_GAMES_PER_HOUR | 20 (1–1000) |
+| MIZEMI_AI_REQUEST_TIMEOUT_SECONDS | 90 (5–120) |
 
 Production requires PostgreSQL with `sslmode=require` or stronger and explicit HTTPS frontend origins with no path/trailing slash. `python -m app` respects HOST/PORT and starts one worker. Pool pre-ping/recycle reconnect after Neon idle suspension. PostgreSQL URLs normalize to `postgresql+psycopg`.
 
-Frontend: `VITE_API_BASE_URL` and `VITE_WS_BASE_URL`, public origins only. Existing `VITE_MIZEMI_*` aliases remain supported; new names win. Without explicit WS URL, derive it from API URL or page origin. Empty API URL uses same-origin Vite proxy locally. All Vite values are public build-time values: never credentials. See both `.env.example` files and `render.yaml`.
+Frontend: `VITE_API_BASE_URL` and `VITE_WS_BASE_URL`, public origins only. Existing `VITE_MIZEMI_*` aliases remain supported; new names win. Without explicit WS URL, derive it from API URL or page origin. Empty API URL uses same-origin Vite proxy locally. All Vite values are public build-time values: never credentials. The Anthropic key is a backend-only secret: never a Vite variable, never committed, never logged or stored. See both `.env.example` files and `render.yaml`.
 
 ## 17. Error Response Format
 
@@ -445,8 +477,8 @@ An AI coding agent must **not**, on its own initiative:
 8. **Replace established technologies** — e.g., swap pytest for another runner, Vite for another bundler.
 9. **Modify unrelated code** — keep diffs scoped to the task; no drive-by refactors, reformatting sweeps, or "improvements" outside the task's boundary.
 10. **Delete or weaken tests to make a change pass** — a failing test is information, not an obstacle.
-11. **Add AI/LLM/ML services to application code** — hard product ban (§1), with no exception process short of changing §1 itself.
-12. **Add any dependency on a paid service** — paid APIs, databases, hosting, realtime services, paid tiers, or payment-gated trials (Zero-Cost Constraint, §1).
+11. **Extend AI/LLM/ML use beyond §12.7** — the opt-in AI question mode is the only permitted runtime AI. No other AI call, no new provider, no sending of additional or non-consented data, and no weakening of its quality gates, key handling or fallback, short of changing §1 and §12.7 themselves.
+12. **Add any dependency on a paid service** — paid APIs, databases, hosting, realtime services, paid tiers, or payment-gated trials (Zero-Cost Constraint, §1). The optional Anthropic API of §12.7 is the sole documented exception.
 13. **Decide a deferred decision** (§0 register) — deferred items are resolved in their named design stage via §21, never inline while implementing something else.
 
 **If such a change appears necessary:** stop, and report the conflict — what the task asked, what the spec says, and the recommended resolution — instead of implementing it. A human decides; the agent may then implement the decided change following §21.

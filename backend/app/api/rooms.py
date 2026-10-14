@@ -41,7 +41,18 @@ def get_game_hub(request: Request) -> GameHub:
 
 
 @router.post("/rooms", status_code=201)
-async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)], body: CreateRoomRequest | None = None):
+async def create_room(
+    request: Request,
+    hub: Annotated[GameHub, Depends(get_game_hub)],
+    body: CreateRoomRequest | None = None,
+):
+    # Reject AI mode early (§12.7): a deployment without MIZEMI_AI_ENABLED is
+    # not permitted to accept AI-mode rooms, even if the client asks for them.
+    if body is not None and body.question_source == "ai" and not hub.ai_available:
+        return error_response(
+            400, ErrorCode.VALIDATION_ERROR,
+            "AI question mode is not available on this server.",
+        )
     try:
         hosted = hub.create_room(GameConfig(**body.model_dump()) if body is not None else None)
     except RoomLimitError:
@@ -50,7 +61,11 @@ async def create_room(hub: Annotated[GameHub, Depends(get_game_hub)], body: Crea
         room_code=hosted.room.room_code,
         game_id=hosted.room.game.game_id,
         host_token=hosted.host_token,
-        config=GameConfigSchema(question_count=hosted.room.game.config.question_count, language=hosted.room.game.config.language),
+        config=GameConfigSchema(
+            question_count=hosted.room.game.config.question_count,
+            language=hosted.room.game.config.language,
+            question_source=hosted.room.game.config.question_source,
+        ),
     )
 
 

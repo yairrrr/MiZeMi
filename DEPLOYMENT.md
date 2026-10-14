@@ -1,6 +1,6 @@
 # Render + Neon deployment preparation
 
-No account, service or deployment is created by this repository. The prepared target is one **Render Free web service**, one **free Render static site**, and **Neon PostgreSQL Free**. No Redis, broker, paid plan or runtime AI is needed.
+No account, service or deployment is created by this repository. The prepared target is one **Render Free web service**, one **free Render static site**, and **Neon PostgreSQL Free**. No Redis, broker or paid plan is needed. Runtime AI is optional and off by default (see below).
 
 ## Neon
 
@@ -29,6 +29,10 @@ Environment:
 - `DATABASE_URL`: private Neon connection URI with required TLS.
 - `FRONTEND_ORIGIN`: exact frontend HTTPS origin, no path or trailing slash.
 - Optional `MIZEMI_QUESTIONS_PER_GAME=20`, `MIZEMI_QUESTION_TIME_LIMIT_SECONDS=20`, `MIZEMI_MAX_PLAYERS_PER_ROOM=50`, `MIZEMI_ROOM_IDLE_TTL_MINUTES=120`, `MIZEMI_RETENTION_DAYS=7`, `MIZEMI_LOG_LEVEL=INFO`.
+
+### Optional AI question mode
+
+Deploy first with `MIZEMI_AI_ENABLED=false` (the blueprint default): the game is unchanged and the toggle is hidden. To enable it later, in the Render dashboard for the backend only, add the secret `MIZEMI_ANTHROPIC_API_KEY` and set `MIZEMI_AI_ENABLED=true`, then restart the service and confirm `https://<backend>/api/v1/features` returns `{"ai_mode_available":true}`. Use a dedicated key with a spend limit set in the Anthropic console, never paste it in chat, a commit, an issue or a `VITE_` variable, and rotate it if it is ever exposed. Roll out the backend before the frontend. The privacy page names Anthropic, so release the matching frontend with it.
 
 Existing `MIZEMI_ENV`, `MIZEMI_DATABASE_URL`, `MIZEMI_HOST`, `MIZEMI_PORT`, and `MIZEMI_CORS_ORIGINS` remain supported and take precedence over aliases. Avoid setting both forms. Production startup rejects SQLite, non-TLS database URLs, wildcard origins and non-HTTPS origins. Uvicorn handles WebSockets on the same port, with pings every 20 seconds and a 64 KiB transport frame cap. Tokens use WebSocket subprotocol headers and are never put in URLs. Access logs are disabled by the production entrypoint.
 

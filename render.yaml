@@ -26,6 +26,14 @@ services:
         value: "20"
       - key: MIZEMI_RETENTION_DAYS
         value: "7"
+      # Optional AI question mode (MASTER_SPEC.md 12.7). Off until you opt in.
+      # Deploy with "false" first; set the key privately in the dashboard.
+      - key: MIZEMI_AI_ENABLED
+        value: "false"
+      - key: MIZEMI_ANTHROPIC_API_KEY
+        sync: false
+      - key: MIZEMI_AI_MAX_GAMES_PER_HOUR
+        value: "20"
   - type: web
     name: mizemi-frontend
     runtime: static

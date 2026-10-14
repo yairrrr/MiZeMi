@@ -30,7 +30,7 @@ const me = (overrides: Partial<Player> = {}): Player => ({
 })
 
 const room = (state: RoomSnapshot['state'], players: Player[] = [me()]): RoomSnapshot => ({
-  config: { question_count: 20, language: 'en' },
+  config: { question_count: 20, language: 'en', question_source: 'algorithmic' },
   room_code: 'K7PW3N',
   state,
   players,

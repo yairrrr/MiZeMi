@@ -32,7 +32,7 @@ import { createRoom, joinRoom } from '../api/roomApi'
 
 const createRoomMock = vi.mocked(createRoom)
 const joinRoomMock = vi.mocked(joinRoom)
-const createdRoom: CreateRoomResponse = { config: { question_count: 20, language: 'en' }, room_code: 'K7PW3N', game_id: 'game-123', host_token: 'host-secret' }
+const createdRoom: CreateRoomResponse = { config: { question_count: 20, language: 'en', question_source: 'algorithmic' }, room_code: 'K7PW3N', game_id: 'game-123', host_token: 'host-secret' }
 const joinedPlayer: Player = {
   player_id: 'player-123', display_name: 'Dana', is_host: false, connected: false,
   has_profile: false, is_ready: false, score: 0,

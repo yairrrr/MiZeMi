@@ -7,7 +7,7 @@
 
 The static project page lives in `docs/`. See [GitHub Pages setup](GITHUB_PAGES.md) for the manual publication steps. The multiplayer application continues to run on Render.
 
-A working classroom icebreaker: the host creates a room, players join from phones, share consented profile facts, and play a live quiz through to a final leaderboard. Question generation is deterministic Python. No runtime AI, accounts, paid APIs, or hosted realtime dependency.
+A working classroom icebreaker: the host creates a room, players join from phones, share consented profile facts, and play a live quiz through to a final leaderboard. By default, question generation is deterministic Python with no accounts, paid APIs or hosted realtime dependency. An **optional AI mode** (off unless the operator configures their own Anthropic key) lets a host have Claude write questions from the joined players' consented answers; see [AI question mode](#ai-question-mode-optional).
 
 The offline knowledge engine understands films, songs, artists, foods, hobbies, music styles and towns using tens of thousands of compact local entries. A category-first stage turns the group's answers into shared facts — horror films, Italian food, sports hobbies, the north — and 18 discovery families ask about them (counts, majorities, comparisons, regions, cross-domain subgroups), alongside a small share of simple social questions. Explanations appear after each question. See [QUESTION_ENGINE_DIAGNOSTIC.md](QUESTION_ENGINE_DIAGNOSTIC.md) for how questions are chosen and [KNOWLEDGE_BASE_REPORT.md](KNOWLEDGE_BASE_REPORT.md) for measured coverage, sources and licenses.
 
@@ -57,6 +57,24 @@ For phones on the same Wi-Fi, use the Network URL printed by Vite on **both** th
 5. The host shows the leaderboard, advances to the next question, and shows the final results after the last round.
 
 Default: 20 requested questions, configurable from 1–50 when creating a room; correct answers earn 500–1,000 points based on server-measured speed, wrong/missing answers earn zero. Ties share ranks and retain join order. If consented data supports fewer questions, the game is shorter. If everyone withholds their data, no questions can be generated; create a new room if participants choose to share different facts.
+
+## AI question mode (optional)
+
+When creating a room the host chooses **Classic** (default; offline knowledge engine) or **AI mode**. In AI mode, Claude writes the questions from the consented answers of the players who joined, so they are about *this* group. The toggle appears only if the server has AI enabled; otherwise MiZeMi behaves exactly as before.
+
+Enable it locally by exporting the key in the terminal that starts the backend. Do not put it in a file you commit, in chat, or in any `VITE_` variable:
+
+```sh
+export MIZEMI_AI_ENABLED=true
+export MIZEMI_ANTHROPIC_API_KEY=...   # your own key, typed only in your terminal
+cd backend && ../.venv/bin/python -m app
+```
+
+What to know:
+- Only fields a player allowed for question use are sent, without player ids and with exact age reduced to a range. The profile form and `/privacy` disclose this.
+- Each AI question passes deterministic privacy/quality filters, the shared validator and an independent verification call. This reduces wrong answers but, unlike the algorithmic engine, cannot prove them.
+- Generating 20 questions can take a few minutes. The server stays responsive and the host sees a progress message. Any AI failure falls back to Classic.
+- A per-hour game limit (`MIZEMI_AI_MAX_GAMES_PER_HOUR`) and a provider-side spend limit on a dedicated key are recommended. Full contract: [MASTER_SPEC.md §12.7](MASTER_SPEC.md).
 
 ## Verify
 

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useStageFocus } from '../../hooks/useStageFocus'
 import { useI18n, direction } from '../../i18n/I18n'
@@ -78,7 +79,7 @@ function HostStage({
     case 'LOBBY':
     case 'PROFILE_COLLECTION':
     case 'READY':
-      return <HostLobby room={room} send={send} />
+      return <HostLobby room={room} send={send} error={view.error} />
     case 'QUESTION_ACTIVE':
       return <HostQuestion room={room} view={view} />
     case 'QUESTION_RESULTS':
@@ -90,8 +91,13 @@ function HostStage({
   }
 }
 
-function HostLobby({ room, send }: { room: RoomSnapshot; send: SendFn }) {
+function HostLobby({ room, send, error }: { room: RoomSnapshot; send: SendFn; error: GameView['error'] }) {
   const { t } = useI18n()
+  // AI mode writes the questions on the server, which takes a while: show it,
+  // and keep the button from being pressed again (the server would refuse).
+  const isAi = room.config.question_source === 'ai'
+  const [starting, setStarting] = useState(false)
+  useEffect(() => { setStarting(false) }, [room.state, error])
   const players = room.players
   const readyCount = players.filter((player) => player.is_ready).length
   const canStart = room.state === 'READY'
@@ -148,11 +154,16 @@ function HostLobby({ room, send }: { room: RoomSnapshot; send: SendFn }) {
       <button
         type="button"
         className="primary-button start-button"
-        disabled={!canStart}
-        onClick={() => send('game.start')}
+        disabled={!canStart || starting}
+        onClick={() => { if (send('game.start') && isAi) setStarting(true) }}
       >
-        {startLabel}
+        {starting ? t('AI is crafting your questions…') : startLabel}
       </button>
+      {starting && (
+        <p className="waiting-copy" role="status" aria-live="polite">
+          ⚡ {t('This can take a few minutes. Everyone stays connected.')}
+        </p>
+      )}
     </div>
   )
 }
@@ -174,6 +185,9 @@ function HostQuestion({ room, view }: { room: RoomSnapshot; view: GameView }) {
       </p>
       <h2 className="question-text" lang={question.language} dir={direction(question.language)}>{question.text}</h2>
       <span className="difficulty-badge">{t(question.difficulty === 'HARD' ? 'Hard' : question.difficulty === 'MEDIUM' ? 'Medium' : 'Easy')}</span>
+      {room.config.question_source === 'ai' && (
+        <span className="difficulty-badge ai-badge" style={{ background: '#6547cb', color: '#fff', marginInlineStart: '0.4rem' }}>⚡ {t('AI question')}</span>
+      )}
       {room.config.question_count > room.total_questions && <p className="privacy-hint">{t('Only {actual} of {requested} questions could be made from the shared profiles.', { actual: room.total_questions, requested: room.config.question_count })}</p>}
       <Timer question={question} serverOffsetMs={view.serverOffsetMs} sound />
       <ol className="option-grid host-options" dir={direction(question.language)}>

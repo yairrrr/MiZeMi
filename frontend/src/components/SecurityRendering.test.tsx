@@ -12,7 +12,7 @@ for (const role of ['host', 'player'] as const) {
   for (const state of ['READY', 'QUESTION_ACTIVE', 'QUESTION_RESULTS', 'LEADERBOARD', 'FINISHED'] as const) {
     test.each(payloads)(`${role} ${state} renders hostile strings as text: %s`, (text) => {
       const room: RoomSnapshot = { room_code: 'AUDIT1', state, current_question_index: 0,
-        config: { question_count: 1, language: 'en' }, total_questions: 1,
+        config: { question_count: 1, language: 'en', question_source: 'algorithmic' }, total_questions: 1,
         players: [{ player_id: 'p1', display_name: text, is_host: false, connected: true, has_profile: true, is_ready: true, score: 500 }] }
       const question: Question = { question_id: 'q1', index: 0, total_questions: 1,
         question_type: 'multiple_choice', difficulty: 'EASY', language: 'en', text,

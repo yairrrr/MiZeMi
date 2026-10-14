@@ -14,7 +14,7 @@ function apply(view: GameView, message: ServerMessage, receivedAt = Date.parse(S
 }
 
 const room = (state: RoomSnapshot['state']): RoomSnapshot => ({
-  config: { question_count: 20, language: 'en' },
+  config: { question_count: 20, language: 'en', question_source: 'algorithmic' },
   room_code: 'K7PW3N',
   state,
   players: [],
