@@ -8,7 +8,7 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
   const { t, language } = useI18n()
   const [error, setError] = useState<MessageKey | ErrorResponse['error'] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [count, setCount] = useState('20')
+  const [count, setCount] = useState('5')
   const [gameLanguage, setGameLanguage] = useState<Language | null>(null)
   const [questionSource, setQuestionSource] = useState<QuestionSource>('algorithmic')
   const [aiAvailable, setAiAvailable] = useState(false)
@@ -60,12 +60,12 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
           <label htmlFor="question-count">{t('Number of questions')}</label>
           <div className="count-stepper" dir="ltr">
             <button type="button" aria-label={t('Fewer questions')} disabled={Number(count) <= 1}
-              onClick={() => setCount(String(Math.max(1, (Number(count) || 20) - 1)))}>−</button>
+              onClick={() => setCount(String(Math.max(1, (Number(count) || 5) - 1)))}>−</button>
             <input id="question-count" type="number" inputMode="numeric" min={1} max={50} step={1}
               value={count} onChange={(e) => setCount(e.target.value)} aria-invalid={error === 'Choose a whole number from 1 to 50.' || undefined}
               aria-describedby={error === 'Choose a whole number from 1 to 50.' ? 'count-help host-entry-error' : 'count-help'} />
             <button type="button" aria-label={t('More questions')} disabled={Number(count) >= 50}
-              onClick={() => setCount(String(Math.min(50, (Number(count) || 20) + 1)))}>+</button>
+              onClick={() => setCount(String(Math.min(50, (Number(count) || 5) + 1)))}>+</button>
           </div>
           <small id="count-help">{t('Choose 1–50 questions.')}</small>
           <label htmlFor="game-language">{t('Game language')}</label>

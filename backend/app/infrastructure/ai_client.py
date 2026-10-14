@@ -126,10 +126,14 @@ class AnthropicClient:
         if counts_toward_limit:
             self._throttle.check_and_record()
         try:
+            # Mark the system prompt as cacheable so parallel batches and
+            # the verification call do not re-process its tokens each time.
+            # The cache lives for 5 minutes on the Anthropic side.
             message = self._client.messages.create(
                 model=self._model,
                 max_tokens=max_tokens,
-                system=system,
+                system=[{"type": "text", "text": system,
+                         "cache_control": {"type": "ephemeral"}}],
                 messages=[{"role": "user", "content": user}],
             )
         except Exception as exc:  # noqa: BLE001 — intentional: scrub everything.

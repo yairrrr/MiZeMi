@@ -23,6 +23,7 @@ from app.domain.questions.ai_generator import (
     _batch_sizes,
     _content_words,
     _high_overlap,
+    _is_trivia,
     _mentions_exact_age,
     _split_plan,
     _topic_plan,
@@ -223,8 +224,8 @@ class TestGenerate:
     def test_asks_the_model_for_a_surplus(self):
         client = _client([_q("שאלה")])
         _generate(client, count=9)
-        # The surplus (9 -> 12) may be split over parallel batches: count them all.
-        assert sum(_generation_requests(client)) == 12
+        # The surplus (9 -> 13) may be split over parallel batches: count them all.
+        assert sum(_generation_requests(client)) == 13
 
     def test_malformed_items_are_skipped(self):
         client = _client([
@@ -296,67 +297,94 @@ class TestDeterministicFilters:
 
 
 class TestVerification:
+    """Verification runs for games larger than the small-game threshold (5)."""
+
     def test_questions_judged_not_correct_are_dropped(self):
-        client = _client(
-            [_q("ok"), _q("wrong"), _q("fuzzy")],
-            verdicts={"wrong": "incorrect", "fuzzy": "ambiguous"},
-        )
-        assert [q.text for q in _generate(client)] == ["ok"]
+        qs = [_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)]
+        verdicts = {"q5": "incorrect", "q6": "ambiguous"}
+        client = _client(qs, verdicts=verdicts)
+        texts = [q.text for q in _generate(client, count=8)]
+        # q5 (incorrect) and q6 (ambiguous) are dropped by the verifier.
+        assert "q5" not in texts and "q6" not in texts
 
     def test_fails_closed_when_the_verifier_errors(self):
         def send(system, user, **kwargs):
             if system == VERIFY_SYSTEM_PROMPT:
                 raise AIGenerationError("down")
-            return json.dumps([_q("ok")])
+            return json.dumps([_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)])
         client = Mock()
         client.send_prompt = Mock(side_effect=send)
         with pytest.raises(AIGenerationError):
-            _generate(client, count=1)
+            _generate(client, count=8)
 
     def test_fails_closed_on_an_unreadable_verdict(self):
         def send(system, user, **kwargs):
-            return "not json at all" if system == VERIFY_SYSTEM_PROMPT else json.dumps([_q("ok")])
+            if system == VERIFY_SYSTEM_PROMPT:
+                return "not json at all"
+            return json.dumps([_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)])
         client = Mock()
         client.send_prompt = Mock(side_effect=send)
         with pytest.raises(AIGenerationError):
-            _generate(client, count=1)
+            _generate(client, count=8)
 
     def test_fails_when_nothing_is_verified(self):
-        client = _client([_q("a"), _q("b")], verdicts={"a": "ambiguous", "b": "incorrect"})
+        qs = [_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)]
+        verdicts = {f"q{i}": "incorrect" for i in range(10)}
+        client = _client(qs, verdicts=verdicts)
         with pytest.raises(AIGenerationError):
-            _generate(client)
+            _generate(client, count=8)
 
     def test_verdicts_for_unknown_indexes_are_ignored(self):
         def send(system, user, **kwargs):
             if system == VERIFY_SYSTEM_PROMPT:
-                return json.dumps([{"index": 99, "verdict": "correct"},
-                                   {"index": 0, "verdict": "correct"}])
-            return json.dumps([_q("ok")])
+                return json.dumps([
+                    {"index": 99, "verdict": "correct"},
+                    {"index": 0, "verdict": "correct"},
+                ])
+            return json.dumps([_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)])
         client = Mock()
         client.send_prompt = Mock(side_effect=send)
-        assert len(_generate(client, count=1)) == 1
+        # Only index 0 was accepted; the test checks nothing crashed.
+        assert len(_generate(client, count=8)) >= 1
+
+    def test_small_games_skip_verification(self):
+        """<= 5 question games bypass the verify call to stay fast."""
+        calls = {"verify": 0}
+        def send(system, user, **kwargs):
+            if system == VERIFY_SYSTEM_PROMPT:
+                calls["verify"] += 1
+                return json.dumps([])
+            return json.dumps([_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)])
+        client = Mock()
+        client.send_prompt = Mock(side_effect=send)
+        _generate(client, count=5)
+        assert calls["verify"] == 0  # no verify call for small games
 
 
 class TestThrottleSlots:
     def test_a_game_spends_one_slot_even_with_verification(self):
-        client = _client([_q("ok")])
-        _generate(client, count=1)
+        client = _client([_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)])
+        _generate(client, count=8)
         flags = [call.kwargs["counts_toward_limit"] for call in client.send_prompt.call_args_list]
-        assert flags == [True, False]  # generation counts, verification does not
+        # First generation call counts; retries, parallel batches and verify do not.
+        assert flags[0] is True and all(f is False for f in flags[1:])
 
     def test_a_retry_does_not_spend_a_second_slot(self):
         calls = {"generation": 0}
 
         def send(system, user, **kwargs):
             if system == VERIFY_SYSTEM_PROMPT:
-                return json.dumps([{"index": 0, "verdict": "correct"}])
+                return json.dumps([{"index": i, "verdict": "correct"} for i in range(10)])
             calls["generation"] += 1
-            return "garbage" if calls["generation"] == 1 else json.dumps([_q("ok")])
+            if calls["generation"] == 1:
+                return "garbage"
+            return json.dumps([_q(f"q{i}", [f"o{i}", "x"], 0) for i in range(10)])
         client = Mock()
         client.send_prompt = Mock(side_effect=send)
-        assert len(_generate(client, count=1)) == 1
+        assert len(_generate(client, count=8)) >= 1
         flags = [call.kwargs["counts_toward_limit"] for call in client.send_prompt.call_args_list]
-        assert flags == [True, False, False]
+        # Exactly one True (the first generation attempt); every retry/batch/verify is False.
+        assert flags.count(True) == 1
 
 
 class TestTopicPlan:
@@ -431,7 +459,8 @@ class TestBatching:
         client = _client([_q("שאלה")])
         _generate(client, count=20)
         sizes = _generation_requests(client)
-        assert len(sizes) >= 3 and max(sizes) <= 10 and sum(sizes) == 26
+        # 20 requested + 50 % surplus = 30
+        assert len(sizes) >= 3 and max(sizes) <= 10 and sum(sizes) == 30
 
     def test_exactly_one_slot_of_the_hourly_cap_is_spent(self):
         client = _client([_q("שאלה")])
@@ -486,6 +515,41 @@ class TestBatching:
         ])
         order = [q.difficulty.value for q in _generate(client, count=3)]
         assert order == sorted(order, key={"EASY": 0, "MEDIUM": 1, "HARD": 2}.get)
+
+
+class TestTriviaFilter:
+    """Deterministic filter: trivia questions must not reach the game."""
+
+    @pytest.mark.parametrize("text,explanation", [
+        # release year / decade
+        ("איזה שיר יצא ב-1983?", "Billie Jean יצא ב-1983."),
+        ("איזה מהשירים יצא לאור בשנות ה-80?", "Billie Jean בשנות ה-80."),
+        ("Which song was released in 1975?", "Bohemian Rhapsody was released in 1975."),
+        # franchise classification
+        ("כמה סרטי מארוול?", "The Hulk מבוסס על דמויות מארוול."),
+        ("איזה סרט שייך לעולם גיבורי העל של מארוול?", "ok"),
+        ("Which movie is based on Marvel comics?", "The Hulk is based on Marvel comics."),
+        # artist nationality
+        ("איזה אמן מגיע מצרפת?", "Daft Punk הוא דואט צרפתי."),
+        ("Which artist comes from the UK?", "Queen is from the UK."),
+        # Israel geography trivia
+        ("איזה שחקנים גרים על חוף הים התיכון?", "תל אביב וחיפה הן ערי חוף."),
+        ("מי גר הכי רחוק בקו אווירי?", "גבריאל גר 97 ק״מ בקו אווירי."),
+        # cuisine origin
+        ("איזה מאכל מגיע מהמטבח האיטלקי?", "פיצה היא ממקור איטלקי."),
+    ])
+    def test_trivia_patterns_are_flagged(self, text, explanation):
+        assert _is_trivia(text, explanation)
+
+    @pytest.mark.parametrize("text,explanation", [
+        ("איזה מאכל אהוב משותף לשני אנשים?", "אליק ואוריאל שניהם בחרו פיצה."),
+        ("איזה אמן אהוב משותף לשני אנשים?", "יאיר ואוריאל בחרו Michael Jackson."),
+        ("מי האדם היחיד שבחר אוכל אסייתי?", "יאיר בחר סושי."),
+        ("כמה ערים שונות מיוצגות בקבוצה?", "תל אביב, חיפה וירושלים."),
+        ("איזה סגנון מוזיקה הנפוץ בקבוצה?", "שני אנשים בחרו Pop."),
+    ])
+    def test_group_insight_questions_pass(self, text, explanation):
+        assert not _is_trivia(text, explanation)
 
 
 class TestContentOverlapDedup:

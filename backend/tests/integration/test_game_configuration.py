@@ -14,15 +14,16 @@ from tests.integration.test_game_flow_hardening import _app
 
 
 @pytest.mark.parametrize('body', [None, {}, {'language':'en'}])
-def test_old_create_clients_get_twenty_questions(body):
+def test_old_create_clients_get_the_default_question_count(body):
     with TestClient(_app()) as client:
         response = client.post('/api/v1/rooms', **({} if body is None else {'json':body}))
         assert response.status_code == 201
         # The §9.0/§12.7 addition of question_source extends the response; old
-        # clients get the default algorithmic engine, which preserves the
-        # previous behavior exactly.
+        # clients get the default algorithmic engine. The default count was
+        # trimmed to keep the room start short in AI mode (§12.7); hosts can
+        # still choose up to 50 explicitly.
         assert response.json()['config'] == {
-            'question_count': 20,
+            'question_count': 5,
             'language': 'en',
             'question_source': 'algorithmic',
         }

@@ -85,7 +85,7 @@ class PlayerProfileSchema(BaseModel):
 class GameConfigSchema(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    question_count: StrictInt = Field(default=20, ge=1, le=50)
+    question_count: StrictInt = Field(default=5, ge=1, le=50)
     language: Literal["en", "he"] = "en"
     # §9.0, §12.7 — opt-in per room. ``algorithmic`` is the default. ``ai``
     # requires the deployment to have ``MIZEMI_AI_ENABLED=true``; otherwise
