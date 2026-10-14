@@ -1,6 +1,7 @@
 import { getApiBaseUrl } from '../config'
 import type {
   CreateRoomResponse,
+  FeaturesResponse,
   GameConfig,
   ErrorResponse,
   JoinRoomRequest,
@@ -82,6 +83,22 @@ export async function joinRoom(
   )
 
   return readResponse<JoinRoomResponse>(response)
+}
+
+/**
+ * Capability flags for conditional UI (§12.7). Best effort: a sleeping
+ * server returns { ai_mode_available: false } so the toggle stays hidden.
+ */
+export async function fetchFeatures(signal?: AbortSignal): Promise<FeaturesResponse> {
+  try {
+    const response = await fetch(buildApiUrl('/features'), { signal, credentials: 'omit' })
+    if (!response.ok) return { ai_mode_available: false }
+    const body: unknown = await response.json()
+    const ai = (body as { ai_mode_available?: unknown } | null)?.ai_mode_available
+    return { ai_mode_available: ai === true }
+  } catch {
+    return { ai_mode_available: false }
+  }
 }
 
 export const MAX_SUGGESTIONS = 5

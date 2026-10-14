@@ -89,9 +89,16 @@ export type Leaderboard = {
 
 // --- REST (§13) --------------------------------------------------------------
 
+export type QuestionSource = 'algorithmic' | 'ai'
+
 export type GameConfig = {
   question_count: number
   language: 'en' | 'he'
+  question_source: QuestionSource
+}
+
+export type FeaturesResponse = {
+  ai_mode_available: boolean
 }
 
 export type CreateRoomResponse = {

@@ -19,6 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.errors import error_response
+from app.api.features import router as features_router
 from app.api.guards import ClassroomHttpGuard
 from app.api.health import router as health_router
 from app.api.rooms import router as rooms_router
@@ -26,7 +27,9 @@ from app.api.privacy import router as privacy_router
 from app.api.suggestions import FIELD_KINDS, router as suggestions_router
 from app.application.gameplay import GameplayConfig, GameplayService, utc_now
 from app.domain.game import Game
+from app.domain.questions.ai_generator import AIQuestionGenerator
 from app.domain.questions.generator import QuestionGenerator
+from app.infrastructure.ai_client import AIClientUnavailable, AnthropicClient
 from app.infrastructure.knowledge import get_knowledge, get_suggestion_index
 from app.infrastructure.credentials import CredentialStore
 from app.infrastructure.database import (
@@ -122,6 +125,30 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     registry = RoomRegistry()
     credentials = CredentialStore()
     connections = RoomConnectionRegistry()
+
+    # Optional AI generator — opt-in per deployment. A misconfigured key
+    # (missing / malformed) only disables the feature; it does not block the
+    # app from starting, and nothing about the key is logged.
+    ai_generator: AIQuestionGenerator | None = None
+    if settings.ai_enabled and settings.anthropic_api_key:
+        try:
+            ai_client = AnthropicClient(
+                api_key=settings.anthropic_api_key,
+                model=settings.anthropic_model,
+                timeout_seconds=settings.ai_request_timeout_seconds,
+                max_games_per_hour=settings.ai_max_games_per_hour,
+            )
+            ai_generator = AIQuestionGenerator(ai_client)
+            logger.info("AI question generator enabled (model=%s)", settings.anthropic_model)
+        except AIClientUnavailable:
+            logger.warning("AI question generator not initialized (invalid key)")
+            ai_generator = None
+        except Exception:
+            logger.error("AI question generator failed to initialize")
+            ai_generator = None
+    elif settings.ai_enabled:
+        logger.warning("MIZEMI_AI_ENABLED=true but MIZEMI_ANTHROPIC_API_KEY is empty — AI disabled")
+
     hub = GameHub(
         registry=registry,
         credentials=credentials,
@@ -132,6 +159,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 time_limit_seconds=settings.question_time_limit_seconds,
             ),
             generator=QuestionGenerator(knowledge=get_knowledge()),
+            ai_generator=ai_generator,
         ),
         max_players=settings.max_players_per_room,
         persist=database.save_finished_game,
@@ -208,6 +236,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
     app.include_router(health_router, prefix="/api/v1")
+    app.include_router(features_router, prefix="/api/v1")
     app.include_router(privacy_router, prefix="/api/v1")
     app.include_router(rooms_router, prefix="/api/v1")
     app.include_router(suggestions_router, prefix="/api/v1")

@@ -4,7 +4,7 @@ import { useI18n } from '../../i18n/I18n'
 import { type FormEvent, useEffect, useState } from 'react'
 
 import type { SendFn } from '../../hooks/useGameConnection'
-import type { ErrorResponse } from '../../types'
+import type { ErrorResponse, QuestionSource } from '../../types'
 import {
   buildProfileFields,
   initialConsent,
@@ -20,12 +20,14 @@ export function ProfileForm({
   send,
   serverError,
   connected = true,
+  questionSource = 'algorithmic',
 }: {
   playerId: string
   displayName: string
   send: SendFn
   serverError: ErrorResponse['error'] | null
   connected?: boolean
+  questionSource?: QuestionSource
 }) {
   const { t } = useI18n()
   const privacy = usePrivacyInfo()
@@ -139,6 +141,12 @@ export function ProfileForm({
       })}
 
       <CollectionNotice info={privacy.info} />
+
+      {questionSource === 'ai' && (
+        <p className="privacy-hint ai-notice" role="note" style={{ borderLeft: '3px solid #6547cb', paddingLeft: '0.75rem' }}>
+          ⚡ {t('AI mode is on for this room. Your ticked answers will be sent to Anthropic over TLS so Claude can craft group questions. Unticked answers never leave the server.')}
+        </p>
+      )}
 
       <p className="privacy-hint">{t("Keep it fun and light: no passwords, ID numbers, addresses, phone numbers, emails, or anything secret.")}</p>
 

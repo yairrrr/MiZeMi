@@ -37,7 +37,12 @@ from app.api.schemas import (
     RemovePlayerPayloadSchema,
 )
 from app.application.create_room import CreateRoomService, HostedRoom
-from app.application.gameplay import GameplayService, NextStep
+from app.application.gameplay import (
+    AiStartTicket,
+    GameplayService,
+    NextStep,
+    RoomChangedDuringGenerationError,
+)
 from app.application.join_player import JoinPlayerResult, JoinPlayerService
 from app.application.profile_rules import ProfileValidationError, build_validated_profile
 from app.application.start_game import GameNotStartableError, NoQuestionsGeneratedError
@@ -114,6 +119,8 @@ class _RoomRuntime:
     lock: threading.RLock = field(default_factory=threading.RLock)
     deadline_timer: asyncio.TimerHandle | None = None
     last_activity: datetime | None = None
+    # True while AI questions are being written in a worker thread (§12.7).
+    generating: bool = False
 
 
 class GameHub:
@@ -137,11 +144,23 @@ class GameHub:
         self._persist = persist
         self._rooms: dict[str, _RoomRuntime] = {}
         self._guard = threading.Lock()
+        # Expose AI readiness so the REST layer can reject AI-mode requests
+        # on deployments that didn't opt in (MIZEMI_AI_ENABLED=false).
+        self._ai_available = gameplay.ai_available
+        # AI generation is a long blocking network call (§12.7). It must never run
+        # on the event loop — that would freeze every room and drop sockets at
+        # the ping timeout — so it gets its own small, bounded worker pool.
+        self._ai_executor = ThreadPoolExecutor(max_workers=4, thread_name_prefix="mizemi-ai")
         # Finished games are written off the event loop on a single worker;
         # shutdown flushes pending writes so a just-finished game is kept.
         self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="mizemi-persist")
         self._pending: set[Future[None]] = set()
         self._pending_lock = threading.Lock()
+
+    @property
+    def ai_available(self) -> bool:
+        """True when the deployment is configured for AI question generation."""
+        return self._ai_available
 
     # --- runtime bookkeeping ---------------------------------------------
 
@@ -407,6 +426,9 @@ class GameHub:
                 "The game.start payload must be exactly empty.",
             )
             return
+        if self._gameplay.wants_ai_start(game):
+            self._host_start_ai(room, handle)
+            return
         try:
             self._gameplay.start_game(game)
         except GameNotStartableError:
@@ -418,9 +440,96 @@ class GameHub:
         except NoQuestionsGeneratedError:
             self._reply_error(handle, game, ErrorCode.NO_QUESTIONS_AVAILABLE, NO_QUESTIONS_MESSAGE)
             return
+        self._announce_started(room)
+
+    def _announce_started(self, room: Room) -> None:
+        game = room.game
         self._broadcast_room(room)
         self._connections.enqueue_all(room.room_code, events.build_game_started(game))
         self._open_question(room)
+
+    # --- AI-mode start (§12.7): snapshot on the loop, generate in a thread ---------
+
+    def _host_start_ai(self, room: Room, handle: ConnectionHandle) -> None:
+        game = room.game
+        runtime = self._runtime(room.room_code)
+        if runtime.generating:
+            self._reply_error(
+                handle, game, ErrorCode.INVALID_STATE_TRANSITION,
+                "The questions are already being prepared.",
+            )
+            return
+        try:
+            ticket = self._gameplay.begin_ai_start(game)
+        except GameNotStartableError:
+            self._reply_error(
+                handle, game, ErrorCode.INVALID_STATE_TRANSITION,
+                "The game can start once every player is ready.",
+            )
+            return
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            # Not on an event loop (synchronous callers such as unit tests):
+            # nothing to protect, so generate inline.
+            self._finish_ai_start(room, handle, ticket, self._gameplay.generate_ai_questions(ticket))
+            return
+        runtime.generating = True
+        future = loop.run_in_executor(
+            self._ai_executor, self._gameplay.generate_ai_questions, ticket
+        )
+        # Done-callbacks of an asyncio future run back on the loop thread.
+        future.add_done_callback(
+            lambda done: self._on_ai_generated(room, handle, ticket, done)
+        )
+
+    def _on_ai_generated(
+        self,
+        room: Room,
+        handle: ConnectionHandle,
+        ticket: AiStartTicket,
+        done: "asyncio.Future[Any]",
+    ) -> None:
+        runtime = self._runtime(room.room_code)
+        try:
+            questions = None if done.cancelled() or done.exception() else done.result()
+        except Exception:  # pragma: no cover - defensive; generate never raises
+            questions = None
+        with runtime.lock:
+            runtime.generating = False
+            self._touch(runtime)
+            try:
+                self._finish_ai_start(room, handle, ticket, questions)
+            except Exception:
+                logger.error("unexpected error finishing an AI start")
+                self._reply_error(handle, room.game, ErrorCode.INTERNAL_ERROR, INTERNAL_MESSAGE)
+
+    def _finish_ai_start(
+        self,
+        room: Room,
+        handle: ConnectionHandle,
+        ticket: AiStartTicket,
+        questions: tuple[Any, ...] | None,
+    ) -> None:
+        game = room.game
+        try:
+            self._gameplay.finish_ai_start(game, ticket, questions)
+        except GameNotStartableError:
+            self._reply_error(
+                handle, game, ErrorCode.INVALID_STATE_TRANSITION,
+                "The game can start once every player is ready.",
+            )
+            return
+        except RoomChangedDuringGenerationError:
+            self._reply_error(
+                handle, game, ErrorCode.INVALID_STATE_TRANSITION,
+                "The players changed while the questions were being prepared. Start again.",
+            )
+            return
+        except NoQuestionsGeneratedError:
+            self._reply_error(handle, game, ErrorCode.NO_QUESTIONS_AVAILABLE, NO_QUESTIONS_MESSAGE)
+            return
+        self._announce_started(room)
 
     def _host_next(self, room: Room, handle: ConnectionHandle, payload: dict[str, Any]) -> None:
         game = room.game
@@ -580,6 +689,7 @@ class GameHub:
         """Cancel timers and finish database work before the engine is disposed."""
         for runtime in self._rooms.values():
             self._cancel_deadline(runtime)
+        self._ai_executor.shutdown(wait=False, cancel_futures=True)
         self._executor.shutdown(wait=True)
 
     def has_pending_deadline(self, room_code: str) -> bool:

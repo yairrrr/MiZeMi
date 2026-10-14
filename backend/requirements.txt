@@ -6,3 +6,7 @@ pydantic==2.13.4
 pydantic-settings==2.15.0
 sqlalchemy==2.0.51
 psycopg[binary]==3.3.5
+# Optional AI question mode (§12.7). Opt-in per deployment via
+# MIZEMI_AI_ENABLED + MIZEMI_ANTHROPIC_API_KEY; nothing is called when the
+# flag is off. The SDK itself is free; the service is bring-your-own-key.
+anthropic==0.76.0

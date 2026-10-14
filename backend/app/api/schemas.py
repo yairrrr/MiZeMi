@@ -87,6 +87,10 @@ class GameConfigSchema(BaseModel):
 
     question_count: StrictInt = Field(default=20, ge=1, le=50)
     language: Literal["en", "he"] = "en"
+    # §9.0, §12.7 — opt-in per room. ``algorithmic`` is the default. ``ai``
+    # requires the deployment to have ``MIZEMI_AI_ENABLED=true``; otherwise
+    # the API rejects it with VALIDATION_ERROR.
+    question_source: Literal["algorithmic", "ai"] = "algorithmic"
 
 
 class CreateRoomRequest(GameConfigSchema):

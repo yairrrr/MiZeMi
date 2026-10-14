@@ -115,6 +115,7 @@ function PlayerStage({
             send={send}
             serverError={view.error}
             connected={connected}
+            questionSource={room.config.question_source}
           />
         )
       }
@@ -197,6 +198,9 @@ function PlayerQuestion({ question, view, send, connected }: { question: Questio
       </p>
       <h2 className="question-text" lang={question.language} dir={direction(question.language)}>{question.text}</h2>
       <span className="difficulty-badge">{t(question.difficulty === 'HARD' ? 'Hard' : question.difficulty === 'MEDIUM' ? 'Medium' : 'Easy')}</span>
+      {view.room?.config.question_source === 'ai' && (
+        <span className="difficulty-badge ai-badge" style={{ background: '#6547cb', color: '#fff', marginInlineStart: '0.4rem' }}>⚡ {t('AI question')}</span>
+      )}
       <Timer question={question} serverOffsetMs={view.serverOffsetMs} />
       <div className="option-grid player-options" dir={direction(question.language)} role="group" aria-label={t("Answers")}>
         {question.options.map((option, index) => (

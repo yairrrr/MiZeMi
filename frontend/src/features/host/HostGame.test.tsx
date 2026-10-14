@@ -24,7 +24,7 @@ const player = (id: string, name: string, overrides: Partial<Player> = {}): Play
 })
 
 const room = (state: RoomSnapshot['state'], players: Player[], index: number | null = 0): RoomSnapshot => ({
-  config: { question_count: 20, language: 'en' },
+  config: { question_count: 20, language: 'en', question_source: 'algorithmic' },
   room_code: 'K7PW3N',
   state,
   players,

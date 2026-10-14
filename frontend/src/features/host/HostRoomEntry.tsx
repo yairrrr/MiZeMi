@@ -1,8 +1,8 @@
-import { useRef, useState, type FormEvent } from 'react'
-import { createRoom, RestApiError } from '../../api/roomApi'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { createRoom, fetchFeatures, RestApiError } from '../../api/roomApi'
 import { publicError, useI18n } from '../../i18n/I18n'
 import type { Language, MessageKey } from '../../i18n/messages'
-import type { CreateRoomResponse, ErrorResponse } from '../../types'
+import type { CreateRoomResponse, ErrorResponse, QuestionSource } from '../../types'
 
 export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomResponse) => void }) {
   const { t, language } = useI18n()
@@ -10,7 +10,17 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
   const [isLoading, setIsLoading] = useState(false)
   const [count, setCount] = useState('20')
   const [gameLanguage, setGameLanguage] = useState<Language | null>(null)
+  const [questionSource, setQuestionSource] = useState<QuestionSource>('algorithmic')
+  const [aiAvailable, setAiAvailable] = useState(false)
   const isPending = useRef(false)
+
+  // Learn whether this deployment supports AI mode. The toggle stays hidden
+  // when the backend answers false (default) or is unreachable.
+  useEffect(() => {
+    const abort = new AbortController()
+    fetchFeatures(abort.signal).then((f) => setAiAvailable(f.ai_mode_available))
+    return () => abort.abort()
+  }, [])
 
   async function handleCreateRoom(event: FormEvent) {
     event.preventDefault()
@@ -25,7 +35,11 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
     setIsLoading(true)
     setError(null)
     try {
-      onCreated(await createRoom({ question_count: questionCount, language: gameLanguage ?? language }))
+      onCreated(await createRoom({
+        question_count: questionCount,
+        language: gameLanguage ?? language,
+        question_source: aiAvailable ? questionSource : 'algorithmic',
+      }))
     } catch (error) {
       setError(error instanceof RestApiError ? error.response.error : 'We could not create a room. Please try again.')
     } finally {
@@ -60,6 +74,35 @@ export function HostRoomEntry({ onCreated }: { onCreated: (room: CreateRoomRespo
             <option value="en">{t('English')}</option><option value="he">{t('Hebrew')}</option>
           </select>
           <small>{t('Everyone receives the same questions in this language.')}</small>
+
+          {aiAvailable && (
+            <div className="question-source-toggle" style={{ marginTop: '0.75rem' }}>
+              <label>{t('Question style')}</label>
+              <div role="radiogroup" aria-label={t('Question style')}
+                   style={{ display: 'flex', gap: '0.5rem', marginTop: '0.3rem' }}>
+                <button type="button"
+                        role="radio"
+                        aria-checked={questionSource === 'algorithmic'}
+                        className={questionSource === 'algorithmic' ? 'toggle-pill is-active' : 'toggle-pill'}
+                        onClick={() => setQuestionSource('algorithmic')}>
+                  {t('Classic')}
+                </button>
+                <button type="button"
+                        role="radio"
+                        aria-checked={questionSource === 'ai'}
+                        className={questionSource === 'ai' ? 'toggle-pill is-active' : 'toggle-pill'}
+                        onClick={() => setQuestionSource('ai')}>
+                  ⚡ {t('AI mode')}
+                </button>
+              </div>
+              <small>
+                {questionSource === 'ai'
+                  ? t('AI reads your consented profiles and crafts group-specific questions.')
+                  : t('Deterministic engine: questions come from the offline knowledge base.')}
+              </small>
+            </div>
+          )}
+
           <button className="primary-button host-button" type="submit">
             {t(isLoading ? 'Creating room…' : 'Create Room')}
           </button>

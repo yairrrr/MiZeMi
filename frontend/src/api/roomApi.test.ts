@@ -9,7 +9,7 @@ import type {
 } from '../types'
 import { createRoom, joinRoom, RestApiError } from './roomApi'
 
-const createRoomResponse: CreateRoomResponse = { config: { question_count: 20, language: 'en' },
+const createRoomResponse: CreateRoomResponse = { config: { question_count: 20, language: 'en', question_source: 'algorithmic' },
   room_code: 'K7PW3N',
   game_id: 'game-123',
   host_token: 'host-token',

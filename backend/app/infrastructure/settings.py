@@ -74,6 +74,20 @@ class Settings(BaseSettings):
     room_idle_ttl_minutes: int = Field(default=120, ge=1)
     retention_days: int = Field(default=7, ge=1)
 
+    # ─── Optional AI question generation (§12.7) ────────────────────────────
+    # Feature flag: when false, every ``question_source="ai"`` request is
+    # rejected before any key is used and the toggle is not advertised on
+    # ``/api/v1/features``.
+    ai_enabled: bool = Field(default=False)
+    # Bring-your-own key for Anthropic. Marked ``repr=False`` so Settings
+    # instances never render it, and never serialized to disk/logs/DB.
+    anthropic_api_key: str | None = Field(default=None, repr=False)
+    anthropic_model: str = Field(default="claude-sonnet-5")
+    # Global throttle, in-process. Each successful room-start with AI counts
+    # once; a per-process counter resets every rolling hour.
+    ai_max_games_per_hour: int = Field(default=20, ge=1, le=1000)
+    ai_request_timeout_seconds: int = Field(default=90, ge=5, le=120)
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def _parse_cors_origins(cls, value: object) -> object:

@@ -63,7 +63,7 @@ test('selected custom count and independent game language reach the API', async 
   await user.type(screen.getByLabelText('Number of questions'),'7')
   await user.selectOptions(screen.getByLabelText('Game language'),'he')
   await user.click(screen.getByRole('button',{name:'Create Room'}))
-  expect(createRoom).toHaveBeenCalledWith({question_count:7,language:'he'})
+  expect(createRoom).toHaveBeenCalledWith({question_count:7,language:'he',question_source:'algorithmic'})
   expect(document.documentElement).toHaveAttribute('lang','en')
 })
 
@@ -72,7 +72,7 @@ test('default count and Hebrew UI default reach API unchanged', async () => {
   vi.mocked(createRoom).mockReturnValue(new Promise(() => {}))
   render(<App />)
   await userEvent.click(screen.getByRole('button',{name:'יצירת חדר'}))
-  expect(createRoom).toHaveBeenCalledWith({question_count:20,language:'he'})
+  expect(createRoom).toHaveBeenCalledWith({question_count:20,language:'he',question_source:'algorithmic'})
 })
 
 test.each(['0','-1','51','2.5',''])('invalid question count %s never calls create', async (value) => {
@@ -94,7 +94,7 @@ test.each(ERROR_CODES)('public error %s has a safe Hebrew message', (code) => {
 const host={role:'host' as const,room_code:'ABC234',game_id:'g',host_token:'local-test-token'}
 const player={role:'player' as const,room_code:'ABC234',game_id:'g',player_id:'p',player_token:'local-test-token',display_name:'דנה'}
 const person={player_id:'p',display_name:'דנה',is_host:false,connected:true,has_profile:true,is_ready:true,score:900}
-const room:RoomSnapshot={room_code:'ABC234',state:'READY',players:[person],current_question_index:0,total_questions:5,config:{question_count:5,language:'he'}}
+const room:RoomSnapshot={room_code:'ABC234',state:'READY',players:[person],current_question_index:0,total_questions:5,config:{question_count:5,language:'he',question_source:'algorithmic'}}
 const q:Question={question_id:'q',index:0,total_questions:5,question_type:'multiple_choice',difficulty:'HARD',language:'he',text:'מי בחר פיצה?',options:[{option_id:'a',text:'דנה'},{option_id:'b',text:'Noa'}],time_limit_seconds:20,started_at:new Date().toISOString()}
 const ended:QuestionEnded={explanation:'המסור ולזמן את הרוע הם סרטי אימה.',question_id:'q',text:q.text,options:q.options,difficulty:'HARD',language:'he',correct_option_id:'a',statistics:{question_id:'q',correct_option_id:'a',answer_distribution:[{option_id:'a',count:1,percentage:100},{option_id:'b',count:0,percentage:0}],answered_count:1,player_count:1},player_result:{option_id:'a',is_correct:true,points_awarded:900,total_score:900}}
 const board=[{player_id:'p',display_name:'דנה',rank:1,total_score:900}]

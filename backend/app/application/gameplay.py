@@ -10,13 +10,19 @@ time, answer receive time) is server-owned and tests stay deterministic.
 """
 
 import hashlib
+import logging
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import Enum, unique
 
 from app.application.advance_question import AdvanceQuestionService
-from app.application.start_game import QuestionGenerationConfig, StartGameService
+from app.application.start_game import (
+    GameNotStartableError,
+    NoQuestionsGeneratedError,
+    QuestionGenerationConfig,
+    StartGameService,
+)
 from app.domain.game import (
     Answer,
     Game,
@@ -24,7 +30,8 @@ from app.domain.game import (
     InvalidStateTransitionError,
     RoundResult,
 )
-from app.domain.questions import Question, QuestionGenerator
+from app.domain.questions import ProfileDataset, Question, QuestionGenerator
+from app.domain.questions.ai_generator import AIQuestionGenerator
 from app.domain.scoring import (
     LeaderboardEntry,
     ScoringPolicy,
@@ -32,6 +39,13 @@ from app.domain.scoring import (
     build_leaderboard,
 )
 from app.domain.statistics import QuestionStatistics, QuestionStatisticsCalculator
+from app.infrastructure.ai_client import (
+    AIClientUnavailable,
+    AIGenerationError,
+    AIRateLimitError,
+)
+
+logger = logging.getLogger("mizemi.gameplay")
 
 Clock = Callable[[], datetime]
 
@@ -51,6 +65,18 @@ class GameplayConfig:
 
     questions_per_game: int
     time_limit_seconds: int
+
+
+class RoomChangedDuringGenerationError(Exception):
+    """The roster changed while AI questions were being written for the old one."""
+
+
+@dataclass(frozen=True)
+class AiStartTicket:
+    """Immutable snapshot of a room taken when the host pressed start."""
+
+    dataset: ProfileDataset
+    generation: QuestionGenerationConfig
 
 
 @unique
@@ -82,6 +108,7 @@ class GameplayService:
         clock: Clock | None = None,
         generator: QuestionGenerator | None = None,
         scoring: ScoringPolicy | None = None,
+        ai_generator: AIQuestionGenerator | None = None,
     ) -> None:
         self._config = config
         self._clock = clock if clock is not None else utc_now
@@ -89,28 +116,114 @@ class GameplayService:
         self._advance = AdvanceQuestionService()
         self._scoring = scoring if scoring is not None else SpeedBonusScoringPolicy()
         self._statistics = QuestionStatisticsCalculator()
+        # None → AI mode is disabled for this deployment; a request for
+        # question_source="ai" is answered with the standard algorithmic path.
+        self._ai_generator = ai_generator
 
     @property
     def config(self) -> GameplayConfig:
         return self._config
 
+    @property
+    def ai_available(self) -> bool:
+        return self._ai_generator is not None
+
     def now(self) -> datetime:
         return self._clock()
 
-    def start_game(self, game: Game) -> tuple[Question, ...]:
-        """Generate the question set and open the first question.
-
-        Raises ``GameNotStartableError`` (not READY) or
-        ``NoQuestionsGeneratedError`` (no valid questions); both leave the
-        game in its previous state.
-        """
-        generation = QuestionGenerationConfig(
+    def _generation_config(self, game: Game) -> QuestionGenerationConfig:
+        return QuestionGenerationConfig(
             question_count=game.config.question_count,
             language=game.config.language,
             time_limit_seconds=self._config.time_limit_seconds,
             seed=seed_for_game(game.game_id),
         )
-        return self._start.start(game, generation, opened_at=self._clock())
+
+    def start_game(self, game: Game) -> tuple[Question, ...]:
+        """Generate the question set and open the first question (blocking).
+
+        Algorithmic games are instant. A room that opted into
+        ``question_source="ai"`` goes through the three AI phases below, which
+        can take a long time because they call a network service: the realtime
+        layer therefore drives those phases itself (generation in a worker
+        thread). This method is the plain sequential composition, for callers
+        that are not on an event loop.
+
+        Raises ``GameNotStartableError`` or ``NoQuestionsGeneratedError``
+        exactly as before; both leave the game in its previous state.
+        """
+        if not self.wants_ai_start(game):
+            return self._start.start(game, self._generation_config(game), opened_at=self._clock())
+        ticket = self.begin_ai_start(game)
+        return self.finish_ai_start(game, ticket, self.generate_ai_questions(ticket))
+
+    # --- AI start, in three phases ---------------------------------------------------
+
+    def wants_ai_start(self, game: Game) -> bool:
+        """True when this game asked for AI questions and the server can make them."""
+        return game.config.question_source == "ai" and self._ai_generator is not None
+
+    def begin_ai_start(self, game: Game) -> AiStartTicket:
+        """Phase 1 — snapshot the room. Cheap; call it on the event loop.
+
+        The snapshot is immutable, so phase 2 can read it from a worker thread
+        while the live ``Game`` keeps changing. Raises ``GameNotStartableError``
+        when the game is not READY.
+        """
+        if game.state is not GameState.READY:
+            raise GameNotStartableError(game.state)
+        return AiStartTicket(
+            dataset=ProfileDataset(game.players, language=game.config.language),
+            generation=self._generation_config(game),
+        )
+
+    def generate_ai_questions(self, ticket: AiStartTicket) -> tuple[Question, ...] | None:
+        """Phase 2 — ask the AI. BLOCKING: never call this on the event loop.
+
+        Touches only the immutable ticket. Returns ``None`` — the signal to fall
+        back to the algorithmic engine — on any failure. Only the exception
+        *type* is logged, so neither the API key nor profile data can leak.
+        """
+        assert self._ai_generator is not None
+        generation = ticket.generation
+        try:
+            questions = self._ai_generator.generate(
+                ticket.dataset,
+                question_count=generation.question_count,
+                time_limit_seconds=generation.time_limit_seconds,
+                seed=generation.seed,
+                language=generation.language,
+            )
+        except (AIGenerationError, AIRateLimitError, AIClientUnavailable) as exc:
+            logger.warning("AI start failed, falling back to algorithmic: %s", type(exc).__name__)
+            return None
+        except Exception as exc:  # noqa: BLE001 — never leak details.
+            logger.error("Unexpected AI failure, falling back: %s", type(exc).__name__)
+            return None
+        return questions or None
+
+    def finish_ai_start(
+        self,
+        game: Game,
+        ticket: AiStartTicket,
+        questions: tuple[Question, ...] | None,
+    ) -> tuple[Question, ...]:
+        """Phase 3 — open the game. Call it on the event loop, under the room lock.
+
+        Re-checks the room, because it may have changed while the AI worked:
+        ``GameNotStartableError`` if it is no longer READY,
+        ``RoomChangedDuringGenerationError`` if the roster is different (the
+        AI questions were written for other players). With ``questions=None``
+        the algorithmic engine starts the game from the *current* roster.
+        """
+        if game.state is not GameState.READY:
+            raise GameNotStartableError(game.state)
+        if questions:
+            if tuple(p.player_id for p in game.players) != ticket.dataset.player_ids:
+                raise RoomChangedDuringGenerationError()
+            game.start(questions, opened_at=self._clock())
+            return questions
+        return self._start.start(game, ticket.generation, opened_at=self._clock())
 
     def submit_answer(
         self, game: Game, player_id: str, question_id: str, option_id: str
