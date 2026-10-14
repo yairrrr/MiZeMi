@@ -195,7 +195,13 @@ class GameplayService:
                 language=generation.language,
             )
         except (AIGenerationError, AIRateLimitError, AIClientUnavailable) as exc:
-            logger.warning("AI start failed, falling back to algorithmic: %s", type(exc).__name__)
+            # The exception's own message is designed to be safe (no key, no
+            # profile data), so we can log it here to help diagnose quality
+            # regressions. Nothing from the API response is included.
+            logger.warning(
+                "AI start failed, falling back to algorithmic: %s: %s",
+                type(exc).__name__, exc,
+            )
             return None
         except Exception as exc:  # noqa: BLE001 — never leak details.
             logger.error("Unexpected AI failure, falling back: %s", type(exc).__name__)

@@ -54,12 +54,12 @@ _SOURCE_RULE_ID = "ai_group_insight"
 _OPTION_ALPHABET = ("a", "b", "c", "d")
 _MAX_ATTEMPTS = 2  # generation is retried once if the first pass yields nothing
 _QUESTION_ID_BITS = 128
-_GENERATION_MAX_TOKENS = 8192
+_GENERATION_MAX_TOKENS = 6000  # Hebrew is token-heavy: 8 questions ≈ 4-5k tokens
 # One request for a whole 20-question game (26 with surplus) in Hebrew does not
 # fit in a single response and takes minutes. Several smaller requests run in
 # parallel, each finishing well inside the timeout.
-_BATCH_SIZE = 10
-_VERIFICATION_MAX_TOKENS = 2048
+_BATCH_SIZE = 8  # small games fit in one batch; large games split in parallel
+_VERIFICATION_MAX_TOKENS = 1024
 
 # The SPEC §12.6 age bands. The model is only ever shown these labels.
 _AGE_BANDS = (
@@ -74,93 +74,86 @@ _OLDEST_BAND = "50+"
 
 
 SYSTEM_PROMPT = """\
-You are the question designer for an in-person icebreaker game called MiZeMi.
+You design questions for MiZeMi, an in-person icebreaker game. The
+group just met. Your only job: help them discover WHO THEY ARE AS A
+GROUP — shared tastes, hidden overlaps, uniqueness, the room's shape.
 
-A group of people have shared short profiles about themselves — city,
-favorite food, hobby, music style, movie, artist, song, age range — and
-consented to have that information used to make a group quiz. Your job:
-produce multiple-choice questions that reveal something about the GROUP.
+CORE TEST. A good question's answer tells the room something it did
+not know. A BAD question is trivia dressed up with player names.
 
-Hard rules. A question that breaks any of them must not be returned:
+TRIVIA IS BANNED. The answer MUST come from the players' profile data
+alone. Do NOT bring in outside knowledge: not release years, not
+decades, not country or nationality of artists, not movie franchises
+(Marvel, DC), not cuisine origin, not geography (coasts, mountains,
+north/south). If the question could be answered without seeing the
+profiles, it is trivia and you must NOT write it.
 
-* Use ONLY the profile data you are given, plus widely known facts about the
-  named works, foods, places or activities (for example a film's genre).
-  Never guess. If you are not sure a claim is true, do not ask it.
-* Each question has 2-4 options and exactly one correct answer. The
-  correct answer must be verifiable, never an opinion or a judgement call.
-* AGES are given only as ranges (for example "25-34"). Never state, guess or
-  hint at an exact age, and never narrow a range. You may refer to a range
-  exactly as given.
-* NEVER ask about absence or what is missing: no "which style does not
-  appear", "who did not choose", "which option nobody picked". A value that
-  nobody typed says nothing about what people like.
-* Ask about shared tastes, surprising overlaps, group majorities, diversity
-  across the room, and comparisons between groups of people. Avoid asking
-  what one person's single answer was; that is trivia, not an icebreaker.
-* The input contains "topic_plan": how many questions to build mainly on each
-  profile field. It follows how many players actually filled that field in,
-  so a field few people answered gets few questions and a field nobody
-  answered gets none. Follow it closely (a question that combines fields
-  counts toward the field it relies on most). Never ask about a field that is
-  not in the plan.
-* Make use of the actual content people named - the films, artists, songs,
-  foods, places and hobbies - not only counts of choices. Good examples:
-  which two chosen films belong to the same franchise or decade, which chosen
-  artists come from the same country or era, who named a place in a
-  particular part of the country. Use only facts that are widely known and
-  beyond dispute (year, country, franchise, an undisputed genre).
-* Never invent a classification. If a question counts categories ("how many
-  cuisines", "how many kinds of hobby"), the question text itself must name
-  the categories being counted; otherwise ask something with a single
-  objective answer. Do not stretch a label onto an item it only loosely fits.
-* DIVERSITY: every question must test a DIFFERENT underlying fact about the
-  group. If two questions would be answered with the same evidence (for
-  example "which city appears twice" and "which city is shared by two
-  people" both rely on the same city count), keep only one. Do not write
-  more than one question whose correct answer is the same named entity
-  (person, city, artist, food, style, etc.).
-* DIFFICULTY MIX: approximately 30 % EASY (direct observation or simple
-  count), 50 % MEDIUM (comparison, combination, or mild inference), 20 %
-  HARD (requires combining data across two or more fields, or applying
-  widely-known general knowledge about the named content — a film's decade
-  or franchise, an artist's country, a food's cuisine, a city's geographic
-  region). Always include at least one HARD question when the total is
-  five or more.
-* No personality assumptions, no stereotypes, no judgement of anyone.
-* Write every question, option and explanation in the requested language.
-* Order the questions from easy observations to deeper insights.
+Forbidden examples (and why):
+- "Elick lives in Tiberias, Yair in Ramat Gan. Which is further north?"
+  → geography trivia. Players are decoration.
+- "Which chosen food comes from Italian cuisine?" → cuisine trivia.
+- "How many of the chosen movies are Marvel?" → franchise trivia.
+- "Which chosen song was released in the 80s?" → year trivia.
+- "Which chosen artist is from France?" → nationality trivia.
 
-Output format: strict JSON only. No prose, no markdown fences.
+QUESTION SHAPES — pick only from these five:
+1. SHARED TASTE: "איזה סגנון בחרו הכי הרבה בקבוצה?"
+2. UNIQUE VOICE: "מי היחיד בקבוצה שבחר אוכל אסייתי?"
+3. HIDDEN CONNECTION: "אילו שני אנשים חולקים אותו אמן אהוב?"
+4. GROUP SHAPE: "כמה ערים שונות מיוצגות?"
+5. BRIDGE: "עם מי מהקבוצה אליק הכי דומה בטעמים?"
 
-[
-  {
-    "text": "...",
-    "options": ["...", "..."],
-    "correct_index": 0,
-    "difficulty": "EASY" | "MEDIUM" | "HARD",
-    "explanation": "one short factual sentence in the same language"
-  }
-]
+HARD RULES:
+* 2-4 options, exactly one verifiable correct answer from the data.
+* Use players' display names as given — never "player one" / "משתמש אחד".
+* AGES only as ranges ("25-34"). Never state or hint an exact age.
+* NEVER ask about absence ("which style does not appear").
+* Follow "topic_plan" in the input: it tells you how many questions
+  to build per field (based on how many players filled it in).
+  Never ask about a field not in the plan.
+* DIVERSITY: every question reveals a DIFFERENT fact. Do not repeat
+  the same correct answer across two questions.
+* No stereotypes, no personality judgements.
+* Write in the requested language.
+* Order easy → hard.
+
+DIFFICULTY — all about the GROUP, never trivia:
+* EASY: direct observation. "איזו עיר מופיעה הכי הרבה?"
+* MEDIUM: combines two fields of the same players, or compares
+  subgroups. "מי מבין אוהבי הפופ גר בחיפה?"
+* HARD: cross-group insight — the most-unique player, two players
+  with the most in common, etc. NOT outside knowledge.
+  "אילו שני שחקנים חולקים הכי הרבה טעמים?"
+
+Distribute ~30% EASY, ~50% MEDIUM, ~20% HARD. Include ≥1 HARD when
+total ≥ 5.
+
+Output: strict JSON only. No prose, no markdown fences.
+
+[{"text":"...","options":["...","..."],"correct_index":0,
+  "difficulty":"EASY|MEDIUM|HARD",
+  "explanation":"one short sentence, cite players by name"}]
 """
 
 
 VERIFY_SYSTEM_PROMPT = """\
-You are a strict fact-checker for a group quiz. You receive the players'
-answers (the only data about the group) and a list of quiz questions, each
-with the option the author claims is correct.
+Review each question of a MiZeMi icebreaker quiz. You see the players'
+data and each question with its claimed correct option. Judge:
 
-For each question decide:
-* "correct"   - the claimed option is definitely correct given the data (and,
-                for facts about named works or places, widely known facts)
-                AND no other option is also correct.
-* "incorrect" - the claimed option is wrong.
-* "ambiguous" - more than one option could be correct, the data does not
-                settle it, or you are not sure.
+* "correct": the claimed answer follows from the players' data alone,
+  no other option fits, AND the question reveals something about the
+  group (not outside trivia).
+* "incorrect": the answer is wrong, OR the question is trivia (its
+  answer depends on year, decade, nationality, franchise, cuisine,
+  geography, or any fact the players did not type).
+* "ambiguous": more than one option fits, data does not settle it,
+  the question uses "player one" / "משתמש אחד" instead of real names,
+  or you are not sure.
 
-Be conservative: when in doubt, answer "ambiguous". Ages are given as ranges
-only; a question that needs an exact age is "ambiguous".
+Be strict: when a question smells like trivia, mark it "incorrect".
+Ages are ranges only; questions needing exact age → "ambiguous".
 
-Output strict JSON only, one entry per question, in order:
+Output JSON only, one entry per question in order:
 [{"index": 0, "verdict": "correct"}, ...]
 """
 
@@ -248,6 +241,47 @@ _ABSENCE_CLAIM = re.compile(
     """,
     re.VERBOSE | re.IGNORECASE,
 )
+
+# Trivia-style questions sneak past the model even when the prompt bans
+# them. These patterns are high-confidence markers of a question whose
+# correct answer depends on outside knowledge (release year, decade,
+# nationality, franchise, geography, cuisine origin) rather than on the
+# players' profile data. False positives only cost one question each.
+_TRIVIA_MARKERS = re.compile(
+    r"""
+      # release year / decade — Hebrew and English
+      יצא\s+(?:ב[-'־]?\s*)?(?:19|20)\d{2}
+    | יצא\s+לאור
+    | שנות\s+ה[-'־]?\s*(?:50|60|70|80|90|2000|2010|2020)
+    | released\s+in\s+(?:19|20)\d{2}
+    | released\s+in\s+the\s+(?:50|60|70|80|90|'?70|'?80|'?90|2000|2010|2020)
+    # franchise / based-on classification
+    | מבוסס(?:ים)?\s+על\s+דמ(?:ו|ות)
+    | מבוסס(?:ים|ות)?\s+על\s+(?:מארוול|marvel|dc)
+    | שייכ(?:ים|ות)?\s+ל(?:מארוול|marvel|dc|עולם\s+גיבורי)
+    | מארוול | marvel | \bdc\s+(?:comic|comics|universe) | קומיקס
+    # nationality / country of origin of an artist / band / song
+    | מגיע(?:ים|ות)?\s+מ(?:צרפת|בריטניה|ארה[״\"']?ב|אמריקה|גרמניה|שבדיה|אוסטרליה|קנדה|יפן)
+    | (?:דואט|להקה|אמן|זמר|זמרת)\s+(?:צרפתי|בריטי|אמריקאי|גרמני|שבדי|אוסטרלי|קנדי|יפני)
+    | from\s+(?:the\s+)?(?:uk|usa|us\b|united\s+kingdom|united\s+states|france|germany|sweden|australia|canada|japan)
+    # geography trivia about Israel
+    | חוף\s+הים\s+התיכון
+    | ער(?:י|ים)\s+חוף
+    | עיר\s+הרים | בהרי\s+יהודה
+    | קו\s+אווירי
+    # cuisine origin — only flag the explicit "from X cuisine" phrasing
+    | מגיע(?:ים|ות)?\s+מהמטבח
+    | ממקור\s+(?:איטלקי|אסייתי|צרפתי|מקסיקני|יפני|תאילנדי|סיני|הודי)
+    """,
+    re.VERBOSE | re.IGNORECASE,
+)
+
+
+def _is_trivia(text: str, explanation: str) -> bool:
+    """A question that would score 100% on Wikipedia alone, no players needed."""
+    return bool(
+        _TRIVIA_MARKERS.search(text) or _TRIVIA_MARKERS.search(explanation)
+    )
 
 
 def _mentions_exact_age(texts: Iterable[str], ages: set[int]) -> bool:
@@ -451,9 +485,19 @@ def _unique_and_ordered(records: list[_AIQuestionRecord]) -> list[_AIQuestionRec
     return sorted(pass3, key=lambda r: _DIFFICULTY_ORDER[r.difficulty])  # stable
 
 
+_SMALL_GAME_THRESHOLD = 5  # <= this many questions skips the verify call
+
+
 def _requested_count(question_count: int) -> int:
-    """Ask for a surplus: filters and verification will drop some questions."""
-    return min(50, question_count + max(2, question_count // 3))
+    """Ask for a surplus so filters, dedup and verify can drop candidates.
+
+    Small games keep the surplus tiny: the strict prompt + trivia filter +
+    structural validator carry quality, and the verify call is skipped to
+    stay under the 60-second budget hosts expect.
+    """
+    if question_count <= _SMALL_GAME_THRESHOLD:
+        return question_count + 2
+    return min(50, question_count + max(3, question_count // 2))
 
 
 def _batch_sizes(total: int) -> list[int]:
@@ -582,7 +626,14 @@ class AIQuestionGenerator:
         accepted = self._filter_candidates(dataset, parsed)
         if not accepted:
             raise AIGenerationError("All AI questions were rejected by the filters.")
-        verified = self._verify(dataset, accepted)[:question_count]
+        # Small games skip the verify call to stay under the host's ~60 s
+        # budget. The strict prompt + trivia filter + dedup + structural
+        # validator still gate the output; verification is a safety-net that
+        # costs an extra API round-trip we can afford only on larger games.
+        if question_count <= _SMALL_GAME_THRESHOLD:
+            verified = accepted[:question_count]
+        else:
+            verified = self._verify(dataset, accepted)[:question_count]
 
         total = len(verified)
         return tuple(
@@ -687,6 +738,9 @@ class AIQuestionGenerator:
                 continue
             if _argues_from_absence(candidate.text):
                 logger.info("AI candidate rejected: absence_claim")
+                continue
+            if _is_trivia(candidate.text, record.explanation):
+                logger.info("AI candidate rejected: trivia_pattern")
                 continue
             reason = self._validator.rejection_reason(candidate, dataset)
             if reason is not None:

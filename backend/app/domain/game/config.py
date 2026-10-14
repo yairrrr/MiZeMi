@@ -8,7 +8,7 @@ QuestionSource = Literal["algorithmic", "ai"]
 
 @dataclass(frozen=True)
 class GameConfig:
-    question_count: int = 20
+    question_count: int = 5
     language: str = "en"
     # Per-game question generator (§9.0, §12.7). ``algorithmic`` is the pure
     # offline engine; ``ai`` opts the game into Anthropic-generated questions

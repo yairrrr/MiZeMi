@@ -32,7 +32,7 @@ class TestDefaults:
     def test_gameplay_defaults_are_the_approved_mvp_values(self) -> None:
         settings = _settings()
 
-        assert settings.questions_per_game == 20
+        assert settings.questions_per_game == 5
         assert settings.question_time_limit_seconds == 20
         assert settings.max_players_per_room == 50
         assert settings.room_idle_ttl_minutes == 120

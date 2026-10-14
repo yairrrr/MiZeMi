@@ -48,11 +48,11 @@ test('unsupported stored locale falls back safely', () => {
   expect(loadLanguage()).toBe('en')
 })
 
-test('home logo is accessible and count is visibly twenty', () => {
+test('home logo is accessible and count defaults to five', () => {
   render(<App />)
   expect(screen.getByRole('img',{name:'MiZeMi'})).toHaveAttribute('src',expect.stringContaining('mizemi-logo.png'))
   expect(screen.getByRole('heading',{level:1,name:'MiZeMi'})).toBeVisible()
-  expect(screen.getByLabelText('Number of questions')).toHaveValue(20)
+  expect(screen.getByLabelText('Number of questions')).toHaveValue(5)
 })
 
 test('selected custom count and independent game language reach the API', async () => {
@@ -72,7 +72,7 @@ test('default count and Hebrew UI default reach API unchanged', async () => {
   vi.mocked(createRoom).mockReturnValue(new Promise(() => {}))
   render(<App />)
   await userEvent.click(screen.getByRole('button',{name:'יצירת חדר'}))
-  expect(createRoom).toHaveBeenCalledWith({question_count:20,language:'he',question_source:'algorithmic'})
+  expect(createRoom).toHaveBeenCalledWith({question_count:5,language:'he',question_source:'algorithmic'})
 })
 
 test.each(['0','-1','51','2.5',''])('invalid question count %s never calls create', async (value) => {
