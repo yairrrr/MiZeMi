@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { QRCodeSVG } from 'qrcode.react'
 import { afterEach, describe, expect, test, vi } from 'vitest'
@@ -6,6 +6,7 @@ import { afterEach, describe, expect, test, vi } from 'vitest'
 import { initialGameView, type GameView } from '../../state/gameReducer'
 import type { HostSession } from '../../state/session'
 import type { Player, Question, QuestionEnded, RoomSnapshot } from '../../types'
+import { estimatedPercent, expectedGenerationMs } from './AiLoadingScreen'
 import { HostGameView } from './HostGame'
 
 afterEach(cleanup)
@@ -98,6 +99,41 @@ describe('HostGameView', () => {
     const send = renderView({ room: room('READY', [player('p1', 'Dana')]) })
     await userEvent.setup().click(screen.getByRole('button', { name: 'Start game' }))
     expect(send).toHaveBeenCalledWith('game.start')
+  })
+
+  test('AI mode covers the wait with a loader that finishes when the first question arrives', async () => {
+    const aiRoom = (state: RoomSnapshot['state']) => ({ ...room(state, [player('p1', 'Dana')]), config: { question_count: 5, language: 'en' as const, question_source: 'ai' as const } })
+    const props = { session, status: 'open' as const, send: vi.fn(() => true), dismissError: vi.fn(), onLeave: vi.fn() }
+    const { rerender } = render(<HostGameView {...props} view={{ ...initialGameView, room: aiRoom('READY') }} />)
+    expect(screen.queryByRole('progressbar')).toBeNull()
+
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Start game' }))
+    expect(screen.getByRole('progressbar', { name: 'AI is crafting your questions…' })).toHaveAttribute('aria-valuenow', '0')
+    expect(screen.getByRole('button', { name: 'AI is crafting your questions…' })).toBeDisabled()
+
+    rerender(<HostGameView {...props} view={{ ...initialGameView, room: aiRoom('QUESTION_ACTIVE'), question }} />)
+    expect(await screen.findByText('Your questions are ready!', {}, { timeout: 2000 })).toBeInTheDocument()
+    await waitFor(() => expect(screen.queryByRole('progressbar')).toBeNull(), { timeout: 2500 })
+  })
+
+  test('the AI loader steps aside when the start fails', async () => {
+    const aiRoom = { ...room('READY', [player('p1', 'Dana')]), config: { question_count: 5, language: 'en' as const, question_source: 'ai' as const } }
+    const props = { session, status: 'open' as const, send: vi.fn(() => true), dismissError: vi.fn(), onLeave: vi.fn() }
+    const { rerender } = render(<HostGameView {...props} view={{ ...initialGameView, room: aiRoom }} />)
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Start game' }))
+    expect(screen.getByRole('progressbar')).toBeInTheDocument()
+
+    rerender(<HostGameView {...props} view={{ ...initialGameView, room: aiRoom, error: { code: 'NO_QUESTIONS_AVAILABLE', message: 'Try again' } }} />)
+    expect(screen.queryByRole('progressbar')).toBeNull()
+    expect(screen.getByRole('button', { name: 'Start game' })).toBeEnabled()
+  })
+
+  test('the AI loader estimate eases toward, but never reaches, 100%', () => {
+    const expected = expectedGenerationMs(5)
+    expect(expected).toBe(60_000)
+    expect(estimatedPercent(0, expected)).toBe(0)
+    expect(estimatedPercent(expected, expected)).toBeGreaterThan(80)
+    expect(estimatedPercent(10 * expected, expected)).toBeLessThan(96)
   })
 
   test('can remove a player before the game', async () => {

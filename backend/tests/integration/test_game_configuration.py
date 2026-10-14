@@ -59,6 +59,19 @@ def test_config_is_in_create_response_domain_and_reconnect(count):
                 assert 'host_token' not in str(snapshot)
 
 
+def test_ai_question_source_reaches_the_room_snapshot():
+    # The host screen reads question_source from room.updated to show the AI
+    # loader; a snapshot that dropped it made every room look algorithmic.
+    app = _app()
+    app.state.game_hub._ai_available = True
+    with TestClient(app) as client:
+        body = client.post('/api/v1/rooms', json={'question_count':3,'language':'en','question_source':'ai'}).json()
+        room = CreatedRoom(body['room_code'], body['game_id'], body['host_token'])
+        with host_ws(client, room) as host:
+            snapshot = receive_until(host, 'room.updated')['payload']
+            assert snapshot['config'] == {'question_count': 3, 'language': 'en', 'question_source': 'ai'}
+
+
 @pytest.mark.parametrize('language,count', [('en',20),('he',5)])
 def test_public_config_controls_full_game_and_survives_results_and_persistence(language,count):
     app = _app()
